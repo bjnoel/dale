@@ -87,6 +87,49 @@ treestock.com.au {
     # Everything else (HTML) stays short-lived so daily rebuilds show up.
     @unversioned not path /styles.css /dashboard.js /data.js
     header @unversioned Cache-Control "public, max-age=3600"
+
+    # DAL-294: access log. Plausible is a client-side tag, so every crawler,
+    # every curl and every fetch of /shipping-reachability.json (not an HTML
+    # page, so it cannot run JavaScript at all) has always been invisible.
+    #
+    # What is deliberately NOT logged:
+    #   - the query string. /manage.html and /unsubscribe.html carry an HMAC
+    #     token and the subscriber's email in it. The regexp drops everything
+    #     from the first ? onwards, so a token can never reach disk.
+    #   - the client IP, in all four places it arrives. remote_ip is
+    #     Cloudflare's anyway; the real one is in Cf-Connecting-Ip,
+    #     X-Forwarded-For, True-Client-Ip or Forwarded. None of the questions
+    #     this log exists to answer need an IP.
+    #   Header names must be in Go's canonical casing (Cf-Connecting-Ip, not
+    #   Cf-Connecting-IP) or the delete silently does nothing.
+    #
+    # mode 0644 so the nightly summary can read it as the dale user. Rolled by
+    # Caddy itself, so there is no cron cleanup to forget.
+    log {
+        output file /var/log/caddy/treestock-access.log {
+            mode 0644
+            roll_size 10MiB
+            roll_keep 10
+            roll_keep_for 336h
+        }
+        format filter {
+            wrap json
+            fields {
+                request>remote_ip delete
+                request>remote_port delete
+                request>client_ip delete
+                request>tls delete
+                request>headers>Cookie delete
+                request>headers>Authorization delete
+                request>headers>Cf-Connecting-Ip delete
+                request>headers>X-Forwarded-For delete
+                request>headers>True-Client-Ip delete
+                request>headers>Forwarded delete
+                resp_headers delete
+                request>uri regexp "\?.*$" ""
+            }
+        }
+    }
 }
 
 beestock.com.au, www.beestock.com.au {

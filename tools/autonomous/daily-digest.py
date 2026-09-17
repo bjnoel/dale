@@ -23,6 +23,9 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, SCRIPT_DIR)
+import access_log  # noqa: E402  (needs SCRIPT_DIR on the path first)
+
 CONFIG_PATH = os.path.join(SCRIPT_DIR, "config.json")
 SECRETS_DIR = "/opt/dale/secrets"
 LOG_DIR = os.path.join(SCRIPT_DIR, "logs")
@@ -957,7 +960,7 @@ def write_digest_archive(data_dir, today, html):
 def build_digest_html(completed, created, in_progress, session_stats,
                       traffic_html, focus_summary, subscriber_stats, today,
                       resend_html="", waiting=None, outcomes=None,
-                      pipeline=None):
+                      pipeline=None, access=None):
     """Build the HTML email body."""
     parts = [f"<h2>Dale Daily Digest &mdash; {today}</h2>"]
 
@@ -974,6 +977,8 @@ def build_digest_html(completed, created, in_progress, session_stats,
 
     if pipeline is not None and pipeline["ok"]:
         parts.append(_pipeline_html(pipeline))
+    if access:
+        parts.append(access_log.render_html(access))
     if outcomes is not None:
         parts.append(_outcomes_html(*outcomes))
 
@@ -1055,7 +1060,7 @@ def build_digest_html(completed, created, in_progress, session_stats,
 def build_digest_text(completed, created, in_progress, session_stats,
                       traffic_text, focus_summary, subscriber_stats, today,
                       resend_text="", waiting=None, outcomes=None,
-                      pipeline=None):
+                      pipeline=None, access=None):
     """Build the plaintext email body."""
     lines = [f"Dale Daily Digest -- {today}", ""]
 
@@ -1080,6 +1085,12 @@ def build_digest_text(completed, created, in_progress, session_stats,
     if pipeline is not None and pipeline["ok"]:
         lines.extend(_pipeline_text(pipeline))
         lines.append("")
+
+    if access:
+        access_lines = access_log.render_lines(access)
+        if access_lines:
+            lines.extend(access_lines)
+            lines.append("")
 
     if outcomes is not None:
         recent, summary = outcomes
@@ -1258,6 +1269,16 @@ def main():
     except Exception as e:
         log(f"Warning: pipeline health check failed: {e}")
 
+    # 4c. Origin access log (DAL-294). Report only. Wrapped for the same reason
+    # as the pipeline check: a summary of who fetched what must never be the
+    # reason the email does not arrive.
+    access = None
+    try:
+        access = access_log.collect()
+        log(f"Access log: {access['total']} origin requests in 24h")
+    except Exception as e:
+        log(f"Warning: access log summary failed: {e}")
+
     # 5. Subscriber stats
     subscriber_stats = get_subscriber_stats()
     log(f"Subscribers: {subscriber_stats['total_subscribers']} total, "
@@ -1278,11 +1299,11 @@ def main():
     html = build_digest_html(completed, created, in_progress, session_stats,
                              traffic_html, focus_summary, subscriber_stats, today,
                              resend_html=resend_html, waiting=waiting,
-                             outcomes=outcomes, pipeline=pipeline)
+                             outcomes=outcomes, pipeline=pipeline, access=access)
     text = build_digest_text(completed, created, in_progress, session_stats,
                              traffic_text, focus_summary, subscriber_stats, today,
                              resend_text=resend_text, waiting=waiting,
-                             outcomes=outcomes, pipeline=pipeline)
+                             outcomes=outcomes, pipeline=pipeline, access=access)
 
     if dry_run:
         print("=== HTML ===")

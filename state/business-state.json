@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-09-17",
-  "session_count": 136,
+  "session_count": 137,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -101,18 +101,6 @@
         "status": "DEAD, measured twice (DEC-241, DEC-325). Re-measured 2026-08-27 on the pre-registered date: 30d = 2,044 outbound clicks sitewide, 9 visitors to /treesmith.html, 0 to either app store; 6mo = 3,132 clicks, 1 App Store click ever. Traffic grew 64% while store clicks went 1 -> 0. Tags verified live first, so the zero is real. The blocks stay (free and honest) but they are decoration. Propose NO funnel, CTA-placement or /treesmith.html conversion work.",
         "drip_email": "DEC-240 / DAL-173: send_treesmith_intro.py mails the intro to each NEW treestock subscriber 7 days after signup, once. Nightly 23:30 UTC, a logged no-op until /opt/dale/data/treesmith-intro-enabled exists (Benedict approves the copy first)."
       },
-      "blocked_on_benedict": "RESOLVED 2026-07-30 (DEC-252). DAL-242 closed: neither lever needed the decision it asked for. Review prompts (DAL-230) are built and enabled, waiting on a store submission, not on Benedict deciding. The free tier cut (DAL-224) is measurably pointless and recommended for cancellation. The one open item is DAL-264, a lookup rather than a decision: confirm in App Store Connect whether the two production purchases are real.",
-      "aso_recommendation_pending": {
-        "ticket": "DAL-177",
-        "owner": "Benedict (every field is pasted in App Store Connect / Play Console)",
-        "name": "TreeSmith: Plant Graft Tracker -> TreeSmith: Fruit Tree Tracker (29/30). Contests Grove head-on on the one niche term with real purchase intent, where a 5-week-old 0-rating app holds #1 on name alone and we are already #7. Gives up #1 on 'graft tracker' (no volume) and #186 on 'plant tracker' (nothing).",
-        "subtitle": "Graft, scion & garden journal -> Graft, scion & orchard journal (30/30). One word: 'garden' is unwinnable, 'orchard' is a term we are already #3 on.",
-        "keywords": "rare,rootstock,propagation,nursery,citrus,permaculture,cuttings,bonsai,harvest,plant,log,map (92/100). Drops orchard/fruit/tree because the name and subtitle now carry them and Apple indexes the three fields as one pool.",
-        "play_short_desc": "Graft, scion & orchard journal for collectors. GPS map, photo log, exports. (75/80)",
-        "ab_testing": "Apple Product Page Optimization tests icon, screenshots and previews ONLY, so this ticket's original 'description A/B variant' is not executable on Apple. Google Play Store Listing Experiments can test short and long description. Any description A/B belongs on Play.",
-        "followups": "DAL-256 (App Store Connect impressions vs product page views vs units: are we failing at discovery, at the search result, or at the listing?) and DAL-257 (re-measure the same 36 terms 4 weeks post-rename, prediction recorded in advance).",
-        "status_2026_08_10": "DAL-177 CLOSED (DEC-274). Taken: the description accuracy fix and the en-US localisation deletion, both staged against 1.0.10. NOT taken: the rename (still an open yes/no from Benedict, and the only item with a measurable expected effect), the subtitle change, the keyword field and the promotional text. DAL-257's re-measure clock has NOT started, because it is premised on the rename."
-      },
       "store_listing_accuracy_defect": {
         "status": "RESOLVED AND GUARDED 2026-08-27 (DEC-326). All four storefronts verified correct: iOS AU, iOS US, Play AU, Play US. Play was the unverified one and is also correct. Do NOT re-fix these.",
         "alarm_shipped": {
@@ -135,7 +123,6 @@
       "posthog_product_analytics": {
         "measured": "2026-07-30 (DEC-252, DAL-242). PostHog project 166160, all-time, first query in 126 days. Aggregate server-side: a raw row fetch returned exactly 100 rows against a true count of 243 (the DAL-261 truncation pattern).",
         "installs_all_time": 290,
-        "SUPERSEDED_BY_DEC_320": "installs_all_time IS NOT AN INSTALL COUNT. Play Console (2026-08-27, DAL-277) reports 26-32 Android devices with the app installed and a public bucket capping lifetime Android downloads at 49, against RevenueCat 287 / PostHog 217 for the same platform. RevenueCat customers and PostHog person_ids are anonymous IDs, not devices, and both inflate together so their agreement proves nothing. Do NOT divide anything by 290, 416, 287 or 129. iOS is unverified pending DAL-290. See DEC-320.",
         "opened_all_time": 288,
         "onboarding_started": 85,
         "onboarding_completed": 49,
@@ -219,11 +206,6 @@
         "install_count_divergence": "RevenueCat 416 customers vs PostHog 297 people (+40%). Neither is authoritative: RevenueCat opens a customer per SDK init, PostHog merges aliased ids onto a person. The digest now prints the gap rather than picking one and quietly dividing by it. Retention cross-check: RevenueCat says 11% of iOS and 5% of Android are ever seen on a later day; 272 of 287 Android and 111 of 129 iOS are never seen again 60s after first launch.",
         "latest_sweep": "Re-swept 2026-09-17: 4 production purchases, US$70.04 proceeds, US$102.57 gross, MRR US$0. The 4th (2026-08-23, US, iPad, build 1.0.10) is the first sale after either rename and was missed until now. Still 0 Android and 0 Cloud Backup sales."
       },
-      "storefront_localisation_defect": {
-        "status": "RESOLVED 2026-08-10 (DEC-274) by collapsing to a single localisation. Takes effect when 1.0.10 is released.",
-        "resolution": "en-US localisation DELETED. The primary cannot be deleted, so collapsing to one listing meant deleting en-US, which was also the one carrying both defects. en-AU now serves every storefront.",
-        "repo_guard": "deploy.sh:454 in treesmith-app now reads ios_locales=(en-AU), commit 1acaee3. It was hardcoded (en-US en-AU) and rewrote release notes into both dirs every deploy; with --release the Fastfile sets skip_metadata:false so deliver would have re-created the deleted localisation. ios/fastlane/metadata/ is gitignored, so the directory was never tracked and git rm would have failed. The Android en-US changelog path is deliberately untouched."
-      },
       "aso_rank_measurement": {
         "tool": "tools/autonomous/appstore_rank.py (DAL-270). 36 terms in 4 groups, AU and US, iTunes Search API, no credentials. Reports the size of each result set beside every rank so 'absent from 191' is distinguishable from truncation, and renders ERR rather than 'not ranked' on a failed lookup.",
         "measured_2026_08_06": {
@@ -262,7 +244,6 @@
             "Seasonality: AU spring would lift AU, but not US by the same 3.8x in northern autumn. Weak evidence against, not proof.",
             "Play's rank win is UNMEASURABLE in downloads (Play Console is Benedict's, RevenueCat inflates Android ~6x, Android has produced US$0 across 4 sales). Play gave the clean rank experiment, Apple the money-bearing funnel. Neither store could answer this alone."
           ],
-          "the_gap_went_from_11x_to_5x": "SUPERSEDED THE SAME DAY by DEC-340. This said '~2.3% iOS conversion means $100/mo needs ~250 iOS installs/month', which is the wrong-denominator rate. Corrected: at 4.0-5.9% the requirement is 97-143 iOS installs/month against our post-rename ~58/month, so the gap is ~1.7x to ~2.5x, not 5x. The rename's effect on downloads is unchanged; only the revenue arithmetic downstream of it moves.",
           "series_not_a_diff": "data/treesmith-rank-history.csv now holds 8 Play and 7 Apple weekly captures (cron 40 21 * * 0). The two-point diff DAL-257 originally specified would have shown the graft loss with no idea it took a week to arrive, and would never have shown #1 holding for five weeks rather than five hours."
         }
       },
@@ -302,7 +283,6 @@
         "channels": "Four need no research and Benedict already has standing: WA Rare Fruit Club, Oz Rare Fruit Australia (Tom at Ross Creek admins it), Rare Fruit SA, WAAS newsletter. Facebook group sizes are NOT obtainable from this server (login wall) and must not be invented.",
         "open_action": "DAL-171's WA Rare Fruit Club post has been drafted since April and never sent. DAL-171 was marked Done when the post was DRAFTED. DAL-234 is with Benedict."
       },
-      "release_status_2026_08_12": "SUPERSEDED, see DEC-278 for the full record. Durable lesson: `.last_released_build` is stamped by the deploy script, so TestFlight/in-review/pulled builds bump it and it is NOT a store fact. refresh_treesmith_status.py now queries itunes.apple.com/lookup for AU and US every refresh and the session prompt prints the live version. Trust that line, not the repo.",
       "purchase_telemetry_defect": {
         "decision": "DEC-282 (2026-08-13). Re-verified against the mirror at HEAD f20a064.",
         "what": "A completed sale can be recorded as a dismissal. 1 of our 3 production sales is recorded that way in PostHog right now.",
@@ -313,25 +293,6 @@
         "fix_part_1": "Fire the purchase events from inside EntitlementService.purchasePackage rather than the widget callback, and give cancelled its own outcome value. Small, no privacy implications, Benedict commits it.",
         "fix_part_2": "Push the PostHog distinct id to RevenueCat as a subscriber attribute at configure time so anonymous buyers are attributable. Benedict's privacy call, deliberately separate.",
         "consequence": "Every paywall dismissal rate we have quoted is an upper bound, and PostHog purchase counts are a lower bound. RevenueCat remains the source of truth for money."
-      },
-      "appstore_funnel_2026_08_27": {
-        "status": "SUPERSEDED as a frozen snapshot by appstore_downloads_series below, which now advances nightly. Kept for the verdict, which still stands.",
-        "decision": "DEC-321 / DAL-256 / DAL-290. Period 2026-04-25 to 2026-08-20 (118 days).",
-        "funnel": {
-          "impressions": 2225,
-          "impressions_per_day": 18.9,
-          "product_page_views": 103,
-          "get_taps": 61,
-          "first_time_downloads": 51,
-          "purchases": 3,
-          "sales_usd": 77.3,
-          "proceeds_usd": 52.37,
-          "impression_to_download_pct": 2.3,
-          "download_to_purchase_pct": 5.9
-        },
-        "verdict": "NOT a listing failure and NOT a paywall failure. Impression-to-download of 2.3% is inside Apple's normal band and 3 of 51 downloads buying a A$39.99 one-time IAP is 5.9%, well above the 1-3% mobile norm. The binding constraint is VOLUME: 18.9 impressions a day.",
-        "page_view_ratio_caveat": "103 page views against 51 downloads is not a broken funnel. 27 of the 51 downloads carry Page Type 'No page': the user tapped Get in the search results and never opened the product page. Do not compute a page-view-to-download rate from those two columns.",
-        "period": "2026-04-25 to 2026-08-20 (118 days). Was a ONE_TIME_SNAPSHOT frozen at 2026-08-20; an ONGOING request replaced it 2026-09-07 (DAL-291) and the series advances again. See appstore_discovery_series for what is held."
       },
       "appstore_discovery_series": {
         "decision": "DEC-332 / DAL-291 (2026-09-17). Emergency exception, commit ac68a0f.",
@@ -825,6 +786,18 @@
         "build_step_left_non_fatal": "Deliberate. The fix is detection, not making the nightly brittle.",
         "guard": "6 new tests in tests/test_pipeline_health.py, including the frozen-inputs case the page itself could not show and the missing-file case (an absent artefact must not look like a fresh one).",
         "commit": "3fdc8b4. Deployed, live page rebuilt, edge cache purged and verified over the wire."
+      },
+      "origin_access_log": {
+        "decision": "DEC-345 / DAL-294 (2026-09-17). Shipped, live, verified over the wire.",
+        "what": "The treestock Caddy site block had no `log` directive, so every measurement treestock had ever made about who visits came from Plausible, a client-side JavaScript tag. A crawler does not run it, curl does not run it, and /shipping-reachability.json is not an HTML page so it cannot run it. A fetch of the CC BY dataset we invite people to cite was unobservable by construction.",
+        "where": "/var/log/caddy/treestock-access.log, JSON, mode 0644, rolled by Caddy itself (10MiB, 10 files, 336h). Outside git. Reader: tools/autonomous/access_log.py, rendered nightly in the daily digest, report only.",
+        "privacy": "Two deliberate omissions, both asserted by tests rather than promised in a comment. (1) The query string is stripped by regexp: /manage.html and /unsubscribe.html carry an HMAC token and the subscriber's email in it, so without this the log is a file of working credentials. (2) The client IP is deleted in all four places it arrives (remote_ip, Cf-Connecting-Ip, X-Forwarded-For, True-Client-Ip, Forwarded). None of the questions the log exists to answer need one.",
+        "canonical_casing_trap": "Go canonicalises header names, so a filter written `Cf-Connecting-IP delete` parses, validates, reloads and does NOTHING. Caught in a scratch Caddy on port 8791 before it went near the live file: the first attempt logged the visitor IP. Pinned by tests/test_access_log.py::CaddyfileTests.",
+        "the_third_question_is_unanswerable_and_says_so": "DAL-294 asked for the volume of AI crawlers the Cloudflare block (DEC-269) turns away. An ORIGIN log cannot answer that: a 403 issued at the edge never reaches us. The digest line says it counts what gets PAST the block, not what the block refuses. That number needs the block off, which is DAL-246 and Benedict's toggle.",
+        "known_limit": "This is the origin log. Cloudflare serves its cached assets without asking us, so /styles.css and /dashboard.js are undercounted by an unknown amount. HTML is not cached by default, which is the part these questions are about.",
+        "first_reading": "11 origin requests in the first 5 minutes, including one Googlebot hit on a variety page and one fetch of /shipping-reachability.json. Too thin to conclude anything; no thresholds were set, deliberately (DEC-323, DEC-344).",
+        "answers_when_it_has_run": "1) is the DAL-254 dataset being fetched at all, 2) DAL-250's crawl-budget question, recorded UNKNOWN in DEC-266 for want of exactly this, split by page type so the 2,765-page variety tail is visible against the earners.",
+        "guard": "tests/test_access_log.py, 19 tests. The four Caddyfile assertions were proven failing (3 of 4) against a copy with the casing reverted and the regexp removed."
       }
     },
     "b_experiment_beestock": {

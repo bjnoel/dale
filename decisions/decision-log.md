@@ -15699,3 +15699,87 @@ nights, and exits 1 if any stops alarming. 12 tests in
 `tests/test_scrape_anomaly_thresholds.py`, 2 proven to fail under the old rules. Full
 suite 3,756 tests, 1 known failure (DAL-306). Deployed and verified byte-identical
 from /opt/dale/scrapers; tonight's run is clean.
+
+---
+
+## DEC-345 — 2026-09-17 — We have published for six months with no way to see a single fetch, and the log we turned on cannot answer the question that motivated it
+
+**Date:** 2026-09-17 · **Ticket:** DAL-294 (Done) · **Track:** B (treestock) · **Authority:** Dale autonomous (approved ticket, $0)
+
+### The gap
+
+The treestock Caddy site block had no `log` directive. Every measurement
+treestock has ever made about who visits comes from Plausible, which is a
+**client-side JavaScript tag**. That is the right tool for humans and blind to
+everything else: a crawler does not execute it, `curl` does not execute it, and
+`/shipping-reachability.json` is not an HTML page, so it **cannot** execute it.
+
+Three weeks ago we published a CC BY 4.0 dataset (DEC-324 / DAL-254) whose
+entire purpose is being fetched and cited. Until today, a fetch of it was
+unobservable by construction. DEC-268's lesson was that content nobody fetched
+is not published; we could not tell the difference.
+
+### What shipped
+
+`log` on the treestock block, JSON, to `/var/log/caddy/treestock-access.log`,
+rolled by Caddy itself (10MiB, 10 files, 336h) so there is no cron cleanup to
+forget. Reader `tools/autonomous/access_log.py`, rendered nightly in the daily
+digest. **Report only. No thresholds, no alarms.** DEC-323 and DEC-344 are both
+about thresholds invented before the noise floor was measured, and this is a
+data source nobody has looked at once.
+
+### Two things are deliberately not logged, and both are now tests rather than comments
+
+1. **The query string.** `/manage.html` and `/unsubscribe.html` carry an HMAC
+   token and the subscriber's email address in it. Without the regexp strip,
+   the access log is a file of working subscriber-management credentials.
+2. **The client IP, in all five places it arrives.** `remote_ip` is
+   Cloudflare's; the real one comes in `Cf-Connecting-Ip`, `X-Forwarded-For`,
+   `True-Client-Ip` or `Forwarded`. None of the questions this log exists to
+   answer need one.
+
+**The casing trap, caught before it reached the live file.** Go canonicalises
+header names, so `Cf-Connecting-IP delete` parses, validates, reloads and does
+**nothing**. The first draft was written that way and logged the visitor's IP.
+It was found because the whole block was exercised in a scratch Caddy on port
+8791 first, not because it was read carefully. `tests/test_access_log.py::CaddyfileTests`
+now asserts the casing, the regexp, all four headers and the file mode against
+the `infrastructure/Caddyfile` recording; 3 of its 4 were proven failing against
+a copy with the change reverted.
+
+### The question that motivated the ticket is the one it cannot answer
+
+DAL-294 asked for **the volume of AI crawlers the Cloudflare block is turning
+away** (DEC-269), on the grounds that logs would turn "about A$2/mo" from an
+estimate into a number. An **origin** log cannot do that: the 403 is issued at
+Cloudflare's edge and the request never reaches us. So the summary will read
+"AI agents reaching origin: none" forever while the block is on, and that line
+would be a perfectly reasonable thing to misread as "nobody wants it".
+
+The line therefore says what it measures: **what gets past the block, not what
+the block refuses.** The real number needs the block off, which is DAL-246 and
+Benedict's dashboard toggle. Reporting an unanswerable question as unanswerable
+rather than resolving it on the rows that happen to arrive is DEC-339's rule,
+and this is the second time in two weeks it has applied.
+
+The other two questions are answerable and now have an instrument: is the CC BY
+dataset fetched at all, and how is crawl attention split by page type, which is
+the crawl-budget question DEC-266 had to record as UNKNOWN and which is the only
+surviving argument for pruning the 2,765-page variety tail.
+
+### Known limit, stated because it bounds every number the log will ever produce
+
+This is the **origin** log. Cloudflare serves its cached assets without asking
+us, so `/styles.css` and `/dashboard.js` are undercounted by an unknown amount.
+HTML is not cached by default on this zone, which is the part these questions
+are about.
+
+### State
+
+Live and verified over the wire through Cloudflare: 11 origin requests in the
+first five minutes, including one Googlebot hit on a variety page and one fetch
+of `/shipping-reachability.json`. Far too thin to conclude anything, which is
+why nothing was tuned to it. 19 new tests. Full suite 3,775 tests, 1 known
+failure (DAL-306); `test_state_file_has_not_ballooned` went red again at
+121,841B and was put back under its ceiling by deleting four superseded Track A
+blocks, not by raising it.
