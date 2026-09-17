@@ -8,3 +8,5 @@
 2026-08-13T01:36:05Z linear-poller: Saved: 0 todo, 0 in progress, 24/15 backlog, 33 cancelled, 57 completed
 2026-08-20T09:14:51Z linear-poller: Fetching Linear issues for team: Dale
 2026-08-20T09:14:53Z linear-poller: Saved: 0 todo, 0 in progress, 20/15 backlog, 35 cancelled, 62 completed
+2026-09-17T05:21:44Z linear-poller: Linear API error (400): {"errors":[{"message":"Variable \"$q\" is never used.","locations":[{"line":1,"column":7}],"extensions":{"http":{"status":400,"headers":{}},"code":"GRAPHQL_VALIDATION_FAILED","type":"graphql error","userError":true}}]}
+
