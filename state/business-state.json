@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
           "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
@@ -575,14 +575,14 @@
         "striking_distance": "Almost entirely one query family at position 10-14: '<species> tree(s) for sale'. Species page titles already match it exactly ('Lychee Trees for Sale Australia, Compare Prices'), so the constraint is rank, not copy. DEC-243: do NOT run another meta/title CTR pass; DAL-208's lever is exhausted.",
         "next": "DAL-249 (expand species+state, best clicks/page) and DAL-250 (test whether the thin variety tail suppresses the earning pages). DAL-216 cancelled as superseded.",
         "state_page_coverage": {
-          "measured": "2026-07-30 (DAL-167, posted to DAL-249)",
-          "note": "build_species_state_pages.py defines STATE_SLUGS for WA, QLD, NSW and VIC only. The state filter dropdown offers SA, so visitors can filter to it, but there is no page for search to land on.",
+          "measured": "2026-09-17 (DAL-297 / DEC-338), was 2026-07-30",
+          "note": "SA is LIVE. The one state list is stocklib.registry.BUY_PAGE_STATE_SLUGS (WA, QLD, NSW, VIC, SA); every builder derives from it, guarded by tests/test_buy_page_states.py. SA launches at the MAX_COMBOS_PER_STATE cap of 20 because no growing guide carries an SA overlay yet; the cap exemption now asks for a state overlay, not has_guide(slug), so SA grows as SA overlays are written.",
           "pages_built": {
-            "western-australia": 75,
-            "new-south-wales": 29,
-            "queensland": 29,
-            "victoria": 28,
-            "south-australia": 0,
+            "western-australia": 70,
+            "new-south-wales": 49,
+            "queensland": 49,
+            "victoria": 49,
+            "south-australia": 20,
             "tasmania": 0,
             "northern-territory": 0,
             "act": 0
@@ -596,8 +596,9 @@
             "TAS": 188,
             "NT": 152
           },
-          "gap": "SA has MORE reachable stock than WA (2,012 from 14 nurseries vs 1,351 from 9) and zero pages. MIN_PRODUCTS>=3 is not what excludes it; SA was never added to the config. TAS and NT are genuinely thin and should stay excluded. No SA-based nursery is tracked at all.",
-          "do_not": "Do NOT rank candidate states by our own state-page traffic (WA 469 visitors/30d, NSW 131, VIC 127, QLD 92, SA 0). That is circular: WA leads because we built 75 WA pages. Plausible visit:region returns empty (no geo database configured), so real visitor geography needs DAL-251 first."
+          "gap": "SA gap CLOSED 2026-09-17. Remaining lever for SA is content, not config: 26 more SA combo pages are held back by the cap and each one is unlocked by writing that species' SA overlay in growing_guides/<slug>.json.",
+          "do_not": "Do NOT rank candidate states by our own state-page traffic (WA 469 visitors/30d, NSW 131, VIC 127, QLD 92, SA 0). That is circular: WA leads because we built 75 WA pages. Plausible visit:region returns empty (no geo database configured), so real visitor geography needs DAL-251 first.",
+          "act_rejected": "ACT was in DAL-297's ask and was measured out (DEC-338). ACT's reachable listing set overlaps NSW's by 95.8% (it differs by one nursery, the-heritage-nursery) and 35 of 49 ACT pages would have carried a product list byte-identical to the live NSW page. Do not add ACT without re-measuring that overlap. TAS (3 nurseries) and NT (3) stay excluded as genuinely thin."
         },
         "backlinks": {
           "visibility": "NONE. GSC's API does not expose the Links report and we have no backlink tool. Every link decision (DAL-165, DAL-232, DAL-167, DAL-252) is made blind. DAL-253 proposes Bing Webmaster Tools, which is free and does expose referring domains.",
@@ -842,15 +843,15 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done \u2014 hello@walkthrough.au via Fastmail",
-    "blog": "deployed \u2014 walkthrough.au live",
+    "email": "done — hello@walkthrough.au via Fastmail",
+    "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
+    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
     "deploy_gap": "There is NO deploy cron (DEC-253). `crontab -l` has the Monday Treesmith digest and the nightly Treesmith drip only. tools/deploy.sh runs from the autonomous session startup hook (18:00-21:00 UTC), so a commit made after the last session of the night sits in git, tested and green, while cron keeps running the stale copy in /opt/dale/autonomous/. Same family as DAL-263 (deploy.sh never restarts subscribe-server). After changing ANYTHING cron executes: diff the repo copy against the deployed copy, run tools/deploy.sh, and verify.",
     "reporting_integrity": "DEC-255 / DAL-261 (2026-07-30): audited every external API reader. Fixed 5 defects. traffic_report.py read 200 of 1,703 GSC query rows and computed a SET DIFFERENCE from the slice, so 9 of the 10 'new queries' in Benedict's daily email were queries we already ranked for and position movers showed 11 of a true 392. resend_report.py kept an unpaginated copy of fetch_emails (the DEC-250 bug in the sibling file): 100 emails became 1,838. resend_report.py also counted delivery as last_event=='delivered', but last_event is the FURTHEST state reached, so every opened/clicked email counted as undelivered and the delivery rate FELL as engagement ROSE (52.5% reported against a true 100% delivered, 0 bounced). daily-digest.py's engagement stamp took one page of 50 issues, and that gates whether Dale strikes (DEC-226), so an unseen signal read as absence. nursery_crm.outbound_clicks ran off a 40-page cap silently and now warns PARTIAL. Audited clean: plausible_stats.py (honest top-N), linear_poller.py, linear_update.py archive-stale, gsc_analysis.py, resend_engagement.py, treesmith_analytics.py, uptime_monitor.py. Guard is tests/test_api_pagination.py, which drives each real fetcher against a saturated first page.",
     "email_reply_path": "DEC-257 CORRECTION to Q46. treestock.com.au's APEX already has Fastmail MX (in1/in2-smtp.messagingengine.com) and has received email the whole time. The defect is narrower and entirely ours: we send From alerts@mail.treestock.com.au, a SUBDOMAIN with no MX, and stocklib/mailer.py:112 sets no Reply-To at all, so replies are addressed somewhere that cannot receive them. Fix is ONE LINE pointing Reply-To at an apex address (DAL-243), not a new service and not a DNS change. Do NOT add MX to the sending subdomain. The same mailbox answers DAL-80's BCC ask via a Fastmail alias + an IMAP-scoped app password (revocable, cannot send); imap.fastmail.com:993 is reachable from this server, verified. Cloudflare Email Routing considered and rejected: MX change on a live domain, a Worker, and a token scope we do not hold, to duplicate a mailbox we already own."

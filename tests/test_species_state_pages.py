@@ -50,22 +50,38 @@ UNENRICHED_PAGE = bssp.build_combo_page("QLD", "example-unenriched", _unenriched
 class ComboSelectionTests(unittest.TestCase):
     """select_combos: which species+state pairs earn a page (DAL-249).
 
-    WA takes every species with MIN_PRODUCTS in stock. QLD/NSW/VIC take the top
-    MAX_COMBOS_PER_STATE by stock count, plus every guided species below that line.
-    The point of the exemption is that a guided page is not thin however little
-    stock sits behind it, so it should not be rationed by stock rank.
+    WA takes every species with MIN_PRODUCTS in stock. Every other state takes the
+    top MAX_COMBOS_PER_STATE by stock count, plus every species below that line
+    carrying a growing-guide overlay FOR THAT STATE. The point of the exemption is
+    that a guided page is not thin however little stock sits behind it, so it should
+    not be rationed by stock rank.
+
+    The exemption asks for an overlay for THAT state, not has_guide(slug). Those were
+    the same question while every guide covered exactly WA/QLD/NSW/VIC and they came
+    apart when SA arrived (DAL-297): all 55 guides return has_guide() True and an
+    empty SA overlay, so has_guide would have exempted the whole SA tail from the cap
+    on the strength of a measurement taken on pages carrying a state-specific body
+    those pages would not have had.
     """
 
     CAP = bssp.MAX_COMBOS_PER_STATE
     MIN = bssp.MIN_PRODUCTS
-    CAPPED_STATES = ("QLD", "NSW", "VIC")
+    # Capped AND carrying overlays, so a guided species below the cap survives.
+    CAPPED_STATES = tuple(st for st in STATES if st != "WA")
+    # Capped and carrying NO overlays yet, so it must not.
+    UNOVERLAID_STATES = tuple(st for st in bssp.STATES if st not in STATES)
 
     @staticmethod
     def _combos(ranked):
-        """[(slug, n_in_stock)] -> the compute_combos shape, identical in every state."""
+        """[(slug, n_in_stock)] -> the compute_combos shape, identical in every state.
+
+        Keyed on bssp.STATES, the builder's own list, not guide_helpers.STATES: this
+        fixture feeds select_combos, which iterates every state the builder BUILDS,
+        including one whose guide overlays have not been written yet.
+        """
         return {
             st: {slug: [{"i": i} for i in range(n)] for slug, n in ranked}
-            for st in STATES
+            for st in bssp.STATES
         }
 
     @classmethod
@@ -94,6 +110,24 @@ class ComboSelectionTests(unittest.TestCase):
         for st in self.CAPPED_STATES:
             self.assertNotIn("example-unenriched", sel[st],
                              f"{st}: the cap must still hold back the guideless tail")
+
+    def test_guided_species_below_the_cap_gets_no_page_where_it_has_no_overlay(self):
+        """A state the guides do not cover yet must not inherit the exemption.
+
+        With no overlay the page renders the shared core only, which makes it a
+        strict subset of the same species' page in a state that does have one:
+        exactly the byte-identical editorial body the overlay layer was built to
+        end. This test is a no-op the day every guide covers every state, which is
+        the intended end state, not a reason to drop it.
+        """
+        if not self.UNOVERLAID_STATES:
+            self.skipTest("every build state now has overlays on every guide")
+        sel = self._select(self._head() + [("olive", self.MIN)])
+        for st in self.UNOVERLAID_STATES:
+            self.assertFalse(gg.render_state_overlay("olive", st),
+                             f"fixture stale: olive now has a {st} overlay")
+            self.assertNotIn("olive", sel[st],
+                             f"{st}: a guide with no {st} overlay must not beat the cap")
 
     def test_min_products_outranks_the_guide(self):
         # A guide is not a licence to build a page with nothing to sell on it.

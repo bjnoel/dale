@@ -31,6 +31,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from stocklib.registry import BUY_PAGE_STATE_SLUGS
 from stocklib.page_ledger import REDIRECT, read_page_state
 
 
@@ -80,15 +81,17 @@ STATIC_PAGES = [
 
 # State landing pages live in their own section so the locations sub-sitemap
 # is self-contained.
+# Derived from the one state list (stocklib.registry.BUY_PAGE_STATE_SLUGS), so a
+# state added to the builders cannot ship unlisted in the sitemap, which is how
+# it would have gone out for SA in DAL-297.
 STATE_LANDING_PAGES = [
-    ("buy-fruit-trees-wa.html", "daily", "0.7"),
-    ("buy-fruit-trees-qld.html", "daily", "0.7"),
-    ("buy-fruit-trees-nsw.html", "daily", "0.7"),
-    ("buy-fruit-trees-vic.html", "daily", "0.7"),
+    (f"buy-fruit-trees-{st.lower()}.html", "daily", "0.7")
+    for st in BUY_PAGE_STATE_SLUGS
 ]
 
 COMBO_PATTERN = re.compile(r"^buy-.+-trees-.+\.html$")
-LOCATION_PAGE_PATTERN = re.compile(r"^buy-fruit-trees-(wa|qld|nsw|vic)\.html$")
+LOCATION_PAGE_PATTERN = re.compile(
+    r"^buy-fruit-trees-(" + "|".join(st.lower() for st in BUY_PAGE_STATE_SLUGS) + r")\.html$")
 
 
 # ---------------------------------------------------------------------------

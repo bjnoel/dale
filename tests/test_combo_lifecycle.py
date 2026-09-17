@@ -78,14 +78,24 @@ def combo_entry(state_code="WA", species_slug="feijoa", **over):
     return entry
 
 
+def empty_combos():
+    """One empty bucket per state the BUILDER iterates, read from the builder.
+
+    Typed out as four states, these fixtures raised KeyError the night a fifth was
+    added (DAL-297) instead of covering it.
+    """
+    return {st: {} for st in bss.STATES}
+
+
 class RetentionThresholdTest(unittest.TestCase):
     """MIN_PRODUCTS creates a page. RETAIN_MIN_PRODUCTS keeps one. Conflating
     them is what made a page's existence depend on re-earning its threshold
     every single night."""
 
     def _combos(self, count):
-        return {"WA": {"feijoa": [product() for _ in range(count)]},
-                "QLD": {}, "NSW": {}, "VIC": {}}
+        combos = empty_combos()
+        combos["WA"] = {"feijoa": [product() for _ in range(count)]}
+        return combos
 
     def test_a_new_combo_still_needs_min_products(self):
         selected = bss.select_combos(self._combos(bss.MIN_PRODUCTS - 1))
@@ -97,15 +107,13 @@ class RetentionThresholdTest(unittest.TestCase):
 
     def test_an_existing_combo_with_no_stock_is_not_retained(self):
         """Nothing to render means the tombstone path, not a thin live page."""
-        selected = bss.select_combos(
-            {"WA": {}, "QLD": {}, "NSW": {}, "VIC": {}},
-            retained={("WA", "feijoa")})
+        selected = bss.select_combos(empty_combos(), retained={("WA", "feijoa")})
         self.assertEqual(selected["WA"], [])
 
     def test_a_retained_page_does_not_consume_a_cap_slot(self):
         """Otherwise a retained thin page pushes a healthier combo out, and next
         night that one is retained and pushes another out."""
-        combos = {"WA": {}, "NSW": {}, "QLD": {}, "VIC": {}}
+        combos = empty_combos()
         for i in range(bss.MAX_COMBOS_PER_STATE + 5):
             combos["NSW"][f"species-{i:02d}"] = [
                 product(title=f"S{i} - V") for _ in range(20 - i % 10)]
@@ -125,9 +133,9 @@ class RetentionThresholdTest(unittest.TestCase):
 
     def test_retention_keeps_the_list_in_stock_order(self):
         """The index page reads this order."""
-        combos = {"WA": {"a": [product() for _ in range(3)],
-                         "b": [product() for _ in range(9)]},
-                  "QLD": {}, "NSW": {}, "VIC": {}}
+        combos = empty_combos()
+        combos["WA"] = {"a": [product() for _ in range(3)],
+                        "b": [product() for _ in range(9)]}
         selected = bss.select_combos(combos, retained={("WA", "a"), ("WA", "b")})
         counts = [len(prods) for _, prods in selected["WA"]]
         self.assertEqual(counts, sorted(counts, reverse=True))

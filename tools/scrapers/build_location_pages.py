@@ -2,7 +2,8 @@
 """
 Build state-based location pages for fruit tree availability.
 
-Generates /buy-fruit-trees-[state].html for WA, QLD, NSW, VIC.
+Generates /buy-fruit-trees-[state].html for every state in
+stocklib.registry.BUY_PAGE_STATE_SLUGS.
 Shows nurseries that ship to each state, with in-stock product lists.
 
 Products are filtered to fruit/edible species only using fruit_species.json.
@@ -21,6 +22,7 @@ from pathlib import Path
 
 from cultivar_parsing import product_variety_slug
 from shipping import SHIPPING_MAP, NURSERY_NAMES, nursery_note_for_state
+from stocklib.registry import BUY_PAGE_STATE_SLUGS
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
@@ -33,7 +35,8 @@ from stocklib.taxonomy import enabled_species
 from stocklib.utm import outbound
 
 # States to generate pages for
-STATES = ["WA", "QLD", "NSW", "VIC"]
+STATE_SLUGS = BUY_PAGE_STATE_SLUGS
+STATES = list(STATE_SLUGS)
 
 # State display names
 STATE_NAMES = {
@@ -41,12 +44,16 @@ STATE_NAMES = {
     "QLD": "Queensland",
     "NSW": "New South Wales",
     "VIC": "Victoria",
+    "SA": "South Australia",
 }
 
 # State-specific intro text
 STATE_INTROS = {
     "WA": (
-        "Finding fruit trees online that ship to WA is surprisingly hard "
+        # An earlier pass stripped a dash out of this sentence and left the two clauses
+        # jammed together ("surprisingly hard most nurseries"). Removing a dash means
+        # rewriting the sentence, not deleting the character.
+        "Finding fruit trees online that ship to WA is surprisingly hard, because "
         "most nurseries are east coast only. These are the ones that do."
     ),
     "QLD": (
@@ -64,12 +71,17 @@ STATE_INTROS = {
         "Bare-root season (June to August) is when Victorian growers stock up. "
         "These nurseries ship to VIC."
     ),
+    "SA": (
+        "South Australia's Mediterranean climate runs from the cool Adelaide Hills, "
+        "cold enough for apples and cherries, to the hot irrigated Riverland that "
+        "grows some of the country's best citrus. These nurseries ship to SA."
+    ),
 }
 
 # State-specific info box (None = no box)
 STATE_INFO_BOX = {
     "WA": (
-        "WA has strict quarantine rules — only a handful of nurseries can legally "
+        "WA has strict quarantine rules, so only a handful of nurseries can legally "
         "ship fruit trees here. We track them all so you don't have to."
     ),
     "QLD": (
@@ -87,6 +99,12 @@ STATE_INFO_BOX = {
         "plant health certificate. The nurseries below are authorised suppliers "
         "and handle all interstate compliance paperwork."
     ),
+    "SA": (
+        "South Australia is the only mainland state with fruit fly free area status, "
+        "so there are strict rules on carrying fruit across the border. Those rules "
+        "cover fruit, not nursery trees: the nurseries below ship trees to SA and "
+        "handle the plant health paperwork."
+    ),
 }
 
 # State-specific growing guide content (unique per state for SEO differentiation)
@@ -97,13 +115,13 @@ STATE_GROWING_GUIDE = {
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
       <p>Queensland's climate divides into three fruit-growing zones. The far north (Cairns, Townsville) is true tropical territory: mangoes, bananas, carambola, durian and rambutan thrive here with little fuss. The southeast (Brisbane, Gold Coast, Sunshine Coast) is subtropical, supporting avocados, lychees, custard apples, macadamias and most citrus. The Darling Downs and granite belt at elevation can grow stone fruit and even apples with adequate chill hours.</p>
       <p>Key advantage in QLD: you don't need to wait for a planting window. Pot-grown trees can go in the ground any time of year as long as you water through the first summer. That said, bare-root stone fruit is still best planted during the winter dormancy period (June to August).</p>
-      <p>Species to prioritise for Brisbane and southeast QLD: avocado, lychee, mango (dwarf varieties do well in suburban yards), macadamia, dragon fruit, mulberry, fig, and feijoa. Species that struggle: cherries, apples, and pears — not enough chill hours except on the Granite Belt.</p>
+      <p>Species to prioritise for Brisbane and southeast QLD: avocado, lychee, mango (dwarf varieties do well in suburban yards), macadamia, dragon fruit, mulberry, fig, and feijoa. Species that struggle: cherries, apples, and pears, which lack enough chill hours except on the Granite Belt.</p>
     </div>
   </section>""",
     "NSW": """<section class="mb-8">
     <h2 class="text-lg font-semibold mb-3">Growing fruit trees in New South Wales</h2>
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
-      <p>NSW has more fruit-growing diversity than any other state. The north coast (Byron Bay, Coffs Harbour) is subtropical and suits avocados, macadamias, lychees and citrus. Sydney and the Central Coast are warm temperate, good for figs, citrus, stone fruit and subtropical exotics like feijoa and guava. The Southern Highlands and tablelands are cool enough for apples, pears, cherries and plums — the same varieties that thrive in Victoria.</p>
+      <p>NSW has more fruit-growing diversity than any other state. The north coast (Byron Bay, Coffs Harbour) is subtropical and suits avocados, macadamias, lychees and citrus. Sydney and the Central Coast are warm temperate, good for figs, citrus, stone fruit and subtropical exotics like feijoa and guava. The Southern Highlands and tablelands are cool enough for apples, pears, cherries and plums, the same varieties that thrive in Victoria.</p>
       <p>In the Riverina and Murray basin, hot dry summers and cold winters create excellent conditions for stone fruit, almonds and table grapes. This is also commercial orchard country, so variety selection matters: choose low-chill stone fruit for coastal areas and high-chill varieties for the ranges.</p>
       <p>Most NSW growers can plant pot-grown trees year-round. Bare-root stock (available June to August) is cheaper and transplants well for deciduous species. A useful guide: if your winter temperatures regularly drop below 7°C, you can grow temperate stone fruit; if they rarely do, stick to subtropical varieties.</p>
     </div>
@@ -112,8 +130,17 @@ STATE_GROWING_GUIDE = {
     <h2 class="text-lg font-semibold mb-3">Growing fruit trees in Victoria</h2>
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
       <p>Victoria is Australia's heartland for cool-climate fruit. The state's reliable cold winters deliver the chill hours that apples, pears, cherries, plums, peaches, nectarines and quinces need to fruit well. Heritage apple varieties that would struggle in Queensland or WA perform beautifully in the Yarra Ranges, Mornington Peninsula, and central highlands.</p>
-      <p>Bare-root season (June to August) is the most important buying window for Victorian growers. Bare-root trees are cheaper, establish faster, and give you access to the widest variety selection. Heritage Fruit Trees (VIC-based) and Aus Nurseries both carry extensive bare-root ranges during this window — set an alert so you don't miss it.</p>
+      <p>Bare-root season (June to August) is the most important buying window for Victorian growers. Bare-root trees are cheaper, establish faster, and give you access to the widest variety selection. Heritage Fruit Trees (VIC-based) and Aus Nurseries both carry extensive bare-root ranges during this window, so set an alert and you will not miss it.</p>
       <p>Melbourne and coastal Victoria can also support subtropical species in sheltered spots: figs, feijoas, persimmons and mulberries all do well. Avocados are marginal in Melbourne but succeed in frost-free microclimates on the Mornington Peninsula. The key limiting factor is frost: if your site gets regular frost below -3°C, stick to fully cold-hardy deciduous fruit.</p>
+    </div>
+  </section>""",
+    "SA": """<section class="mb-8">
+    <h2 class="text-lg font-semibold mb-3">Growing fruit trees in South Australia</h2>
+    <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
+      <p>South Australia packs an unusual range of growing conditions into a short drive. The Adelaide Hills sit high enough to bank real winter chill, which is why they are long-established apple, pear and cherry country around Lenswood and Forest Range. The Adelaide plains are warm, dry and close to frost free on the coast, suiting citrus, figs, olives, pomegranates, loquats and almonds. An hour east, the irrigated Riverland supplies the sustained summer heat that ripens some of the country's best oranges, mandarins and grapefruit.</p>
+      <p>The state is the driest in Australia, so summer irrigation is the single biggest factor in whether a young tree survives, more so than frost or variety choice. Plan watering before you plan the planting. Soils through much of the settled south are alkaline, which rules out acid-loving blueberries in open ground (grow them in pots or raised beds of acidic mix) but suits pomegranates, figs, olives and jujubes, all of which tolerate alkaline and even mildly salty ground.</p>
+      <p>Choose varieties by chill, not by postcode. If you are in the hills, high-chill apples, pears, cherries and plums will fruit well. On the plains and through the Riverland, chilling hours fall away quickly, so pick low-chill stone fruit and lean on the citrus, Mediterranean and subtropical species that do not need cold winters at all.</p>
+      <p>One point worth being clear about: South Australia holds fruit fly free area status, the only mainland state that does, and the well-known border restrictions on carrying fruit are about FRUIT, not nursery stock. Buying a tree from an interstate nursery listed here is normal and legal, and those nurseries handle the plant health certification. The upside of that status is real, because backyard growers here face far less fruit fly pressure than growers in the eastern states.</p>
     </div>
   </section>""",
 }
@@ -131,12 +158,13 @@ def nursery_note(state: str, key: str) -> str:
     """The note shown beside a nursery on a state page."""
     return nursery_note_for_state(key, state)
 
-# Cross-state links per state
+# Cross-state links per state: every other state we build a page for, in STATES
+# order. Derived rather than typed, so adding a state cannot leave the new page
+# unlinked from the four that already exist (which is how it would have shipped
+# for SA in DAL-297).
 CROSS_LINKS = {
-    "WA": [("QLD", "Buy in QLD"), ("NSW", "Buy in NSW"), ("VIC", "Buy in VIC")],
-    "QLD": [("WA", "Buy in WA"), ("NSW", "Buy in NSW"), ("VIC", "Buy in VIC")],
-    "NSW": [("WA", "Buy in WA"), ("QLD", "Buy in QLD"), ("VIC", "Buy in VIC")],
-    "VIC": [("WA", "Buy in WA"), ("QLD", "Buy in QLD"), ("NSW", "Buy in NSW")],
+    state: [(s, f"Buy in {s}") for s in STATES if s != state]
+    for state in STATES
 }
 
 # Manual entries for local pickup nurseries not in the scraper
@@ -390,7 +418,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
             sp_slug = sp["common_name"].lower().replace(" ", "-").replace("'", "")
             species_counts[sp_slug] += 1
             species_names[sp_slug] = sp["common_name"]
-    state_slug_str = {"WA": "western-australia", "QLD": "queensland", "NSW": "new-south-wales", "VIC": "victoria"}[state]
+    state_slug_str = STATE_SLUGS[state]
     MIN_COMBO = 3
     species_combo_links = [
         (slug, species_names[slug], count)

@@ -204,6 +204,27 @@ LOCAL_DELIVERY: dict[str, dict] = {n.key: n.local_delivery for n in NURSERIES if
 # Quarantine states that are hard to ship to.
 QUARANTINE_STATES = ["WA", "NT", "TAS"]
 
+# The states treestock builds buy pages for, and the URL slug each one uses.
+# Lives here because three builders need the same mapping and it had already
+# forked into three copies (build_species_state_pages.STATE_SLUGS, an inline
+# dict literal in build_location_pages.build_state_page, and the hardcoded
+# alternation in build_sitemap.LOCATION_PAGE_PATTERN). TAS, NT and ACT are
+# deliberately absent, and the reasons differ:
+#   TAS (3 nurseries, 45 of 119 species ever reachable) and NT (3, 66) are too
+#   thin to carry a page set, per the published reachability dataset (DEC-324).
+#   ACT is thick enough but would DUPLICATE NSW: measured 2026-09-17 for
+#   DAL-297, ACT's reachable listings overlap NSW's by 95.8% (it differs by one
+#   nursery), and 35 of the 49 ACT pages would have carried a product list
+#   byte-identical to the live NSW page. Adding it was proposed and rejected on
+#   that measurement. Do not add ACT without re-measuring that overlap.
+BUY_PAGE_STATE_SLUGS: dict[str, str] = {
+    "WA": "western-australia",
+    "QLD": "queensland",
+    "NSW": "new-south-wales",
+    "VIC": "victoria",
+    "SA": "south-australia",
+}
+
 
 def delivery_label(nursery_key: str) -> str:
     """Return 'Perth metro only' for local nurseries, or '' for statewide shippers."""

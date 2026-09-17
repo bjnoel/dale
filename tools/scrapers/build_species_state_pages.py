@@ -28,6 +28,7 @@ from stocklib.page_ledger import (
     FAMILY_SPECIES_STATE, LIVE, TOMBSTONE, PageLedger, decide_night,
     page_state_meta, write_page,
 )
+from stocklib.registry import BUY_PAGE_STATE_SLUGS
 from stocklib.scrape_health import untrusted_nurseries
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
 from stocklib.templates import render as render_template
@@ -52,25 +53,29 @@ RETAIN_MIN_PRODUCTS = 1
 # Caps the GUIDELESS species in QLD/NSW/VIC. Guided species are exempt (select_combos).
 MAX_COMBOS_PER_STATE = 20
 
-# Which files in the output dir are combo pages. Deliberately excludes the
-# state landing pages (buy-fruit-trees-wa.html) and the combo index, neither of
-# which this builder owns.
-COMBO_FILE_RE = re.compile(r"^buy-.+-trees-(?:" + "|".join(
-    ["western-australia", "queensland", "new-south-wales", "victoria"]) + r")\.html$")
-
 # State full names for URLs and headings
 STATE_FULL_NAMES = {
     "WA": "Western Australia",
     "QLD": "Queensland",
     "NSW": "New South Wales",
     "VIC": "Victoria",
+    "SA": "South Australia",
 }
-STATE_SLUGS = {
-    "WA": "western-australia",
-    "QLD": "queensland",
-    "NSW": "new-south-wales",
-    "VIC": "victoria",
-}
+# One definition, in stocklib.registry, shared with build_location_pages.py and
+# build_sitemap.py (tests/test_no_forking.py guards the rest of this package the
+# same way).
+STATE_SLUGS = BUY_PAGE_STATE_SLUGS
+# The one list every loop in this module reads. It used to be spelled
+# ["WA", "QLD", "NSW", "VIC"] inline in six places, so adding a state meant
+# finding all six and the regex below, and missing one produced a page that
+# built but was never swept, tombstoned or indexed.
+STATES = list(STATE_SLUGS)
+
+# Which files in the output dir are combo pages. Deliberately excludes the
+# state landing pages (buy-fruit-trees-wa.html) and the combo index, neither of
+# which this builder owns.
+COMBO_FILE_RE = re.compile(
+    r"^buy-.+-trees-(?:" + "|".join(STATE_SLUGS.values()) + r")\.html$")
 
 # State-specific climate context per species category.
 # Copy rule: no em or en dashes (use commas, periods, parentheses). The "mediterranean"
@@ -175,6 +180,38 @@ STATE_CLIMATE_NOTES = {
         "white-sapote": "White sapote is hardier than most subtropical fruit, with mature trees taking light frosts, so it can be grown in the milder, sheltered parts of Victoria, ripening later than in the warmer states. Protect young trees from frost.",
         "cacao": "Victoria is far too cold for cacao, which is killed by frost and set back by any cool spell. It can only be kept alive in a heated, humid glasshouse and will not fruit, so treat it as a specimen plant rather than a crop.",
         "default": "Victoria's cool temperate climate suits a wide range of stone fruit, apples, and pears. Heritage and heirloom varieties are a specialty of Victorian nurseries.",
+    },
+    # SA added 2026-09-17 (DAL-297). Two facts run through this block and are
+    # deliberately repeated rather than assumed known: Adelaide is Mediterranean
+    # (hot dry summers, mild wet winters) with the Adelaide Hills supplying real
+    # winter chill within an hour of the city, and South Australia is the only
+    # mainland state holding fruit fly free area status. That status restricts
+    # carrying FRUIT across the border, not buying nursery TREES, which is the
+    # confusion worth heading off on a page whose reader is about to order a tree.
+    "SA": {
+        "tropical": "South Australia is the driest state and has no tropical zone, so tropical species are a sheltered-microclimate or glasshouse proposition rather than a garden crop. Adelaide's mild, frost-light coastal suburbs can keep the hardier ones alive with summer water and wind protection, but expect light crops, and note that many tropical specialist nurseries are east coast based.",
+        "subtropical": "Adelaide's warm, dry summers and mild, frost-light coastal winters suit the hardier subtropical fruits, provided they get summer irrigation, which the low rainfall makes essential. Inland and hills frost pockets are the limit, so choose a north-facing, sheltered spot and water through the dry season.",
+        "citrus": "The South Australian Riverland is one of Australia's great citrus districts, and citrus grows well right across Adelaide and the settled south, where hot dry summers ripen high-sugar, clean-skinned fruit and low humidity keeps fungal disease down. Summer irrigation is the one non-negotiable, and SA's fruit fly free status means less pest pressure than the eastern states.",
+        "temperate": "The Adelaide Hills are prime temperate fruit country, cold enough for apples, pears, plums and cherries, and long a commercial apple district. On the warmer Adelaide plains and through the Riverland, chilling hours drop away quickly, so choose low-chill varieties there and save the high-chill ones for the hills.",
+        "mediterranean": "South Australia's climate is Mediterranean in the textbook sense, which is why the Barossa, Clare, McLaren Vale and Adelaide Hills grow the state's olives, grapes and figs. Hot dry summers ripen the fruit, mild wet winters supply the little chill these species need, and the dry ripening season means far less of the splitting and rot that humidity causes in the east.",
+        "banana": "South Australia is too dry, too frost-prone and too cool in winter for bananas to crop reliably. They are grown here as a courtyard foliage plant in the warmest, most sheltered frost-free corners of Adelaide, with generous summer water, and fruit is the exception rather than the expectation.",
+        "cherry": "Cherries need more winter chill than any other common stone fruit, and the Adelaide Hills supply it, which is why cherry orchards sit within an hour of the city around Lenswood, Forest Range and the Torrens Valley. The warm Adelaide plains and the hot Riverland are too mild for reliable cropping, so choose the hills or a low-chill variety.",
+        "mulberry": "Mulberries are one of the most reliable backyard trees in South Australia, cropping heavily from Adelaide gardens to the Riverland. They need no winter chill, tolerate frost once established and handle heat and dry conditions better than most deciduous fruit, so they ask only for a deep summer soak.",
+        "jujube": "South Australia suits jujube unusually well. Hot dry summers ripen the fruit, a dry autumn means it finishes cleanly rather than spoiling, and the tree's tolerance of drought, frost, salinity and alkaline soils fits the state's harder country, including the Riverland and the drier inland where most fruit trees struggle.",
+        "passionfruit": "Passionfruit grows in the frost-free, sheltered parts of Adelaide and the warm coastal districts, but South Australia's cold, frosty inland winters cut it back badly. A grafted vine on hardy rootstock against a hot north-facing wall is the dependable choice, with steady summer water in a climate that will not supply it.",
+        "pecan": "Pecans need a long, hot summer and a great deal of summer water to fill their kernels, so in South Australia they belong in the irrigated Riverland and the warm inland river districts rather than the cool hills or the dry mallee. They are very large, long-lived trees, so allow real space before planting.",
+        "pomegranate": "Pomegranates are close to ideally suited to South Australia. They want exactly what the state offers, hot dry summers, mild winters and low winter chill, and the dry ripening autumn prevents the fruit splitting and rotting that humid eastern districts suffer. They also tolerate the alkaline, salty soils common through the Riverland and the mallee.",
+        "blueberry": "Blueberries are acid-soil shrubs above all else, wanting a soil pH of 4.5 to 5.5, which puts them at odds with South Australia's widely alkaline soils and hard water, so most growers here raise them in pots or raised beds of acidic mix. The Adelaide Hills can also ripen the deciduous northern highbush, while the warmer plains suit low-chill southern highbush and rabbiteye.",
+        "feijoa": "Feijoa is frost-hardy and needs only light winter chill, so it crops well across Adelaide, the hills and the cooler south of the state. It wants steady summer water to set a decent crop, which in South Australia's dry summers means irrigation rather than rainfall.",
+        "loquat": "Loquats are a long-established, easy backyard tree across Adelaide and the milder parts of South Australia, ripening one of the first crops of the year in late winter and spring. Because they flower through autumn and winter, hard inland frosts can cut the crop, so sheltered suburban and coastal gardens fruit most reliably.",
+        "raspberry": "Raspberries are a cool-climate cane fruit and struggle with heat and dry air, so in South Australia they are an Adelaide Hills crop, not a plains or Riverland one. Give them the coolest, most sheltered position with reliable summer water, and accept that the hot northerly winds are the limiting factor.",
+        "lilly-pilly": "Lilly pilly is not a South Australian native, but it is a common evergreen hedge plant in Adelaide, where it copes with the dry climate as long as it gets summer water. The dry air keeps psyllid and myrtle rust pressure well below east coast levels, which is a real advantage here, though young plants want shelter from hot northerly winds and hard frost.",
+        "pomelo": "Pomelo is the most heat-loving and the most frost-tender of the citrus, so in South Australia it crops best in the hot, irrigated Riverland and in warm, sheltered, frost-free Adelaide gardens. Cold inland and hills frost pockets will set young trees back, so position matters more for pomelo than for any other citrus.",
+        "grapefruit": "Grapefruit needs sustained summer heat to shed its bitterness and sweeten, and South Australia's hot, dry Riverland supplies it, producing high-sugar, well-coloured fruit under irrigation. Adelaide gardens grow it well in a warm open position, and the low humidity keeps the rind cleaner than it stays on the humid east coast.",
+        "miracle-fruit": "Miracle fruit wants constant warmth, humidity and strongly acid soil, which is close to the opposite of South Australia's dry air and alkaline soils. It is grown here almost entirely as a potted plant in acidic mix, kept humid, shaded and frost-free, so treat it as a curiosity rather than a garden tree.",
+        "white-sapote": "White sapote suits South Australia better than most subtropical fruits. It is hardy enough to take the light frosts of Adelaide and the hills, and the Mediterranean pattern of hot dry summers and mild wet winters is close to its highland home, so it fruits well here with summer water.",
+        "cacao": "Cacao is an equatorial rainforest tree needing constant warmth and humidity, and South Australia, the driest state, cannot offer either. It survives here only in a heated, humid glasshouse and will not crop, so it is a specimen plant rather than anything you could harvest.",
+        "default": "South Australia's Mediterranean climate (hot dry summers, mild wet winters) suits a wide range of fruit trees, with the Adelaide Hills supplying real winter chill and the Riverland the summer heat. Summer irrigation is the main requirement in the driest state.",
     },
 }
 
@@ -404,7 +441,7 @@ def compute_combos(
             continue
         ships_to = SHIPPING_MAP.get(p["nursery_key"], [])
         species_slug = species["common_name"].lower().replace(" ", "-").replace("'", "")
-        for state in ["WA", "QLD", "NSW", "VIC"]:
+        for state in STATES:
             if state in ships_to:
                 result[state][species_slug].append({**p, "species": species})
     return result
@@ -418,8 +455,8 @@ def select_combos(
     Select which combos to build pages for. A combo needs MIN_PRODUCTS in stock
     at a nursery that ships to that state to be CREATED.
     WA: all of them.
-    QLD/NSW/VIC: the top MAX_COMBOS_PER_STATE by product count, plus every species
-    below that line that has a growing guide.
+    Everywhere else: the top MAX_COMBOS_PER_STATE by product count, plus every
+    species below that line carrying a growing-guide overlay FOR THIS STATE.
 
     The cap alone used to decide it, to "avoid thin content". Measured over the 12
     months to 2026-08-13 (DAL-249), thinness tracks the guide and not the stock
@@ -427,6 +464,18 @@ def select_combos(
     clicks a year, against 22.3 and 1 for the guideless ones. So a species we have
     already researched earns a page in every state that can buy it, and the cap
     goes on doing its real job of holding back the guideless tail.
+
+    The exemption asks for an overlay for THIS state, not merely has_guide(slug).
+    Those were the same question while every guide covered exactly WA/QLD/NSW/VIC,
+    and they came apart the moment SA arrived (DAL-297): all 55 guides return
+    has_guide() True and an EMPTY SA overlay, which would have exempted 26 SA pages
+    from the cap on the strength of a measurement taken on pages carrying the
+    state-specific body those 26 would not have had. With no overlay a combo page
+    renders the shared core only, making it a strict subset of the same species'
+    page in a state that does have one: exactly the byte-identical editorial body
+    the overlay layer was built to end. Gating on the overlay lets a new state's
+    page set grow as its content is written instead of all at once. No effect on
+    WA/QLD/NSW/VIC, where all 55 guides carry all four overlays.
 
     `retained` is the set of (state, species_slug) pairs that already have a live
     page. They are added back whatever their rank, as long as they still have
@@ -446,7 +495,7 @@ def select_combos(
     Returns: state -> [(species_slug, products), ...], densest stock first.
     """
     selected = {}
-    for state in ["WA", "QLD", "NSW", "VIC"]:
+    for state in STATES:
         state_combos = [
             (slug, prods)
             for slug, prods in combos[state].items()
@@ -456,14 +505,14 @@ def select_combos(
         if state == "WA":
             chosen = state_combos
         else:
-            # Below the cap, only guided species survive. Both slices are already
-            # sorted, and everything in the tail has less stock than everything in
-            # the head, so concatenating keeps the whole list in descending stock
-            # order.
+            # Below the cap, only species with a state overlay survive. Both slices
+            # are already sorted, and everything in the tail has less stock than
+            # everything in the head, so concatenating keeps the whole list in
+            # descending stock order.
             chosen = state_combos[:MAX_COMBOS_PER_STATE] + [
                 (slug, prods)
                 for slug, prods in state_combos[MAX_COMBOS_PER_STATE:]
-                if growing_guides.has_guide(slug)
+                if growing_guides.render_state_overlay(slug, state)
             ]
         if retained:
             already = {slug for slug, _ in chosen}
@@ -534,7 +583,7 @@ def build_combo_page(
         price_str = f"${lo:.0f}" if lo == hi else f"${lo:.0f}-${hi:.0f}"
 
     # Other states that have this species (for cross-links)
-    other_states = [s for s in ["WA", "QLD", "NSW", "VIC"] if s != state]
+    other_states = [s for s in STATES if s != state]
 
     # In stock first, then cheapest first, then title. Every row here is the
     # same species, so this table is a price comparison and the reader wants the
@@ -666,7 +715,7 @@ def build_combo_tombstone(entry: dict) -> str:
     state_slug = STATE_SLUGS.get(state, state.lower())
     title = entry.get("title") or f"{species_name} trees in {state_full}"
 
-    other_states = [s for s in ["WA", "QLD", "NSW", "VIC"] if s != state]
+    other_states = [s for s in STATES if s != state]
     cta_html = combo_cta_html(
         species_name,
         species_href=f"/species/{species_slug}.html",
@@ -731,7 +780,7 @@ def build_index_page(
 ) -> str:
     """Build a simple index page listing all combo pages."""
     index_view = []
-    for state in ["WA", "QLD", "NSW", "VIC"]:
+    for state in STATES:
         state_full = STATE_FULL_NAMES[state]
         state_slug = STATE_SLUGS[state]
         for species_slug, products in selected.get(state, []):
@@ -903,7 +952,7 @@ def main():
     total = sum(len(v) for v in selected.values())
     print(f"Building {total} combo pages...", file=sys.stderr)
     written_keys = set()
-    for state in ["WA", "QLD", "NSW", "VIC"]:
+    for state in STATES:
         state_combos = selected[state]
         state_slug = STATE_SLUGS[state]
         print(f"  {state}: {len(state_combos)} pages", file=sys.stderr)
@@ -946,7 +995,7 @@ def main():
 
     # Print summary for sitemap integration
     pages = []
-    for state in ["WA", "QLD", "NSW", "VIC"]:
+    for state in STATES:
         state_slug = STATE_SLUGS[state]
         for species_slug, _ in selected[state]:
             pages.append(f"buy-{species_slug}-trees-{state_slug}.html")

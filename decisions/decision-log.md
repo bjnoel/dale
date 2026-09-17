@@ -15123,3 +15123,88 @@ count at the top of an ordered chain measures its POSITION, not its strictness. 
 sat at zero for the feature's whole life and nobody noticed, because the one above them was
 plausible enough to explain. Before treating "the reason most events carry" as a finding, check
 whether the reasons below it are reachable at all.
+
+---
+
+## DEC-338 — 2026-09-17 — South Australia ships, ACT does not, and the state list stopped being nine copies
+
+**Date:** 2026-09-17 **Ticket:** DAL-297 (Done) **Authority:** Dale autonomous (code, $0)
+
+DAL-297 asked for South Australia buy pages, "the gap DAL-249 closed without filling". SA
+has 2,012 reachable in-stock listings from 14 of 27 nurseries against WA's 1,351 from 9, and
+had zero pages to WA's 75. The ticket costed it at "one config line plus a golden review".
+It was not one config line, and two of its three premises were wrong. Both were caught before
+anything shipped, by measuring rather than by reading the ticket.
+
+**1. ACT is dropped. The ticket asked for it in the same pass; it would have been 49 duplicate
+pages.** DAL-297's card said ACT "is served by the eastern-states shippers (18 nurseries) and
+costs nothing extra". Measured on the 2026-09-17 snapshot: ACT's reachable listing set overlaps
+NSW's by **95.8%**. ACT differs from NSW by exactly one nursery (`the-heritage-nursery`), and
+**35 of the 49 ACT pages would have carried a product list byte-identical to the live NSW page**.
+With no ACT climate note and no ACT guide overlay written, an ACT page would have been the NSW
+page with the state name swapped. Rejected, and the measurement is written into
+`stocklib.registry` beside the list so it cannot be silently re-proposed: do not add ACT without
+re-measuring that overlap.
+
+**SA passes the same test, which is why it goes ahead.** Only **2 of 46** candidate SA pages
+match any existing state's product list. Overlap is 58.4% with VIC and 69.6% with NSW, SA has a
+nursery nobody else reaches (Perry's, McLaren Flat) and lacks seven that serve VIC. SA is
+genuinely different stock, not a relabelled NSW.
+
+**2. The cap exemption keyed on the wrong question, and would have exempted 26 SA pages on a
+measurement taken elsewhere.** `MAX_COMBOS_PER_STATE = 20` bounds the guideless tail, with an
+exemption for guided species below the line. DAL-249 justified that exemption by measuring
+guided pages at position 14.6 / median 5 clicks a year against guideless at 22.3 / 1. The
+exemption asked `has_guide(slug)`. That was the same question as "does this page carry a
+state-specific body" only while every guide covered exactly WA/QLD/NSW/VIC, and it came apart
+the moment a fifth state existed: **all 55 guides return `has_guide()` True and an empty SA
+overlay.** With no overlay a combo page renders the shared core alone, making it a strict subset
+of the same species' page in a state that does have one, which is the byte-identical editorial
+body the overlay layer was built to end. Changed to `render_state_overlay(slug, state)`. Blast
+radius verified zero: all 55 real guides carry all four existing overlays (the only file in
+`growing_guides/` without them is `archive_links.json`, which is not a guide), and WA takes
+everything regardless. **SA launches at 20 pages and grows as SA overlays are written**, instead
+of 46 at once on borrowed evidence.
+
+**3. Adding a state was nine edits, and is now one.** The four states were typed out in six
+inline list literals in `build_species_state_pages.py`, its `COMBO_FILE_RE` alternation, an
+inline slug dict inside `build_location_pages.build_state_page`, a hardcoded alternation in
+`build_sitemap.LOCATION_PAGE_PATTERN`, a sentence in `build_llms.py`, and four test fixtures.
+Miss the sweeper regex and the new pages build and are never retired; miss the sitemap and they
+ship unlisted; miss `CROSS_LINKS` and nothing on the site links to them. All of it now derives
+from one `BUY_PAGE_STATE_SLUGS` in `stocklib.registry`, with `CROSS_LINKS` and the two regexes
+computed rather than typed.
+
+**Shipped:** SA in the registry; SA climate notes for all 23 categories in
+`build_species_state_pages`; SA intro, info box and a four-paragraph growing guide in
+`build_location_pages`; the de-fork across four builders and four test files.
+Verified against real data: **SA builds 20 combo pages plus `/buy-fruit-trees-sa.html` (1,390
+matched in-stock products)**, breadcrumbs resolve, no state page is byte-identical to another,
+no em or en dashes.
+
+**Two live copy defects found by the new guard, both fixed.** The WA landing page has been
+serving "Finding fruit trees online that ship to WA is surprisingly hard most nurseries are east
+coast only" since some earlier pass deleted a dash without rewriting the sentence. And four state
+pages still carried em dashes, which CLAUDE.md bans outright. Removing a dash means rewriting the
+sentence, not deleting the character.
+
+**Guards, each proven failing before being trusted (DEC-326).** New `tests/test_buy_page_states.py`
+(9 tests): add a state to the registry with no copy and four of them fail; re-introduce a typed
+copy of the state list and two fail. New
+`test_guided_species_below_the_cap_gets_no_page_where_it_has_no_overlay` in
+`tests/test_species_state_pages.py`: revert the exemption to `has_guide` and it fails. It
+self-skips the day every guide covers every state, which is the intended end state. Full suite
+3,721 tests, green apart from a pre-existing `test_prompt_size` failure confirmed on clean HEAD.
+
+**Lesson (44th session): a condition that has only ever been evaluated on one population is not a
+condition, it is a coincidence.** `has_guide(slug)` and "this page has a state-specific body"
+returned the same answer on every input the code had ever seen, for four years' worth of pages
+across four states, because the two facts happened to be perfectly correlated in that population.
+They were never the same question. The fifth state separated them on its first night, and the
+version that shipped would have been defensible in review: it used a real measurement, on a real
+metric, for the right reason. Same family as DEC-261 (an average of two populations) and DEC-325
+(an instrument structurally incapable of the answer). **When you extend a system to a new case,
+re-ask what each of its conditions was actually testing, not whether it still runs.** Sub-lesson:
+**the cheapest place to find a duplicate-content problem is before you build the pages.** Probing
+ACT against NSW took one script and killed 49 pages that would otherwise have needed discovering
+in Search Console months later.

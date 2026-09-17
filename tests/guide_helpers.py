@@ -39,7 +39,24 @@ bsp = _load(SCRAPERS / "build_species_pages.py")
 EM_DASH = "—"
 EN_DASH = "–"
 
-STATES = ["WA", "QLD", "NSW", "VIC"]
+# The states every growing guide carries an overlay for. Derived from the guide files
+# rather than typed, because this list follows the content instead of leading it: the
+# per-species tests below are OVERLAY tests (region tokens, per-state FAQs, mutually
+# distinct bodies) and a state with no overlay written yet cannot pass them. SA went
+# into the builders in DAL-297 with zero overlays, so it is absent here and will appear
+# by itself on the night the last SA overlay is written.
+# NOT the builder's state list: for that, read bssp.STATES (see tests/test_combo_lifecycle.py).
+def _states_every_guide_overlays():
+    per_guide = [
+        set((json.loads(p.read_text()).get("states") or {}).keys())
+        for p in sorted(GUIDES_DIR.glob("*.json"))
+        if "core" in json.loads(p.read_text())
+    ]
+    covered = set.intersection(*per_guide) if per_guide else set()
+    return [st for st in bssp.STATES if st in covered]
+
+
+STATES = _states_every_guide_overlays()
 TODAY = "2026-06-01"
 
 VALID_SLUGS = {s["slug"] for s in json.loads((SCRAPERS / "fruit_species.json").read_text()) if s.get("slug")}
