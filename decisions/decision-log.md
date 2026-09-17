@@ -14810,3 +14810,91 @@ a dismissal) means PostHog cannot yet distinguish "Android users will not pay" f
 
 **Rank note.** iOS AU `graft tracker` fell 1 -> 11 on 08-20 and was back at #1 by 09-13.
 Graft terms are lost only on Play (1 -> >30 in both storefronts).
+
+## DEC-334 — 2026-09-17 — Apple's install and purchase counts now read themselves, and the report with no instances is not a report with no sales
+
+**Date:** 2026-09-17 **Authority:** Dale autonomous (code and measurement). **Ticket:** DAL-299.
+
+**Context.** `appstore_sources.py` has read App Store Discovery and Engagement (r14) into a
+nightly series since DEC-307. The two reports that actually count installs and money, App
+Downloads Standard (r3) and App Store Purchases Standard (r12), sat in the same request and
+nothing read them. Every install number we quote came from RevenueCat, which opens a customer
+record per SDK init, or PostHog, which counts people it has seen. Neither is an install.
+
+**Change.** `tools/autonomous/appstore_downloads.py` reads r3 and r12 into
+`/opt/dale/data/treesmith-appstore-downloads.csv` and `-purchases.csv`. Rather than fork the
+reader, `appstore_sources.py` grew a `SeriesSchema` that parameterises the column layout, the
+key columns and the typing, so the restatement rule in `new_rows` — which rows supersede
+which, and which days may never be re-recorded — has one implementation across three report
+shapes. That rule is the subtle part and the part DEC-332 was paid for; two copies would
+drift. All 57 existing `appstore_sources` tests pass unchanged.
+
+**Verified against a hand pull before being believed.** Run against the frozen
+ONE_TIME_SNAPSHOT request it reproduces DEC-321 exactly: 51 first-time downloads, 4
+redownloads, AU 22 / US 17, sources search 32 / app referrer 10 / web referrer 4 / browse 3 /
+unavailable 2; and 3 purchases, US$77.30 sales, US$52.37 proceeds, AU 1 / PK 1 / US 1. An
+exact match on a number somebody else derived by hand is the evidence the reader is right
+rather than merely plausible (DEC-313).
+
+**Finding 1: r3's window is TWO days, not three.** Measured across all nine live instances,
+each carries exactly `[processing_date-2, processing_date-1]`. DEC-332 measured three for
+r14 and it would have been natural to assume the same. Apple keeps about nine instances, so
+the series survives roughly ten days without a pull. The discovery job runs weekly, which
+leaves three days of slack and loses days permanently on one missed Sunday — the DEC-332
+failure waiting to happen again. The downloads pull is therefore cron'd **daily**, 22:50 UTC.
+Re-running is a no-op; the restatement rule dedupes.
+
+**Finding 2: App Store Purchases has ZERO instances on the ongoing request.** Not at DAILY,
+not at any granularity, as of 2026-09-17. "No instances" and "no sales" render identically
+and only one of them is a fact about the business, so the reader raises `NotReady` and writes
+nothing rather than an empty file. Two tests guard it. This is not academic: DEC-333 found a
+4th production sale on 2026-08-23, which falls inside the span the snapshot cannot reach, so
+a purchases series that silently reported zero would have contradicted the money.
+
+**Finding 3: a quiet day and a missing day had to be told apart in code.** At around one
+install a day, 63 of the 75 days held carry no download row and every one of them was
+observed. Calling those "missing" manufactures a data-loss scare out of a quiet app.
+`no_row_days()` is measured zeroes and is counted in every rate; `pull_gaps()` is stretches
+where nobody pulled for longer than the window survives, detected from `pulled_at` spacing,
+and is named rather than averaged over. The handover hole 2026-08-21..2026-09-05 is
+unobtainable for downloads, mirroring discovery's 2026-08-21..09-04 loss.
+
+**Finding 4: RevenueCat roughly doubles the install count, re-confirmed with more data.**
+Apple: 67 lifetime iOS first-time downloads. RevenueCat: ~134 iOS customer records. Apple is
+the source of truth for installs; RevenueCat stays the source of truth for money.
+
+**The frozen-snapshot completeness trap, recorded because the safe default was wrong.**
+Apple treats data as final three days after the reporting date. Stamping the snapshot
+backfill with its own pull date would mark 2026-08-18..08-20 incomplete forever: they can
+never be restated, because the ongoing request's rolling window does not reach back that far.
+The three-day rule would have silently dropped real downloads from every total, permanently.
+`--final` overrides it for the frozen request only, trading a small undercount risk for
+avoiding certain loss, and `_cutoff()` carries the reasoning so the flag cannot be reused
+carelessly on the ongoing one.
+
+**Digest.** `m_appstore_downloads` renders "App Store installs (Apple's own count)" directly
+after discovery, same funnel, next stage. It reads the CSV, never the API, so a credential
+problem at 00:00 Monday cannot become a missing digest. The unobserved span prints as a
+standing caveat above the rates rather than as an alert: a past gap is permanent and
+unfixable, and alerting it weekly would train the reader to skip the line that does matter
+(NO PULL, meaning days are being lost right now).
+
+**Guards.** `tests/test_appstore_downloads.py`, 20 tests. Per DEC-326 the two rules that
+carry the risk were each proven to FAIL before being trusted to pass: reverting the instance
+merge from replace-semantics to summing breaks the overlapping-day test (6 != 3), and
+disabling the `NotReady` guard breaks the no-instances test. Full suite 3,711 OK.
+
+**Housekeeping, because the guard fired.** `tests/test_prompt_size.py` failed on entry at
+61,545B against a 60,000B ceiling, before any edit of mine. Its docstring says not to raise
+the number, so four superseded point-in-time findings in `state/business-state.json`
+(`release_status_2026_08_12`, `review_prompt_status_2026_08_06`, `funnel_from_treestock`,
+`appstore_funnel_2026_08_27`) were cut to their durable claims plus a decision pointer. The
+state file is a dashboard, not an archive.
+
+**Lesson.** *Reuse the rule, not the reader.* The temptation was to copy `appstore_sources.py`
+and change the column names, and it would have worked on the day. What would not have
+survived is the restatement rule: the next person to learn something about how Apple restates
+a day would have fixed one of the two copies. Parameterising the schema cost an hour and
+means DEC-332's lesson is stored once. Sub-lesson: **measure the thing you are about to
+assume is the same.** r14's window is three days and r3's is two, the two reports live in the
+same request, and nothing announces the difference.

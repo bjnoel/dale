@@ -967,6 +967,53 @@ def m_appstore_sources(_host=None, _key=None):
     }
 
 
+# Apple's r3 DAILY instances carry a TWO-day window, measured across all nine
+# live instances (DEC-334) and narrower than r14's three. A weekly digest cannot
+# police a two-day window, so this bar is about the SERIES being written at all;
+# unobserved stretches are reported from the pull gaps instead, because an
+# average over days nobody read is worse than a named hole.
+DOWNLOADS_STALE_DAYS = 9
+
+
+def m_appstore_downloads(_host=None, _key=None):
+    """Apple's own install count, which is the only authoritative one.
+
+    RevenueCat opens a customer record per SDK init and so roughly doubles it
+    (67 first-time downloads against ~134 iOS customer records, DEC-334), and
+    PostHog counts people it has seen. Apple counts installs. Sits beside
+    discovery because they are two stages of one funnel: who saw the listing,
+    then who installed.
+
+    Reads the CSV series, never the App Store Connect API, for the same reasons
+    as m_appstore_sources: no PyJWT, no .p8, and no credential problem at 00:00
+    Monday turning into a missing digest.
+    """
+    sys.path.insert(0, SCRIPT_DIR)
+    import appstore_downloads  # noqa: E402 - sibling module
+    import appstore_sources  # noqa: E402 - sibling module
+
+    path = appstore_downloads.series_file(appstore_downloads.DOWNLOADS_CSV)
+    records = appstore_sources.read(path,
+                                    schema=appstore_downloads.DOWNLOAD_SERIES)
+    if not records:
+        # DEC-249, and the reason DEC-334 raises NotReady rather than writing an
+        # empty file: an absent series is an absence of measurement, never zero
+        # installs.
+        raise FileNotFoundError(f"no App Store download series at {path}")
+
+    summary = appstore_downloads.summarise_downloads(records)
+    age = appstore_sources.series_age_days(records)
+    return {
+        "path": path,
+        "summary": summary,
+        "age_days": age,
+        # Carried rather than re-stated so the digest quotes the measured width
+        # from the one place that owns it, and moves if the measurement does.
+        "window_days": appstore_downloads.ROLLING_WINDOW_DAYS,
+        "stale": age is None or age > DOWNLOADS_STALE_DAYS,
+    }
+
+
 def m_store_listing(_host=None, _key=None):
     """Does the live store copy still describe the app we actually ship?
 
@@ -2408,6 +2455,59 @@ def render(metrics):
                      f"{sp['boundary']['impressions']:,} impressions are in "
                      f"neither window.")
 
+    # Installs, straight after discovery: same funnel, next stage. Apple counts
+    # installs; RevenueCat counts SDK inits and PostHog counts people it saw, so
+    # this is the only authoritative install number we have (DEC-334).
+    dls = metrics.get("downloads")
+    if dls:
+        section("App Store installs (Apple's own count)")
+        if not dls["ok"]:
+            err("App Store installs", dls["error"])
+        else:
+            d = dls["data"]
+            s = d["summary"]
+            if d["stale"]:
+                age = d["age_days"]
+                when = "never" if age is None else f"{age} days ago"
+                alert("NO PULL", f"the download series was last written "
+                                 f"{when}. Apple's window for this report is "
+                                 f"only {d['window_days']} days wide, so days "
+                                 f"beyond it are lost for good, "
+                                 f"not merely late.", TRUST)
+            # Gaps before any rate, because every rate below is computed over
+            # days held, and DEC-332 is why: the days a gap happens to keep are
+            # not a fair sample of the days it drops. Printed as a standing
+            # caveat rather than an alert on purpose. A past gap is permanent
+            # and unfixable, so alerting it every week would train the reader to
+            # skip the line, and the line that matters -- NO PULL, meaning we
+            # are losing days right now -- sits directly above it.
+            for start, end in s["pull_gaps"]:
+                kv("  Unobserved span",
+                   f"nothing was pulled between {start} and {end}, longer than "
+                   f"Apple's {d['window_days']}-day window survives. Those days "
+                   f"are missing, not zero, and no figure below includes them.",
+                   RED)
+            kv("First-time downloads",
+               f"{s['first_time_downloads']:,} across {s['day_count']} days "
+               f"held ({s['per_day']}/day)")
+            kv("Not new users",
+               f"{s['redownloads']} redownloads, {s['restores']} restores, "
+               f"{s['updates']:,} updates (the same people, not growth)", GREY)
+            top_terr = sorted(s["first_time_by_territory"].items(),
+                              key=lambda kv_: (-kv_[1], kv_[0]))[:5]
+            kv("  by territory",
+               ", ".join(f"{k} {v}" for k, v in top_terr), GREY)
+            top_src = sorted(s["first_time_by_source"].items(),
+                             key=lambda kv_: (-kv_[1], kv_[0]))[:5]
+            kv("  by source",
+               ", ".join(f"{k} {v}" for k, v in top_src), GREY)
+            if s["no_row_days"]:
+                note(f"{len(s['no_row_days'])} of the days held carry no "
+                     f"download row. At around one install a day that is an "
+                     f"ordinary quiet day, a measured zero, and is counted in "
+                     f"the per-day rate above. Only the spans flagged "
+                     f"UNOBSERVED are missing.")
+
     # Store listing accuracy. Sits with discovery rather than with the product
     # sections because it is part of the same surface: the ranks say where we
     # appear, discovery says whether anyone looked, and this says whether what
@@ -3030,6 +3130,7 @@ def main():
         "revenuecat": run_metric(m_revenuecat),
         "rank": run_metric(m_rank),
         "sources": run_metric(m_appstore_sources),
+        "downloads": run_metric(m_appstore_downloads),
         "store_listing": run_metric(m_store_listing),
         "reconciliation": run_metric(m_purchase_reconciliation, host, key),
         "retention": run_metric(m_retention, host, key),

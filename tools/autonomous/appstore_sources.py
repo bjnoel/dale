@@ -227,6 +227,47 @@ _BOOL_COLUMNS = ("complete",)
 _METRIC_COLUMNS = _INT_COLUMNS
 
 
+class SeriesSchema:
+    """The column layout and typing of one report's CSV series.
+
+    Exists so that a second report (App Downloads, App Store Purchases) can
+    reuse the restatement rule in `new_rows` rather than growing a second copy
+    of it. That rule is the subtle part of this file and the part DEC-332 was
+    paid for: which rows supersede which, and which days may never be
+    re-recorded. Two implementations of it would drift.
+
+    `key_columns` is what makes a row the SAME OBSERVATION as an earlier one.
+    For the engagement report that is (date, source type); a downloads row is
+    further split by territory and download type, so its key is longer. Getting
+    this wrong does not error, it silently merges or duplicates days, so it is
+    named per report rather than inferred.
+    """
+
+    def __init__(self, columns, key_columns, metric_columns,
+                 int_columns=(), float_columns=(), bool_columns=("complete",)):
+        self.columns = list(columns)
+        self.key_columns = tuple(key_columns)
+        self.metric_columns = tuple(metric_columns)
+        self.int_columns = tuple(int_columns)
+        self.float_columns = tuple(float_columns)
+        self.bool_columns = tuple(bool_columns)
+        unknown = [c for c in self.key_columns + self.metric_columns
+                   if c not in self.columns]
+        if unknown:
+            raise ValueError(f"schema names columns it does not carry: {unknown}")
+
+    def key(self, record):
+        return tuple(record.get(name) for name in self.key_columns)
+
+
+ENGAGEMENT_SERIES = SeriesSchema(
+    columns=CSV_COLUMNS,
+    key_columns=("date", "source_type"),
+    metric_columns=_METRIC_COLUMNS,
+    int_columns=_INT_COLUMNS,
+)
+
+
 class NotReady(Exception):
     """The report exists but Apple has not generated an instance yet.
 
@@ -498,7 +539,8 @@ def list_reports(token, request_id, category=ENGAGEMENT_CATEGORY, getter=api_get
     ]
 
 
-def find_report(token, request_id, name=DEFAULT_REPORT_NAME, getter=api_get):
+def find_report(token, request_id, name=DEFAULT_REPORT_NAME, getter=api_get,
+                category=ENGAGEMENT_CATEGORY):
     """Resolve a report NAME to its request-scoped id, every run.
 
     Never cached and never hardcoded: `r15-<request-uuid>` is only valid for
@@ -506,12 +548,13 @@ def find_report(token, request_id, name=DEFAULT_REPORT_NAME, getter=api_get):
     somebody creates a second request, and then reads a report that no longer
     exists rather than failing.
     """
-    reports = list_reports(token, request_id, getter=getter)
+    reports = list_reports(token, request_id, category=category, getter=getter)
     for report in reports:
         if report["name"] == name:
             return report["id"]
     raise LookupError(
-        f"no report named {name!r} in request {request_id}. Available: "
+        f"no report named {name!r} in request {request_id} category "
+        f"{category}. Available: "
         + ", ".join(sorted(r["name"] or "?" for r in reports))
     )
 
@@ -595,7 +638,7 @@ def resolve_columns(header, required=REQUIRED_COLUMNS, optional=(COL_UNIQUE,)):
     return resolved
 
 
-def parse_tsv(text):
+def parse_tsv(text, required=REQUIRED_COLUMNS, optional=(COL_UNIQUE,)):
     """Parse one report segment into (columns, rows).
 
     Pure, so the aggregation below is testable without a network, a credential
@@ -608,7 +651,7 @@ def parse_tsv(text):
         raise ReportSchemaError("empty report segment: no header row")
 
     header = lines[0].split("\t")
-    columns = resolve_columns(header)
+    columns = resolve_columns(header, required=required, optional=optional)
 
     rows = []
     for number, line in enumerate(lines[1:], start=2):
@@ -767,33 +810,37 @@ def series_path(environ=None):
     return server if os.path.isdir(os.path.dirname(server)) else local
 
 
-def _encode(record):
+def _encode(record, schema=ENGAGEMENT_SERIES):
     out = {}
-    for column in CSV_COLUMNS:
+    for column in schema.columns:
         value = record.get(column)
         if value is None:
             out[column] = ""
-        elif column in _BOOL_COLUMNS:
+        elif column in schema.bool_columns:
             out[column] = "true" if value else "false"
+        elif column in schema.float_columns:
+            out[column] = f"{float(value):.2f}"
         else:
             out[column] = str(value)
     return out
 
 
-def _decode(row):
+def _decode(row, schema=ENGAGEMENT_SERIES):
     record = {}
-    for column in CSV_COLUMNS:
+    for column in schema.columns:
         raw = (row.get(column) or "").strip()
-        if column in _INT_COLUMNS:
+        if column in schema.int_columns:
             record[column] = int(raw) if raw else 0
-        elif column in _BOOL_COLUMNS:
+        elif column in schema.float_columns:
+            record[column] = float(raw) if raw else 0.0
+        elif column in schema.bool_columns:
             record[column] = raw == "true"
         else:
             record[column] = raw
     return record
 
 
-def append(path, records):
+def append(path, records, schema=ENGAGEMENT_SERIES):
     """Append records, writing the header only when creating the file."""
     if not records:
         return 0
@@ -802,15 +849,15 @@ def append(path, records):
         os.makedirs(parent, exist_ok=True)
     fresh = (not os.path.exists(path)) or os.path.getsize(path) == 0
     with open(path, "a", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=CSV_COLUMNS)
+        writer = csv.DictWriter(fh, fieldnames=schema.columns)
         if fresh:
             writer.writeheader()
         for record in records:
-            writer.writerow(_encode(record))
+            writer.writerow(_encode(record, schema))
     return len(records)
 
 
-def read(path):
+def read(path, schema=ENGAGEMENT_SERIES):
     """Parse the series back to typed records. A missing file is empty."""
     if not os.path.exists(path):
         return []
@@ -818,16 +865,16 @@ def read(path):
         reader = csv.DictReader(fh)
         if reader.fieldnames is None:
             return []
-        if list(reader.fieldnames) != CSV_COLUMNS:
+        if list(reader.fieldnames) != schema.columns:
             raise ValueError(
                 f"{path}: unexpected header {reader.fieldnames!r}; "
-                f"expected {CSV_COLUMNS!r}"
+                f"expected {schema.columns!r}"
             )
-        return [_decode(row) for row in reader]
+        return [_decode(row, schema) for row in reader]
 
 
-def latest_view(records):
-    """Newest observation of each (date, source_type).
+def latest_view(records, schema=ENGAGEMENT_SERIES):
+    """Newest observation of each keyed row.
 
     Apple restates incomplete days, so the same day legitimately appears more
     than once with different numbers. The newest pull wins; the older rows stay
@@ -835,14 +882,14 @@ def latest_view(records):
     """
     view = {}
     for record in records:
-        key = (record["date"], record["source_type"])
+        key = schema.key(record)
         held = view.get(key)
         if held is None or record["pulled_at"] > held["pulled_at"]:
             view[key] = record
     return view
 
 
-def new_rows(existing, candidates):
+def new_rows(existing, candidates, schema=ENGAGEMENT_SERIES):
     """The subset of `candidates` worth appending.
 
     Two rows are skipped: a day already recorded as complete (Apple will not
@@ -850,10 +897,10 @@ def new_rows(existing, candidates):
     year), and a re-observation whose numbers and completeness are unchanged.
     A genuine restatement always lands.
     """
-    view = latest_view(existing)
+    view = latest_view(existing, schema)
     out = []
     for record in candidates:
-        held = view.get((record["date"], record["source_type"]))
+        held = view.get(schema.key(record))
         if held is None:
             out.append(record)
             continue
@@ -864,7 +911,8 @@ def new_rows(existing, candidates):
             continue
         if held["complete"]:
             continue
-        same = all(held.get(name) == record.get(name) for name in _METRIC_COLUMNS)
+        same = all(held.get(name) == record.get(name)
+                   for name in schema.metric_columns)
         if same and held["complete"] == record["complete"]:
             continue
         out.append(record)

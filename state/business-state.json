@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
           "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
@@ -110,32 +110,8 @@
         }
       },
       "funnel_from_treestock": {
-        "drip_email": "DEC-240 / DAL-173: tools/scrapers/send_treesmith_intro.py mails the Treesmith intro to each NEW treestock subscriber 7 days after signup, once only (data/treesmith_intro_sends.json). Nightly cron at 23:30 UTC. It is a logged no-op until /opt/dale/data/treesmith-intro-enabled exists: Benedict approves the copy first (proof-of-concept sent to him 2026-07-30). DRIP_START_DATE 2026-07-30 excludes the 13 existing subscribers, who belong to the separate one-time broadcast DAL-221. utm_content=intro_email on the landing link.",
-        "status": "DEMOTED from strategy to decoration (DEC-241). The cross-promo stays because it is honest and free, but no new treestock->Treesmith funnel tickets until DAL-241's August re-measure shows whether ANY surface produces a store click. If it is still 0-1, stop.",
-        "remeasured_2026_08_27": {
-          "decision": "DEC-325 / DAL-241 (Done). The scheduled 4-week re-measure after DEC-239's tagging.",
-          "verdict": "DEAD on the exit test this ticket set for itself. Cross-promo is decoration, not a monetisation path.",
-          "outbound_clicks_30d_sitewide": 2044,
-          "visitors_reaching_treesmith_html_30d": 9,
-          "clicks_to_apps_apple_com_30d": 0,
-          "clicks_to_play_google_com_30d": 0,
-          "clicks_life_to_date_6mo": "3,132 outbound clicks total; 1 ever to the App Store, 0 to Play, 6 to treesmith.app.",
-          "traffic_grew_while_store_clicks_fell": "Outbound clicks 1,245 -> 2,044 (+64%) over the window; store clicks 1 -> 0.",
-          "zero_was_verified_not_assumed": "DEC-249 check run before calling it a zero: the utm_content tags are live and correct in the deployed web root on all five surfaces (homepage/species/variety/landing/rootstock), /treesmith.html carries script.outbound-links.js, and both store badges are genuine <a href> links to apps.apple.com and play.google.com. A click would have been recorded.",
-          "the_tag_could_never_have_worked": "visit:utm_content is a SESSION-ENTRY dimension. Plausible fixes acquisition attributes when a session starts and does not update them on an internal navigation. Of 9 visitors to /treesmith.html, exactly 1 carried a utm_content, and that one's entry page WAS /treesmith.html (arrived from outside). The other 8 clicked a tagged promo block mid-session and Plausible recorded no tag. A UTM parameter on an internal link is inert: a tag only works on something that STARTS a session.",
-          "entry_page_substitute": {
-            "note": "visit:entry_page for sessions that viewed /treesmith.html, 30d. n=9, direction only, and entry page is not the page the CTA was clicked on.",
-            "species+state": 3,
-            "species": 3,
-            "variety": 2,
-            "treesmith_html_direct": 1,
-            "homepage": 0,
-            "category_landing": 0,
-            "implication": "The two surfaces DAL-219 added (homepage, landing) are the two showing zero, and the homepage is the site's largest page. DEC-239 called it 'removes a zero'. It did not."
-          },
-          "sources_of_the_9": "Google 5, Bing 2, chatgpt.com 1, treestock 1.",
-          "consequence": "CLAUDE.md Track B phase 3 still called this the 'New primary monetisation path' three sessions after DEC-241 demoted it. Corrected 2026-08-27 with the numbers and an explicit instruction not to propose funnel, CTA-placement or /treesmith.html conversion work. DAL-220 and DAL-227 stay cancelled: both sit either side of a step measured at 0% pass-through over 3,132 clicks."
-        }
+        "status": "DEAD, measured twice (DEC-241, DEC-325). Re-measured 2026-08-27 on the pre-registered date: 30d = 2,044 outbound clicks sitewide, 9 visitors to /treesmith.html, 0 to either app store; 6mo = 3,132 clicks, 1 App Store click ever. Traffic grew 64% while store clicks went 1 -> 0. Tags verified live first, so the zero is real. The blocks stay (free and honest) but they are decoration. Propose NO funnel, CTA-placement or /treesmith.html conversion work.",
+        "drip_email": "DEC-240 / DAL-173: send_treesmith_intro.py mails the intro to each NEW treestock subscriber 7 days after signup, once. Nightly 23:30 UTC, a logged no-op until /opt/dale/data/treesmith-intro-enabled exists (Benedict approves the copy first)."
       },
       "blocked_on_benedict": "RESOLVED 2026-07-30 (DEC-252). DAL-242 closed: neither lever needed the decision it asked for. Review prompts (DAL-230) are built and enabled, waiting on a store submission, not on Benedict deciding. The free tier cut (DAL-224) is measurably pointless and recommended for cancellation. The one open item is DAL-264, a lookup rather than a decision: confirm in App Store Connect whether the two production purchases are real.",
       "aso_recommendation_pending": {
@@ -271,15 +247,7 @@
         },
         "rank_noise_floor": "AU ranks drift up to 8 positions in 7 days with NO change to name, subtitle, keywords or build. Measured against DEC-247's 2026-07-30 baseline: orchard tracker 3->5, tree tracker 5->9, fruit tree tracker 7->5, bonsai 22->18, citrus 25->17, propagation 35->30, fruit tree journal 40->32. Mean absolute drift 3.3, max 8. Terms where we sit at #1 do not move. DAL-257's pre-recorded prediction ('fruit tree tracker #7 -> top 3') is INSIDE this band and the term is already #5 with no rename shipped, so on its current design that ticket cannot distinguish the rename working from Apple reshuffling. Score the whole 36-term set on US, and re-baseline immediately before submission."
       },
-      "review_prompt_status_2026_08_06": {
-        "decision": "DEC-268 / DAL-230",
-        "ratings": "0 on AU, US and GB, checked per storefront after DEC-262. Live version 1.0.9 (build 52) everywhere; repo is 1.0.10+58.",
-        "correction_to_memory": "My notes said 'PostHog has zero review_prompt_* events, which confirms it is unshipped'. NO LONGER TRUE as of 2026-08-03. review_prompt_suppressed has 18 events (build 58: 12 events / 7 people; build 57: 6 / 3). The gate executes and the analytics are wired correctly. Nothing needs debugging.",
-        "why_it_has_never_fired": "ALL 18 suppressions, 100%, carry reason 'recent_version_change'. kReviewSuppressionWindow = Duration(days: 14) (review_prompt_prefs.dart:61) blacks the prompt out for 14 days after any version change, and 6 builds have shipped since 52, so the window resets before it can expire. The prompt CANNOT fire on a device receiving builds more often than fortnightly. That is correct behaviour, not a bug, and internal testing can therefore never demonstrate it working.",
-        "review_prompt_requested": "0 events, all time.",
-        "blocker": "A public store submission, which only Benedict can make. DAL-230 assigned to him, Dale label removed, moved to Todo.",
-        "expectation": "Gate 8 needs 2 distinct active days and per DEC-254 only ~8-27% of the base reaches that, so expect single-digit asks per month, and a fraction become ratings. Worth shipping because 0 ratings is the worst possible state, not because it produces many."
-      },
+      "review_prompt_status_2026_08_06": "SUPERSEDED, see DEC-268 / DAL-230. Durable facts: the review gate executes and is wired correctly; it has never fired publicly because kReviewSuppressionWindow (review_prompt_prefs.dart:61) blacks it out for 14 days after any version change and we ship more often than fortnightly. Correct behaviour, not a bug. Needed a public submission; 1.0.11 shipped 2026-09-13 and we now hold 1 rating on AU and US, the first ever.",
       "audience_geography": {
         "decision": "DEC-276 / DAL-234 (2026-08-10). Source: RevenueCat 432 customer records (last_seen_country x last_seen_platform), not the 49-device PostHog July slice DEC-256 used.",
         "installs_by_country_platform": {
@@ -316,25 +284,7 @@
         "channels": "Four need no research and Benedict already has standing: WA Rare Fruit Club, Oz Rare Fruit Australia (Tom at Ross Creek admins it), Rare Fruit SA, WAAS newsletter. Facebook group sizes are NOT obtainable from this server (login wall) and must not be invented.",
         "open_action": "DAL-171's WA Rare Fruit Club post has been drafted since April and never sent. DAL-171 was marked Done when the post was DRAFTED. DAL-234 is with Benedict."
       },
-      "release_status_2026_08_12": {
-        "decision": "DEC-278",
-        "checked": "2026-08-12 against itunes.apple.com/lookup, AU/US/GB/JP/DE",
-        "live_version": "1.0.9, released 2026-07-28. 1.0.10 is NOT live and has not been for 15 days.",
-        "live_names": {
-          "au": "TreeSmith: Plant Graft Tracker",
-          "us": "TreeSmith",
-          "gb/jp/de": "TreeSmith: Plant Graft Tracker"
-        },
-        "en_us_still_live": "The US name is still the bare word 'TreeSmith' with no keywords, so DEC-274's en-US deletion has NOT taken effect. While the AU and US names differ, en-US is live.",
-        "queued_behind_one_submission": [
-          "Corrected Pro / cloud-backup copy (live listing still says a A$39.99 one-time purchase includes cloud backup)",
-          "en-US deletion, which also removes the 'up to 50 plants free' line against a real limit of 30",
-          "In-app review prompt, built and kReviewPromptEnabled since build 56, never fired publicly. 0 ratings both stores."
-        ],
-        "why_it_was_missed": "`.last_released_build` is stamped by the deploy script, so TestFlight, in-review and pulled builds all bump it. The manifest promoted that repo marker into a sentence reading as a store fact and put it at the top of every session prompt.",
-        "fixed": "refresh_treesmith_status.py now queries the App Store for AU and US every refresh and writes a live_store block; session-prompt.py renders 'LIVE ON THE APP STORE right now (not the repo)' and flags divergence. Repo line relabelled '(repo markers, NOT the store)'. Deployed and verified.",
-        "posted_to": "DAL-279"
-      },
+      "release_status_2026_08_12": "SUPERSEDED, see DEC-278 for the full record. Durable lesson: `.last_released_build` is stamped by the deploy script, so TestFlight/in-review/pulled builds bump it and it is NOT a store fact. refresh_treesmith_status.py now queries itunes.apple.com/lookup for AU and US every refresh and the session prompt prints the live version. Trust that line, not the repo.",
       "purchase_telemetry_defect": {
         "decision": "DEC-282 (2026-08-13). Re-verified against the mirror at HEAD f20a064.",
         "what": "A completed sale can be recorded as a dismissal. 1 of our 3 production sales is recorded that way in PostHog right now.",
@@ -347,71 +297,22 @@
         "consequence": "Every paywall dismissal rate we have quoted is an upper bound, and PostHog purchase counts are a lower bound. RevenueCat remains the source of truth for money."
       },
       "appstore_funnel_2026_08_27": {
-        "source": "App Store Connect Analytics API, App Downloads Standard (r3) + App Store Discovery and Engagement Standard (r14) + App Store Purchases Standard (r12). Pulled 2026-08-27 by Dale. DEC-321 / DAL-256 / DAL-290.",
-        "period": "2026-04-25 to 2026-08-20 (118 days). Was a ONE_TIME_SNAPSHOT frozen at 2026-08-20; an ONGOING request replaced it 2026-09-07 (DAL-291) and the series advances again. See appstore_discovery_series for what is held.",
-        "impressions": 2225,
-        "impressions_per_day": 18.9,
-        "product_page_views": 103,
-        "get_taps": 61,
-        "first_time_downloads": 51,
-        "redownloads": 4,
-        "purchases": 3,
-        "sales_usd": 77.3,
-        "proceeds_usd": 52.37,
-        "impression_to_download_pct": 2.3,
-        "download_to_purchase_pct": 5.9,
-        "verdict": "NOT a listing failure and NOT a paywall failure. Impression-to-download of 2.3% sits inside Apple's normal band, and 3 of 51 downloads buying a A$39.99 one-time IAP is 5.9%, well above the 1-3% mobile norm. The binding constraint is VOLUME: 18.9 impressions a day. DAL-256 offered three failures and the answer is the first one, discovery, with the other two cleared.",
-        "page_view_ratio_caveat": "103 page views against 51 downloads looks like a broken funnel but is not. 27 of the 51 downloads carry Page Type 'No page': the user tapped Get in the search results list and never opened the product page. Do not compute a page-view-to-download rate from these two columns.",
-        "downloads_by_source": {
-          "App Store search": 32,
-          "App referrer": 10,
-          "Web referrer": 4,
-          "App Store browse": 3,
-          "Unavailable": 2
+        "status": "SUPERSEDED as a frozen snapshot by appstore_downloads_series below, which now advances nightly. Kept for the verdict, which still stands.",
+        "decision": "DEC-321 / DAL-256 / DAL-290. Period 2026-04-25 to 2026-08-20 (118 days).",
+        "funnel": {
+          "impressions": 2225,
+          "impressions_per_day": 18.9,
+          "product_page_views": 103,
+          "get_taps": 61,
+          "first_time_downloads": 51,
+          "purchases": 3,
+          "sales_usd": 77.3,
+          "proceeds_usd": 52.37,
+          "impression_to_download_pct": 2.3,
+          "download_to_purchase_pct": 5.9
         },
-        "territory_funnel": {
-          "AU": {
-            "impressions": 196,
-            "first_time_downloads": 22,
-            "impression_to_download_pct": 11.2,
-            "buyers": 1
-          },
-          "US": {
-            "impressions": 827,
-            "first_time_downloads": 17,
-            "impression_to_download_pct": 2.1,
-            "buyers": 1
-          },
-          "note": "An AU impression converts to a download 5x better than a US one, and AU is only 8.8% of our impressions. This is the same signal as value_per_install but measured at the store rather than inferred from inflated install counts."
-        },
-        "buyers": [
-          {
-            "date": "2026-06-26",
-            "territory": "PK",
-            "source": "App Store search",
-            "page_type": "No page",
-            "download_date": "2026-06-26",
-            "sales_usd": 24.76
-          },
-          {
-            "date": "2026-07-06",
-            "territory": "AU",
-            "source": "App referrer",
-            "page_type": "Store sheet",
-            "download_date": "2026-07-06",
-            "sales_usd": 27.55
-          },
-          {
-            "date": "2026-07-23",
-            "territory": "US",
-            "source": "App referrer",
-            "page_type": "Product page",
-            "download_date": "2026-07-23",
-            "sales_usd": 24.99
-          }
-        ],
-        "anomaly_same_day": "All 3 buyers purchased on their download date. Zero of the other 48 iOS downloads have ever converted, on any later day. The paywall converts at first run or never, so retention work and reminder-to-upgrade work have no evidence behind them yet.",
-        "anomaly_app_referrer": "App referrer supplied 10 of 51 downloads (20%) but 2 of 3 sales (67%). Small n, but it is the only source over-indexing on revenue and it is the one treestock feeds."
+        "verdict": "NOT a listing failure and NOT a paywall failure. Impression-to-download of 2.3% is inside Apple's normal band and 3 of 51 downloads buying a A$39.99 one-time IAP is 5.9%, well above the 1-3% mobile norm. The binding constraint is VOLUME: 18.9 impressions a day.",
+        "page_view_ratio_caveat": "103 page views against 51 downloads is not a broken funnel. 27 of the 51 downloads carry Page Type 'No page': the user tapped Get in the search results and never opened the product page. Do not compute a page-view-to-download rate from those two columns."
       },
       "appstore_discovery_series": {
         "decision": "DEC-332 / DAL-291 (2026-09-17). Emergency exception, commit ac68a0f.",
@@ -435,6 +336,18 @@
         },
         "report_names_its_gaps": "render() now prints any gap inside the post-rename span rather than averaging over it, counted from our first post-rename day so an unobserved window does not read as loss.",
         "guard": "9 new tests in tests/test_appstore_sources.py; 3 proven to fail under the old single-instance read (DEC-326). Full suite 3,686 OK."
+      },
+      "appstore_downloads_series": {
+        "decision": "DEC-334 / DAL-299 (2026-09-17).",
+        "what": "tools/autonomous/appstore_downloads.py reads App Downloads Standard (r3) and App Store Purchases Standard (r12) from the App Store Connect analytics request into nightly CSV series at /opt/dale/data/treesmith-appstore-downloads.csv and treesmith-appstore-purchases.csv, the way appstore_sources.py already reads discovery (r14). Apple's own install and purchase counts, previously unread.",
+        "verified_against": "Reproduced DEC-321's hand pull EXACTLY from the frozen ONE_TIME_SNAPSHOT request: 51 first-time downloads, 4 redownloads, AU 22 / US 17; and 3 purchases, US$77.30 sales, US$52.37 proceeds, AU 1 / PK 1 / US 1. That match is the evidence the reader is right rather than merely plausible.",
+        "held_now": "75 days, 2026-04-30 to 2026-09-14. 67 lifetime first-time downloads, 4 redownloads, 2 restores, 149 updates. First-time by territory AU 29, US 22, then a long single-digit tail. By source: App Store search 42, App referrer 13, Web referrer 6, App Store browse 3, Unavailable 3.",
+        "rate": "0.45 first-time downloads/day over the 113 pre-gap days (51/113); 1.78/day over the 9 observed days 2026-09-06..09-14 (16 downloads). ~4x, but CONFOUNDED and not a verdict: the rename and the 1.0.11 release (2026-09-13) both land inside that window and its two biggest days (5 and 4) ARE the release days. n=9 days.",
+        "r3_window_is_2_days_not_3": "MEASURED across all 9 live instances: each r3 DAILY instance carries exactly [processing_date-2, processing_date-1]. Narrower than r14's 3-day window (DEC-332), so the downloads series is MORE fragile to a missed pull than discovery is. pull_gaps() detects unobserved stretches from pulled_at spacing against that width and the render names them.",
+        "r12_has_no_ongoing_instances": "App Store Purchases Standard has ZERO instances at ANY granularity on the ongoing request as of 2026-09-17. The reader raises NotReady and writes nothing. 'No instances' and 'no sales' would otherwise render identically and only one of them is a fact about the business. Two tests guard this. Purchase history comes from the frozen snapshot only, for now.",
+        "lost_span": "2026-08-21 to 2026-09-05 is UNOBTAINABLE for downloads, the same handover hole that cost discovery 2026-08-21..09-04 (DEC-332). The render prints it as a PULL GAP rather than averaging over it. 47 other days carry no row and ARE real zeroes: at ~1 download a day a quiet day is ordinary, so no_row_days and pull_gaps are deliberately different concepts.",
+        "revenuecat_inflation_reconfirmed": "Apple: 67 lifetime iOS first-time downloads. RevenueCat: ~134 iOS customer records. RevenueCat opens a customer per SDK init, so it roughly DOUBLES the install count. Apple is the source of truth for installs; RevenueCat stays the source of truth for money.",
+        "guards": "tests/test_appstore_downloads.py, 20 tests. Per DEC-326 the two rules that matter were each proven to FAIL before being trusted: reverting the instance merge to summing breaks the overlapping-day test (6 != 3), and disabling the NotReady guard breaks the no-instances test."
       }
     },
     "a_paused_walkthrough": {
@@ -883,15 +796,15 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done — hello@walkthrough.au via Fastmail",
-    "blog": "deployed — walkthrough.au live",
+    "email": "done \u2014 hello@walkthrough.au via Fastmail",
+    "blog": "deployed \u2014 walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
+    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
     "deploy_gap": "There is NO deploy cron (DEC-253). `crontab -l` has the Monday Treesmith digest and the nightly Treesmith drip only. tools/deploy.sh runs from the autonomous session startup hook (18:00-21:00 UTC), so a commit made after the last session of the night sits in git, tested and green, while cron keeps running the stale copy in /opt/dale/autonomous/. Same family as DAL-263 (deploy.sh never restarts subscribe-server). After changing ANYTHING cron executes: diff the repo copy against the deployed copy, run tools/deploy.sh, and verify.",
     "reporting_integrity": "DEC-255 / DAL-261 (2026-07-30): audited every external API reader. Fixed 5 defects. traffic_report.py read 200 of 1,703 GSC query rows and computed a SET DIFFERENCE from the slice, so 9 of the 10 'new queries' in Benedict's daily email were queries we already ranked for and position movers showed 11 of a true 392. resend_report.py kept an unpaginated copy of fetch_emails (the DEC-250 bug in the sibling file): 100 emails became 1,838. resend_report.py also counted delivery as last_event=='delivered', but last_event is the FURTHEST state reached, so every opened/clicked email counted as undelivered and the delivery rate FELL as engagement ROSE (52.5% reported against a true 100% delivered, 0 bounced). daily-digest.py's engagement stamp took one page of 50 issues, and that gates whether Dale strikes (DEC-226), so an unseen signal read as absence. nursery_crm.outbound_clicks ran off a 40-page cap silently and now warns PARTIAL. Audited clean: plausible_stats.py (honest top-N), linear_poller.py, linear_update.py archive-stale, gsc_analysis.py, resend_engagement.py, treesmith_analytics.py, uptime_monitor.py. Guard is tests/test_api_pagination.py, which drives each real fetcher against a saturated first page.",
     "email_reply_path": "DEC-257 CORRECTION to Q46. treestock.com.au's APEX already has Fastmail MX (in1/in2-smtp.messagingengine.com) and has received email the whole time. The defect is narrower and entirely ours: we send From alerts@mail.treestock.com.au, a SUBDOMAIN with no MX, and stocklib/mailer.py:112 sets no Reply-To at all, so replies are addressed somewhere that cannot receive them. Fix is ONE LINE pointing Reply-To at an apex address (DAL-243), not a new service and not a DNS change. Do NOT add MX to the sending subdomain. The same mailbox answers DAL-80's BCC ask via a Fastmail alias + an IMAP-scoped app password (revocable, cannot send); imap.fastmail.com:993 is reachable from this server, verified. Cloudflare Email Routing considered and rejected: MX change on a live domain, a Worker, and a token scope we do not hold, to duplicate a mailbox we already own."
