@@ -461,13 +461,8 @@
           "evidence": "Benedict confirmed submitted, session 2026-08-27"
         }
       ],
-      "open_action": {
-        "owner": "dale",
-        "what": "Category leakage on /nursery/ausnurseries.html: 16 of 459 listings are ornamentals, not fruit. Nine flowering dogwoods, sugar maple, weeping willow, flowering peach/almond/apricot. Touch 1 (2026-08-27) admits this to them and promises a clean-up, so it is now a commitment. Same class as docs/scraper-category-audit.md, a filter tweak not a page bug.",
-        "since": "2026-08-27",
-        "keep_open": true
-      },
-      "notes": ""
+      "open_action": null,
+      "notes": "Category leakage fixed and live 2026-09-17 (DAL-298 / DEC-342). The 16 ornamentals on /nursery/ausnurseries.html are gone: page is now 447 listings, 191 in stock. Fixed at the taxonomy layer in stocklib, not per-nursery, so the same cleanup applied to five other nurseries at the same time. Note the mode:'all' fruit filter for this nursery is a belief, not a measurement, and they do sell willows and dogwoods."
     },
     {
       "key": "diggers",
