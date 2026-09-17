@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
-  "last_updated": "2026-08-27",
-  "session_count": 127,
+  "last_updated": "2026-09-17",
+  "session_count": 128,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -17,8 +17,8 @@
       ],
       "package": "app.treesmith",
       "repos": {
-        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-app",
-        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) \u2014 read-only mirror on dale-server at /opt/dale/treesmith-web",
+        "app": "/Users/bjnoel/Projects/treesmith-app (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-app",
+        "web": "/Users/bjnoel/Projects/treesmith-web (Benedict) — read-only mirror on dale-server at /opt/dale/treesmith-web",
         "mirrors": "DAL-179 / DEC-238: both cloned read-only (push URL disabled + pre-push hook). Refreshed before every autonomous session by tools/autonomous/refresh_treesmith_status.py; manifest at /opt/dale/data/treesmith-status.json is rendered into the session prompt. Read these paths instead of guessing what the app does. Dale proposes app changes; Benedict commits them."
       },
       "status": "live-both-stores",
@@ -73,7 +73,7 @@
           "/terms"
         ],
         "deliberately_excluded": "/catalogue (signed-in, noindex) and /download (device sniff redirects Googlebot Smartphone to Play, so Google canonicalises it away; kept as a redirect utility)",
-        "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
+        "open_seo_gap": "DAL-239: homepage title 'TreeSmith — Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
           "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
@@ -347,7 +347,7 @@
       },
       "appstore_funnel_2026_08_27": {
         "source": "App Store Connect Analytics API, App Downloads Standard (r3) + App Store Discovery and Engagement Standard (r14) + App Store Purchases Standard (r12). Pulled 2026-08-27 by Dale. DEC-321 / DAL-256 / DAL-290.",
-        "period": "2026-04-25 to 2026-08-20 (118 days). The request is a ONE_TIME_SNAPSHOT, so this data is FROZEN at 2026-08-20 and will not advance.",
+        "period": "2026-04-25 to 2026-08-20 (118 days). Was a ONE_TIME_SNAPSHOT frozen at 2026-08-20; an ONGOING request replaced it 2026-09-07 (DAL-291) and the series advances again. See appstore_discovery_series for what is held.",
         "impressions": 2225,
         "impressions_per_day": 18.9,
         "product_page_views": 103,
@@ -411,6 +411,29 @@
         ],
         "anomaly_same_day": "All 3 buyers purchased on their download date. Zero of the other 48 iOS downloads have ever converted, on any later day. The paywall converts at first run or never, so retention work and reminder-to-upgrade work have no evidence behind them yet.",
         "anomaly_app_referrer": "App referrer supplied 10 of 51 downloads (20%) but 2 of 3 sales (67%). Small n, but it is the only source over-indexing on revenue and it is the one treestock feeds."
+      },
+      "appstore_discovery_series": {
+        "decision": "DEC-332 / DAL-291 (2026-09-17). Emergency exception, commit ac68a0f.",
+        "source": "App Store Connect Analytics, App Store Discovery and Engagement Standard (r14), DAILY, ONGOING request 4d8879da-0747-4a0a-b813-cb25da7ba3f5.",
+        "series": "/opt/dale/data/treesmith-appstore-sources.csv (outside git, covered by weekly_backup.sh). Reader: tools/autonomous/appstore_sources.py.",
+        "instances_are_a_rolling_window": "Each DAILY instance carries the three days ending the day before its processing date, so consecutive instances overlap by two days and the span advances daily. They are NOT successive renderings of one report, which is what the code believed. pull() read instances[0] only, so it survived at most two missed nights.",
+        "hole_found": "The series jumped 2026-08-20 straight to 2026-09-10 with no error raised, because a day we do not hold and a day of no traffic sum identically.",
+        "recovered": "2026-09-05 to 2026-09-09, pulled back out of older instances still on Apple's servers.",
+        "lost_permanently": "2026-08-21 to 2026-09-04 (15 days). Fell out of Apple's rolling window during the gap between the snapshot freezing and the ONGOING request being created.",
+        "the_hole_was_biased_not_neutral": "THE POINT. Recovering five days moved the post-rename estimate from 72.3 impressions/day to 59.5: the days the newest-instance read happened to preserve were the busy ones. The defect had been overstating the DEC-247 rename's measured effect by 22%, in the dataset the rename is judged on, in the direction flattering our own change. A gap does not average out, it selects.",
+        "post_rename_read_2026_09_17": {
+          "complete_post_rename_days": 11,
+          "window": "2026-08-20 to 2026-09-14, with 15 days missing inside it",
+          "impressions_per_day_pre_28d": 36.2,
+          "impressions_per_day_post": 59.5,
+          "impressions_per_day_lifetime_108d": 19.1,
+          "search_share_pre_pct": 99.1,
+          "search_share_post_pct": 98.8,
+          "post_window_totals": "655 impressions, 32 page views, 35 taps",
+          "not_a_verdict": "11 days against a pre-window whose daily impressions already ranged 25 to 71. DAL-257's rank re-measure is the other half of the DEC-247 test."
+        },
+        "report_names_its_gaps": "render() now prints any gap inside the post-rename span rather than averaging over it, counted from our first post-rename day so an unobserved window does not read as loss.",
+        "guard": "9 new tests in tests/test_appstore_sources.py; 3 proven to fail under the old single-instance read (DEC-326). Full suite 3,686 OK."
       }
     },
     "a_paused_walkthrough": {
@@ -859,15 +882,15 @@
   },
   "infrastructure": {
     "github": "done",
-    "cloudflare": "done \u2014 walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
-    "hetzner": "done \u2014 dale server (178.104.20.9, CAX11 Nuremberg, ~\u20ac4.39/mo), Caddy + Node 22 + subscribe-server",
+    "cloudflare": "done — walkthrough.au on CF Pages, scion.exchange DNS in separate CF account",
+    "hetzner": "done — dale server (178.104.20.9, CAX11 Nuremberg, ~€4.39/mo), Caddy + Node 22 + subscribe-server",
     "stripe": "pending",
-    "email": "done \u2014 hello@walkthrough.au via Fastmail",
-    "blog": "deployed \u2014 walkthrough.au live",
+    "email": "done — hello@walkthrough.au via Fastmail",
+    "blog": "deployed — walkthrough.au live",
     "question_dashboard": "pending",
-    "autonomous_dale": "live v2.0 \u2014 cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
-    "resend": "done \u2014 dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
-    "treesmith_mirrors": "done \u2014 read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
+    "autonomous_dale": "live v2.0 — cron at 18:00-21:00 UTC (2am-5am AWST, 4 sessions/night), 120-min cap, 200 max turns. Work tracked in Linear (bjnoel/dale). TASK_QUEUE.md deprecated. notion_poller.py retired.",
+    "resend": "done — dale@mail.walkthrough.au + mail.treestock.com.au verified. Full-access analytics key in secrets/resend-readonly.env",
+    "treesmith_mirrors": "done — read-only clones of bjnoel/treesmith-app and bjnoel/treesmith-web at /opt/dale/treesmith-{app,web} (DEC-238)",
     "deploy_gap": "There is NO deploy cron (DEC-253). `crontab -l` has the Monday Treesmith digest and the nightly Treesmith drip only. tools/deploy.sh runs from the autonomous session startup hook (18:00-21:00 UTC), so a commit made after the last session of the night sits in git, tested and green, while cron keeps running the stale copy in /opt/dale/autonomous/. Same family as DAL-263 (deploy.sh never restarts subscribe-server). After changing ANYTHING cron executes: diff the repo copy against the deployed copy, run tools/deploy.sh, and verify.",
     "reporting_integrity": "DEC-255 / DAL-261 (2026-07-30): audited every external API reader. Fixed 5 defects. traffic_report.py read 200 of 1,703 GSC query rows and computed a SET DIFFERENCE from the slice, so 9 of the 10 'new queries' in Benedict's daily email were queries we already ranked for and position movers showed 11 of a true 392. resend_report.py kept an unpaginated copy of fetch_emails (the DEC-250 bug in the sibling file): 100 emails became 1,838. resend_report.py also counted delivery as last_event=='delivered', but last_event is the FURTHEST state reached, so every opened/clicked email counted as undelivered and the delivery rate FELL as engagement ROSE (52.5% reported against a true 100% delivered, 0 bounced). daily-digest.py's engagement stamp took one page of 50 issues, and that gates whether Dale strikes (DEC-226), so an unseen signal read as absence. nursery_crm.outbound_clicks ran off a 40-page cap silently and now warns PARTIAL. Audited clean: plausible_stats.py (honest top-N), linear_poller.py, linear_update.py archive-stale, gsc_analysis.py, resend_engagement.py, treesmith_analytics.py, uptime_monitor.py. Guard is tests/test_api_pagination.py, which drives each real fetcher against a saturated first page.",
     "email_reply_path": "DEC-257 CORRECTION to Q46. treestock.com.au's APEX already has Fastmail MX (in1/in2-smtp.messagingengine.com) and has received email the whole time. The defect is narrower and entirely ours: we send From alerts@mail.treestock.com.au, a SUBDOMAIN with no MX, and stocklib/mailer.py:112 sets no Reply-To at all, so replies are addressed somewhere that cannot receive them. Fix is ONE LINE pointing Reply-To at an apex address (DAL-243), not a new service and not a DNS change. Do NOT add MX to the sending subdomain. The same mailbox answers DAL-80's BCC ask via a Fastmail alias + an IMAP-scoped app password (revocable, cannot send); imap.fastmail.com:993 is reachable from this server, verified. Cloudflare Email Routing considered and rejected: MX change on a live domain, a Worker, and a token scope we do not hold, to duplicate a mailbox we already own."

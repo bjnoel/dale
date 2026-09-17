@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-08-27",
-  "last_session": 127,
+  "last_updated": "2026-09-17",
+  "last_session": 128,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2101,6 +2101,27 @@
         "nursery_open_actions_on_benedict": 3
       },
       "notes": "DEC-330. Emergency exception, not a queued ticket. The session prompt's own snapshot line ('Heritage Fruit Trees: 378 products (0 in stock)') read like seasonality and was not. Heritage shut for 2026 on 08-24 and 503ed for two nights, which the dormancy guard shipped that same day handled. From 08-26 it answered HTTP 200 again with the whole catalogue OutOfStock and unpriced (378/0/1), so ok=true reset consecutive_failures to 0 and we were crawling a closed store ~20 min a night, indefinitely, at a nursery Benedict has a relationship with. Runs got LONGER not shorter because a 503 fails fast and a 200 does not. Fixed by judging a run on what it yielded (is_unproductive) rather than on whether the transport stayed quiet. Checked the far end first and it is NOT a data defect: the live page really serves 200 with schema.org/OutOfStock and no price, so the zero is true and untrusted_nurseries() was deliberately untouched. Base rate measured before shipping: 2 occurrences in 27 nurseries x 200 days, both Heritage this week. Streak is 4 of 5 today, so the threshold was not bent to fire on the case in front of me. Also found the priced_collapse alarm shipped 08-24 for this exact failure could not see it (compares to yesterday; yesterday was a failure with no priced field) and posted that to DAL-292. Deliberately did NOT work treestock:data_quality per the stale-approach prompt. DAL-248 left with Benedict and its Dale label removed: the draft it waits on now exists and the register's open_action points at it."
+    },
+    {
+      "session": 128,
+      "date": "2026-09-17",
+      "categories_worked": [
+        "treesmith:growth"
+      ],
+      "tickets_completed": [
+        "DAL-291"
+      ],
+      "tickets_proposed": [],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 14,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "appstore_post_rename_days_held": 11,
+        "appstore_impressions_per_day_post_rename": 59.5
+      },
+      "notes": "DEC-332. Switched off treestock:data_quality as the stale-approach prompt required. DAL-291 was already answered yes and executed, so the session's job was to VERIFY before closing, and verifying is what found the second defect. Apple's DAILY analytics instances are a rolling three-day window overlapping by two days, not successive renderings of one report as the code's comment claimed, so pull() reading instances[0] survived at most two missed nights. The series had already jumped 2026-08-20 to 2026-09-10 with no error, because a hole and a day of no traffic sum identically. Fixed by reading every instance oldest-first with a newer one REPLACING an older one on shared days (summing would treble the overlap). Recovered 09-05..09-09; 08-21..09-04 are gone. The finding worth keeping: the hole was BIASED, not neutral. Recovering five days moved the post-rename estimate 72.3 -> 59.5 impressions/day, so the defect had been overstating the DEC-247 rename's effect by 22% in the exact dataset that judges it. render() now names gaps instead of averaging over them. 9 tests, 3 proven failing under the old read."
     }
   ],
   "override": null

@@ -14687,3 +14687,73 @@ history: 139 of 167 bare root lines showed in stock at some point this winter, w
 also contradicts the register note that those lines "only ever show as out of
 stock". Guildford stays `cold`, with a Dale-owned note not to draft anything before
 May 2027. Primal is confirmed as a single order.
+
+---
+
+## DEC-332 — 2026-09-17 — Apple's instances are a rolling window, and reading the newest one lost five days and inflated the rename
+
+**Date:** 2026-09-17 **Tickets:** DAL-291 (Done) **Authority:** Dale autonomous (emergency exception, code, $0)
+
+**Context.** DAL-291 asked Benedict for an ONGOING App Store Connect analytics
+request, because the old one was a `ONE_TIME_SNAPSHOT` frozen at 2026-08-20 and the
+DEC-247 rename experiment could therefore never conclude. He said yes, the request was
+created on 2026-09-07, and this session's job was to confirm it worked before closing.
+
+It worked. Data now runs through 2026-09-14. But the series it produced had a hole in
+it: 2026-08-20, then nothing until 2026-09-10. Nothing raised an error, because a day
+the series does not hold and a day on which nobody looked at the listing sum to exactly
+the same number.
+
+**What was actually wrong.** `appstore_sources.pull` read `instances[0]` and only
+`instances[0]`, on a stated belief written into the code as a comment: *"The newest
+instance carries the report; older ones are earlier renderings of the same request."*
+That is false. Checked against all nine live instances, each DAILY instance carries the
+three days ending the day before its processing date:
+
+| processing date | days carried |
+|---|---|
+| 2026-09-16 | 09-13, 09-14, 09-15 |
+| 2026-09-15 | 09-12, 09-13, 09-14 |
+| 2026-09-08 | 09-05, 09-06, 09-07 |
+
+They are a rolling window that advances daily and overlaps by two days, not renderings
+of one report. Reading only the newest therefore survives at most two missed nights.
+The third missed night drops days out of Apple's window, and nothing will ever hand
+them back.
+
+**The fix (commit ac68a0f).** Read every instance Apple still holds, oldest first, and
+let a newer instance REPLACE an older one for any day the two share. Replace, not sum:
+the overlap is the same day observed twice, and summing would treble it. `NotReady` now
+fires only when no instance has segments, so a newest instance that has not landed yet
+no longer hides the eight behind it. Re-running appends 0 of 24 rows, so it is
+idempotent.
+
+Recovered 2026-09-05..09-09. Lost for good: 2026-08-21..09-04, which fell out of the
+window during the fifteen days the frozen snapshot was producing nothing and nobody
+had yet created its replacement.
+
+**The lesson, and the reason this is logged rather than just fixed.** *The hole was not
+neutral.* It would have been easy to treat recovering five days as tidiness. Recovering
+them moved the post-rename estimate from **72.3 impressions/day to 59.5**, because the
+days the newest-instance read happened to preserve were the busy ones. Reading only the
+newest instance had been overstating the DEC-247 rename's measured effect by 22%, in
+the one dataset the rename is judged on, in the direction that flatters the change we
+made. A gap does not average out; it selects.
+
+Honest current read, 11 complete post-rename days: 36.2 impressions/day in the 28 days
+before the rename, 59.5 after, search share 99.1% -> 98.8%. Still not a verdict, and
+DAL-257's rank re-measure is the other half.
+
+**Second change, same family.** `render` now names any gap inside the post-rename span
+("15 day(s) ... are MISSING from the series, not zero: 2026-08-21 to 2026-09-04")
+instead of quietly averaging over it. Counted from our first post-rename day, so a
+window we have simply not started observing does not read as data loss.
+
+**Guard.** 9 new tests in `tests/test_appstore_sources.py`. Per DEC-326 they were proven
+to FAIL before being trusted to pass: reverted to the single-instance read and 3 of them
+fail, including the decisive one (days only an older instance carries are recovered).
+Full suite 3,686 OK.
+
+**Family.** Same shape as DEC-330 (`ok` is a claim about the transport, not the payload)
+and DEC-249 (a zero and an absence of measurement look identical). New this time: the
+absence was *biased*, not merely missing.
