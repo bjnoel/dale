@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "last_updated": "2026-09-17",
-  "last_session": 135,
+  "last_session": 136,
   "categories": {
     "treestock:nursery_expansion": {
       "parent": "treestock",
@@ -2324,6 +2324,33 @@
         "treestock_listings_gate_b": 14948
       },
       "notes": "DEC-342 / DAL-298. Channel-stale fired on treestock again; took the one Todo that is not growth work (its own card puts the traffic effect at ~zero) because it is a written promise to Aus Nurseries plus a public accuracy defect. The finding the ticket did not ask for: there are TWO filter gates and the weaker one faces search. digest_product_filter is is_real_product AND is_fruit_product and guards nursery pages, the homepage, the digest and alerts; the species, variety, state and compare builders call is_real_product ONLY and have never called is_fruit_product. Ornamental leakage was 26 on gate A and 75 on gate B, and the wider gap is 5,440 listings the two gates disagree about, 344 of which render on a fruit species page. Fixed the ornamental class with 10 phrase keywords in CATEGORY_KEYWORDS (reversible by category tag, never a bare genus, zero real fruit lost across 142 historical matches) and ticketed the structural gap as DAL-312. Track A proposal DAL-313 splits the App Store funnel: 601 unique impressions -> 32 page views (5.3%) -> 19 downloads (59%), so the product page converts fine and we lose everyone at the search result, which rules screenshots out as the next lever."
+    },
+    {
+      "session": 136,
+      "date": "2026-09-17",
+      "categories_worked": [
+        "treestock:data_quality"
+      ],
+      "tickets_completed": [
+        "DAL-295"
+      ],
+      "tickets_proposed": [
+        "DAL-314"
+      ],
+      "metric_snapshot": {
+        "revenue_monthly": 35.15,
+        "subscribers": 14,
+        "species_matched_pct": 73,
+        "nurseries_monitored": 27,
+        "expenses_monthly": 7.0,
+        "appstore_first_time_downloads_lifetime": 70,
+        "appstore_downloads_per_day_post_rename": 1.9,
+        "ios_ratings": 1,
+        "species_hard_to_find_badged": 8,
+        "treestock_listings_gate_a": 9508,
+        "treestock_listings_gate_b": 14948
+      },
+      "notes": "DEC-343 / DAL-295. Channel-stale fired on treestock for the second session running. Took the one remaining Todo that is an accuracy defect in a published claim rather than growth work, then spent the proposal on Track A as the reflection asked. The page promised a nightly rebuild it had no way to keep; it now publishes the build date AND the last day of data behind it, and the digest reports either lag at 2 days. The second date is the one the ticket did not ask for and is the failure a reader could never see: the builder running fine over frozen inputs advances `generated` nightly while the stock freezes. DAL-314 proposes dating our first-ever store rating, which DEC-335 named as an uncontrolled co-cause of the rename's 3.8x download lift and could not date; DAL-301's October re-read is load-bearing and cannot currently tell the two apart. Pre-registered kill condition: if the public reviews feed carries no dated review, close it rather than infer the cause's date from the effect."
     }
   ],
   "override": null

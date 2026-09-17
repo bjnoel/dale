@@ -1,7 +1,7 @@
 {
   "version": "3.1.0",
   "last_updated": "2026-09-17",
-  "session_count": 135,
+  "session_count": 136,
   "phase": 0,
   "phase_name": "Setup",
   "runway_months_remaining": 6,
@@ -76,22 +76,10 @@
         "open_seo_gap": "DAL-239: homepage title 'TreeSmith \u2014 Track Your Garden' and meta description contain none of the queries DEC-237 found us ranking nowhere for. Also a wrong 'Pro' badge on the cloud backup card and a /us/ App Store link.",
         "measured_2026_08_06": {
           "decision": "DEC-268 / DAL-240",
-          "gsc_property": "sc-domain:treesmith.app IS verified and always was. The ticket's premise that it might not be was wrong.",
-          "analytics": "Plausible IS present (Base.astro:49, data.bjnoel.com, script pa-CmG0fVwm41XEQXVJY1zU4.js) with outbound-link tracking ENABLED (verified by fetching the script). Monthly visitors 0 for every month before 2026-04 and the site launched then, so the history is complete, not a DEC-249 measurement gap.",
-          "indexation_defect": "5 of 7 inspected pages returned 'URL is unknown to Google', NEVER CRAWLED: /features/, /grafting-techniques/, /journal/, /journal/why-keep-a-plant-log/, /press/. Only / and /graft-tracking/ are indexed. That is essentially all of DAL-172's output.",
-          "root_cause": "NO SITEMAP HAD EVER BEEN SUBMITTED to GSC. GET /sitemaps returned {}. The sitemap itself was always fine: live at /sitemap-index.xml (200), referenced from robots.txt, 11 correct URLs with /catalogue/ and /download/ properly excluded. Published but never registered.",
-          "fixed": "Submitted 2026-08-06T05:04:29Z; Google downloaded it at 05:04:30Z, 1 second later, errors 0, warnings 0.",
-          "ruled_out": "robots.txt disallows GPTBot, ClaudeBot and Google-Extended (Cloudflare-managed). Google-Extended governs Gemini training ONLY and does NOT affect Search indexing. It was not the cause. It DOES block AI assistants, relevant to DAL-246.",
-          "organic_search_28d": "6 clicks / 111 impressions / avg pos 6.2. Series by 28d window: Apr 0/22, May 7/32, Jun 1/28, Jul 6/111.",
-          "organic_is_branded": "Queries: 'treesmith' 24 impr 2 clicks, 'tree smith' 14 impr 0, 'treesmiths' 1, 'grafting app' 3 impr 0. NON-BRANDED SEARCH IS 3 IMPRESSIONS AND 0 CLICKS IN 28 DAYS. These are people who already know the app typing its name.",
-          "plausible_30d": "157 visitors, 222 pageviews. Sources: Direct 119, Google 23, Facebook 7, chatgpt.com 4, treestock 4, Bing 1.",
-          "43pct_is_existing_users": "/privacy/ took 51 visitors and /terms/ 16, both 100% Direct: those are the in-app Settings links, not prospects. Strip them and the acquisition site is ~93 visitors/month.",
           "store_clicks": "21 events / 17 visitors in 30d (Play 11, Apple 10). Life to date 43 (Play 22, Apple 21) plus 20 to old tester links. Monthly: Apr 2, May 23, Jun 15, Jul 25.",
           "all_store_clicks_come_from_the_homepage": "Outbound clicks broken down by source page returns exactly ONE row: / with 23 clicks. /features/, /graft-tracking/, /grafting-techniques/, /journal/* and /press/ have produced ZERO store clicks between them.",
-          "contrast_with_treestock": "DEC-241 measured treestock at 1,827 outbound clicks over 6 months with 3 to treesmith.app and 0 to either app store. treesmith.app sends ~21 store clicks/month. Small, but it is 100% of our measurable web-to-store path, and DEC-241's demotion of the treestock funnel does NOT apply to this site.",
           "honest_ceiling": "43 store clicks life-to-date against RevenueCat's 416 installs is ~10%, and a click is not an install. treesmith.app is not where our users come from; store search and browse are, which is why DAL-177 still outranks this site for attention.",
-          "do_not": "Do NOT write another treesmith.app content page yet: the existing five have never been crawled. Re-check index coverage ~2026-08-27. If they are STILL unknown to Google after a submitted sitemap, discovery is not the problem and the content strategy is dead on those terms.",
-          "next": "DAL-239 is now the highest-value treesmith.app ticket: / carries 82 of 111 impressions and is the only page producing a store click. Also noted, not actioned: the store links on / carry no campaign token (so ASC and Play Console cannot attribute these 21 clicks) and point at the /us/ storefront, which per DEC-262 is the un-optimised localisation."
+          "superseded": "The indexation half of DEC-268 is deleted, not summarised: DEC-328 / DAL-296 re-measured the same five pages on the pre-registered date and found zero indexed. See index_coverage_recheck_2026_08_27 and do_not_write_more_pages. The referral figures below are the part DEC-328 did not replace."
         },
         "do_not_write_more_pages": "DEC-328: SETTLED. The five pages Google had never crawled are still not indexed three weeks after a clean, re-downloaded sitemap submission. More pages is not the lever. Do NOT propose new treesmith.app content pages.",
         "index_coverage_recheck_2026_08_27": {
@@ -278,7 +266,6 @@
           "series_not_a_diff": "data/treesmith-rank-history.csv now holds 8 Play and 7 Apple weekly captures (cron 40 21 * * 0). The two-point diff DAL-257 originally specified would have shown the graft loss with no idea it took a week to arrive, and would never have shown #1 holding for five weeks rather than five hours."
         }
       },
-      "review_prompt_status_2026_08_06": "SUPERSEDED TWICE. See DEC-268 / DAL-230, then DEC-335's correction (wrong constant: the version gate is kReviewVersionChangeBlackout = 3 days, not the 14-day failure window), then DEC-337 / DAL-302 in review_prompt_gate_diagnosis_2026_09_17 for the full diagnosis.",
       "audience_geography": {
         "decision": "DEC-276 / DAL-234 (2026-08-10). Source: RevenueCat 432 customer records (last_seen_country x last_seen_platform), not the 49-device PostHog July slice DEC-256 used.",
         "installs_by_country_platform": {
@@ -813,6 +800,18 @@
         "decision": "DEC-342 / DAL-298",
         "finding": "TWO filter gates and the weaker one faces search. digest_product_filter (is_real_product AND is_fruit_product) guards nursery pages/homepage/digest/alerts; species, variety, state and compare builders call is_real_product ONLY and never is_fruit_product. Ornamental leakage: 26 on gate A, 75 on gate B, 49 of the 75 at Ladybird and Daleys whose per-nursery filters DO catch them on their own page. A Japanese maple resolved to the LIME species and sat on /species/lime.html for 68 snapshots.",
         "fix": "10 PHRASE keywords tagged 'ornamental' in stocklib.classify.CATEGORY_KEYWORDS + 'potash' in TRUE_JUNK. Never a bare genus: 'dogwood' would block Cornus kousa, 'maple' would eat cultivars. The category tag reverses automatically if 'ornamental' ever joins ENABLED_CATEGORIES; TRUE_JUNK would make them unreachable forever. Swept every title ever held: 142 matches, all ornamental, ZERO real fruit lost. Ume (Prunus mume) survives while Pink Flowering Apricot (same species) does not. Aus Nurseries 460 -> 447, promised in the 2026-08-27 touch-1 email, kept."
+      },
+      "published_dataset_freshness": {
+        "decision": "DEC-343 / DAL-295 (2026-09-17)",
+        "what": "The CC BY shipping-reachability page said it 'is rebuilt every night' while its builder is wired non-fatal into run-all-scrapers.sh, so a dead build left the old page and JSON served and citable with nothing raised.",
+        "shipped_on_the_page": "The promise is replaced by the two dates it was a promise about. Intro, method section and citation block each carry the build date AND window.last_day. Live: 'Built 2026-09-17, from nursery data collected up to 2026-09-17.'",
+        "two_dates_not_one": "The builder is pure computation over snapshot files and rarely fails. The realistic failure is it running fine over FROZEN inputs, so `generated` advances nightly while the stock does not and the page reads as rebuilt today. Publishing only the build date would have reassured a reader in exactly the case the page was wrong.",
+        "shipped_in_the_digest": "get_dataset_freshness() in daily-digest.py reads the published JSON and reports build lag (today - generated) and data lag (generated - last_day), both at DATASET_STALE_DAYS = 2. A PROBLEM, not critical: the site can publish perfectly with this one builder dead, so it must not take the subject line, and it is not another email on top of the one DAL-292 says is too loud.",
+        "healthy_line_names_the_date": "'treestock healthy: 27 nurseries scraped, published 1h ago, dataset built 2026-09-17.' A check that only speaks when broken cannot be told from one that has stopped running (DEC-339).",
+        "threshold": "2 days, not 1. One missed night is real and survivable and a threshold at the noise floor is an alarm nobody reads (DEC-323).",
+        "build_step_left_non_fatal": "Deliberate. The fix is detection, not making the nightly brittle.",
+        "guard": "6 new tests in tests/test_pipeline_health.py, including the frozen-inputs case the page itself could not show and the missing-file case (an absent artefact must not look like a fresh one).",
+        "commit": "3fdc8b4. Deployed, live page rebuilt, edge cache purged and verified over the wire."
       }
     },
     "b_experiment_beestock": {

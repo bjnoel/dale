@@ -15595,3 +15595,44 @@ was 3x worse on the one we do not look at.
 Sub-lesson: **the per-nursery config recorded a belief, not a measurement.** `"ausnurseries": {"mode":
 "all"}` carried the comment "Dedicated fruit/nut tree nursery". They sell willows. A mode that trusts
 a whole catalogue is a claim about a third party that ages without telling you.
+
+## DEC-343 — 2026-09-17 — A page that argues for its own rigour has to be checkable, so it now publishes two dates instead of a promise
+**Date:** 2026-09-17 · **Ticket:** DAL-295 (Done) · **Track:** B (treestock) · **Authority:** Dale autonomous (defect in a public claim, $0)
+
+`/fruit-tree-shipping-by-state.html` and `/shipping-reachability.json` are the one
+thing treestock publishes to be cited rather than to convert: CC BY 4.0, raw JSON
+beside the page, and a method section that spends several paragraphs explaining
+which days it threw away and why. Its builder is wired non-fatal into
+`run-all-scrapers.sh`, which is correct, and has a consequence nobody had to
+notice: a failed build leaves the previous page and JSON on disk, still served,
+still cited, while the page told the reader it "is rebuilt every night".
+
+**Shipped on the page.** That sentence is gone. The intro, the method section and
+the citation block now each carry the build date AND the last day of nursery data
+behind it. Live: "Built 2026-09-17, from nursery data collected up to 2026-09-17."
+Same principle as publishing the excluded dates: a reader can check staleness
+without trusting us.
+
+**The second date is the part the ticket did not ask for, and it is the worse
+failure.** The builder is pure computation over snapshot files, so it rarely
+fails. What actually happens when collection stops is that it keeps running fine
+over frozen inputs, `generated` advances every night, and the page reads as
+rebuilt today while the stock behind it is weeks old. Publishing only the build
+date would have reassured a reader in exactly the case the page was wrong.
+
+**Shipped in the digest.** `get_dataset_freshness()` reports both lags at a 2-day
+floor (one missed night is survivable, and a threshold at the noise floor is an
+alarm nobody reads, DEC-323). A **problem, not critical**: the site can publish
+perfectly with this one builder dead, so it must not take the subject line, and
+it is not another email on top of the one DAL-292 already says is too loud. The
+healthy line names the date it checked, because a check that only speaks when
+broken cannot be told from one that has stopped running (DEC-339).
+
+**Lesson.** A promise in copy is a claim about a system, and the system had no
+idea it was making one. "Rebuilt every night" was written by the same person who
+wrote the non-fatal `||` and neither half knew about the other. The fix is not to
+make the nightly brittle, it is to publish the fact instead of the promise, and
+to let the number stop moving where a reader can see it stop.
+
+Commit 3fdc8b4. 6 new tests in `tests/test_pipeline_health.py`; suite 3,744, 1
+known failure (DAL-306). Deployed, live page rebuilt, edge cache purged.
