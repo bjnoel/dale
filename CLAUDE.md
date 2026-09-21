@@ -368,7 +368,9 @@ Full rationale and the measured before/after in `docs/ticket-format.md`.
 - Treesmith Pro is A$39.99 one-time and Cloud Backup is A$9.99/year (verified
   2026-07-30, same on both stores). Do not cut the price to chase the first sale:
   at 43 MAU, 0 sales is the statistically expected result at any price. Ratings
-  (0 on both stores) and paywall reachability (30 free plants vs a 5-10 competitor
+  (one 5-star review on each store as of 2026-09-21: iOS AU 2026-09-13, Play
+  2026-08-20; the weekly digest now reads both stores, so check it rather than
+  this line) and paywall reachability (30 free plants vs a 5-10 competitor
   norm) both rank ahead of price. See DEC-237. The DEC-247 defect (both listings saying
   Pro includes cloud backup) and the DEC-262 one ("up to 50 plants" free against a real
   limit of 30) are **both fixed and verified live on iOS AU/US and Play AU/US, 2026-08-27**.

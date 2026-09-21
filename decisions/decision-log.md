@@ -15783,3 +15783,35 @@ why nothing was tuned to it. 19 new tests. Full suite 3,775 tests, 1 known
 failure (DAL-306); `test_state_file_has_not_ballooned` went red again at
 121,841B and was put back under its ceiling by deleting four superseded Track A
 blocks, not by raising it.
+## DEC-340 (2026-09-21): Weekly TreeSmith mail reads photos added and store reviews
+
+**Ask (Benedict, 2026-09-21):** add photos taken to the weekly email, the review count on
+each store, and the text of any new review.
+
+**What was true.** Photos were not counted anywhere. The app has sent `photo_added` since
+2026-06-08 (566 all time, 100 in the week to 2026-09-21, 10 people) and the digest read only
+`photo_deleted` (1 event, ever). Photos and plants are different counts: 101 plants were
+added the same week, and a photo can land on a plant added months earlier.
+
+Ratings had never been read either, and the CLAUDE.md line "0 on both stores" was already
+wrong: iOS AU holds one 5-star written review (2026-09-13, v1.0.11, "Fantastic log of your
+garden") and Play holds one 5-star written review (2026-08-20, v1.0.10, "Excellent APP...
+Can even set reminder for when to fertilise next!"). Both are from people who found the app
+on their own. Nobody had seen them.
+
+**Change.** `tools/autonomous/store_reviews.py` (stdlib only): iTunes lookup + public RSS
+feed per storefront (AU, US) for iOS; the Play details page for the rating count and the
+`UsvDTd` batchexecute RPC the Play web client uses for review text. Seen review ids persist
+in `/opt/dale/data/treesmith-store-reviews.json`, written only after a successful fetch, so
+a store that fails one week reports its reviews as new the next rather than dropping them.
+`treesmith_analytics.py` gains a "Store ratings and reviews" section, two headline rows
+("Photos added (7d / all time)" and "Store reviews"), and `photo_added` in feature usage
+and liveness. Tests in `tests/test_treesmith_store_reviews.py`.
+
+**Instrument caveat, by design.** Play does not display a rating count until an app has
+enough ratings; below that the page has no marker at all. That renders as "not shown by
+Play yet", never as 0 (DEC-249). Written reviews are counted separately from ratings on
+both stores because a rating is a star tap and a review is a rating with text.
+
+**First mail (2026-09-28) will list both existing reviews as new** and say so. That is
+correct: they are new to the mail.

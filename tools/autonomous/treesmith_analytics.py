@@ -78,6 +78,10 @@ EVENTS = {
     # Content and structure.
     "graft_added": "graft_added",
     "zone_added": "zone_added",
+    # photo_added has fired since 2026-06-08 but was never read: photos are
+    # the second thing people do after adding a plant (566 vs 518 all time on
+    # 2026-09-21) and the digest reported only deletions.
+    "photo_added": "photo_added",
     "photo_deleted": "photo_deleted",
     "plants_bulk_edited": "plants_bulk_edited",
     # Data portability. `data_imported` is the first instrument that can see a
@@ -1030,6 +1034,21 @@ def m_store_listing(_host=None, _key=None):
     return store_listing_check.check()
 
 
+def m_store_reviews(_host=None, _key=None):
+    """Ratings and written reviews on both stores, and which ones are new.
+
+    Benedict's ask (2026-09-21). Ratings rank ahead of price for the first
+    sale (DEC-237) and the digest had never read them; the CLAUDE.md line
+    "0 on both stores" was already stale by the time it was checked. Review
+    text is carried verbatim because a review is the one piece of user
+    feedback that arrives unprompted.
+    """
+    sys.path.insert(0, SCRIPT_DIR)
+    import store_reviews  # noqa: E402 - sibling module
+
+    return store_reviews.check()
+
+
 def m_purchase_reconciliation(host, key):
     """Cross-check `paywall_result` purchase outcomes against `purchase_succeeded`.
 
@@ -1540,7 +1559,7 @@ def m_feature_usage(host, key):
     in six months looks identical to one never shipped if the only window is
     seven days long.
     """
-    names = ("graft_added", "zone_added", "photo_deleted",
+    names = ("graft_added", "zone_added", "photo_added", "photo_deleted",
              "plants_bulk_edited", "activity_logged")
     totals = hogql(host, key, f"""
         SELECT event,
@@ -1912,6 +1931,13 @@ def _headline(metrics):
 
     fu = metrics.get("feature_usage") or {}
     if fu.get("ok"):
+        # Distinct from plants added: a plant can be typed in with no photo,
+        # and a photo can be added to a plant that has been there for months.
+        p = fu["data"]["by_event"].get("photo_added") or {}
+        wk, all_time = p.get("n_7d", 0), p.get("all_time", 0)
+        rows.append(("Photos added (7d / all time)", f"{wk} / {all_time}",
+                     f"{p.get('people_7d', 0)} people this week",
+                     GREEN if wk else GREY))
         a = fu["data"]["by_event"].get("activity_logged") or {}
         wk, all_time = a.get("n_7d", 0), a.get("all_time", 0)
         rows.append(("Activities logged (7d / all time)",
@@ -1949,7 +1975,43 @@ def _headline(metrics):
                      "proceeds after store cut and tax",
                      GREEN if proceeds else GREY))
 
+    sr = metrics.get("store_reviews") or {}
+    if sr.get("ok"):
+        d = sr["data"]
+        rows.append(("Store reviews", _reviews_summary(d["stores"]),
+                     f"{len(d['new'])} new this week"
+                     + (" (first run: all reviews count as new)"
+                        if d.get("first_run") and d["new"] else ""),
+                     GREEN if d["new"] else GREY))
+
     return rows
+
+
+def _store_label(store):
+    if store["store"] == "ios":
+        return f"iOS {store['country']}"
+    return "Play"
+
+
+def _reviews_summary(stores):
+    """`iOS AU 1 (5.0) · iOS US 1 (5.0) · Play not shown (1 written)`.
+
+    Written reviews and ratings are different counts: a rating is a star tap,
+    a written review is a rating with text. Play hides the rating count until
+    the app has enough of them, so `None` is rendered as "not shown", never
+    as 0 (DEC-249).
+    """
+    parts = []
+    for st in stores:
+        n = st.get("rating_count")
+        if n is None:
+            parts.append(f"{_store_label(st)} not shown "
+                         f"({st.get('written', 0)} written)")
+        else:
+            avg = st.get("average")
+            parts.append(f"{_store_label(st)} {n}"
+                         + (f" ({float(avg):.1f})" if avg else ""))
+    return " · ".join(parts) if parts else "no store readable"
 
 
 def render(metrics):
@@ -2536,6 +2598,48 @@ def render(metrics):
                     # clean result must not look alike.
                     kv(f"?? {entry['store']}/{entry['country']} unreadable",
                        entry["error"], RED)
+
+    # Store ratings and reviews. Same surface as the listing: what a buyer
+    # reads before deciding. New review text is quoted in full because it is
+    # the only unprompted user feedback the app receives.
+    sr = metrics.get("store_reviews")
+    if sr:
+        section("Store ratings and reviews")
+        if not sr["ok"]:
+            err("Store reviews", sr["error"])
+        else:
+            d = sr["data"]
+            for st in d["stores"]:
+                n = st.get("rating_count")
+                avg = st.get("average")
+                if n is None:
+                    val = (f"rating count not shown by Play yet  ·  "
+                           f"{st.get('written', 0)} written")
+                else:
+                    val = (f"{n} rating{'s' if n != 1 else ''}"
+                           + (f", {float(avg):.1f} average" if avg else "")
+                           + f"  ·  {st.get('written', 0)} written")
+                kv(_store_label(st), val, GREEN if (n or st.get("written"))
+                   else GREY)
+            for entry in d["unreadable"]:
+                kv(f"?? {entry['store']} unreadable", entry["error"], RED)
+            if d["new"]:
+                kv("New reviews", f"{len(d['new'])}"
+                   + (" (first run: every review is new to this mail)"
+                      if d.get("first_run") else ""), GREEN)
+                for r in d["new"]:
+                    head = (f"{_store_label(r)} {'*' * r['stars']} "
+                            f"{r['date']} by {r['author'] or 'anonymous'}"
+                            + (f", v{r['version']}" if r["version"] else ""))
+                    body = (f"{r['title']}: " if r["title"] else "") + r["text"]
+                    line(f"    {head}")
+                    line(f"      {body}")
+                    html(f'<div style="margin:6px 0 6px 12px;font-size:13px;">'
+                         f'<div style="color:#555;">{_esc(head)}</div>'
+                         f'<div style="border-left:3px solid #ccc;'
+                         f'padding-left:8px;">{_esc(body)}</div></div>')
+            else:
+                kv("New reviews", "none this week", GREY)
 
     # Activation
     section("Activation")
@@ -3132,6 +3236,7 @@ def main():
         "sources": run_metric(m_appstore_sources),
         "downloads": run_metric(m_appstore_downloads),
         "store_listing": run_metric(m_store_listing),
+        "store_reviews": run_metric(m_store_reviews),
         "reconciliation": run_metric(m_purchase_reconciliation, host, key),
         "retention": run_metric(m_retention, host, key),
         "reminders": run_metric(m_reminders, host, key),
