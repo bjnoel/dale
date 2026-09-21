@@ -15870,11 +15870,34 @@ printed a bare count and its dry run listed him as "Would send to".
   the pre-fix tree. One replays his exact payload.
 
 **Data repair.** His `categories` restored to all three. Customer-facing, so it
-was Benedict's call (DAL-262 says no auto-repair), and he made it.
+was Benedict's call (DAL-262 says no auto-repair), and he made it. Backup at
+`subscribers.json.bak-2026-09-21-dec347`.
+
+**Catch-up send, and the trap in it.** Benedict also approved a one-off so the
+missed week was not simply lost. Sent as
+`send_weekly_digest.py --test <addr> --date 2026-09-20`, which is the identical
+digest the other three received on Sunday rather than a fresh one: same subject
+("13 Sep to 20 Sep 2026"), same content window, VIC-filtered, 27 nurseries, 15
+price drops, 208 restocks, 28 new listings. Resend id
+`01a0c1ae-8fb3-700d-8e1e-0dcaca006a2c`, **delivered**.
+
+**`--test` does not write the send log** (`if not test_email:` guards the write).
+So the catch-up on its own would have left `detect_silent_subscribers.py` still
+reporting "has never received one", firing daily until 2026-09-28. He was appended
+by hand to the existing `week-2026-09-20` key, preserving the other three rather
+than clobbering the list, which is what assigning `sends_log[week_key] =
+sent_emails` would have done had the guard not been there. The check now reads
+"14 active subscribers, all receiving". Backup at
+`weekly_digest_sends.json.bak-2026-09-21-dec347`.
+
+Do not append to a send-log key with `--date` pointed at a *future* or unsent
+week: the key is the week-ending date, and writing one early would make the real
+Sunday run treat those addresses as already sent.
 
 **Timing, for the record.** The weekly digest is one batch for everyone, Sundays
 23:00 UTC, not a rolling week from each signup. The 2026-09-20 send had already
-gone out when this was found, so his first digest is 2026-09-27 23:00 UTC.
+gone out when this was found, which is why the missed week needed a manual send.
+His next digest is the ordinary one on 2026-09-27 23:00 UTC.
 
 **The rule.** When a guard is written for one field, check its siblings in the
 same condition. `not cats or not pcats` names two fields; DAL-260 fixed one and
