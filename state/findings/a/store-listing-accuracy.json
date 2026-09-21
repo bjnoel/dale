@@ -1,0 +1,16 @@
+{
+  "claim": "All four storefronts' Pro and cloud-backup copy is verified correct and re-asserted every Monday by store_listing_check.py against entitlement_provider.dart. Do NOT re-fix them.",
+  "date": "2026-08-27",
+  "track": "a",
+  "was": "tracks.a.store_listing_accuracy_defect",
+  "body": {
+    "status": "RESOLVED AND GUARDED 2026-08-27 (DEC-326). All four storefronts verified correct: iOS AU, iOS US, Play AU, Play US. Play was the unverified one and is also correct. Do NOT re-fix these.",
+    "alarm_shipped": {
+      "decision": "DEC-326 / DAL-278 (Done)",
+      "script": "tools/autonomous/store_listing_check.py (--json, --store, --country). Report only, never edits a listing.",
+      "runs": "m_store_listing in treesmith_analytics.py, Mondays 00:00 UTC. Green one-liner when clean, red per-failure lines naming storefront/rule/evidence.",
+      "ground_truth": "freePlantLimit and freeLocationLimit parsed live from entitlement_provider.dart:104-105 on every run, NOT a snapshot of the text.",
+      "not_in_scope_flagged": "The Play SHORT description still reads 'Graft, scion & garden journal for collectors' while the app is named 'Fruit Tree Tracker'. Nothing in it is untrue so the accuracy alarm correctly does not fire. ASO question for DAL-257, not a defect."
+    }
+  }
+}

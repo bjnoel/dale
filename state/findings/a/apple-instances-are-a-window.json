@@ -1,0 +1,29 @@
+{
+  "claim": "Apple's analytics instances are a ROLLING WINDOW, not successive renderings of one report. Reading instances[0] only lost 15 days, and the hole was biased: it overstated the rename by 22%.",
+  "date": "2026-09-17",
+  "track": "a",
+  "was": "tracks.a.appstore_discovery_series",
+  "body": {
+    "decision": "DEC-332 / DAL-291 (2026-09-17). Emergency exception, commit ac68a0f.",
+    "source": "App Store Connect Analytics, App Store Discovery and Engagement Standard (r14), DAILY, ONGOING request 4d8879da-0747-4a0a-b813-cb25da7ba3f5.",
+    "series": "/opt/dale/data/treesmith-appstore-sources.csv (outside git, covered by weekly_backup.sh). Reader: tools/autonomous/appstore_sources.py.",
+    "instances_are_a_rolling_window": "Each DAILY instance carries the three days ending the day before its processing date, so consecutive instances overlap by two days and the span advances daily. They are NOT successive renderings of one report, which is what the code believed. pull() read instances[0] only, so it survived at most two missed nights.",
+    "hole_found": "The series jumped 2026-08-20 straight to 2026-09-10 with no error raised, because a day we do not hold and a day of no traffic sum identically.",
+    "recovered": "2026-09-05 to 2026-09-09, pulled back out of older instances still on Apple's servers.",
+    "lost_permanently": "2026-08-21 to 2026-09-04 (15 days). Fell out of Apple's rolling window during the gap between the snapshot freezing and the ONGOING request being created.",
+    "the_hole_was_biased_not_neutral": "THE POINT. Recovering five days moved the post-rename estimate from 72.3 impressions/day to 59.5: the days the newest-instance read happened to preserve were the busy ones. The defect had been overstating the DEC-247 rename's measured effect by 22%, in the dataset the rename is judged on, in the direction flattering our own change. A gap does not average out, it selects.",
+    "post_rename_read_2026_09_17": {
+      "complete_post_rename_days": 11,
+      "window": "2026-08-20 to 2026-09-14, with 15 days missing inside it",
+      "impressions_per_day_pre_28d": 36.2,
+      "impressions_per_day_post": 59.5,
+      "impressions_per_day_lifetime_108d": 19.1,
+      "search_share_pre_pct": 99.1,
+      "search_share_post_pct": 98.8,
+      "post_window_totals": "655 impressions, 32 page views, 35 taps",
+      "not_a_verdict": "11 days against a pre-window whose daily impressions already ranged 25 to 71. DAL-257's rank re-measure is the other half of the DEC-247 test."
+    },
+    "report_names_its_gaps": "render() now prints any gap inside the post-rename span rather than averaging over it, counted from our first post-rename day so an unobserved window does not read as loss.",
+    "guard": "9 new tests in tests/test_appstore_sources.py; 3 proven to fail under the old single-instance read (DEC-326). Full suite 3,686 OK."
+  }
+}

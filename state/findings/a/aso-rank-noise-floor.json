@@ -1,0 +1,17 @@
+{
+  "claim": "AU ranks drift up to 8 positions in 7 days with nothing shipped, so any rank prediction inside that band cannot be scored. Score the whole 36-term set and re-baseline immediately before submission.",
+  "date": "2026-08-06",
+  "track": "a",
+  "was": "tracks.a.aso_rank_measurement",
+  "body": {
+    "tool": "tools/autonomous/appstore_rank.py (DAL-270). 36 terms in 4 groups, AU and US, iTunes Search API, no credentials. Reports the size of each result set beside every rank so 'absent from 191' is distinguishable from truncation, and renders ERR rather than 'not ranked' on a failed lookup.",
+    "measured_2026_08_06": {
+      "ranked_on_both": 16,
+      "ranked_on_au_only": 5,
+      "ranked_on_us_only": 0,
+      "au_vs_us": "fruit tree tracker 5/6, orchard tracker 5/6, tree tracker 9/54, graft tracker 1/1, citrus tracker 17/34, seedling tracker 12/40, propagation tracker 30/63, fruit tree journal 32/83, harvest tracker 97/none, treesmith 1/1. Median rank roughly doubles on US.",
+      "attribution_NOT_established": "The obvious story (the missing 'Tracker' in the US name causes the gap) fails its own control: terms with no 'tracker' in them are also worse on US, 8 of 11, median 32 vs 83. This data cannot separate 'un-optimised listing' from 'more competitive store'. The listing defect is verified; its share of the rank gap is not."
+    },
+    "rank_noise_floor": "AU ranks drift up to 8 positions in 7 days with NO change to name, subtitle, keywords or build. Measured against DEC-247's 2026-07-30 baseline: orchard tracker 3->5, tree tracker 5->9, fruit tree tracker 7->5, bonsai 22->18, citrus 25->17, propagation 35->30, fruit tree journal 40->32. Mean absolute drift 3.3, max 8. Terms where we sit at #1 do not move. DAL-257's pre-recorded prediction ('fruit tree tracker #7 -> top 3') is INSIDE this band and the term is already #5 with no rename shipped, so on its current design that ticket cannot distinguish the rename working from Apple reshuffling. Score the whole 36-term set on US, and re-baseline immediately before submission."
+  }
+}

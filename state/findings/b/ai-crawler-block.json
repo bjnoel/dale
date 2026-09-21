@@ -1,0 +1,22 @@
+{
+  "claim": "Cloudflare 403s EVERY AI crawler on treestock and treesmith, including the answer bots we want, so robots.txt publishes a permission the edge does not honour. Dale's token cannot change it; DAL-246 is Benedict's.",
+  "date": "2026-08-06",
+  "track": "b",
+  "was": "tracks.b.ai_crawler_block",
+  "body": {
+    "decision": "DEC-269 / DAL-246 (2026-08-06). Measured, not fixed: Dale has no Cloudflare access.",
+    "finding": "Cloudflare returns 403 to every AI crawler on treestock.com.au AND treesmith.app, including the answer/citation bots (OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-User, Claude-User, Claude-SearchBot) as well as the training bots we do want blocked (GPTBot, CCBot, ClaudeBot, Bytespider, Amazonbot, meta-externalagent).",
+    "not_spoof_protection": "Controls rule it out. Spoofed Googlebot, bingbot and DuckDuckBot from this datacentre IP all return 200, as do curl, wget, python-urllib, a plain Chrome UA and a made-up 'TotallyMadeUpBot/9.9'. The rule matches AI crawler user agents specifically.",
+    "origin_is_innocent": "Same request straight to Caddy via --resolve treestock.com.au:443:127.0.0.1 returns 200. Nothing in /etc/caddy matches these agents. Block body is 'Your request was blocked.' (25 bytes, text/plain), not a standard Cloudflare challenge page.",
+    "zone_scoped": "treestock.com.au blocked, treesmith.app blocked, beestock.com.au (also proxied, cf-ray present) serves 200 to all 15 AI UAs. Per-zone setting.",
+    "the_contradiction": "/robots.txt returns 200 to OAI-SearchBot while /llms.txt, /sitemap.xml and /species/olive.html return 403 to the identical request. Our robots.txt states Content-Signal: search=yes, ai-input=yes and says the answer/search crawlers are 'intentionally NOT listed'. We publish a permission the edge does not honour.",
+    "llms_txt": "Built by tools/scrapers/build_llms.py, current (rebuilt 00:39 UTC 2026-08-06, 18.7 KB, good content), served at /llms.txt, 200 to browsers and 403 to every AI agent it was written for. Not referenced from robots.txt or any sitemap.",
+    "block_has_not_killed_the_channel": "DAL-188 flipped the proxy on 2026-05-18. chatgpt.com referrals by month: Apr 13, May 15, Jun 19, Jul 104. The channel grew 5x AFTER the block. Likeliest mechanism: ChatGPT search leans on Bing's index and bingbot is allowed (Bing sends 870 visitors/6mo). Do NOT claim the block is costing us the referrals; it is not supported.",
+    "suggestive_only": "Perplexity relies on its own crawler, both its agents are blocked, and it has sent 3 visitors in 6 months against ChatGPT's 151. Perplexity is a far smaller product, so this is consistent-with, not evidence.",
+    "what_it_does_cost": "ChatGPT-User is the fetch that fires when a user asks the assistant to open or verify a page. Our proposition is today's price and stock; a blocked assistant cannot quote a current price.",
+    "landing_pages": "Diffuse. 30 entry pages over 6 months, top one is 5 visitors, spread across /species/*, /buy-*-trees-<state>.html, /variety/*, /compare/*, /nursery/*. Deep-link answers off an index, not one viral URL.",
+    "value_today": "104 visitors/mo x 0.28 outbound clicks/visitor (DEC-249) x 6.8c (DEC-248) is about A$2/mo. The argument is the trajectory (13 -> 104) and that it is the only non-Google source growing. Facebook went 420/6mo to 22/30d.",
+    "dale_cannot_fix": "Our Cloudflare token is refused on bot_management, settings, firewall/rules and rulesets for zone 87880cb83388c52cf86b0a7037845cb3. Note CLOUDFLARE_ZONE_ID_TREESTOCK in secrets is correct; the token scope is the limit.",
+    "options_for_benedict": "(a) turn the AI block off on both zones and let robots.txt carry the policy, honest cost being that robots.txt is voluntary and Bytespider is known not to honour it; or (b) keep enforcement but block only the training UAs. DAL-246 assigned to him."
+  }
+}

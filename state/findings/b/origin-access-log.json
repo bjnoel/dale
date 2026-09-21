@@ -1,0 +1,18 @@
+{
+  "claim": "treestock had no origin access log, so a fetch of the CC BY dataset we ask people to cite was unobservable. Query strings and client IPs are stripped; Go canonicalises header names, so 'Cf-Connecting-IP delete' silently does nothing.",
+  "date": "2026-09-17",
+  "track": "b",
+  "was": "tracks.b.origin_access_log",
+  "body": {
+    "decision": "DEC-345 / DAL-294 (2026-09-17). Shipped, live, verified over the wire.",
+    "what": "The treestock Caddy site block had no `log` directive, so every measurement treestock had ever made about who visits came from Plausible, a client-side JavaScript tag. A crawler does not run it, curl does not run it, and /shipping-reachability.json is not an HTML page so it cannot run it. A fetch of the CC BY dataset we invite people to cite was unobservable by construction.",
+    "where": "/var/log/caddy/treestock-access.log, JSON, mode 0644, rolled by Caddy itself (10MiB, 10 files, 336h). Outside git. Reader: tools/autonomous/access_log.py, rendered nightly in the daily digest, report only.",
+    "privacy": "Two deliberate omissions, both asserted by tests rather than promised in a comment. (1) The query string is stripped by regexp: /manage.html and /unsubscribe.html carry an HMAC token and the subscriber's email in it, so without this the log is a file of working credentials. (2) The client IP is deleted in all four places it arrives (remote_ip, Cf-Connecting-Ip, X-Forwarded-For, True-Client-Ip, Forwarded). None of the questions the log exists to answer need one.",
+    "canonical_casing_trap": "Go canonicalises header names, so a filter written `Cf-Connecting-IP delete` parses, validates, reloads and does NOTHING. Caught in a scratch Caddy on port 8791 before it went near the live file: the first attempt logged the visitor IP. Pinned by tests/test_access_log.py::CaddyfileTests.",
+    "the_third_question_is_unanswerable_and_says_so": "DAL-294 asked for the volume of AI crawlers the Cloudflare block (DEC-269) turns away. An ORIGIN log cannot answer that: a 403 issued at the edge never reaches us. The digest line says it counts what gets PAST the block, not what the block refuses. That number needs the block off, which is DAL-246 and Benedict's toggle.",
+    "known_limit": "This is the origin log. Cloudflare serves its cached assets without asking us, so /styles.css and /dashboard.js are undercounted by an unknown amount. HTML is not cached by default, which is the part these questions are about.",
+    "first_reading": "11 origin requests in the first 5 minutes, including one Googlebot hit on a variety page and one fetch of /shipping-reachability.json. Too thin to conclude anything; no thresholds were set, deliberately (DEC-323, DEC-344).",
+    "answers_when_it_has_run": "1) is the DAL-254 dataset being fetched at all, 2) DAL-250's crawl-budget question, recorded UNKNOWN in DEC-266 for want of exactly this, split by page type so the 2,765-page variety tail is visible against the earners.",
+    "guard": "tests/test_access_log.py, 19 tests. The four Caddyfile assertions were proven failing (3 of 4) against a copy with the casing reverted and the regexp removed."
+  }
+}

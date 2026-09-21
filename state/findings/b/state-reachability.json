@@ -1,0 +1,45 @@
+{
+  "claim": "WA is NOT the cut-off state the WA community assumes: it reached 117 of 119 species. TAS has that problem, with 74 of 119 never once buyable there. The hard-to-find badge must share the dataset's denominator.",
+  "date": "2026-09-17",
+  "track": "b",
+  "was": "tracks.b.availability_history",
+  "body": {
+    "measured": "2026-09-17 (DEC-341/DAL-293); dataset DEC-324/DAL-254",
+    "window": "189 measurable days of 197, 8 excluded as scraper outages, 27 nurseries, 119 species",
+    "published": "/fruit-tree-shipping-by-state.html + /shipping-reachability.json, CC BY 4.0, rebuilt nightly",
+    "national_saturation": "100 of 119 species in stock somewhere every measured day. National rarity is largely resolved; the finding is STATE reachability, not species.",
+    "state_reachability_30d_avg_species_per_day": {
+      "VIC": 113.5,
+      "NSW": 113.4,
+      "ACT": 113.4,
+      "QLD": 113.4,
+      "WA": 105.3,
+      "SA": 103.8,
+      "NT": 50.3,
+      "TAS": 29.4
+    },
+    "wa_correction": "WA is NOT the cut-off state despite what the WA rare fruit community assumes; quarantine costs it ~7% of breadth and it reached 117 of 119 species. TAS has the problem WA thinks it has: 74 of 119 never once buyable there.",
+    "hard_to_find_badge": {
+      "badged": 8,
+      "was": 45,
+      "fixed": "2026-09-17, DEC-341. The availability half averaged over LISTINGS, so one nursery's twenty dead variety SKUs outvoted four nurseries carrying one each. 37 species lost the badge; 24 of them had been in stock somewhere every one of the 189 measured days while the site called them hard to find.",
+      "species": [
+        "african-breadfruit",
+        "breadfruit",
+        "sea-celery",
+        "kakadu-plum",
+        "riberry",
+        "muntries",
+        "ruby-saltbush",
+        "quandong"
+      ],
+      "guarantee": "badge and the CC BY dataset now share one rollup and one denominator; agreement asserted over all 119 species by tests/test_rarity_scores.py",
+      "do_not": "do not move HARD_TO_FIND_SCORE (65) to change the badge count; nursery scarcity alone caps at 60, so the threshold is what keeps the claim honest"
+    },
+    "method_caveats": [
+      "availability.json records NO day entry for a delisted product: absence != out of stock.",
+      "Bare-root seasonality is not scarcity; some listings are seed packets, not trees.",
+      "The panel grew from 8 on day one to 27, so early days undercount. The old '19 to 27' claim was wrong and was repeated internally for two months."
+    ]
+  }
+}

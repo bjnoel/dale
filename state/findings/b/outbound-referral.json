@@ -1,0 +1,37 @@
+{
+  "claim": "20% of treestock visitors click through to a nursery. Full-coverage performance referral clears $100/mo at today's traffic above ~1.2% conversion, and only Primal Fruits has a self-serve program.",
+  "date": "2026-08-13",
+  "track": "b",
+  "was": "tracks.b.outbound_referral",
+  "body": {
+    "measured": "2026-07-30 (DEC-241) from Plausible's Outbound Link: Click goal, which treestock_layout.py:36 has recorded since launch and nobody had queried in 126 days.",
+    "visitors_30d": 3220,
+    "outbound_clicks_30d": 1245,
+    "visitors_who_clicked_out_30d": 639,
+    "outbound_rate": "20% of all visitors click through to a nursery. A very high referral rate; the site works as a shopping utility.",
+    "top_destinations_30d": {
+      "ladybirdnursery.com.au": 206,
+      "daleysfruit.com.au": 202,
+      "rosscreektropicals.com.au": 128,
+      "perthmobilenursery.com.au": 82,
+      "ausnurseries.com": 74,
+      "guildfordgardencentre.com.au": 67,
+      "fruitopianursery.com.au": 61,
+      "diggers.com.au": 56,
+      "raynersorchard.com.au": 48,
+      "fruittreecottage.com.au": 47
+    },
+    "affiliate_programs": "All 27 nurseries probed (guessed paths + homepage fingerprints for GoAffPro, Refersion, UpPromote, Tapfiliate, ShareASale, Commission Factory, Impact, Awin, others). EXACTLY ONE has a self-serve program: Primal Fruits Perth (GoAffPro, branded 'Primal Club'), worth 33 clicks/mo (~$0.55/mo). Ladybird and Daleys, a third of all outbound clicks, have none. A first impact.com fingerprint on Ross Creek did not reproduce and is treated as a false positive.",
+    "monetisation_ceiling": "CORRECTED 2026-07-30 (DEC-248). The figures published earlier the same day (~$21/mo conservative, ~$62/mo generous) were an arithmetic error, exactly 10.0x too small on both. On the SAME inputs: 1,245 x 3% x $70 x 8% = $209/mo, and 1,245 x 5% x $100 x 10% = $622/mo. A mid case (1% conversion, $85 order, 8% commission) is 6.8c per click = $85/mo, of which the top 3 nurseries alone are $36/mo and the top 10 are $66/mo. Full-coverage referral therefore CLEARS the $100/mo target at today's traffic on any conversion assumption above roughly 1.2%, and the top 3 nurseries alone cover the A$8.20/mo cash burn about 4x. The DEC-241 conclusion that referral 'does not reach $100/mo' was wrong.",
+    "conversion_rate_is_the_open_question": "The per-click value swings 20x across plausible conversion rates (0.5% to 5%) and we have never measured it. Primal Fruits Perth is the only nursery with a self-serve program (GoAffPro) and it reports conversions automatically, so its 33 clicks/mo are worth far more as a measurement than as the ~$2/mo of commission. DEC-248: join that one first to price every other click on the site.",
+    "product_shape_matters": "Benedict has declined PAID PLACEMENT twice (DAL-148 sponsored listings, DAL-79 featured listing page, /advertise.html suppressed 2026-06-15). He has never been asked about PERFORMANCE REFERRAL, which is a different product: commission on a completed sale, no ad units, no change to result ordering, disclosed. DEC-241 and DEC-245 lumped the two together. Standing ethics rule: ranking stays on list price and must never be influenced by commission.",
+    "status": "DAL-245, assigned to Benedict. Reduced by DEC-248 to a single yes/no on performance referral (not ads), plus one self-serve signup.",
+    "measured_2026_08_13": {
+      "decision": "DEC-282",
+      "note": "Corrected 30d figures after fixing nursery_crm.py. Up from 1,245 clicks on 2026-07-30. The uncontacted share fell from 60% to 36%, which is outreach working, not traffic moving.",
+      "outbound_clicks_30d": 1548,
+      "pct_to_never_contacted": 36,
+      "top_two": "Ladybird 271, Daleys 244"
+    }
+  }
+}

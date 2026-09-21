@@ -1,0 +1,16 @@
+{
+  "claim": "Subscriber gaps are counted in OPPORTUNITIES, not calendar days: a calendar threshold cannot separate 'this person was skipped' from 'nobody was sent anything'.",
+  "date": "2026-08-27",
+  "track": "b",
+  "was": "tracks.b.subscriber_engagement.delivery_alarm",
+  "body": {
+    "decision": "DEC-323 / DAL-262 (2026-08-27). Shipped, wired into run-all-scrapers.sh, deployed and verified from /opt/dale/scrapers.",
+    "script": "tools/scrapers/detect_silent_subscribers.py (--dry-run, --force). Report only, no auto-repair.",
+    "the_cards_rule_was_wrong": "The ticket proposed 'no digest in 14 days'. That false-fires: helenaspring17, sebewa and b@bjnoel all have a 20-day CALENDAR gap 2026-03-31 to 2026-04-20, because the digest was not running at all. A calendar threshold cannot separate 'this person was skipped' from 'nobody was sent anything'.",
+    "what_shipped_instead": "Gaps counted in OPPORTUNITIES: send-log entries on which somebody, anybody, was mailed. Total list silence is a separate finding (sender outage, LIST_SILENT_DAYS=7) and suppresses per-subscriber findings for that channel.",
+    "thresholds_are_measured_not_chosen": "Worst gap for a healthy subscriber in all history is 2 daily and 1 weekly, so MISSED_THRESHOLD is 3 daily / 2 weekly, one clear of the observed noise floor. NEVER_THRESHOLD 3/2 for a subscriber who has never received one.",
+    "backtest": "Replayed over all 169 days of log, rebuilding subscribers and both send logs as at each day: 22 subscriber-alert days, 21 of them muffinmotzy@gmail.com (the real DAL-260 defect, fires 2026-07-20, 14 days before Benedict found it by hand), 1 helenaspring17 (genuinely skipped for her first 3 sends, March). 25 outage days correctly attributed to the sender, where a 14-day calendar rule would have named 3-4 innocent subscribers.",
+    "honest_limit": "A digest is also legitimately skipped when nothing matches a subscriber's state and category filters, and the sender does not record WHY it skipped. The alarm says 'go and look', not 'this is broken'. Stated in the alert email itself.",
+    "state_today": "12 active subscribers, all receiving. Alarm silent."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "claim": "Email is treestock's best channel per head (43.2% open, 13 of 13 engaged) and behaves nothing like treestock editorial pages. The binding constraint on its value is list size, not content or frequency.",
+  "date": "2026-07-30",
+  "track": "b",
+  "was": "tracks.b.subscriber_engagement",
+  "body": {
+    "measured": "2026-07-30 (DAL-231, DEC-250), 90d to 2026-07-30, Resend, PAGINATED",
+    "subscribers": 13,
+    "emails_sent_90d": 521,
+    "opened_90d": 225,
+    "open_rate_pct": 43.2,
+    "clicked_90d": 48,
+    "engaged_subscribers": "13 of 13",
+    "correction": "resend_engagement.py fetched a single page of 100 and ignored Resend's has_more flag, so a report labelled 90 days was reading 9 (2026-07-21..07-30). It reported 81 sends, 39 opens, 8 clicks, 48.1% open rate, 2 subscribers 'never emailed' and 2 'delivered, no open'. All six figures were wrong. With the full 1,836-email history every subscriber is engaged, and the two listed as never emailed are the two best converters (4/4/3 and 4/3/1 sent/opened/clicked). Nothing was broken in the sending; the measurement was broken. Fixed d45e404, now follows the `after` cursor and raises rather than returning a partial history.",
+    "implication": "Email is the best-performing channel treestock has per head, and behaves nothing like treestock editorial PAGES, which DEC-249 measured at 0.01 outbound clicks/visitor. The binding constraint on its value is list size (13), not content or frequency.",
+    "open_defect": "RESOLVED. Code fixed DEC-251, data restored DEC-257. DAL-260 is Done.",
+    "delivery_rate_correction": "DEC-255: 100% delivered, 0 bounced over 90 days (775 emails). The 52.5% the weekly report printed on 2026-07-30 was a classification bug, not a deliverability problem. resend_engagement.py always classified correctly, so DEC-250's 43.2% open rate stands."
+  }
+}

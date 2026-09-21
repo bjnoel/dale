@@ -1,0 +1,11 @@
+{
+  "claim": "9 of 27 nurseries reach a WA address. The guide lives at tools/scrapers/static/wa-rare-fruit-guide.html and sitemap-listed static pages must carry the Plausible script, asserted by a test.",
+  "date": "2026-08-27",
+  "track": "b",
+  "was": "tracks.b.lead_magnet_wa_guide",
+  "body": {
+    "wa_shipping_truth": "9 of 27 nurseries reach a WA address: WA-based = All Season Plants WA, Guildford Garden Centre, Perth Mobile Nursery, Primal Fruits Perth, St Clements Citrus; interstate = Daleys, The Diggers Club, Fruit Salad Trees, Garden Express.",
+    "fixed": "Moved to tools/scrapers/static/wa-rare-fruit-guide.html (deploy.sh owns it, git tracks it). Plausible script added, shipping list corrected, St Clements Citrus added, DEC-246 reachability finding folded in. Live at the next 00:00 UTC deploy.",
+    "guard_shipped": "DEC-323 / DAL-259 (2026-08-27): tests/test_static_page_instrumentation.py. Sitemap-listed pages in tools/scrapers/static/ must carry data.bjnoel.com/js/script; every other static .html must be declared TOKEN_BEARING (manage.html, stop-watching.html: HMAC tokens in the URL, must NOT be tracked) or NOT_PUBLIC (advertise.html, helena.html) with a reason. Matched on the script SRC, not the bare hostname: treestock_layout.py also emits preconnect and dns-prefetch hints carrying data.bjnoel.com that record nothing, so a hostname grep would pass a page with hints and no script. Checked failing-then-passing both directions. Does NOT cover a page hand-written straight into /opt/dale/dashboard/, which is outside git."
+  }
+}

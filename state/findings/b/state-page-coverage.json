@@ -1,0 +1,32 @@
+{
+  "claim": "The one state list is stocklib.registry.BUY_PAGE_STATE_SLUGS (WA/QLD/NSW/VIC/SA). ACT was measured out at 95.8% listing overlap with NSW. Do NOT rank candidate states by our own state-page traffic; that is circular.",
+  "date": "2026-09-17",
+  "track": "b",
+  "was": "tracks.b.seo.state_page_coverage",
+  "body": {
+    "measured": "2026-09-17 (DAL-297 / DEC-338), was 2026-07-30",
+    "note": "SA is LIVE. The one state list is stocklib.registry.BUY_PAGE_STATE_SLUGS (WA, QLD, NSW, VIC, SA); every builder derives from it, guarded by tests/test_buy_page_states.py. SA launches at the MAX_COMBOS_PER_STATE cap of 20 because no growing guide carries an SA overlay yet; the cap exemption now asks for a state overlay, not has_guide(slug), so SA grows as SA overlays are written.",
+    "pages_built": {
+      "western-australia": 70,
+      "new-south-wales": 49,
+      "queensland": 49,
+      "victoria": 49,
+      "south-australia": 20,
+      "tasmania": 0,
+      "northern-territory": 0,
+      "act": 0
+    },
+    "reachable_in_stock_listings": {
+      "VIC": 4672,
+      "QLD": 4240,
+      "NSW": 4240,
+      "SA": 2012,
+      "WA": 1351,
+      "TAS": 188,
+      "NT": 152
+    },
+    "gap": "SA gap CLOSED 2026-09-17. Remaining lever for SA is content, not config: 26 more SA combo pages are held back by the cap and each one is unlocked by writing that species' SA overlay in growing_guides/<slug>.json.",
+    "do_not": "Do NOT rank candidate states by our own state-page traffic (WA 469 visitors/30d, NSW 131, VIC 127, QLD 92, SA 0). That is circular: WA leads because we built 75 WA pages. Plausible visit:region returns empty (no geo database configured), so real visitor geography needs DAL-251 first.",
+    "act_rejected": "ACT was in DAL-297's ask and was measured out (DEC-338). ACT's reachable listing set overlaps NSW's by 95.8% (it differs by one nursery, the-heritage-nursery) and 35 of 49 ACT pages would have carried a product list byte-identical to the live NSW page. Do not add ACT without re-measuring that overlap. TAS (3 nurseries) and NT (3) stay excluded as genuinely thin."
+  }
+}

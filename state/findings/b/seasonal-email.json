@@ -1,0 +1,13 @@
+{
+  "claim": "ONE editorial email a year, late June, bare-root season. Parked to June 2027 and gated on a replyable address. Do not re-propose off-season.",
+  "date": "2026-07-30",
+  "track": "b",
+  "was": "tracks.b.seasonal_email_plan",
+  "body": {
+    "decision": "DEC-250 / DAL-231",
+    "cadence": "ONE email per year, late June/early July, bare-root season. Benedict's call, endorsed.",
+    "rationale": "At 13 subscribers a seasonal send is worth roughly 10-15 outbound clicks, about A$1 at DEC-248's 6.8c mid case. It is a retention lever now and a revenue lever only if the list grows.",
+    "gated_on": "DAL-243 / Q46. A warm editorial email invites replies and replies to us BOUNCE (alerts@mail.treestock.com.au has no MX, stocklib.mailer sets no Reply-To). Do not send until an address exists.",
+    "status": "Parked in Todo for late June 2027. Not sent for the 2026 season."
+  }
+}

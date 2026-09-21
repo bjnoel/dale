@@ -1,0 +1,7 @@
+{
+  "claim": "Do NOT cut the A$39.99 Pro price: at 43 MAU, 0 sales is the expected result at any price, and $39.99 is roughly one year of a category subscription.",
+  "date": "2026-07-30",
+  "track": "a",
+  "was": "tracks.a.pricing_analysis",
+  "body": "DEC-237 / DAL-225 (2026-07-30): $39.99 one-time is ~1 year of a category subscription (Grove $39.99/yr, Croppa $36/yr, FruitForest $49.99/yr, Planta $69.99/yr) and Planter sells lifetime at exactly $39.99, so the level is defensible. Do NOT cut the price: at 43 MAU, 0 sales is the expected result at any price (43 x 2% = 0.9), and a 30-plant free tier means almost nobody sees the paywall. Revisit price only once paywall views clear ~200/month."
+}

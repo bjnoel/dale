@@ -1,0 +1,18 @@
+{
+  "claim": "The CC BY page publishes TWO dates, build date and data window, because a builder running fine over FROZEN inputs is the realistic failure and a single date would reassure a reader in exactly that case.",
+  "date": "2026-09-17",
+  "track": "b",
+  "was": "tracks.b.published_dataset_freshness",
+  "body": {
+    "decision": "DEC-343 / DAL-295 (2026-09-17)",
+    "what": "The CC BY shipping-reachability page said it 'is rebuilt every night' while its builder is wired non-fatal into run-all-scrapers.sh, so a dead build left the old page and JSON served and citable with nothing raised.",
+    "shipped_on_the_page": "The promise is replaced by the two dates it was a promise about. Intro, method section and citation block each carry the build date AND window.last_day. Live: 'Built 2026-09-17, from nursery data collected up to 2026-09-17.'",
+    "two_dates_not_one": "The builder is pure computation over snapshot files and rarely fails. The realistic failure is it running fine over FROZEN inputs, so `generated` advances nightly while the stock does not and the page reads as rebuilt today. Publishing only the build date would have reassured a reader in exactly the case the page was wrong.",
+    "shipped_in_the_digest": "get_dataset_freshness() in daily-digest.py reads the published JSON and reports build lag (today - generated) and data lag (generated - last_day), both at DATASET_STALE_DAYS = 2. A PROBLEM, not critical: the site can publish perfectly with this one builder dead, so it must not take the subject line, and it is not another email on top of the one DAL-292 says is too loud.",
+    "healthy_line_names_the_date": "'treestock healthy: 27 nurseries scraped, published 1h ago, dataset built 2026-09-17.' A check that only speaks when broken cannot be told from one that has stopped running (DEC-339).",
+    "threshold": "2 days, not 1. One missed night is real and survivable and a threshold at the noise floor is an alarm nobody reads (DEC-323).",
+    "build_step_left_non_fatal": "Deliberate. The fix is detection, not making the nightly brittle.",
+    "guard": "6 new tests in tests/test_pipeline_health.py, including the frozen-inputs case the page itself could not show and the missing-file case (an absent artefact must not look like a fresh one).",
+    "commit": "3fdc8b4. Deployed, live page rebuilt, edge cache purged and verified over the wire."
+  }
+}

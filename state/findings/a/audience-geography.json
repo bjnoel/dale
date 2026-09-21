@@ -1,0 +1,42 @@
+{
+  "claim": "On iOS, the only platform that has ever produced revenue, AU is 43% of installs. Australians install on iOS and Americans on Android, so the platform asymmetry is the point.",
+  "date": "2026-08-10",
+  "track": "a",
+  "was": "tracks.a.audience_geography",
+  "body": {
+    "decision": "DEC-276 / DAL-234 (2026-08-10). Source: RevenueCat 432 customer records (last_seen_country x last_seen_platform), not the 49-device PostHog July slice DEC-256 used.",
+    "installs_by_country_platform": {
+      "AU": {
+        "ios": "58 was WRONG (RevenueCat). Apple: 22 first-time downloads (DEC-321).",
+        "android": 36,
+        "total": 94,
+        "ios_share_pct": 61.7
+      },
+      "US": {
+        "ios": "66 was WRONG (RevenueCat). Apple: 17 first-time downloads (DEC-321).",
+        "android": 247,
+        "total": 313,
+        "ios_share_pct": 21.1
+      },
+      "other": {
+        "ios": 10,
+        "android": 15,
+        "total": 25,
+        "ios_share_pct": 40.0
+      }
+    },
+    "headline": "On iOS, the only platform that has ever produced revenue, AU is 43% of installs. DEC-256's '18% AU' blended in Android, which is 69% of installs and 0% of revenue.",
+    "compounding_effect": "Australians install on iOS (62%), Americans install on Android (21% iOS). So the average AU install lands on the platform that converts (~5.9%, DEC-340) and the average US install lands on the one converting at 0.0%. The platform asymmetry is the point; the old '2.3%' figure quoted here was the pre-DEC-340 wrong-denominator rate.",
+    "not_a_launch_artefact": "iOS AU share by month: Apr 42%, May 46%, Jun 37%, Jul 32%, Aug 40%.",
+    "retention_au_vs_us": {
+      "bar": "seen again on a day later than install; weakest available bar, applied identically to both",
+      "ios": "AU 21.4% (9/42) vs US 7.4% (4/54), Fisher one-sided p = 0.046",
+      "android": "AU 25.8% (8/31) vs US 1.4% (3/217), p < 0.0001",
+      "controlled": "Excludes 19 AU records that are pre-release builds (0.x) or predate the 2026-04-24 public listing, i.e. Benedict and the WA testers. The effect got LARGER after exclusion and holds on each platform independently."
+    },
+    "value_per_install": "SUPERSEDED by appstore_funnel_2026_08_27.territory_funnel, which measures the same thing at the store instead of on RevenueCat's inflated counts. Direction held: AU converts far better than US (11.2% vs 2.1% impression-to-download). Magnitude was understated, not over.",
+    "does_not_reach_the_target": "At ~19c per AU install, $100/mo needs ~530 AU installs/month against the ~14 we get. The Australian community is our best-quality audience and the only one Benedict can reach; it is not a revenue plan.",
+    "channels": "Four need no research and Benedict already has standing: WA Rare Fruit Club, Oz Rare Fruit Australia (Tom at Ross Creek admins it), Rare Fruit SA, WAAS newsletter. Facebook group sizes are NOT obtainable from this server (login wall) and must not be invented.",
+    "open_action": "DAL-171's WA Rare Fruit Club post has been drafted since April and never sent. DAL-171 was marked Done when the post was DRAFTED. DAL-234 is with Benedict."
+  }
+}

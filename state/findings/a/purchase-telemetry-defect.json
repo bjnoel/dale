@@ -1,0 +1,17 @@
+{
+  "claim": "A completed sale can be recorded as a dismissal, and 1 of our 3 production sales is. PostHog purchase counts are a lower bound; RevenueCat is the source of truth for money.",
+  "date": "2026-08-13",
+  "track": "a",
+  "was": "tracks.a.purchase_telemetry_defect",
+  "body": {
+    "decision": "DEC-282 (2026-08-13). Re-verified against the mirror at HEAD f20a064.",
+    "what": "A completed sale can be recorded as a dismissal. 1 of our 3 production sales is recorded that way in PostHog right now.",
+    "mechanism": "paywall_screen.dart:213 awaits service.purchasePackage(...), line 217 then does 'if (!mounted) return;'. The await runs up to 8s inside waitForEntitlement (entitlement_service.dart:470) against a 10s call timeout. Dispose in that window and neither capturePurchaseSucceeded nor _fireResult runs, so dispose() at line 89 fires 'dismissed' because _resultFired is still false.",
+    "second_path": "case PurchaseOutcome.cancelled: break; at line 251 fires nothing at all, so a genuine cancel and a dropped sale are indistinguishable.",
+    "evidence": "The Pakistan buyer's paywall_result outcome=dismissed is stamped 23:09:37, the same second RevenueCat recorded the receipt.",
+    "ticket": "DAL-237, retitled from \"instrument paywall views\" (work already done) to the defect, description rewritten, Todo, assigned to Benedict.",
+    "fix_part_1": "Fire the purchase events from inside EntitlementService.purchasePackage rather than the widget callback, and give cancelled its own outcome value. Small, no privacy implications, Benedict commits it.",
+    "fix_part_2": "Push the PostHog distinct id to RevenueCat as a subscriber attribute at configure time so anonymous buyers are attributable. Benedict's privacy call, deliberately separate.",
+    "consequence": "Every paywall dismissal rate we have quoted is an upper bound, and PostHog purchase counts are a lower bound. RevenueCat remains the source of truth for money."
+  }
+}

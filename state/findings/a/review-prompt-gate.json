@@ -1,0 +1,21 @@
+{
+  "claim": "recent_version_change is NOT the binding gate; retention is. 77% of the people who reach the review-prompt code never open the app on a second day. No code change was proposed.",
+  "date": "2026-09-17",
+  "track": "a",
+  "was": "tracks.a.review_prompt_gate_diagnosis_2026_09_17",
+  "body": {
+    "decision": "DEC-337 / DAL-302 (Done, closed on its own pre-registered kill condition). No code change proposed.",
+    "verdict": "recent_version_change is NOT the binding gate. It is gate 6 in an ordered chain and absorbs every new install, because recordAppVersion (review_prompt_prefs.dart:116-129) deliberately stamps a version change on the first launch that records one. So version_changed_at == install_time and gates 6 and 7 are the SAME 3-day condition, asked in that order.",
+    "proof_two_gates_have_never_fired": "Across all 384 review_prompt_suppressed events ever recorded, too_few_active_days and recent_install have fired ZERO times. They are unreachable as ordered. Reasons: recent_version_change 276 events / 131 people, suppressed_after_failure 44/2, asked_recently 34/6, recent_restore 17/1, no_qualifying_moment 13/9.",
+    "kill_condition_met": "DAL-302 pre-registered: if the suppressed people are mostly single-session installs who could never reach gate 8, close without a code change. 101 of 131 (77%) have EXACTLY ONE lifetime active day against kReviewMinActiveDays = 2.",
+    "per_ask_classification": "209 of 276 suppressions (76%) would have been refused by gate 7 or 8 anyway. 67 asks across 20 people would have cleared both. Of those 67: 43 the user returned inside the window, 12 after it, 12 asks across 11 people permanently lost (never seen again).",
+    "the_blackout_defers_it_does_not_block": "5 of the 6 people ever asked (dc6c0ec9, a9a593ca, 13985819, 783e31bd, 6cf9d94f) are themselves in the suppressed set. They hit recent_version_change first and were asked later.",
+    "rare_opener_hypothesis_mostly_wrong": "DAL-302's leading hypothesis (a rare opener re-stamps each update and never banks 3 clear days) holds for 6 of the 20 experienced people, and all six are our thinnest users at ~1 event-day per version. The other 14 banked a 3-clear-day window on a single version.",
+    "the_other_constant_also_fails": "kReviewMinActiveDays 2 -> 1 would open a pool of FOUR people in six weeks. Joining the gate population against plant_count_after (DEC-259 ground truth): 1 active day and >=3 plants = 4 people; >=2 active days and >=3 plants = 10; 1 active day and <3 plants = 97; >=2 days and <3 plants = 20. Same shape as DAL-224 ('would move exactly one person').",
+    "what_is_actually_binding": "Retention, gated three times over by design (install age >=3d, version blackout >=3d, active days >=2, all meaning 'came back later'). 77% of people who reach this code never open the app on a second day. Not a constant, and DEC-261 already put retention downstream of revenue.",
+    "furthest_gate_reached_per_person": "116 stopped at gate 6, 9 reached gate 11 (no_qualifying_moment), 6 asked. Nobody has ever been recorded at gate 7 or gate 8.",
+    "offered_not_ticketed": "Move gate 6 below gates 7 and 8 in evaluateReviewPromptEligibility. All three paths return suppressed, so the outcome is IDENTICAL for every user and only the reason string changes. ~3 lines plus test expectations, buys back two dead reason codes. Benedict's call, his repo; did not earn a backlog slot because his queue depth is the bottleneck (DEC-248).",
+    "constants_for_the_record": "kReviewVersionChangeBlackout 3d (gate 6), kReviewMinTimeSinceInstall 3d (gate 7), kReviewMinActiveDays 2 (gate 8), kReviewAskCooldown 120d, kReviewMaxAsksPerWindow 2 per 365d, kReviewSuppressionWindow 14d (the FAILURE blackout, gate 4, not the version one).",
+    "ratings": "1 rating on AU and 1 on US as of 2026-09-17, the first this app has ever had against 0 at every previous check. 6 people asked. Do NOT quote 33% as a conversion rate; n is far too small."
+  }
+}

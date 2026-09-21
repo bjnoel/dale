@@ -16005,3 +16005,125 @@ you to ignore both.** Same family as DEC-317 (a reading that looks the same
 either way is not evidence) and DEC-285 (a thing written to a log and not to a
 person is a thing nobody learns), with the opposite failure: this was written to
 a person, in the loudest words available, about nothing.
+
+---
+
+## DEC-349 (2026-09-21): the state file was 98.5% findings, and findings should not travel by the byte
+
+**Trigger:** `tests/test_prompt_size` failed while verifying DEC-348. Rendered
+business state was 62,850B against its own 60,000B ceiling, and the file was
+118,580B against a 120,000B one.
+
+DEC-279 fought this in August and won for five weeks. This is why it only won
+for five weeks.
+
+### The file was not a dashboard
+
+| | keys | bytes |
+|---|---|---|
+| Metrics (`subscribers` 20B, `in_stock` 19B, `revenue_total` 21B, `status`…) | 29 | **1,530B** |
+| Findings (investigations, verdicts, diagnoses) | 34 | **101,248B** |
+
+On the server the whole session prompt was 98,274B and this block was **62,921B
+of it, 64%**, sent every hour to carry 1,530B of numbers.
+
+### The assumption that was wrong
+
+I went in expecting a stale tail to prune, because the test's own message says
+point-in-time findings belong in the decision log. Bucketing every finding by
+age:
+
+| age | bytes |
+|---|---|
+| **≤30 days** | **79,024** |
+| 31-60 days | 21,322 |
+| 61-90 days | 0 |
+| >90 days | 200 |
+
+The bloat is *this month's work*. Ageing out everything older than thirty days
+saves 21KB and buys about five weeks, which is exactly what DEC-279 bought.
+Growth, from git:
+
+```
+2026-04-27    4,848B  ┐
+2026-07-23    5,679B  ┘ flat for three months
+2026-07-31   53,852B    9.5x in eight days
+2026-08-13   90,057B    DEC-279's renderer fix lands here
+2026-09-17  118,580B    1,420B under the ceiling; the average finding is 3,000B
+```
+
+So the next session to record a finding would have broken it. Pruning is a
+treadmill. The fix is to stop sending findings by the byte.
+
+### What shipped
+
+**Split by role.** `state/business-state.json` is metrics only, 118,580B ->
+11,129B. Each finding is its own file under `state/findings/<track>/<slug>.json`
+carrying an authored `claim`, a `date`, the path it came from, and the body
+verbatim. 48 files. `tools/state/split_business_state.py` and its manifest are
+committed so the split is re-derivable rather than a thing that happened once
+(DEC-313); it refuses to run rather than half-run, and refuses to leave behind
+any track key not explicitly declared a metric.
+
+**The prompt carries one line per finding.**
+
+```
+2026-09-17  a/recurring-revenue-verdict  Cloud Backup cannot carry $100/mo
+recurring: it needs ~1,200 subscribers against 0. Do NOT quote 2.3% iOS
+conversion; corrected it is 4.0-5.9% and the gap on TOTAL revenue is ~2x.
+```
+
+That is 222 bytes. Its body is 3,892. **The block is now O(number of findings),
+not O(bytes of findings)**: a four-thousand-word investigation costs the same as
+a one-liner. Growth falls from ~16KB/month to ~1.3KB/month, a 12x slower
+treadmill, and both renderers now take a byte budget and degrade under it
+(claim -> date and path -> a named count) rather than breaching and being caught
+afterwards by a test.
+
+Measured, same inputs: **62,850B -> 17,351B.** Prompt 98,274B -> ~52,700B.
+
+### The part that could not be automated, and how I know
+
+I prototyped deriving the claim from the body, looking for a claim-shaped field.
+About a third came out usable:
+
+```
+a/funnel_from_treestock: DEAD, measured twice (DEC-241, DEC-325)
+b/product_filter: TWO filter gates and the weaker one faces search
+```
+
+The rest were worthless, because they found provenance rather than a claim:
+
+```
+b/published_dataset_freshness: DEC-343 / DAL-295 (2026-09-17)
+b/seo: 2026-07-30 (DAL-235, DEC-243), 28d to 2026-07-27, GSC
+b/scraper_health: (no prose field; closed_store_answering_200, alarm_backtest)
+```
+
+The date heuristic did worse: it dated `a/aso_rank_measurement` **2026-10-15**,
+three weeks in the future. The data is right; that is DAL-301's scheduled
+re-read, and "newest date in the subtree" read a future commitment as the date
+of the finding. So both fields are authored, asserted by tests, and a claim that
+opens with `DEC-` or `DAL-` now fails.
+
+### What the migration found on the way
+
+`tracks.b.category_expansion` still read `"status": "pilot-live"` and `"next":
+"P2.8 review on 2026-07-23 decides natives go/no-go"`. That review happened.
+**DEC-227 failed the pilot on three of five criteria and cancelled the natives
+expansion**, and the state file had been saying the opposite for two months.
+Nothing read it closely enough to notice, which is the argument for the split
+stated better than I could state it: a finding buried in a 118KB blob is not
+being read, it is being carried. Its claim now says what DEC-227 decided.
+
+### Guards
+
+`tests/test_prompt_size.py`, 23 tests, four of them proven to fail against the
+real pre-split file. The one that matters is `test_no_finding_was_left_in_the_state_file`:
+any track key over 1,200B fails and names itself, because the file got this way
+one key at a time.
+
+**Lesson: compressing what you send is a different fix from not sending it, and
+only the second one changes the growth rate.** DEC-279 did the first and bought
+five weeks. Same family as DEC-317: the instrument that cannot distinguish two
+cases is not the instrument you need.

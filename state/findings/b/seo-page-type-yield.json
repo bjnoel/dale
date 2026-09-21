@@ -1,0 +1,18 @@
+{
+  "claim": "species+state earns 4.07 clicks/page against variety's 0.19, and the '<species> trees for sale' family already matches our titles, so the constraint is rank not copy. DEC-243 closed the title/meta lever.",
+  "date": "2026-07-30",
+  "track": "b",
+  "was": "tracks.b.seo",
+  "body": {
+    "page_type_yield": {
+      "note": "Paginated figures. gsc_analysis.py previously truncated the page dimension at 500 rows against 2,026 pages, so every earlier page-type CTR in the log is wrong. Variety was reported at 8.0% CTR; it is 2.4%.",
+      "species+state": "128 pages, 17,180 impr, 521 clicks, 3.0% CTR, 4.07 clicks/page",
+      "species": "90 pages, 22,354 impr, 390 clicks, 1.7% CTR, 4.33 clicks/page",
+      "variety": "1,659 pages, 13,543 impr, 322 clicks, 2.4% CTR, 0.19 clicks/page",
+      "compare": "77 pages, 4,786 impr, 121 clicks, 2.5% CTR, 1.57 clicks/page"
+    },
+    "striking_distance": "Almost entirely one query family at position 10-14: '<species> tree(s) for sale'. Species page titles already match it exactly ('Lychee Trees for Sale Australia, Compare Prices'), so the constraint is rank, not copy. DEC-243: do NOT run another meta/title CTR pass; DAL-208's lever is exhausted.",
+    "next": "DAL-249 (expand species+state, best clicks/page) and DAL-250 (test whether the thin variety tail suppresses the earning pages). DAL-216 cancelled as superseded.",
+    "daily_report_correction": "DEC-255: the daily email's GSC 'new queries' and 'position movers' blocks were wrong for the whole life of traffic_report.py (200-row cap on a 1,703-row query dimension, used for a set difference). Do NOT treat any pre-2026-07-30 'new query' observation from the daily digest as evidence. Fixed; DAL-268 re-reads the corrected series."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "claim": "chatgpt.com is the largest non-search-engine referrer (97/30d) and grew 5x AFTER the Cloudflare AI block went on, so do not claim the block is costing referrals. Facebook has collapsed to 22/30d.",
+  "date": "2026-07-30",
+  "track": "b",
+  "was": "tracks.b.referral_sources_30d",
+  "body": {
+    "measured": "2026-07-30",
+    "note": "chatgpt.com is now the largest non-search-engine referrer (97/30d vs 47 over the whole 6mo, so almost all recent) and beats Facebook (22/30d, down from 420/6mo). DAL-246 investigates, including whether DAL-188's Cloudflare bot filtering blocks AI crawlers.",
+    "google": 1773,
+    "direct": 542,
+    "bing": 374,
+    "duckduckgo": 270,
+    "chatgpt.com": 97,
+    "facebook": 22,
+    "rfcarchives.org.au": 2,
+    "chatgpt_by_month_2026": {
+      "04": 13,
+      "05": 15,
+      "06": 19,
+      "07": 104
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "claim": "Fruit-tree-specific competitors now exist (Grove, Rootstock, FruitForest, Trees Diary, Croppa), so do not assert we are alone in the niche. All are on 0 ratings.",
+  "date": "2026-07-30",
+  "track": "a",
+  "was": "tracks.a.competitors_direct",
+  "body": {
+    "verified": "2026-07-30 (DAL-225), AU App Store",
+    "note": "Fruit-tree-specific competition now EXISTS. Two of these launched after Treesmith. All are on 0 ratings, so social proof is winnable ground nobody holds.",
+    "apps": [
+      "Fruit Tree Tracker: Grove (launched 2026-06-28, 0 ratings, 5 trees free, $39.99/yr or $4.99/mo) - tracks species, variety, rootstock, planting date, age, pollinators, harvest. Outranks us on 'fruit tree tracker'.",
+      "Rootstock: Seed & Plant Log (launched 2026-07-17, 0 ratings, free in early release) - seed provenance and crosses, for seed savers and hobbyist breeders.",
+      "FruitForest: Orchard Mapping (2023, 0 ratings, 10 trees free + 1mo trial, $49.99-$99.99/yr) - orchard GPS mapping, cloud sync, team collaboration.",
+      "Trees Diary (2015, 0 ratings, $1.99 paid up front) - per-tree profiles, varieties, map, multi-year history. The cheap counter-anchor, and 0 ratings after 11 years shows cheap does not win.",
+      "Croppa (Australian, 2025-06, 13 ratings, $36/yr, 7-day trial) - vegetable focus, AU planting zones, very actively shipped."
+    ]
+  }
+}

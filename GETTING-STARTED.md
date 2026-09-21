@@ -22,7 +22,7 @@ claude
 
 ```
 Read CLAUDE.md first. Then run the orient protocol — read all state files:
-state/business-state.json, state/active-sprint.md, decisions/decision-log.md,
+state/business-state.json, state/findings/, decisions/decision-log.md,
 financials/ledger.json, state/questions-for-benedict.md.
 
 Then read docs/business-plan.md for full context on both tracks.

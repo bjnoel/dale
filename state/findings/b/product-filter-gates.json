@@ -1,0 +1,11 @@
+{
+  "claim": "TWO filter gates and the weaker one faces search: species, variety, state and compare builders call is_real_product ONLY and never is_fruit_product. A Japanese maple sat on /species/lime.html for 68 snapshots.",
+  "date": "2026-09-17",
+  "track": "b",
+  "was": "tracks.b.product_filter",
+  "body": {
+    "decision": "DEC-342 / DAL-298",
+    "finding": "TWO filter gates and the weaker one faces search. digest_product_filter (is_real_product AND is_fruit_product) guards nursery pages/homepage/digest/alerts; species, variety, state and compare builders call is_real_product ONLY and never is_fruit_product. Ornamental leakage: 26 on gate A, 75 on gate B, 49 of the 75 at Ladybird and Daleys whose per-nursery filters DO catch them on their own page. A Japanese maple resolved to the LIME species and sat on /species/lime.html for 68 snapshots.",
+    "fix": "10 PHRASE keywords tagged 'ornamental' in stocklib.classify.CATEGORY_KEYWORDS + 'potash' in TRUE_JUNK. Never a bare genus: 'dogwood' would block Cornus kousa, 'maple' would eat cultivars. The category tag reverses automatically if 'ornamental' ever joins ENABLED_CATEGORIES; TRUE_JUNK would make them unreachable forever. Swept every title ever held: 142 matches, all ornamental, ZERO real fruit lost. Ume (Prunus mume) survives while Pink Flowering Apricot (same species) does not. Aus Nurseries 460 -> 447, promised in the 2026-08-27 touch-1 email, kept."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "claim": "60% of the referral value treestock generates goes to nurseries we have never spoken to. Ladybird is our #1 destination at 206 clicks/30d and has never been contacted.",
+  "date": "2026-08-03",
+  "track": "b",
+  "was": "tracks.b.nursery_relationships",
+  "body": {
+    "register": "data/nursery-contacts.json + tools/autonomous/nursery_crm.py (DAL-80, DEC-242). Git-tracked JSON, one record per monitored nursery: contact route, status, evidenced touch history, and who owns the next action. Referral click counts are NOT stored; nursery_crm.py joins them live from Plausible so a report cannot go stale. Commands: report, due, log, set, validate.",
+    "measured": "2026-07-30",
+    "contacted": 6,
+    "warm": 2,
+    "courtesy": 1,
+    "personal": 1,
+    "not_contacted": 21,
+    "with_contact_route": 25,
+    "no_contact_route": [
+      "garden-world",
+      "the-heritage-nursery"
+    ],
+    "key_finding": "60% of the referral value treestock generates (732 of 1,220 outbound clicks in 30 days) goes to nurseries we have never spoken to. Ladybird is our #1 destination at 206 clicks / 187 buyers and has never been contacted.",
+    "outstanding_on_benedict": "All three nurseries that replied (Daleys, Ross Creek, Heritage) have had an unanswered follow-up action since 2026-04-25, 96 days. Ross Creek's Tom admins the Oz Rare Fruit Australia Facebook group.",
+    "open_question": "ANSWERED 2026-08-03. Benedict wants to BCC an address Dale can read, which then updates the register. Needs no new infrastructure: see email_infrastructure.fastmail_finding. DAL-273, gated on a Fastmail alias + IMAP app password from him.",
+    "why_not_a_crm": "EspoCRM/Twenty would fit the box (2.4 GB RAM free) but buy a login page to patch, a DB to back up and a Leads/Opportunities schema for 27 rows and one user. Offered on DAL-80 if Benedict still wants it.",
+    "viewing": "DEC-257 / DAL-80: the register now renders on https://treestock.com.au/admin, above the subscriber tables, behind the Cloudflare Access gate. Per nursery: status, contact route, last touch + days elapsed, open action with owner and age, and a collapsible full touch history. Sorted by oldest open action first, then never-contacted, NOT alphabetically. deploy.sh publishes data/nursery-contacts.json to /opt/dale/data so the repo copy stays the audit log. Referral click counts are DELIBERATELY absent from the page: they are read live from Plausible by nursery_crm.py report and a rendered copy would be staleable. 27 nurseries, 7 open actions, 22 never contacted as at 2026-08-03; 6 of the 7 open actions are Benedict's."
+  }
+}

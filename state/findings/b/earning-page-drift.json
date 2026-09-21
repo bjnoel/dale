@@ -1,0 +1,13 @@
+{
+  "claim": "No drift; earning pages grew 82%. Do NOT judge earning pages on average position: the three worst apparent drops all GAINED clicks as they expanded into broader queries. Judge on clicks.",
+  "date": "2026-08-27",
+  "track": "b",
+  "was": "tracks.b.seo.earning_page_drift_check",
+  "body": {
+    "decision": "DEC-327 / DAL-268 part 2 (2026-08-27). 8 weekly windows, page dimension, paginated.",
+    "verdict": "No drift. First 3 weeks vs last 3: species+state clicks 359 -> 653 (+82%) on impressions 12,211 -> 22,595 (+85%); species clicks 263 -> 480 (+83%) on impressions 17,134 -> 24,409 (+42%). 46 gainers vs 20 losers among earning pages with >=3 clicks in the first window.",
+    "average_position_is_mix_dependent_do_not_use_it": "Ranking pages by change in average position named /species/macadamia.html (+17 spots), /species/cacao.html (+16) and /species/mangosteen.html (+12) as the worst drops. ALL THREE GAINED CLICKS (4->8, 1->2, 1->6). Impressions tripled or quadrupled, expanding into broader queries they rank badly for, which drags an impression-weighted average down while the page earns more. Same family as DEC-255: a metric that looks worse when the thing gets better. Judge earning pages on CLICKS.",
+    "one_genuine_loss": "/buy-olive-trees-western-australia.html: 43 -> 22 clicks on RISING impressions (940 -> 1,146), position 23.5 -> 26.2. Our largest single earning-page decline. NOT diagnosed: the GSC query dimension cannot explain it (all 'olive' queries together show clicks 8 -> 13) because query-dimension coverage is ~27% of impressions. Recorded as an observation, not a cause. Not ticketed: backlog at 14/15 and DEC-243 closed the title/meta lever, which is the only thing to reach for without a diagnosis.",
+    "weekly_totals_8wk": "clicks by week 2026-06-30 onward: 45, 46, 41, 65, 64, 68, 81, 107. The 2026-07-14..07-20 window returned 4,335 distinct queries against a typical 1,700-2,600, on 6,905 impressions and the LOWEST clicks of the eight weeks."
+  }
+}

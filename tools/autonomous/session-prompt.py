@@ -6,6 +6,7 @@ import os
 import sys
 import glob
 from datetime import datetime, timezone
+from pathlib import Path
 
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
 
@@ -142,20 +143,38 @@ def _first_sentence(text, limit=220):
     return head + (" ..." if cut < len(flat) else "")
 
 
-def render_business_state(path):
-    """Render business-state.json as metrics verbatim and findings as headlines.
+# Byte budgets for the two state blocks. They are ceilings the renderers stay
+# under by degrading, not tripwires that fire after the fact: tests/test_prompt_size
+# caught the 2026-08 and 2026-09 breaches only once they had already shipped.
+MAX_STATE_BYTES = 12_000
+# 24KB is ~110 index lines. At the six findings a month this repo has averaged
+# since July that is about eighteen months of headroom, against the five weeks
+# DEC-279's fix bought by compressing bodies instead of not sending them.
+MAX_FINDINGS_BYTES = 24_000
 
-    The file is dumped in full no longer. It went from 5,679B on 2026-07-23 to
-    85,790B on 2026-08-12, a 15x rise in under three weeks, and at that size it
-    was 62% of the session prompt and the thing that pushed it through the argv
-    ceiling (DEC-279). Growth is not the bug: the findings in it are good. Sending
-    all of them every hour to carry a handful of numbers is.
 
-    Scalars and short strings go through untouched, because they are the metrics
-    the heading promises. Long prose keeps its opening claim, which is the part
-    that stops a known-wrong conclusion being reached twice, and drops the
-    supporting argument, which is what the path pointer is for. Nothing is
-    deleted; this only decides what travels.
+def render_business_state(path, budget=MAX_STATE_BYTES):
+    """Render business-state.json: metrics verbatim, long prose as its opening claim.
+
+    Since DEC-349 this file holds metrics ONLY, ~11KB on disk. The findings that
+    used to live beside them are one file each under state/findings/ and reach the
+    prompt through render_findings_index() as a single line apiece.
+
+    Why they were separated: the file went 5,679B (2026-07-23) -> 85,790B
+    (2026-08-12) -> 118,580B (2026-09-17), and at that last size it rendered to
+    62,921B, 64% of the whole session prompt, to carry 1,530B of actual numbers.
+    DEC-279 added the headlining below and bought five weeks. The reason it only
+    bought five weeks is that the growth is not a stale tail to prune: 79KB of the
+    118KB was under thirty days old, so ageing findings out saves little and the
+    ceiling returns. What was needed was to stop sending findings by the byte.
+
+    The headlining stays for the prose that remains here (pricing_model,
+    revenue_note, infrastructure). Long prose keeps its opening claim, which is the
+    part that stops a known-wrong conclusion being reached twice, and drops the
+    supporting argument. Nothing is deleted; this only decides what travels.
+
+    `budget` is a ceiling on the rendered block. Over it, the deepest and largest
+    entries are dropped and named, so the prompt cannot silently regrow.
     """
     raw = read_file(path)
     if raw.startswith("(file not found"):
@@ -194,15 +213,94 @@ def render_business_state(path):
                     lines.append(f"{pad}- {json.dumps(item, ensure_ascii=False)}")
 
     walk(state, 0, [])
+
+    dropped = 0
     body = "\n".join(lines)
-    note = (
-        f"\n({headlined} long findings are shown as their opening claim only. "
-        f"Full text is in state/business-state.json, which is {len(raw):,}B on disk "
-        f"and is still the file you update. To read one in full: "
-        f"python3 -c \"import json;print(json.load(open('state/business-state.json'))"
-        f"['tracks']['a']['posthog_product_analytics'])\")"
+    while len(body) > budget and lines:
+        # Longest line first: one runaway value should not cost fifty short metrics.
+        lines.pop(max(range(len(lines)), key=lambda i: len(lines[i])))
+        dropped += 1
+        body = "\n".join(lines)
+
+    note = f"\n({headlined} long values shown as their opening claim only."
+    if dropped:
+        note += (
+            f" {dropped} more dropped to stay under {budget:,}B: business-state.json "
+            f"is metrics only and something large has been written into it."
+        )
+    note += (
+        f" Full file is state/business-state.json, {len(raw):,}B on disk, and is "
+        f"still the file you update.)"
     )
     return body + "\n" + note
+
+
+def render_findings_index(findings_dir, budget=MAX_FINDINGS_BYTES):
+    """One line per finding: date, path, and the claim. No bodies.
+
+    This is the half of DEC-349 that makes the prompt stop growing with the work.
+    A finding costs the same ~130 bytes here whether its body is a sentence or four
+    thousand words, so the block is O(number of findings) and not O(bytes of
+    findings). At 48 findings it is ~6KB against the 62,921B the same material used
+    to occupy.
+
+    What travels is the claim, because the claim is what the finding is FOR: it is
+    the sentence that stops a known-wrong conclusion being reached twice. The
+    argument behind it is one `cat` away and is only needed to act, not to avoid
+    the mistake. `claim` and `date` are authored fields, deliberately. A prototype
+    that derived them from the body got about a third right, returned provenance
+    ("DEC-343 / DAL-295 (2026-09-17)") for most of the rest, and read a scheduled
+    future re-read as one finding's date.
+
+    Newest first, so a budget squeeze drops the oldest claims rather than an
+    arbitrary slice, and drops to date-and-path before it drops a finding entirely.
+    """
+    root = Path(findings_dir)
+    if not root.is_dir():
+        return f"(no findings directory at {findings_dir})"
+
+    entries, unreadable = [], []
+    for f in sorted(root.rglob("*.json")):
+        try:
+            doc = json.loads(f.read_text())
+            claim, date = doc["claim"], doc["date"]
+        except (json.JSONDecodeError, KeyError, OSError) as e:
+            # Never silently skip: a finding that vanishes from the index is a
+            # finding nobody knows to read, which is the failure this replaces.
+            unreadable.append(f"{f.relative_to(root)} ({type(e).__name__})")
+            continue
+        rel = str(f.relative_to(root)).replace(".json", "")
+        entries.append((date, rel, " ".join(claim.split())))
+
+    entries.sort(reverse=True)
+    full = [f"{d}  {rel}  {claim}" for d, rel, claim in entries]
+    short = [f"{d}  {rel}" for d, rel, _ in entries]
+
+    kept, used, degraded, omitted = [], 0, 0, 0
+    for i, line in enumerate(full):
+        if used + len(line) + 1 <= budget:
+            kept.append(line)
+            used += len(line) + 1
+        elif used + len(short[i]) + 1 <= budget:
+            kept.append(short[i])
+            used += len(short[i]) + 1
+            degraded += 1
+        else:
+            omitted += 1
+
+    head = (
+        f"{len(entries)} findings, newest first. The claim is the whole point of each "
+        f"one; read a body with `cat {findings_dir}/<path>.json` before re-deriving it."
+    )
+    tail = []
+    if degraded:
+        tail.append(f"{degraded} shown without their claim (budget {budget:,}B)")
+    if omitted:
+        tail.append(f"{omitted} not listed: ls {findings_dir}")
+    if unreadable:
+        tail.append("UNREADABLE, repair this session: " + "; ".join(unreadable))
+    note = ("\n(" + ". ".join(tail) + ")") if tail else ""
+    return head + "\n" + "\n".join(kept) + note
 
 
 def get_data_summary(data_dir):
@@ -831,6 +929,7 @@ def build_prompt():
 
     # Read state files from the repo
     business_state = render_business_state(os.path.join(repo, "state", "business-state.json"))
+    findings_index = render_findings_index(os.path.join(repo, "state", "findings"))
     questions = read_file(os.path.join(repo, "state", "questions-for-benedict.md"), max_lines=40)
     recent_decisions = get_last_n_decisions(
         os.path.join(repo, "decisions", "decision-log.md"), n=5
@@ -868,6 +967,9 @@ starting the next.
 {reflection_block}
 ## Current Business State (metrics only, work tracking is in Linear)
 {business_state}
+
+## Findings (what we already know, one line each)
+{findings_index}
 
 ## Recent Decisions
 {recent_decisions}
@@ -1095,6 +1197,7 @@ def build_generation_prompt():
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     business_state = render_business_state(os.path.join(repo, "state", "business-state.json"))
+    findings_index = render_findings_index(os.path.join(repo, "state", "findings"))
     recent_decisions = get_last_n_decisions(
         os.path.join(repo, "decisions", "decision-log.md"), n=5
     )
@@ -1141,6 +1244,9 @@ You MUST: create tickets using `python3 /opt/dale/autonomous/linear_update.py cr
 {reflection_block}
 ## Current Business State
 {business_state}
+
+## Findings (what we already know, one line each)
+{findings_index}
 
 ## Recent Decisions
 {recent_decisions}

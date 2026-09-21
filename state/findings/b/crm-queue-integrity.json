@@ -1,0 +1,14 @@
+{
+  "claim": "An open_action naming a repo path that is not on disk now fails nursery_crm.validate(). CLAUDE.md puts deliverables in Linear, so a path written under that rule can never exist.",
+  "date": "2026-08-27",
+  "track": "b",
+  "was": "tracks.b.nursery_relationships.queue_integrity",
+  "body": {
+    "decision": "DEC-329 (2026-08-27). Found while checking whether DAL-248 was still blocked.",
+    "what": "The Daleys open_action told Benedict to send deliverables/daleys-reply-2026-08-27.txt. The file was never written: not on disk, not in git, not in any Linear comment. DEC-315 section 5 cites the same path. The top item in his queue could not be actioned and DAL-248 sat blocked behind it.",
+    "why_it_happened": "Two conventions disagree. CLAUDE.md says deliverables go in Linear, not git; the register's convention is a file path. A path written under the first rule can never exist.",
+    "fixed": "Draft written and posted to DAL-248; the action now links to that comment. nursery_crm.validate() fails an open_action naming a repo path that is not on disk, proven against the Daleys text verbatim. Scoped to open_action: historical touch evidence legitimately names superseded artefacts (ross-creek has one) and failing on those would bury the live failure in noise.",
+    "facts_reverified_not_copied": "Feed pulled fresh: still exactly 2 contradicting rows (sku 1045 Jaboticaba qty 40, sku 3939 Sunshine Blue qty 36, both OutOfStock) and 2,949 rows now in the schema.org casing with zero left in the old one. /species/almond.html still ranks the $9.75 scion wood first of 54 listings, with Daleys' own $59.00 Papershell tree seven rows below it.",
+    "comparison_changed": "The register said to cite $9.75 against a $44.99 Papershell. That $44.99 is Guildford's. Quoting a competitor's price at Correy buys nothing when his own $59.00 tree of the identical cultivar is on the same page, and it breaks the DAL-289 rule that a nursery's numbers are not passed to its competitors."
+  }
+}

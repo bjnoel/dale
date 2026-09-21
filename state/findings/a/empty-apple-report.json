@@ -1,0 +1,14 @@
+{
+  "claim": "An empty Apple report is not a broken one: ask its SIBLINGS in the same request. r12's silence means zero purchases in a named span. Do NOT open a broken-report ticket.",
+  "date": "2026-09-17",
+  "track": "a",
+  "was": "tracks.a.appstore_downloads_series.empty_report_diagnosis",
+  "body": {
+    "decision": "DEC-339 / DAL-300 (2026-09-17)",
+    "defect": "r12's silence was indistinguishable from a real outage BY CONSTRUCTION. list_instances correctly refuses to read zero instances as zero sales, and the consequence was a blank nobody could interpret. At ~1 sale/month against a 2-day rolling window, one missed cron night permanently loses a sale day and would render exactly like today's healthy screen. The guard that stops a false zero also hid a true outage.",
+    "shipped": "src.request_liveness(token, request_id, category) and src.explain_silence(report_name, liveness) in appstore_sources.py, wired into appstore_downloads.py's NotReady path and verified against the live API. When a report is empty the reader asks its SIBLINGS in the same request: same credential, same request, same generation schedule, differing only in the events counted. A live sibling proves the request is alive AND dates the window Apple has actually covered.",
+    "three_distinct_outcomes": "(1) no live sibling -> the request is not producing and nothing is known about any day. (2) a live sibling -> the silence is absence of events inside a NAMED span, and says nothing about days outside it. (3) report absent from the request -> a MISSING GRANT, a different fix, which must not render the same as an empty one.",
+    "snapshot_refresh_is_a_question": "Apple allows ONE ONE_TIME_SNAPSHOT per app; create returns HTTP 409 'You already have such an entity'. Refreshing means DELETING the frozen 2026-08-20 snapshot, which is the DEC-321 verification baseline. Irreversible on Benedict's account, so asked as DAL-307 rather than done. appstore_sources.py --create-snapshot-request is built and tested and waiting on the answer. Payoff if yes: recovers the 16 lost download days inside DEC-335's rename window (which DEC-332 showed was a BIASED hole, not a neutral one) and puts the 2026-08-23 sale into Apple's own record.",
+    "guards": "5 new tests in tests/test_appstore_sources.py (TestExplainSilence plus the snapshot refresh case); 2 proven FAILING under the old behaviour before being trusted to pass (DEC-326). create_snapshot_request NEVER reuses an existing snapshot, because reuse would hand back the exact request that is already too old and report success; the ONGOING path still reuses, because there it is a singleton and a second create is a 409. One create_request() carries both, so the difference is named once rather than implied by two copies."
+  }
+}

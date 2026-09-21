@@ -1,0 +1,42 @@
+{
+  "claim": "PostHog people must be counted on person_id, not distinct_id (348 ids were 297 people), and plant_added only exists from 2026-06-08, so every earlier activation denominator is wrong.",
+  "date": "2026-08-03",
+  "track": "a",
+  "was": "tracks.a.posthog_product_analytics",
+  "body": {
+    "measured": "2026-07-30 (DEC-252, DAL-242). PostHog project 166160, all-time, first query in 126 days. Aggregate server-side: a raw row fetch returned exactly 100 rows against a true count of 243 (the DAL-261 truncation pattern).",
+    "installs_all_time": 290,
+    "opened_all_time": 288,
+    "onboarding_started": 85,
+    "onboarding_completed": 49,
+    "people_ever_added_a_plant": 18,
+    "people_reached_paywall": 76,
+    "activation_correction_2026_07_30": {
+      "decision": "DEC-254 / DAL-265",
+      "supersedes": "the activation_is_the_constraint block below, which is left in place but is WRONG",
+      "defect_1": "plant_added first appears 2026-06-08; installs are counted from 2026-04-25. 219 devices in DEC-252's denominator could not fire the event at all. plant_added, photo_added, location_added and onboarding_started ALL start 2026-06-08, which is the instrumentation ship date, not a behaviour change.",
+      "defect_2": "plant_count_snapshot (DEC-252's '181 of 186 never had a plant') only ever emitted on builds 13-40 and stopped ~2026-06-07. It is not in the current codebase. It describes April/May users of a superseded build, and is contradicted internally: 13 post-June people fired plant_added while 0 of the 7 post-June people with a snapshot show >0.",
+      "defect_3": "DEC-252's 'onboarding only asks gps and location' is stale. Benedict replaced it 2026-07-02 with a zero-dialog welcome screen, shipped in build 52; welcome_screen_shown fires on build 52 from 2026-07-23.",
+      "corrected_all_time_activation": "13/126 = 10% (device-level, clipped to 2026-06-08)",
+      "corrected_july_cohort_public_builds": "9/33 = 27% added a plant; 19/48 = 40% reached the paywall",
+      "contamination_check": "July activators span builds 44-56 and US/UA/IN/AU storefronts. Internal builds 53-56 activate at 3/15, no better than public 9/33.",
+      "real_open_question": "RETENTION, not activation: 1 of 15 in the 8-14 day cohort returned on 2+ days.",
+      "fix_shipped": "137442d. m_activation clips the all-time cohort to the day plant_added first appears, prints that date, and reports excluded devices as 'unknown not zero'. 7 render-text regression tests."
+    },
+    "reporting_accuracy_2026_08_03": {
+      "decision": "DEC-259 / DAL-265, on Benedict's direct report that the numbers did not match what he could see in his own app",
+      "defect_1_identity": "Every people-count was count(DISTINCT distinct_id). PostHog issues a new distinct_id per anonymous device and aliases it onto a person_id on sign-in, reinstall or restore. 348 ids across 297 actual people; one person carries 27 ids alone, another 14, another 11. Installs inflated 17%, so every conversion rate divided by them was understated, and each phantom id looks like a one-visit never-returner, which is how a returning buyer vanishes from the active count in the week they paid. Fixed: m_installs, m_active, m_activation, m_funnel, m_retention all count person_id, guarded by a test that reads the query source.",
+      "defect_2_plants": "capturePlantAdded is called from exactly one place, lib/features/plants/screens/plant_form_screen.dart:596. Plants created by import or backup restore fire nothing, so plant_added counted plants typed in by hand, not plants owned. Ground truth was already in the payload (plant_count_after) and had never been read.",
+      "plants_held_high_water": 291,
+      "plants_owners": 20,
+      "plant_added_events_ever": 165,
+      "plants_never_observed": 126,
+      "plants_never_observed_pct": 43,
+      "benedict_own_record": "113 plant_added events against a plant_count_after that reached 160",
+      "installs_since_2026_07_01_corrected": "50 people, not 60 distinct ids. DEC-256's 4.1% install-to-purchase becomes 4.0% on a denominator that means something.",
+      "app_side_fix_outstanding": "NOT made by Dale. One event in lib/features/backup/services/import_service.dart and the restore path. Recommended: a separate plants_imported event carrying a count, rather than N capturePlantAdded calls, so hand-entry and import stay distinguishable.",
+      "consolidation": "DAL-265 is now the single Treesmith reporting-accuracy ticket. DAL-269, DAL-271, DAL-264 and DAL-267 cancelled and folded into it. Backlog 39/40 -> 35/40.",
+      "still_open": "A read-only RevenueCat API key (DAL-265, was DAL-267). Both RevenueCat keys in the app are String.fromEnvironment at build time, so nothing is readable from the mirror; do not re-search for one. Until it exists every dollar figure in the Monday email stays labelled directional."
+    }
+  }
+}

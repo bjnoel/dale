@@ -1,0 +1,13 @@
+{
+  "claim": "nursery_crm.py report --period 90d printed a table of zeros and asserted them as fact; Plausible v1 rejects 90d. Fourth defect of its kind after DEC-250, DEC-253 and DEC-255.",
+  "date": "2026-08-13",
+  "track": "b",
+  "was": "tracks.b.outbound_referral.report_tool_defect",
+  "body": {
+    "decision": "DEC-282 (2026-08-13), found in passing by DEC-281",
+    "what": "nursery_crm.py report --period 90d printed a table of zeros for all 27 nurseries and asserted '0 outbound clicks sent in the last 90d'.",
+    "cause": "Plausible v1 accepts only day/7d/30d/month/6mo/12mo and 400s on 90d. api_get turns any HTTP error into None, and outbound_clicks read None as 'no more pages', returning {}. The stderr warning vanishes when piped.",
+    "fixed": "Period validated against the accepted set up front; a None from any page raises PlausibleUnavailable and cmd_report exits 2. A genuine empty result still returns {} and a missing config still degrades to blank columns. 3 regression tests.",
+    "family": "Fourth of its kind after DEC-250, DEC-253 and DEC-255."
+  }
+}

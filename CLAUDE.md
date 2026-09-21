@@ -133,7 +133,9 @@ You cannot persist between sessions. Every time you start:
 
 ### 1. Orient (always do this first)
 ```bash
-cat state/business-state.json       # Metrics dashboard (slim, no work tracking)
+cat state/business-state.json       # Metrics ONLY (DEC-349). No findings.
+ls state/findings/a state/findings/b  # One file per finding; the session prompt
+                                      # carries each one's claim as a single line
 cat decisions/decision-log.md       # Recent decisions (last 5)
 cat financials/ledger.json          # Financial state
 ```
@@ -151,7 +153,13 @@ Do the work. Write code, create content, build tools, analyse data.
 
 ### 4. Update State
 After work is done, update all relevant state files:
-- `state/business-state.json` — Overall status
+- `state/business-state.json` — Current metrics ONLY
+- `state/findings/<track>/<slug>.json` — a dated finding, with an authored
+  one-sentence `claim`. A point-in-time investigation goes here, never into
+  business-state.json (DEC-349): that file rendered to 64% of the whole
+  session prompt before it was split. The claim is the sentence that stops a
+  known-wrong conclusion being reached twice, and it is the only part that
+  travels into the prompt; the argument lives in `body` and costs nothing.
 - `decisions/decision-log.md` — What you decided and why
 - `financials/ledger.json` — Any financial changes
 - `public-ledger/YYYY-MM-DD.md` — Public-facing log entry

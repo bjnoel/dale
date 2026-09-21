@@ -1,0 +1,15 @@
+{
+  "claim": "An empty category list is the mute-all opt-out and both digest senders silently skip it. DAL-260 guarded one field and left the identical trap on its sibling, which cost a confirmed subscriber two weeks (DEC-347).",
+  "date": "2026-09-21",
+  "track": "b",
+  "was": "tracks.b.subscriber_engagement.delivery_defect_fixed",
+  "body": {
+    "decision": "DEC-251 / DAL-260 (2026-07-30), shipped 046b96f and deployed",
+    "what": "Two of 13 subscribers had plant_categories == [] stored, so send_digest.py:186 skipped them from every daily send. lissandross received digests on 07-19 and 07-20 only; muffinmotzy subscribed 07-12 and NEVER received a single daily digest (their opens in DEC-250 were welcome and variety-alert mail, not digests).",
+    "why_invisible": "The preferences page confirmed 'Saved: all states, fruit only, daily digest' whenever bush tucker was absent, including when nothing at all was ticked. The dry run printed 'Would send to' for subscribers it would never send to. The live run printed a bare count with no addresses. The identical case for change-categories was already handled ('all categories muted'); plant categories were missed when DAL-199 added them.",
+    "root_cause_of_the_empty_list": "UNKNOWN and deliberately not guessed. Signup never writes the field and both preference pages render fruit pre-ticked, so reaching [] needs an active untick. The subscribe-server request log has rotated away. Ruled out: container IDs match the JS selectors, manage.html does not post preferences, no other code path writes the field.",
+    "fix": "Server-side rejection of a preferences save leaving zero plant types unless the submitted frequency is 'off'. Confirmation line no longer claims 'fruit only' when nothing is selected, and no longer tells a bush-tucker-only subscriber 'fruit + bush tucker'. Digest run now names skipped addresses on stderr; dry run says 'Would SKIP (nothing selected)'.",
+    "outstanding": "RESOLVED 2026-08-03 (DEC-257). Benedict answered yes on DAL-260. Both records restored to ['fruit'] with a restore timestamp and reason stamped on each, and verified against a live send_digest.py dry run which now names them both. They receive from the 2026-08-04 send. No backfill and no apology email: neither subscriber asked us anything and an email explaining that our software had been dropping them invites an unsubscribe. Offered to Benedict as his call. The root cause of how they reached [] remains UNKNOWN and was not guessed at; request logs had rotated away.",
+    "deploy_gap_found": "tools/deploy.sh rsyncs the code but never restarts subscribe-server, so any subscribe_server.py change sits on disk with no effect until a manual restart. Done by hand this session; raised as DAL-263."
+  }
+}

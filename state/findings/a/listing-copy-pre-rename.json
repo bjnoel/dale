@@ -1,0 +1,15 @@
+{
+  "claim": "Pre-rename listing copy, verified live. The iTunes lookup API reports 0 screenshots while the product page serves 70, so do not trust its screenshot fields.",
+  "date": "2026-07-30",
+  "track": "a",
+  "was": "tracks.a.live_listing_verified_2026_07_30",
+  "body": {
+    "ios_name": "TreeSmith: Plant Graft Tracker (30/30)",
+    "ios_subtitle": "Graft, scion & garden journal (29/30)",
+    "ios_ratings": 0,
+    "play_name": "TreeSmith: Plant Graft Tracker",
+    "play_short_desc": "Graft, scion & garden journal for collectors. GPS map, photo log, exports. (74/80)",
+    "play_updated": "27 July 2026",
+    "note": "iTunes lookup API reports 0 screenshots for our app; the live product page serves 70 screenshot images. Do not trust the lookup API's screenshot fields."
+  }
+}

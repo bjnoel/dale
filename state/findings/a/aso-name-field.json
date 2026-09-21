@@ -1,0 +1,7 @@
+{
+  "claim": "On Apple the app NAME is the field that ranks, not the subtitle or keyword field. We rank on <niche> tracker compounds and nowhere on broad plant/garden terms.",
+  "date": "2026-07-30",
+  "track": "a",
+  "was": "tracks.a.aso_findings",
+  "body": "DEC-247 (2026-07-30, 36 AU terms re-measured): the APP NAME is the field that ranks, not the subtitle or keyword field. Decisive evidence: our subtitle contains 'garden journal' verbatim and we are not in the top 191, while the top 4 are apps with 0, 3, 6 and 0 ratings that all carry the phrase in their NAME. Across 14 terms, top-5 results had every query word in the app name 21.4% of the time vs 11.0% at ranks 6-20 (median ratings 42 vs 11); 8 of 70 top-5 slots are held by a 0-rating app with the phrase in its name. Current ranks: graft tracker #1, treesmith #1, orchard tracker #3, tree tracker #5, fruit tree tracker #7, bonsai tracker #22, citrus tracker #25, propagation tracker #35, fruit tree journal #40. Invisible: garden journal, plant inventory, garden planner, plant log, garden diary, fruit tree, rare fruit, plant catalogue, garden log, plant database, garden mapping. plant tracker #186 of 189 DESPITE 'Plant' and 'Tracker' both being in our name. Pattern: we rank on <niche> tracker compounds (held by 0-rating apps, winnable) and nowhere on broad plant/garden terms (held by PictureThis/Planta with thousands of ratings, not winnable at 0). Supersedes DAL-225's advice to retarget the subtitle and keyword field, which would have changed the wrong field."
+}
