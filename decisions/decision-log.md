@@ -15902,3 +15902,106 @@ His next digest is the ordinary one on 2026-09-27 23:00 UTC.
 **The rule.** When a guard is written for one field, check its siblings in the
 same condition. `not cats or not pcats` names two fields; DAL-260 fixed one and
 the other went on failing for five weeks.
+
+---
+
+## DEC-348 (2026-09-21): the alarm said Dale had halted, and Dale had not
+
+**Trigger:** at 04:20 UTC (12:20 Perth) the snapshot job mailed
+`[ALERT] Dale autonomous run halted`, reason "The server's configuration
+changed this week and has been committed to infrastructure/", with a diffstat
+of `infrastructure/crontab.txt | 13 ++++++++++---`.
+
+**Nothing had halted, and nothing had drifted unexpectedly.**
+
+### What the diff actually was
+
+`git show 666c05f -- infrastructure/crontab.txt` is our own change from four
+days earlier. DEC-334 moved the App Store source pull from Sundays to daily and
+added the installs/purchases pull beside it:
+
+```
+-40 22 * * 0 ... appstore_sources.py
++40 22 * * * ... appstore_sources.py
++50 22 * * * ... appstore_downloads.py
+```
+
+The Monday 04:20 recorder saw the box no longer matched `infrastructure/` and
+did exactly its job. DAL-281 built it so that "the useful moment is the week
+something changes that nobody decided to change". This was a week when someone
+did.
+
+### What the runner was doing while the mail said it had stopped
+
+| Time (UTC) | cron.log |
+|---|---|
+| 02:00:10 | No todo tickets, backlog is healthy (15/10). Exiting. |
+| 03:00:12 | No todo tickets, backlog is healthy (15/10). Exiting. |
+| 04:00:09 | No todo tickets, backlog is healthy (15/10). Exiting. |
+| 04:20:01 | snapshot-server-config: server config drifted |
+| 04:39 | `ls /opt/dale/autonomous/STOP` -> No such file or directory |
+
+The mail's recovery instruction was "delete the STOP file". There was no STOP
+file. There has not been one. Deleting it would have changed nothing, because
+the runner never reads a STOP file it does not find and had polled Linear on
+the hour, every hour, straight through the alarm.
+
+### Why the mail lied
+
+`notify.py send_alert()` had one template and sixteen ways to reach it:
+
+| Caller | Failure paths | Is it a halt? |
+|---|---|---|
+| `dale-runner.sh` 3-failure breaker | 1 | **yes** |
+| `dale-runner.sh` strike gate | 1 | **yes** |
+| `dale-runner.sh` git pull / git push | 2 | no, and its own text says so |
+| `snapshot-server-config.sh` | 6 | no |
+| `capture-contested-queries.sh` | 3 | no |
+| `capture-treesmith-rank.sh` | 2 | no |
+| `merge-nursery-inbound.sh` | 1 | no |
+
+Two of sixteen. The other fourteen are a cron job reporting its own trouble
+while the hourly runner carries on, and every one of them arrived under a
+headline saying autonomous Dale had stopped and a line sending Benedict after a
+file that does not exist.
+
+The giveaway that this was already known: `tools/scrapers/smoke_test.py` calls
+`send_email` directly and builds its own subject, rather than calling
+`send_alert`, because the halt wording did not fit a failed smoke test. One
+caller routed around the template instead of fixing it, and the other fifteen
+kept the wrong one.
+
+### Fix
+
+`send_alert(reason, halted=False)`, and `notify.py alert [--halted] "<reason>"`.
+The flag is the caller asserting Dale has actually stopped. Only the breaker
+and the strike gate pass it.
+
+Before and after, on the identical 04:20 input:
+
+```
+before: [ALERT] Dale halted — The server's configuration changed this week and h
+        <h2>[ALERT] Dale autonomous run halted</h2>
+        ... To resume: remove the issue or delete the STOP file ...
+
+after:  [ALERT] Dale needs a look: The server's configuration changed this week
+        <h2>[ALERT] Dale needs a look</h2>
+        ... Autonomous Dale has NOT halted and its hourly runs are unaffected ...
+```
+
+The halted subject prefix is byte-identical to today's, deliberately: Benedict
+filters on it, and silently retiring his filter is how you turn a fix into an
+outage. The two shapes are now distinguishable by subject line alone, on a
+phone, without opening either.
+
+`tests/test_notify_alert.py`, 15 tests. Three of them fail against the previous
+code with exactly the mail he received. The one that would have caught this
+walks every `notify.py alert` call site in `tools/` and fails if `--halted`
+appears outside `dale-runner.sh`, so a cron job added next year cannot inherit
+the halt headline by writing nothing at all.
+
+**Lesson: an alarm that cannot distinguish a recording from a stoppage teaches
+you to ignore both.** Same family as DEC-317 (a reading that looks the same
+either way is not evidence) and DEC-285 (a thing written to a log and not to a
+person is a thing nobody learns), with the opposite failure: this was written to
+a person, in the loudest words available, about nothing.

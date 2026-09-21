@@ -394,17 +394,47 @@ Turns: {num_turns} | Duration: {duration_min:.1f} min"""
     send_email(f"Dale Session — {today}", html, text, attachments=attachments)
 
 
-def send_alert(reason):
-    """Send circuit breaker / error alert."""
+def send_alert(reason, halted=False):
+    """Send a circuit breaker or error alert.
+
+    `halted` is the caller asserting that autonomous Dale has actually stopped
+    and needs a person before it will run again. Only the 3-failure breaker and
+    the strike gate in dale-runner.sh can say that.
+
+    Everything else that calls this is a cron job reporting its own trouble
+    while the hourly runner carries on: a scraper that could not fetch, a rank
+    capture that found nothing, a config snapshot noticing drift. Those used to
+    arrive under the headline "Dale autonomous run halted" telling Benedict to
+    delete a STOP file that did not exist, because this function had one
+    template and eleven callers, nine of which were not halts. On 2026-09-21
+    the 04:20 config snapshot reported an entirely expected cron change (the
+    daily App Store pull from DEC-334) as a halt, at 12:20 Perth time, while
+    Dale was running normally and had run on the hour all night.
+
+    An alarm that cries halt for a recording is an alarm you learn to ignore,
+    and the one that matters is the eleventh. smoke_test.py already worked
+    around this by calling send_email directly rather than send_alert.
+    """
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-    html = f"""<h2>[ALERT] Dale autonomous run halted</h2>
+    if halted:
+        html = f"""<h2>[ALERT] Dale autonomous run halted</h2>
 <p><strong>Time:</strong> {today}</p>
 <p><strong>Reason:</strong> {reason}</p>
 <p>Check <code>/opt/dale/autonomous/logs/errors.log</code> on the server.</p>
-<p>To resume: remove the issue or delete the STOP file, then Dale will retry next cron run.</p>"""
+<p>Dale retries on the next hourly run once the reason above is resolved. If a
+STOP file exists at <code>/opt/dale/autonomous/STOP</code>, delete it too.</p>"""
+        subject = f"[ALERT] Dale halted — {reason[:50]}"
+    else:
+        html = f"""<h2>[ALERT] Dale needs a look</h2>
+<p><strong>Time:</strong> {today}</p>
+<p><strong>What happened:</strong> {reason}</p>
+<p>Autonomous Dale has NOT halted and its hourly runs are unaffected. This is
+one job reporting its own trouble. Logs are in
+<code>/opt/dale/autonomous/logs/</code> on the server.</p>"""
+        subject = f"[ALERT] Dale needs a look: {reason[:50]}"
 
-    send_email(f"[ALERT] Dale halted — {reason[:50]}", html)
+    send_email(subject, html)
 
 
 def send_approval_request(filepath):
@@ -423,14 +453,18 @@ def send_approval_request(filepath):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: notify.py <summary|alert|approval> [args...]")
+        print("Usage: notify.py <summary|alert [--halted]|approval> [args...]")
         sys.exit(1)
 
     cmd = sys.argv[1]
     if cmd == "summary":
         send_summary(sys.argv[2] if len(sys.argv) > 2 else "")
     elif cmd == "alert":
-        send_alert(sys.argv[2] if len(sys.argv) > 2 else "Unknown error")
+        # notify.py alert [--halted] "<reason>"
+        rest = sys.argv[2:]
+        halted = "--halted" in rest
+        rest = [a for a in rest if a != "--halted"]
+        send_alert(rest[0] if rest else "Unknown error", halted=halted)
     elif cmd == "approval":
         send_approval_request(sys.argv[2])
     else:

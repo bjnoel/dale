@@ -56,7 +56,7 @@ FAILURE_COUNT=$(python3 "$SCRIPT_DIR/budget-tracker.py" failure-count 2>/dev/nul
 if [ "${FAILURE_COUNT:-0}" -ge 3 ]; then
     log "3+ consecutive failures ($FAILURE_COUNT). Halting."
     if [ ! -f "$HALT_FLAG" ]; then
-        python3 "$SCRIPT_DIR/notify.py" alert "3 consecutive failures — autonomous run halted. Check logs."
+        python3 "$SCRIPT_DIR/notify.py" alert --halted "3 consecutive failures — autonomous run halted. Check logs."
         touch "$HALT_FLAG"
     fi
     exit 0
@@ -122,7 +122,7 @@ python3 "$SCRIPT_DIR/check-weekly-update.py" || {
     log "Weekly update missing. Dale is on strike."
     STRIKE_FLAG="$(dirname "$LOCK_FILE")/strike-notified-$(date -u +%Y-W%V).flag"
     if [ ! -f "$STRIKE_FLAG" ]; then
-        python3 "$SCRIPT_DIR/notify.py" alert "Dale is on strike! No weekly update from Benedict. Write /opt/dale/data/weekly-updates/$(date -u +%Y)-W$(date -u +%V).md"
+        python3 "$SCRIPT_DIR/notify.py" alert --halted "Dale is on strike! No weekly update from Benedict. Write /opt/dale/data/weekly-updates/$(date -u +%Y)-W$(date -u +%V).md"
         touch "$STRIKE_FLAG"
     fi
     exit 0
