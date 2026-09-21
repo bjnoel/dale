@@ -15815,3 +15815,67 @@ both stores because a rating is a star tap and a review is a rating with text.
 
 **First mail (2026-09-28) will list both existing reviews as new** and say so. That is
 correct: they are new to the mail.
+
+## DEC-347 (2026-09-21): DAL-260 guarded one field and left the identical trap on its sibling
+
+**Trigger (Benedict, 2026-09-21):** the silent-subscriber alarm named a
+subscriber who had "never received a weekly digest, through 2 sends since
+signing up on 2026-09-13". The question was whether he had actually confirmed.
+
+**He had.** Resend shows the confirmation email **clicked** and the welcome email
+**opened**. `subscribers.json` has not been written since that night, so the whole
+episode is recoverable from three timestamps:
+
+| Time (UTC) | | |
+|---|---|---|
+| 09-13 21:02:15.914 | confirm link clicked, removed from pending | file mtime |
+| 09-13 21:02:15.915 | record created: `{email, subscribed_at, state: VIC}`, no `categories` key, so all three by default | `subscribed_at` |
+| 09-13 21:02:16.313 | welcome email sent, later opened, never clicked | Resend |
+| 09-13 21:02:50.600 | `subscribers.json` written once more | file mtime |
+| 09-13 21:02:50.601 | his `watcher_prefs.updated_at` | `variety_watches.db` |
+
+The last two are one millisecond apart because `update_preferences` saves the
+subscriber file and then calls `_set_watch_state`. That pair is the fingerprint of
+the preferences form and it appears exactly once, 35 seconds after the confirm
+page loaded. The welcome mail was never clicked, so it was the picker embedded in
+the confirm-success page, not the manage page.
+
+He saved `categories: []`, `plant_categories: ["fruit"]`, `frequency: "weekly"`.
+The picker renders all three change-type boxes `checked`, so the empty list is
+three deliberate unticks, not a default falling through.
+
+**Intent is not recoverable and probably was not "mute me".** He moved himself
+from daily to weekly in the same save, "Off" was on the same form one section
+above and labelled "No digest emails, but variety alerts still work", he did not
+pick it, and he has zero variety watches, so the state he saved leaves him
+receiving nothing from us at all. The likeliest reading is that he took "What to
+include?" for opt-in extras on top of a base weekly summary.
+
+**The defect.** Both senders skip on `if not cats or not pcats`. DAL-260 (2026-08)
+found two daily subscribers stuck in the empty-`plant_categories` half, guarded
+that field in `update_preferences`, and left `categories` open. Same trap, sibling
+field, third victim. DAL-260 also made `send_digest.py` loud about the skip and
+fixed its dry run; `send_weekly_digest.py` was never touched, so the weekly run
+printed a bare count and its dry run listed him as "Would send to".
+
+**Change.**
+- `subscribe_server.py`: the guard now refuses an empty `categories` with
+  `frequency != "off"`, mirroring the plant guard word for word.
+- `subscribe_server.py`: the confirm-success picker carries the "keep at least one
+  ticked" line the manage page has had since DAL-260. It had no hint at all, and
+  answered "Saved."
+- `send_weekly_digest.py`: stderr WARNING naming the addresses it drops, and a dry
+  run that says "Would SKIP (nothing selected)" instead of "Would send to".
+- `tests/test_digest_change_category_mute.py`: 18 tests, 9 of which fail against
+  the pre-fix tree. One replays his exact payload.
+
+**Data repair.** His `categories` restored to all three. Customer-facing, so it
+was Benedict's call (DAL-262 says no auto-repair), and he made it.
+
+**Timing, for the record.** The weekly digest is one batch for everyone, Sundays
+23:00 UTC, not a rolling week from each signup. The 2026-09-20 send had already
+gone out when this was found, so his first digest is 2026-09-27 23:00 UTC.
+
+**The rule.** When a guard is written for one field, check its siblings in the
+same condition. `not cats or not pcats` names two fields; DAL-260 fixed one and
+the other went on failing for five weeks.

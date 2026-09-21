@@ -1185,13 +1185,29 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                     return
                 new_frequency = raw_frequency or None
 
-            # Ticking no plant type at all silences the digest permanently
-            # (send_digest.py skips the bucket), but nothing in the UI said so:
-            # two daily subscribers sat in that state for 10+ days. "Off" is the
-            # supported way to stop digests, so reject the ambiguous state.
+            # Ticking nothing at all in EITHER list silences the digest
+            # permanently (both senders skip the bucket on `not cats or not
+            # pcats`), but nothing in the UI said so.
+            #
+            # DAL-260 found two daily subscribers sitting in the empty
+            # plant_categories state, one for 10+ days, and guarded that field.
+            # It left the identical trap open on `categories`, which is the half
+            # that caught the third case: a weekly subscriber saved an empty
+            # change-type list 35 seconds after confirming, then received nothing
+            # through two Sunday sends before detect_silent_subscribers.py said
+            # so (2026-09-21). Same defect, sibling field.
+            #
+            # "Off" is the supported way to stop digests, so both ambiguous
+            # states are refused rather than silently honoured.
             if new_plant_categories is not None and not new_plant_categories and new_frequency != "off":
                 self.send_json(400, {
                     "error": "Select at least one plant type, or set frequency to "
+                             "'off' to stop digest emails.",
+                })
+                return
+            if new_categories is not None and not new_categories and new_frequency != "off":
+                self.send_json(400, {
+                    "error": "Select at least one update type, or set frequency to "
                              "'off' to stop digest emails.",
                 })
                 return
@@ -1501,6 +1517,9 @@ class SubscribeHandler(BaseHTTPRequestHandler):
 <form id="prefsForm" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin:0 0 24px">
 
   <h3 style="color:#065f46;font-size:0.95rem;margin:0 0 8px">What plants?</h3>
+  <p style="font-size:0.8rem;color:#6b7280;margin:0 0 8px">
+    Keep at least one ticked. Unticking both stops the digest entirely.
+  </p>
   <div style="margin:0 0 16px">
     <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
       <input type="checkbox" name="plant_categories" value="fruit" checked style="margin-top:4px">
@@ -1534,6 +1553,10 @@ class SubscribeHandler(BaseHTTPRequestHandler):
   </div>
 
   <h3 style="color:#065f46;font-size:0.95rem;margin:0 0 8px">What to include?</h3>
+  <p style="font-size:0.8rem;color:#6b7280;margin:0 0 8px">
+    Keep at least one ticked. Unticking all three stops the digest entirely; choose
+    "Off" above if that is what you want.
+  </p>
   <div style="margin:0 0 16px">
     <label style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:pointer">
       <input type="checkbox" name="categories" value="new_products" checked style="margin-top:4px">

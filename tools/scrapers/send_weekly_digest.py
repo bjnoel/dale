@@ -466,9 +466,15 @@ def main():
     if dry_run:
         for s in to_send:
             state = get_subscriber_state(s)
-            cats = ",".join(sorted(get_subscriber_categories(s))) or "(none)"
-            pcats = ",".join(sorted(get_subscriber_plant_categories(s))) or "(none)"
-            print(f"  Would send to: {s['email']} (state={state}, categories={cats}, plant={pcats})")
+            raw_cats = get_subscriber_categories(s)
+            raw_pcats = get_subscriber_plant_categories(s)
+            cats = ",".join(sorted(raw_cats)) or "(none)"
+            pcats = ",".join(sorted(raw_pcats)) or "(none)"
+            # The bucket loop below drops anyone with an empty list, so listing
+            # them as "Would send to" is the dry run lying about the live run.
+            # DAL-260 fixed this in send_digest.py and not here.
+            verb = "Would send to" if raw_cats and raw_pcats else "Would SKIP (nothing selected)"
+            print(f"  {verb}: {s['email']} (state={state}, categories={cats}, plant={pcats})")
         all_changes = load_weekly_changes(end_date)
         total_drops = sum(len(c["price_drops"]) for c in all_changes.values())
         total_restocks = sum(len(c["back_in_stock"]) for c in all_changes.values())
@@ -498,9 +504,16 @@ def main():
         filter_state = "" if state == "ALL" else state
 
         # Mute-all opt-out: keep variety alerts but skip the weekly digest.
+        # Loud, on stderr, with the addresses. The API now refuses to create this
+        # state (subscribe_server.py), so anyone still in it got here before the
+        # guard existed and is receiving nothing at all.
         if not cats or not pcats:
             empty_skipped += len(bucket_subscribers)
-            print(f"  Skipping {len(bucket_subscribers)} subscribers with no categories enabled")
+            which = "change" if not cats else "plant"
+            names = ", ".join(s["email"] for s in bucket_subscribers)
+            print(f"  WARNING: permanently skipping {len(bucket_subscribers)} "
+                  f"subscribers with no {which} categories enabled, but frequency "
+                  f"is not 'off': {names}", file=sys.stderr)
             continue
 
         if state not in state_changes_cache:
