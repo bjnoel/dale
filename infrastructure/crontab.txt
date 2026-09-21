@@ -65,7 +65,14 @@
 # 2h20m ahead of the Monday 00:00 digest. Minute 40 so it does not race the hourly push.
 40 21 * * 0 /opt/dale/repo/tools/autonomous/capture-treesmith-rank.sh >> /opt/dale/autonomous/logs/treesmith_rank.log 2>&1
 
-# TreeSmith App Store source split (DEC-307) -- Sundays 22:40 UTC (06:40 AWST Monday),
+# TreeSmith App Store source split (DEC-307) -- DAILY 22:40 UTC. Was Sundays; moved
+# 2026-09-17 (DEC-334). Each r14 instance is a 3-day window and Apple keeps ~9, so the
+# series survives ~10 days unpulled. Weekly left 3 days of slack and one missed Sunday
+# lost days permanently, which is exactly DEC-332. Re-running is a no-op.
 # one hour behind the rank capture and ahead of the Monday 00:00 digest.
-40 22 * * 0 /usr/bin/python3 /opt/dale/repo/tools/autonomous/appstore_sources.py >> /opt/dale/autonomous/logs/appstore_sources.log 2>&1
-40 20 * * 4 /opt/dale/repo/tools/autonomous/capture-contested-queries.sh >> /opt/dale/autonomous/logs/contested_queries.log 2>&1
+40 22 * * * /usr/bin/python3 /opt/dale/repo/tools/autonomous/appstore_sources.py >> /opt/dale/autonomous/logs/appstore_sources.log 2>&1
+# TreeSmith App Store installs + purchases (DEC-334 / DAL-299) -- daily 22:50 UTC.
+# DAILY, not weekly: each r3 instance is a 2-day window and Apple keeps ~9 of them,
+# so the series survives about 10 days without a pull. A weekly job has 3 days of
+# slack and one missed run loses days permanently (DEC-332). Re-running is a no-op.
+50 22 * * * /usr/bin/python3 /opt/dale/repo/tools/autonomous/appstore_downloads.py >> /opt/dale/autonomous/logs/appstore_downloads.log 2>&1
