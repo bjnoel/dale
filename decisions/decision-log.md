@@ -15783,7 +15783,7 @@ why nothing was tuned to it. 19 new tests. Full suite 3,775 tests, 1 known
 failure (DAL-306); `test_state_file_has_not_ballooned` went red again at
 121,841B and was put back under its ceiling by deleting four superseded Track A
 blocks, not by raising it.
-## DEC-340 (2026-09-21): Weekly TreeSmith mail reads photos added and store reviews
+## DEC-346 (2026-09-21): Weekly TreeSmith mail reads photos added and store reviews
 
 **Ask (Benedict, 2026-09-21):** add photos taken to the weekly email, the review count on
 each store, and the text of any new review.
