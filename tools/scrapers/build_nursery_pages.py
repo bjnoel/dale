@@ -17,7 +17,7 @@ from shipping import (SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_labe
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
 from stocklib.fruit_filters import digest_product_filter
-from stocklib.snapshots import STALE_AFTER_DAYS, snapshot_age_days
+from stocklib.snapshots import is_dormant_nursery
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.utm import outbound
 
@@ -76,6 +76,14 @@ NURSERY_META = {
     "ausnurseries": {
         "url": "https://www.ausnurseries.com",
         "tags": ["fruit trees", "edibles"],
+        # Their own password page, 2026-09-23: "closed for a holiday break ...
+        # our online store will reopen on 20 October 2026". Every URL, including
+        # products.json, serves HTTP 401 from 2026-09-20.
+        "dormant_note": (
+            "Aus Nurseries has closed its online store for a holiday break and says it "
+            "will reopen on 20 October 2026. The stock below is the last we recorded "
+            "before they closed and is kept for reference, not as current availability."
+        ),
         "description": "Aus Nurseries is an online nursery offering a variety of fruit trees and edible plants across Australia. They carry a range of common and less common fruit species, shipping to most Australian states excluding WA, NT, and TAS.",
     },
     "fruit-tree-cottage": {
@@ -220,28 +228,6 @@ def render_seasonality_banner(seasonality: dict) -> str:
         f'<p>{note}</p>'
         f'</div>'
     )
-
-
-
-
-def is_dormant_nursery(meta: dict, scraped_at: str | None, today: str | None) -> bool:
-    """Whether this nursery's stock must be shown as a record, not an offer.
-
-    Two ways in, because they answer different questions. Without a
-    `dormant_note` we are only inferring from a snapshot that has stopped
-    moving, so we wait STALE_AFTER_DAYS before saying anything: one failed night
-    is not a closure and calling it one is worse than a day of silence.
-
-    With a `dormant_note` we are not inferring. Someone read the closure off the
-    nursery's own site, so the only question left is whether they are back yet,
-    and a successful scrape today answers that. A same-day snapshot clears the
-    banner on its own the moment their store starts answering again, which is
-    what keeps a hand-written note from outliving the fact it records.
-    """
-    age = snapshot_age_days(scraped_at, today)
-    if age is None:
-        return False
-    return age >= (1 if meta.get("dormant_note") else STALE_AFTER_DAYS)
 
 
 def render_dormancy_banner(meta: dict, name: str, scraped_at_fmt: str) -> str:

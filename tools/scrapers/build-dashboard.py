@@ -31,6 +31,8 @@ from stocklib.availability import client_table as wait_table
 # (e.g. "Yates Apple": "yates" is a chemical brand in that list). Keeping a
 # single source avoids the two lists drifting and producing broken links.
 from build_variety_pages import NON_PLANT_KEYWORDS as _VARIETY_PAGE_DENY
+from build_nursery_pages import NURSERY_META
+from stocklib.snapshots import is_dormant_nursery
 
 
 # Confirmed via nursery websites/policies:
@@ -396,7 +398,24 @@ def load_previous_snapshot(nursery_dir: Path) -> dict:
     return lookup
 
 
-def load_nursery_data(data_dir: Path) -> list[dict]:
+def withdraw_stale_stock(rows: list[dict]) -> None:
+    """Strip every "you can buy this now" claim from a closed nursery's rows.
+
+    The nursery page has said "Closed for the season" since DEC-311, but search
+    kept reading the frozen latest.json as live: on 2026-09-23 it listed 190
+    Aus Nurseries products as in stock against a store that answered every URL
+    with a holiday password page. The rows stay (they are still the record of
+    what was there, and still searchable) but nothing about them may read as an
+    offer: no availability, no pre-order, no stock count, and no change flag,
+    since a change computed between two stale snapshots is not news.
+    """
+    for row in rows:
+        row["a"] = False
+        for key in ("pre", "s", "ch", "pp"):
+            row.pop(key, None)
+
+
+def load_nursery_data(data_dir: Path, today: str | None = None) -> list[dict]:
     """Load latest.json from each nursery subdirectory and normalize products."""
     species_lookup = load_species_lookup()
     products = []
@@ -649,6 +668,12 @@ def load_nursery_data(data_dir: Path) -> list[dict]:
             products.append(product_data)
 
         nursery_added = products[products_before:]
+        # Same rule, same meta, as the nursery page, so search can never call
+        # stock current that the nursery's own page calls a record.
+        if is_dormant_nursery(NURSERY_META.get(nursery_name, {}), data.get("scraped_at"), today):
+            withdraw_stale_stock(nursery_added)
+            print(f"  {nursery_name}: dormant (last scraped {scraped_at}), "
+                  f"{len(nursery_added)} products shown as not available")
         nurseries_loaded.append({
             "key": nursery_name,
             "name": data.get("nursery_name", nursery_name),
@@ -1032,6 +1057,7 @@ def main():
     parser.add_argument("--output-name", default="index.html", metavar="FILENAME", help="Output filename (default: index.html). Use e.g. featured-demo.html for demo builds.")
     parser.add_argument("--needs-review-out", metavar="PATH", help="Also run the categorize ladder (DEC-200) and write the per-nursery needs-review JSON to PATH. Off by default so golden builds never see it.")
     parser.add_argument("--category", metavar="CATEGORY", choices=sorted(LANDING_PAGES), help="Build a category landing page (e.g. bush_tucker) instead of the homepage: same components, scoped to that category's stock (DAL-198). Writes index.html + data.js into output_dir; reference the scoped data.js via the page's data_url.")
+    parser.add_argument("--today", metavar="YYYY-MM-DD", help="Date to judge snapshot staleness against (default: today UTC). Golden builds pin it so a fixed fixture cannot turn dormant with the calendar.")
     args = parser.parse_args()
 
     data_dir = Path(args.data_dir)
@@ -1054,7 +1080,7 @@ def main():
         print(f"Featured nursery override: {args.featured}")
 
     print(f"Loading nursery data from {data_dir}...")
-    products, nurseries, ranked_species = load_nursery_data(data_dir)
+    products, nurseries, ranked_species = load_nursery_data(data_dir, args.today)
     print(f"Loaded {len(products)} products from {len(nurseries)} nurseries")
 
     for n in nurseries:

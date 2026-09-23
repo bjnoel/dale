@@ -16127,3 +16127,42 @@ one key at a time.
 only the second one changes the growth rate.** DEC-279 did the first and bought
 five weeks. Same family as DEC-317: the instrument that cannot distinguish two
 cases is not the instrument you need.
+
+## DEC-350 (2026-09-23): Aus Nurseries shut for a holiday, and search kept selling its stock
+
+**What failed.** `ausnurseries` has returned `ok=false` since 2026-09-20: `HTTP 401` on
+`products.json`, 0.3s, from the VPS and from a residential Perth IP alike. Not a block
+and not a scraper bug. Their homepage 302s to `/password`, which reads "closed for a
+holiday break ... our online store will reopen on 20 October 2026". A password-protected
+Shopify store 401s every endpoint.
+
+**What already worked.** The DEC-293/311 guards all held: the stale snapshot was not
+recorded as the day's stock, compare and variety pages marked the nursery untrusted,
+alerts consult the same set, and `/nursery/ausnurseries.html` flipped to "Closed for the
+season" on day 3.
+
+**What did not.** The open item DEC-311 left behind: homepage search. On 09-23 `data.js`
+listed 447 Aus Nurseries products with 190 marked available, e.g. "Apple Jonathon $40",
+each linking to the password page. It would have stayed that way until 20 October.
+
+**Decision.**
+1. A `dormant_note` for Aus Nurseries with the reason and reopen date, so the banner stops
+   saying "we have not been able to reach" them, which reads as our outage.
+2. `build-dashboard.py` now applies the nursery page's own `is_dormant_nursery()` rule
+   (moved to `stocklib.snapshots` so both import it) and strips availability, pre-order,
+   stock count and change flags from a dormant nursery's rows. The rows stay searchable
+   as a record.
+
+**Why not `untrusted_nurseries()`** for search: it fires on a single failed night and on
+truncated-but-successful scrapes. Blanking 190 real in-stock items after one hiccup is a
+worse error than the one being fixed. The dormancy rule waits 3 days, or 1 when a human
+has written a note, and it is the rule the nursery page already shows readers, so the
+two surfaces cannot disagree.
+
+**Side effect caught by the golden test.** Its fixture is dated 2026-03-05, so against
+the real clock every fixture nursery now reads dormant. Added `--today` to the builder
+and pinned both golden cases to the fixture day, the same pattern as the bare-root page.
+
+**Not done:** the Shopify scraper has no weekly-probe backoff (only BigCommerce does), so
+it will fail and raise `failure_streak` nightly until they reopen. Harmless noise.
+Self-clearing: the first successful scrape after 20 October restores search and the page.

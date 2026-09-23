@@ -26,9 +26,11 @@ UPDATE = os.environ.get("GOLDEN_UPDATE") == "1"
 
 GOLDEN_CASES = [
     {
+        # --today pinned to the fixture's scrape day, so its nurseries cannot
+        # read as dormant (and lose their stock) as the calendar moves on.
         "name": "dashboard",
         "script": "build-dashboard.py",
-        "args": ["{DATA}", "{OUT}"],
+        "args": ["{DATA}", "{OUT}", "--today", "2026-03-05"],
         "outputs": ["index.html"],
     },
     {
@@ -38,7 +40,7 @@ GOLDEN_CASES = [
         # filtering is the new logic worth covering).
         "name": "bush_tucker_landing",
         "script": "build-dashboard.py",
-        "args": ["{DATA}", "{OUT}", "--category", "bush_tucker"],
+        "args": ["{DATA}", "{OUT}", "--category", "bush_tucker", "--today", "2026-03-05"],
         "outputs": ["index.html", "data.js"],
     },
     {

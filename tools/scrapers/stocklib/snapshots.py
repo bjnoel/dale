@@ -168,3 +168,23 @@ def is_stale(scraped_at: str | None, today: str | None = None, *,
     """True when a snapshot is old enough that its stock must not be called current."""
     age = snapshot_age_days(scraped_at, today)
     return age is not None and age >= after
+
+
+def is_dormant_nursery(meta: dict, scraped_at: str | None, today: str | None) -> bool:
+    """Whether this nursery's stock must be shown as a record, not an offer.
+
+    Two ways in, because they answer different questions. Without a
+    `dormant_note` we are only inferring from a snapshot that has stopped
+    moving, so we wait STALE_AFTER_DAYS before saying anything: one failed night
+    is not a closure and calling it one is worse than a day of silence.
+
+    With a `dormant_note` we are not inferring. Someone read the closure off the
+    nursery's own site, so the only question left is whether they are back yet,
+    and a successful scrape today answers that. A same-day snapshot clears the
+    banner on its own the moment their store starts answering again, which is
+    what keeps a hand-written note from outliving the fact it records.
+    """
+    age = snapshot_age_days(scraped_at, today)
+    if age is None:
+        return False
+    return age >= (1 if meta.get("dormant_note") else STALE_AFTER_DAYS)
