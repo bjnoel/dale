@@ -5,10 +5,12 @@ the 2026-07-19 Shopify-wide 503 blip took out 10 nursery snapshots in one run:
 every Shopify store 503'd once at the same moment and the scrapers had no
 retry, so a transient platform hiccup became a missing snapshot day.
 
-Retries HTTP 429/503/509 and read/connect timeouts with exponential backoff,
-honouring a seconds-form Retry-After header. Import from here; do not copy
+Retries transient HTTP statuses (429, 5xx gateway errors, Cloudflare 52x) and
+network-level failures (timeouts, resets, dropped connections, DNS) with
+exponential backoff, honouring a seconds-form Retry-After header. Import from here; do not copy
 these into a scraper (tests/test_no_forking.py guards the constants).
 """
+import http.client
 import socket
 import time
 import urllib.error
@@ -19,7 +21,11 @@ import urllib.request
 # concurrent-connection cap. Added 2026-08-27 after Engall's returned it once
 # (2026-08-26) and served 200 in 1.45s the next morning: transient by
 # construction, and the exact class this module exists to absorb.
-RETRYABLE_HTTP = {429, 503, 509}
+#
+# 500/502/504 and Cloudflare's 520-524 joined 2026-09-23: they are what a
+# CDN-fronted or shared-hosted store returns when its origin hiccups, and until
+# then the first one ended the nursery's scrape for the day.
+RETRYABLE_HTTP = {429, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524}
 MAX_RETRIES = 3        # extra attempts after the first try
 BACKOFF_BASE = 2.0     # seconds; doubles each retry
 BACKOFF_CAP = 30.0     # never wait longer than this between retries
@@ -61,12 +67,28 @@ def is_timeout(exc):
     return False
 
 
+def is_transient_network_error(exc):
+    """True for failures worth another attempt: timeouts, connection resets,
+    dropped connections, a truncated body, or a URLError wrapping any of those
+    (which is also how DNS failures and refused connections arrive).
+
+    Deliberately narrow: a ValueError from a malformed Request is our bug and
+    retrying it just delays the error."""
+    if is_timeout(exc):
+        return True
+    if isinstance(exc, (ConnectionError, http.client.HTTPException)):
+        return True
+    if isinstance(exc, urllib.error.URLError) and not isinstance(exc, urllib.error.HTTPError):
+        return True
+    return False
+
+
 def request_with_retry(req, timeout=20, health=None, *, _opener=None, _sleep=time.sleep):
     """Send a urllib Request, retrying transient failures, and return the raw
     response bytes (or None once retries are exhausted / on a fatal error).
 
-    Retries HTTP 429/503/509 and timeouts up to MAX_RETRIES times with exponential
-    backoff (honouring Retry-After). ``_opener``/``_sleep`` are injection seams
+    Retries RETRYABLE_HTTP statuses and transient network errors up to
+    MAX_RETRIES times with exponential backoff (honouring Retry-After). ``_opener``/``_sleep`` are injection seams
     for tests."""
     opener = _opener or urllib.request.urlopen
     url = req.full_url
@@ -85,9 +107,10 @@ def request_with_retry(req, timeout=20, health=None, *, _opener=None, _sleep=tim
                 health.note_http_error(e.code, url)
             return None
         except Exception as e:
-            if is_timeout(e) and attempt < MAX_RETRIES:
+            if is_transient_network_error(e) and attempt < MAX_RETRIES:
                 delay = backoff_delay(attempt + 1)
-                print(f"  timeout on {url}; retry {attempt + 1}/{MAX_RETRIES} in {delay:.0f}s")
+                kind = "timeout" if is_timeout(e) else type(e).__name__
+                print(f"  {kind} on {url}; retry {attempt + 1}/{MAX_RETRIES} in {delay:.0f}s")
                 _sleep(delay)
                 continue
             print(f"  Error fetching {url}: {e}")

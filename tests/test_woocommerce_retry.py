@@ -102,7 +102,11 @@ class RetryableCodeTest(unittest.TestCase):
     def test_client_errors_are_not_retryable(self):
         # 400 is Garden Express post-Shopify-migration: retrying it every night
         # would be three extra requests at a store that has moved.
-        for code in (400, 403, 404, 410, 500):
+        # 500 used to be pinned here too. It moved to RETRYABLE_HTTP on
+        # 2026-09-23: every 500 in seven weeks of scraper.log was a one-off
+        # mid-run (Ladybird page 4/5, Fruit Tree Lane page 1, a Heritage
+        # product page) that served 200 the next night.
+        for code in (400, 403, 404, 410):
             self.assertNotIn(code, retry.RETRYABLE_HTTP)
 
 
