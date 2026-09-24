@@ -82,6 +82,7 @@ RELATED_LOOKUP = build_related_lookup()
 
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
 from stocklib.classify import is_real_product
+from stocklib.snapshots import iter_nursery_snapshots
 from stocklib.species_match import build_species_lookup, match_title
 from stocklib.taxonomy import enabled_species
 from stocklib.category_ui import category_badges_html, CATEGORY_FILTER_CSS
@@ -99,15 +100,10 @@ def load_species() -> list[dict]:
 def load_nursery_products(data_dir: Path) -> list[dict]:
     """Load all products from latest.json files."""
     products = []
-    for nursery_dir in sorted(data_dir.iterdir()):
-        if not nursery_dir.is_dir():
-            continue
-        latest = nursery_dir / "latest.json"
-        if not latest.exists():
-            continue
-        with open(latest) as f:
-            data = json.load(f)
-        nursery_key = nursery_dir.name
+    # Today's snapshot else latest.json, with a closed nursery's stock
+    # withdrawn (stocklib.snapshots). This used to read latest.json raw, which
+    # kept a closed store "In stock" on every species page it appeared on.
+    for nursery_key, data in iter_nursery_snapshots(data_dir):
         nursery_name = data.get("nursery_name", nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")

@@ -35,7 +35,7 @@ from stocklib.citations import inline_cite
 from stocklib.classify import is_real_product
 from stocklib.utm import outbound
 from stocklib.registry import NURSERY_NAMES, delivery_label, restriction_warning
-from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
+from stocklib.snapshots import iter_nursery_snapshots, variant_min_price, withdraw_if_dormant
 from stocklib.taxonomy import enabled_species
 
 from cultivar_parsing import _RE_BARE_ROOTED, _RE_BEAR_ROOTED
@@ -155,7 +155,12 @@ def _shipping_cell(nursery_key: str) -> str:
 def collect_bare_root(data_dir, today: str | None = None) -> list[dict]:
     """All bare-root products across today's snapshots, as flat row dicts."""
     rows = []
-    for nursery_key, snap in iter_nursery_snapshots(data_dir, today):
+    # `today` here is the page's season date (--today pins it for the golden
+    # test); whether a nursery has gone quiet is a fact about the data against
+    # the real clock, so withdrawal is judged separately. Identical in cron,
+    # where no --today is passed.
+    for nursery_key, snap in iter_nursery_snapshots(data_dir, today, withdraw_dormant=False):
+        snap = withdraw_if_dormant(nursery_key, snap)
         for p in snap.get("products", []):
             if not is_real_product(p.get("title", "")):
                 continue

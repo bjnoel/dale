@@ -35,7 +35,7 @@ from stocklib.page_ledger import (
     page_state_meta, write_page,
 )
 from stocklib.scrape_health import untrusted_nurseries
-from stocklib.snapshots import iter_nursery_snapshots
+from stocklib.snapshots import iter_nursery_snapshots, dormant_nurseries
 from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
 from stocklib.tombstone import render_stub, render_tombstone, stub_head_extras
@@ -815,7 +815,14 @@ def run_lifecycle(ledger: PageLedger, args, data_dir: Path, variety_dir: Path,
         if len(skipped) > 10:
             print(f"  ... and {len(skipped) - 10} more skipped")
 
+    # A closed nursery's stock is withdrawn before any page is built, so a page
+    # carried only by it drops out of tonight's set. Its absence is a holiday,
+    # not a delisting: hold it exactly like an untrusted scrape. No `today`
+    # passed on purpose: the same clock that withdrew the stock (the snapshot
+    # walk's) decides the hold, so the two can never disagree.
     untrusted = untrusted_nurseries(today, args.health_dir)
+    if getattr(args, "data_dir", None):
+        untrusted |= dormant_nurseries(args.data_dir)
     if untrusted:
         print(f"Untrusted nurseries tonight: {', '.join(sorted(untrusted))}")
 

@@ -22,7 +22,7 @@ from collections import defaultdict
 
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_label
 from stocklib.flags import DIGEST_SIGNUP_ENABLED
-from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
+from stocklib.snapshots import iter_nursery_snapshots, variant_min_price, dormant_nurseries
 from stocklib.structured_data import product_offer_jsonld
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, SITE_URL
@@ -316,7 +316,14 @@ def run_lifecycle(ledger: PageLedger, args, compare_dir: Path, output_dir: Path,
     predates the ledger it is merely conservative, and the fix is to seed it with
     its real dates rather than to loosen the guard.
     """
+    # A closed nursery's stock is withdrawn before any page is built, so a page
+    # carried only by it drops out of tonight's set. Its absence is a holiday,
+    # not a delisting: hold it exactly like an untrusted scrape. No `today`
+    # passed on purpose: the same clock that withdrew the stock (the snapshot
+    # walk's) decides the hold, so the two can never disagree.
     untrusted = untrusted_nurseries(today, args.health_dir)
+    if getattr(args, "data_dir", None):
+        untrusted |= dormant_nurseries(args.data_dir)
     if untrusted:
         print(f"  Untrusted nurseries tonight: {', '.join(sorted(untrusted))}")
 

@@ -17,6 +17,7 @@ from shipping import (SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_labe
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
 from stocklib.fruit_filters import digest_product_filter
+from stocklib.registry import NURSERIES as REGISTRY_NURSERIES
 from stocklib.snapshots import is_dormant_nursery
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.utm import outbound
@@ -76,14 +77,6 @@ NURSERY_META = {
     "ausnurseries": {
         "url": "https://www.ausnurseries.com",
         "tags": ["fruit trees", "edibles"],
-        # Their own password page, 2026-09-23: "closed for a holiday break ...
-        # our online store will reopen on 20 October 2026". Every URL, including
-        # products.json, serves HTTP 401 from 2026-09-20.
-        "dormant_note": (
-            "Aus Nurseries has closed its online store for a holiday break and says it "
-            "will reopen on 20 October 2026. The stock below is the last we recorded "
-            "before they closed and is kept for reference, not as current availability."
-        ),
         "description": "Aus Nurseries is an online nursery offering a variety of fruit trees and edible plants across Australia. They carry a range of common and less common fruit species, shipping to most Australian states excluding WA, NT, and TAS.",
     },
     "fruit-tree-cottage": {
@@ -94,16 +87,6 @@ NURSERY_META = {
     "heritage-fruit-trees": {
         "url": "https://www.heritagefruittrees.com.au",
         "tags": ["heritage varieties", "heirloom", "temperate fruit", "apples", "pears", "plums"],
-        # Their own holding page, 2026-08-24: "Online plant sales for 2026 have
-        # finished". Every URL serves HTTP 503. Without this the generic banner
-        # would say only that we cannot reach them, which reads like our fault.
-        "dormant_note": (
-            "Heritage Fruit Trees has closed online sales for 2026 and their store is "
-            "currently offline. The stock below is the last we recorded and is kept for "
-            "reference, not as current availability. They are running an on-farm clearance "
-            "at Beaufort, VIC from Saturday 29 August 2026. We expect their catalogue back "
-            "for the 2027 bare-root season."
-        ),
         "description": "Heritage Fruit Trees is a Victorian specialist nursery carrying one of Australia's largest collections of heritage and heirloom temperate fruit trees. Based in Beaufort, VIC, they stock hundreds of apple, pear, plum, cherry, quince, and nut tree varieties including many rare cultivars unavailable elsewhere. Does not ship to WA, NT, or TAS.",
     },
     "perth-mobile-nursery": {
@@ -167,6 +150,14 @@ NURSERY_META = {
         "description": "All Rare Herbs is an online-only mail-order nursery best known for herbs, with a genuinely rare fruiting range: miracle fruit, acerola cherry, vanilla, coffee, cocoa, goji, midyim and other collector plants. We track their fruiting plants and trees only. No plants to WA, NT, or TAS.",
     },
 }
+
+# The closure notes live on the registry record (stocklib.registry.Nursery.
+# dormant_note) so every builder can apply the dormancy rule without importing
+# this module. Merged back in here so NURSERY_META keeps its old shape for the
+# banner and for build-dashboard.
+for _n in REGISTRY_NURSERIES:
+    if _n.dormant_note:
+        NURSERY_META.setdefault(_n.key, {})["dormant_note"] = _n.dormant_note
 
 
 def load_nursery_data(data_dir: Path) -> dict:
