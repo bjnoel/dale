@@ -21,6 +21,7 @@ from html import unescape
 from pathlib import Path
 
 from stocklib.jsonio import atomic_write_json
+from stocklib import page_verify
 from stocklib.model import validate_and_warn
 from stocklib.retry import request_with_retry
 from stocklib.scrape_health import count_priced, ScrapeHealth
@@ -30,6 +31,11 @@ NURSERIES = {
         "name": "Guildford Garden Centre",
         "domain": "guildfordgardencentre.com.au",
         "location": "Guildford, WA",
+        # A site plugin blanks some product pages ("we are unable to supply this
+        # product") while the Store API still says in stock and purchasable. Only
+        # the page knows, so in-stock products are confirmed against it
+        # (stocklib.page_verify). 5 of 276 on 2026-09-24.
+        "page_unavailable_marker": "waf-product-unavailable",
         # Guildford tags many fruit trees with only their leaf category and omits
         # the "fruits-nuts"/"edibles" parent (e.g. Fig - Peter Good carries only
         # exotic-tropical-fruit-trees + fig-tree). Parent-only filtering silently
@@ -389,13 +395,37 @@ def normalize_product(raw, nursery_key, config):
     }
 
 
-def save_snapshot(nursery_key, products, config):
+def fetch_page(url, health=None, *, _opener=None, _sleep=time.sleep):
+    """A product page's HTML, or None. Retries like every other fetch."""
+    req = urllib.request.Request(url, headers={
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml",
+    })
+    raw = request_with_retry(req, timeout=30, health=health,
+                             _opener=_opener, _sleep=_sleep)
+    return raw.decode("utf-8", errors="replace") if raw is not None else None
+
+
+def save_snapshot(nursery_key, products, config, health=None, *, _fetch_page=None):
     """Save a dated snapshot."""
     today = date.today().isoformat()
     nursery_dir = DATA_DIR / nursery_key
     nursery_dir.mkdir(parents=True, exist_ok=True)
 
     normalized = [normalize_product(p, nursery_key, config) for p in products]
+
+    marker = config.get("page_unavailable_marker")
+    if marker:
+        # Must run before latest.json is overwritten: it reads yesterday's
+        # published in-stock set to find tonight's "back in stock" candidates.
+        stats = page_verify.verify(
+            normalized, nursery_dir, marker,
+            _fetch_page or (lambda u: fetch_page(u, health)), today,
+            sleep=time.sleep if _fetch_page is None else None, delay=REQUEST_DELAY)
+        print(f"  Page checks: {stats['must']} new/unchecked + {stats['rolling']} rolling, "
+              f"{stats['failed']} failed; {len(stats['withdrawn'])} unavailable on their site")
+        for t in stats["withdrawn"]:
+            print(f"    withdrawn: {t}")
     in_stock = sum(1 for p in normalized if p["any_available"])
 
     snapshot = {
@@ -439,7 +469,7 @@ def main():
         health = ScrapeHealth(key, source="woocommerce")
         try:
             products = scrape_woocommerce(key, config, health)
-            snapshot = save_snapshot(key, products, config) if products else None
+            snapshot = save_snapshot(key, products, config, health) if products else None
         except Exception as e:
             health.note_error(repr(e))
             health.finish(ok=False)

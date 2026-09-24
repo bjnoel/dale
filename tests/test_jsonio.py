@@ -30,6 +30,21 @@ class AtomicWriteJson(unittest.TestCase):
         self.assertEqual(json.loads(self.target.read_text()), {"day": "yesterday"})
         self.assertEqual(sorted(p.name for p in self.dir.iterdir()), ["latest.json"])
 
+    def test_new_file_gets_open_w_permissions_not_0600(self):
+        import os
+        umask = os.umask(0o022)
+        try:
+            atomic_write_json(self.target, {})
+        finally:
+            os.umask(umask)
+        self.assertEqual(self.target.stat().st_mode & 0o777, 0o644)
+
+    def test_replacing_keeps_the_existing_mode(self):
+        self.target.write_text("{}")
+        self.target.chmod(0o664)
+        atomic_write_json(self.target, {"x": 1})
+        self.assertEqual(self.target.stat().st_mode & 0o777, 0o664)
+
     def test_creates_parent_dir(self):
         p = self.dir / "new-nursery" / "2026-09-23.json"
         atomic_write_json(p, [])

@@ -16270,3 +16270,39 @@ the old code:
 `tests/test_prompt_size` requires every finding to name a `tracks.*` origin in
 the DEC-349 migration manifest, so the split admits no finding born after it.
 Flagged to Benedict rather than loosened inside a scraper change.
+
+## DEC-352 (2026-09-24): Guildford's product pages outrank its API on stock
+
+**Trigger:** Benedict found "Apricot Multi Graft - Moorpark/ Trevatt" on treestock as
+In stock, $134.99, "Back in stock!", while Guildford's page said "we are unable to supply
+this product and it cannot be placed on backorder" and showed no price or cart button.
+
+**What is going on.** A site plugin (`waf-product-unavailable`) blanks the page and hides
+the product from category listings. The WooCommerce Store API is untouched: the product and
+its only variation (25L bag) report in stock and purchasable. Compared field by field with
+buyable Guildford products (Longan Chompoo, Mango Saigon), nothing differs. Only the page
+knows. A full scan of all 276 "in stock" Guildford pages from the server: **5 unavailable**
+(two apricot multi-grafts, a nectarine multi-graft, Peach Angel Dwarf, English Walnut).
+Nobody watches those varieties and no alert was ever sent for them. Backorders are fine
+already: "Apricot - Divinity" (Backorder on site) is out of stock in the API and on treestock.
+
+**Decision (option 2 of 3, Benedict: "yes").** `stocklib.page_verify`, switched on per
+nursery by `page_unavailable_marker` in the Woo config (Guildford only):
+- A product in stock tonight but not in last night's published snapshot, or never checked,
+  has its page loaded before the snapshot is written (cap 60). This is the "back in stock"
+  case, the one that becomes a subscriber alert.
+- Plus the 30 longest-unchecked in-stock products, so all ~276 are re-read about every 9
+  nights.
+- Verdicts persist in `nursery-stock/guildford/page-checks.json`. A failed page load keeps
+  the previous verdict.
+
+Measured live in a copy on the server: the same 5 withdrawn, 275 in stock, Guildford
+136s instead of 66s. Seeded from the full scan so the first night is not a 276-page run.
+
+**Rejected:** loading every in-stock page nightly (~12 min, for 2%); crawling category
+listings to find what is hidden (as many requests, and a missing listing is weaker evidence
+than the page's own message).
+
+**Caught on the way:** DEC-351's `atomic_write_json` wrote every file 0600, because
+`mkstemp` does, where `open()` gave 0664. Harmless today (every reader runs as dale) but
+unintended; it now keeps an existing file's mode, else open()'s default.
