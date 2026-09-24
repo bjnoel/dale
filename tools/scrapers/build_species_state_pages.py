@@ -30,7 +30,7 @@ from stocklib.page_ledger import (
 )
 from stocklib.registry import BUY_PAGE_STATE_SLUGS
 from stocklib.scrape_health import untrusted_nurseries
-from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
+from stocklib.snapshots import iter_nursery_snapshots, variant_min_price, dormant_nurseries
 from stocklib.templates import render as render_template
 from stocklib.tombstone import combo_cta_html, render_tombstone
 from stocklib.utm import outbound
@@ -824,7 +824,14 @@ def run_lifecycle(ledger: PageLedger, args, output_dir: Path, today: str,
     so its products cannot reappear under a different combo key. No retired
     branch either, for the same reason. Tombstone or nothing.
     """
+    # A closed nursery's stock is withdrawn before any page is built, so a page
+    # carried only by it drops out of tonight's set. Its absence is a holiday,
+    # not a delisting: hold it exactly like an untrusted scrape. No `today`
+    # passed on purpose: the same clock that withdrew the stock (the snapshot
+    # walk's) decides the hold, so the two can never disagree.
     untrusted = untrusted_nurseries(today, args.health_dir)
+    if getattr(args, "data_dir", None):
+        untrusted |= dormant_nurseries(args.data_dir)
     if untrusted:
         _log(f"Untrusted nurseries tonight: {', '.join(sorted(untrusted))}")
 

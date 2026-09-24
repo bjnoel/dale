@@ -12,6 +12,7 @@ Run from repo root with:
     python3 -m unittest discover tests/
 """
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -103,9 +104,13 @@ class BuilderRun:
             args += ["--ledger", str(self.ledger_path),
                      "--health-dir", str(self.health_dir)]
         args += self.extra_args
+        # The golden fixture is frozen at 2026-03-05. Judge its stock on that
+        # day, or every fixture nursery reads as closed and its pages are held
+        # instead of exercising the lifecycle (stocklib.snapshots dormancy).
+        env = dict(os.environ, TREESTOCK_TODAY="2026-03-05")
         self.proc = subprocess.run(
             [sys.executable, str(SCRAPERS / "build_variety_pages.py"), *args],
-            capture_output=True, text=True, cwd=str(SCRAPERS))
+            capture_output=True, text=True, cwd=str(SCRAPERS), env=env)
         return self
 
     def page(self, slug):

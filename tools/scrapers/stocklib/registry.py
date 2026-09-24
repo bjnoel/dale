@@ -32,6 +32,11 @@ class Nursery:
     local_delivery: dict | None = None        # {"area": ..., "state": ...} or None
     location: str = ""                        # town/suburb + state, for display
     note: str = ""                            # provenance / shipping caveats
+    # Set only while a human has read a closure off the nursery's own site.
+    # Shortens the dormancy rule from STALE_AFTER_DAYS to one day and replaces
+    # the generic "we have not been able to reach them" banner on the nursery
+    # page. Stops mattering the day a scrape succeeds again (stocklib.snapshots).
+    dormant_note: str = ""
 
 
 # Verified via nursery websites March 2026. Quarantine states (WA, TAS, NT)
@@ -81,7 +86,16 @@ NURSERIES: list[Nursery] = [
     Nursery("ausnurseries", "Aus Nurseries",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Australia",
-            note="Does not ship to WA, NT, or TAS"),
+            note="Does not ship to WA, NT, or TAS",
+            # Their own password page, 2026-09-23: "closed for a holiday break ...
+            # our online store will reopen on 20 October 2026". Every URL, including
+            # products.json, serves HTTP 401 from 2026-09-20.
+            dormant_note=(
+                'Aus Nurseries has closed its online store for a holiday break and '
+                'says it will reopen on 20 October 2026. The stock below is the last '
+                'we recorded before they closed and is kept for reference, not as '
+                'current availability.'
+            )),
     Nursery("fruit-tree-cottage", "Fruit Tree Cottage",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Forest Glen, QLD",
@@ -89,7 +103,18 @@ NURSERIES: list[Nursery] = [
     Nursery("heritage-fruit-trees", "Heritage Fruit Trees",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Beaufort, VIC",
-            note="VIC-based. No WA/TAS: accreditation discontinued (Mar 2026)."),
+            note="VIC-based. No WA/TAS: accreditation discontinued (Mar 2026).",
+            # Their own holding page, 2026-08-24: "Online plant sales for 2026 have
+            # finished". Every URL serves HTTP 503. Without this the generic banner
+            # would say only that we cannot reach them, which reads like our fault.
+            dormant_note=(
+                'Heritage Fruit Trees has closed online sales for 2026 and their '
+                'store is currently offline. The stock below is the last we recorded '
+                'and is kept for reference, not as current availability. They are '
+                'running an on-farm clearance at Beaufort, VIC from Saturday 29 '
+                'August 2026. We expect their catalogue back for the 2027 bare-root '
+                'season.'
+            )),
     Nursery("perth-mobile-nursery", "Perth Mobile Nursery",
             ("WA",),
             local_delivery={"area": "Perth metro", "state": "WA"},
@@ -298,6 +323,12 @@ def nursery_note_for_state(nursery_key: str, state: str) -> str:
     parts = [p for p in (nursery_caveat_for_state(nursery_key, state),
                          STATE_NURSERY_FLAVOUR.get(state, {}).get(nursery_key, "")) if p]
     return ", ".join(parts)
+
+
+def dormant_note(nursery_key: str) -> str:
+    """The human-verified closure note for a nursery, or '' if none."""
+    nursery = _BY_KEY.get(nursery_key)
+    return nursery.dormant_note if nursery else ""
 
 
 def nursery_location(nursery_key: str, fallback: str = "Australia") -> str:

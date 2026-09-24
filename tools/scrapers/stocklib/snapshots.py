@@ -19,12 +19,21 @@ boundary and future typed consumers; this serves the existing builders.
 from __future__ import annotations
 
 import json
+import os
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
 
 def _today_utc() -> str:
+    """Today's date in UTC, or TREESTOCK_TODAY when set.
+
+    The override exists for the golden tests: their fixture is frozen at
+    2026-03-05, and without a pinned today the dormancy rule would withdraw
+    every fixture nursery's stock as the calendar moved on. Never set in cron."""
+    pinned = os.environ.get("TREESTOCK_TODAY")
+    if pinned:
+        return pinned
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
 
@@ -98,13 +107,24 @@ def snapshot_path_for_date(nursery_dir: Path, target_date: str,
     return None
 
 
-def iter_nursery_snapshots(data_dir, today: str | None = None) -> Iterator[tuple[str, dict]]:
+def iter_nursery_snapshots(data_dir, today: str | None = None, *,
+                           withdraw_dormant: bool = True) -> Iterator[tuple[str, dict]]:
     """Yield (nursery_key, snapshot_dict) for each nursery under data_dir.
 
     Nurseries are visited in sorted directory order. For each, today's dated
     snapshot is used if present, else latest.json; nurseries with neither are
     skipped. This is the exact directory-walk + fallback the page builders each
     used to inline, so swapping a builder onto it preserves behaviour.
+
+    A dormant nursery (see is_dormant_nursery) comes back with its stock
+    withdrawn: every product and variant unavailable, snapshot["dormant"] True.
+    The latest.json fallback is what makes this necessary. It is the right
+    answer for one bad night and the wrong one for a month: on 2026-09-23, three
+    days into Aus Nurseries' holiday closure, 490 rows on 173 variety, species,
+    buy and compare pages still said "In stock" for a store that answered every
+    URL with a password page. DEC-350 fixed search and the nursery page; doing it
+    here fixes every builder that reads current stock through this walk.
+    `withdraw_dormant=False` is for callers that want the record as recorded.
     """
     today = today or _today_utc()
     for nursery_dir in sorted(Path(data_dir).iterdir()):
@@ -114,7 +134,87 @@ def iter_nursery_snapshots(data_dir, today: str | None = None) -> Iterator[tuple
         if path is None:
             continue
         with open(path) as fp:
-            yield nursery_dir.name, json.load(fp)
+            data = json.load(fp)
+        if withdraw_dormant:
+            data = withdraw_if_dormant(nursery_dir.name, data, today)
+        yield nursery_dir.name, data
+
+
+def load_current_snapshot(nursery_dir: Path, today: str | None = None) -> dict | None:
+    """One nursery's snapshot as a statement of current stock: today's dated
+    file, else latest.json, with a dormant nursery's stock withdrawn. For the
+    builders that address a single nursery dir rather than walking them all."""
+    today = today or _today_utc()
+    path = snapshot_path(Path(nursery_dir), today)
+    if path is None:
+        return None
+    with open(path) as fp:
+        data = json.load(fp)
+    return withdraw_if_dormant(Path(nursery_dir).name, data, today)
+
+
+def nursery_is_dormant(nursery_key: str, snapshot: dict, today: str | None = None) -> bool:
+    """is_dormant_nursery with the closure note read from the registry."""
+    from stocklib.registry import dormant_note  # local: registry is a leaf, keep it one
+    return is_dormant_nursery({"dormant_note": dormant_note(nursery_key)},
+                              snapshot.get("scraped_at"), today)
+
+
+# Fields that each claim "you can buy this now" in some form. The rows stay (the
+# record of what was listed, and what keeps variety pages and their ledger
+# entries alive through a closure); only the claims go.
+_PRODUCT_STOCK_CLAIMS = ("preorder", "wait_state", "total_stock")
+_VARIANT_STOCK_CLAIMS = ("stock_count", "availability_state")
+
+
+def withdraw_if_dormant(nursery_key: str, snapshot: dict, today: str | None = None) -> dict:
+    """Return the snapshot unchanged, or a copy with its stock withdrawn if the
+    nursery is dormant. Never mutates the input."""
+    if not nursery_is_dormant(nursery_key, snapshot, today):
+        return snapshot
+    products = []
+    for p in snapshot.get("products", []) or []:
+        q = {k: v for k, v in p.items() if k not in _PRODUCT_STOCK_CLAIMS}
+        q["any_available"] = False
+        if "available" in q:
+            q["available"] = False
+        if isinstance(p.get("variants"), list):
+            q["variants"] = [
+                {**{k: v for k, v in var.items() if k not in _VARIANT_STOCK_CLAIMS},
+                 "available": False}
+                for var in p["variants"]
+            ]
+        products.append(q)
+    out = dict(snapshot, products=products, dormant=True)
+    if "in_stock_count" in out:
+        out["out_of_stock_count"] = len(products)
+        out["in_stock_count"] = 0
+    return out
+
+
+def dormant_nurseries(data_dir, today: str | None = None) -> set[str]:
+    """Keys of every nursery whose current snapshot is dormant.
+
+    The page-ledger lifecycles union this into their `untrusted` set, so a page
+    whose only stockists are closed nurseries is HELD rather than tombstoned:
+    a holiday closure is not evidence that a variety is gone. untrusted_nurseries
+    usually covers it already (a closed store fails its scrape nightly), but not
+    always: a scraper in weekly-probe backoff writes no health record, and once
+    the last ok record ages out of the health window the nursery drops out of
+    that set entirely."""
+    today = today or _today_utc()
+    out = set()
+    for nursery_dir in sorted(Path(data_dir).iterdir()):
+        if not nursery_dir.is_dir():
+            continue
+        path = snapshot_path(nursery_dir, today)
+        if path is None:
+            continue
+        with open(path) as fp:
+            scraped_at = json.load(fp).get("scraped_at")
+        if nursery_is_dormant(nursery_dir.name, {"scraped_at": scraped_at}, today):
+            out.add(nursery_dir.name)
+    return out
 
 
 def variant_min_price(product: dict, *, prefer_available: bool = False) -> float | None:

@@ -21,6 +21,7 @@ from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
 from stocklib.species_match import build_species_lookup, match_title
+from stocklib.snapshots import iter_nursery_snapshots
 
 
 def count_species(products: list, species_lookup: dict) -> int:
@@ -36,15 +37,10 @@ def count_species(products: list, species_lookup: dict) -> int:
 
 def load_nursery_data(data_dir: Path) -> dict:
     nurseries = {}
-    for nursery_dir in sorted(data_dir.iterdir()):
-        if not nursery_dir.is_dir():
-            continue
-        latest = nursery_dir / "latest.json"
-        if not latest.exists():
-            continue
-        with open(latest) as f:
-            data = json.load(f)
-        nurseries[nursery_dir.name] = data
+    # The shared snapshot walk: today's file else latest.json, and a closed
+    # nursery shows 0 in stock rather than its last recorded count.
+    for key, data in iter_nursery_snapshots(data_dir):
+        nurseries[key] = data
     return nurseries
 
 

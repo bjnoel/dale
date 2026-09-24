@@ -10,7 +10,6 @@ Usage:
 """
 
 import json
-import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -24,6 +23,7 @@ from shipping import SHIPPING_MAP, NURSERY_NAMES, restriction_warning
 from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.templates import render as render_template
 from stocklib.utm import outbound
+from stocklib.snapshots import iter_nursery_snapshots
 from treestock_layout import render_head, render_header, render_footer
 
 # Rarity scores are computed daily by build_species_pages.py and saved here.
@@ -77,12 +77,9 @@ def build_rare_page(data_dir: str, output_dir: str):
     # Collect in-stock products matching rare species
     species_data = {}
 
-    for nursery in sorted(os.listdir(data_dir)):
-        latest = data_dir / nursery / 'latest.json'
-        if not latest.exists():
-            continue
-        with open(latest) as f:
-            raw = json.load(f)
+    # Closed nurseries come back with stock withdrawn (stocklib.snapshots), so
+    # a holiday closure cannot list a "rare find" nobody can buy.
+    for nursery, raw in iter_nursery_snapshots(data_dir):
 
         nursery_name = NURSERY_NAMES.get(nursery, nursery)
         restrict = restriction_warning(nursery)

@@ -14,6 +14,7 @@ test_golden.py).
 Regenerate goldens after an intended change, then review the diff:
     GOLDEN_UPDATE=1 python3 -m unittest tests.test_golden
 """
+import os
 import re
 import shutil
 import subprocess
@@ -27,6 +28,7 @@ GOLDEN_DIR = Path(__file__).resolve().parent / "golden"
 FIXTURE_DATA = GOLDEN_DIR / "fixture" / "nursery-stock"
 FIXTURE_LEDGER = GOLDEN_DIR / "fixture" / "page-ledger" / "variety.json"
 EXPECTED_DIR = GOLDEN_DIR / "expected"
+FIXTURE_DAY = "2026-03-05"  # scraped_at of every fixture snapshot
 
 # Tokens that vary by the run date/time (not by input). Normalised on both sides
 # so the goldens stay stable across days. Keep this list tight: over-normalising
@@ -76,9 +78,13 @@ def run_builder(script: str, arg_template: list[str], output_globs: list[str]) -
          .replace("{LEDGER}", str(ledger))
         for a in arg_template
     ]
+    # Pin "today" for stocklib.snapshots to the fixture's scrape day. Without it
+    # every fixture nursery reads as dormant three days after 2026-03-05 and its
+    # stock is withdrawn, so the goldens would change with the calendar.
+    env = dict(os.environ, TREESTOCK_TODAY=FIXTURE_DAY)
     proc = subprocess.run(
         [sys.executable, str(SCRAPERS / script), *args],
-        capture_output=True, text=True, cwd=str(SCRAPERS),
+        capture_output=True, text=True, cwd=str(SCRAPERS), env=env,
     )
     result = {}
     for glob in output_globs:
