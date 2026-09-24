@@ -290,16 +290,25 @@ def detect_anomalies(days):
 # quiet on day six. Only a human-written note mutes. Every other anomaly type
 # still fires for these nurseries, and a muted nursery is still named in the
 # footer of any mail that does go out.
+#
+# And only a failure that CONTINUES a failure run is muted. A note can outlive
+# its closure (Heritage's was still set on 2026-09-24 after a month of good
+# scrapes), and the first failed night after a good one is always news.
 EXPECTED_WHILE_CLOSED = {"failed", "failure_streak"}
 
 
-def acknowledged_closures():
-    """Nursery keys with a human-verified closure note."""
+def acknowledged_closures(yesterday_latest=None):
+    """Nursery keys with a human-verified closure note whose previous run also
+    failed. `yesterday_latest` is latest_by_nursery() for the day before."""
     from stocklib import registry
     note = getattr(registry, "dormant_note", None)
     if note is None:
         return set()
-    return {n.key for n in registry.NURSERIES if note(n.key)}
+    yesterday_latest = yesterday_latest or {}
+    return {n.key for n in registry.NURSERIES
+            if note(n.key)
+            and n.key in yesterday_latest
+            and not yesterday_latest[n.key].get("ok", False)}
 
 
 def split_acknowledged(anomalies, acknowledged):
@@ -409,7 +418,8 @@ def main(argv=None):
     panel = detect_panel_coverage(today.isoformat(), days, health_dir)
     if panel:
         anomalies.insert(0, panel)
-    anomalies, muted = split_acknowledged(anomalies, acknowledged_closures())
+    yesterday = latest_by_nursery(days[1]) if len(days) > 1 else {}
+    anomalies, muted = split_acknowledged(anomalies, acknowledged_closures(yesterday))
     for a in muted:
         print(f"  {a['nursery']}: {a['type']} (known closure, not alerted)")
     if not anomalies:

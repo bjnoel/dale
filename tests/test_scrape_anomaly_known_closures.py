@@ -56,5 +56,20 @@ class KnownClosures(unittest.TestCase):
         self.assertIn("ausnurseries", html)
 
 
+class NoteOnlyMutesAContinuingFailure(unittest.TestCase):
+    def test_note_with_failed_yesterday_is_acknowledged(self):
+        y = {"ausnurseries": _rec("ausnurseries", False)}
+        self.assertIn("ausnurseries", dsa.acknowledged_closures(y))
+
+    def test_first_failure_after_a_good_night_is_not_muted(self):
+        # Heritage: note still set, but scraping fine for weeks. If it breaks,
+        # the first night must reach Benedict.
+        y = {"heritage-fruit-trees": _rec("heritage-fruit-trees", True, 378)}
+        self.assertNotIn("heritage-fruit-trees", dsa.acknowledged_closures(y))
+
+    def test_no_history_is_not_muted(self):
+        self.assertEqual(dsa.acknowledged_closures({}), set())
+
+
 if __name__ == "__main__":
     unittest.main()
