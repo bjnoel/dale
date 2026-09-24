@@ -19,13 +19,21 @@ ARCHIVE="$BACKUP_DIR/data-$TIMESTAMP.tar.gz"
 
 mkdir -p "$BACKUP_DIR"
 
-# Create the backup
+# Create the backup.
+#
+# GNU tar exits 1 for "file changed as we read it", which is normal here: the
+# uptime monitor writes into data/ every five minutes and the hourly runner
+# more. The archive is still written and usable; only exit >= 2 is a real
+# failure. Until 2026-09-24 this treated 1 as fatal and exited before the
+# prune below, so no backup was ever pruned: 12 archives, 2.3GB, each ~9MB
+# larger than the last, on course to fill the disk around mid-2027.
 tar -czf "$ARCHIVE" -C /opt/dale data/ 2>&1
-if [ $? -eq 0 ]; then
+TAR_EXIT=$?
+if [ "$TAR_EXIT" -le 1 ] && [ -s "$ARCHIVE" ]; then
     SIZE=$(du -sh "$ARCHIVE" | cut -f1)
     echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Backup created: $ARCHIVE ($SIZE)"
 else
-    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ERROR: Backup failed for $ARCHIVE"
+    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] ERROR: Backup failed for $ARCHIVE (tar exit $TAR_EXIT)"
     exit 1
 fi
 

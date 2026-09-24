@@ -12,7 +12,25 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # the real script against a temp tree instead of asserting on a copy of it.
 PROJECT_DIR="${DALE_PROJECT_DIR:-/opt/dale}"
 export DALE_DATA_DIR="$PROJECT_DIR/data"
-LOG_PREFIX="[$(date '+%Y-%m-%d %H:%M:%S')]"
+# A function, not a variable. LOG_PREFIX used to be evaluated once at startup,
+# so every line of a 35-minute run read 00:00:01 and no step could be timed
+# from the log. Heritage alone was 20 of those minutes and nothing showed it.
+ts() { date '+[%Y-%m-%d %H:%M:%S]'; }
+
+# One run at a time. The nightly cron takes ~35 minutes and manual re-runs
+# happen (same-day Daleys and dashboard rebuilds are in the health logs); two
+# overlapping runs would interleave writes to the same latest.json and
+# availability.json. A second run exits cleanly and says why. flock is absent
+# on macOS, where only the tests run this script.
+LOCK_FILE="${DALE_SCRAPE_LOCK:-$PROJECT_DIR/data/.scrape.lock}"
+if command -v flock >/dev/null 2>&1; then
+    mkdir -p "$(dirname "$LOCK_FILE")"
+    exec 9>"$LOCK_FILE"
+    if ! flock -n 9; then
+        echo "$(ts) Another scrape run holds $LOCK_FILE; exiting without doing anything."
+        exit 0
+    fi
+fi
 
 # Number of platform scraper families below, and how many may fail before we
 # stop instead of publishing. One family down is a nursery having a bad night;
@@ -34,9 +52,9 @@ report_scrape_health() {
         return 0
     fi
     SCRAPE_HEALTH_REPORTED=1
-    echo "$LOG_PREFIX Checking scrape health..."
+    echo "$(ts) Checking scrape health..."
     python3 "$SCRIPT_DIR/detect_scrape_anomalies.py" 2>&1 \
-        || echo "$LOG_PREFIX WARNING: Scrape anomaly check failed (non-fatal)"
+        || echo "$(ts) WARNING: Scrape anomaly check failed (non-fatal)"
 }
 trap report_scrape_health EXIT
 
@@ -57,63 +75,63 @@ run_scraper() {
         return 0
     fi
     SCRAPER_FAILURES+=("$label")
-    echo "$LOG_PREFIX WARNING: $label scrape failed (continuing with other nurseries)"
+    echo "$(ts) WARNING: $label scrape failed (continuing with other nurseries)"
 }
 
-echo "$LOG_PREFIX Starting nursery stock scrape..."
+echo "$(ts) Starting nursery stock scrape..."
 
 # Shopify nurseries (Ross Creek, Ladybird, Fruitopia, Fruit Salad Trees, Diggers, All Season Plants WA, Aus Nurseries, Fruit Tree Cottage)
-echo "$LOG_PREFIX Scraping Shopify nurseries..."
+echo "$(ts) Scraping Shopify nurseries..."
 run_scraper "Shopify" "$SCRIPT_DIR/shopify_scraper.py"
 
 # Daleys (supplier CSV feed, replaced the Plant-List.php scrape 2026-08-20).
 # The feed URL is semi-private (obscured path, noindex) so it lives in the
 # secrets dir and is never committed. Without it the scraper fails loudly rather
 # than writing a short snapshot.
-echo "$LOG_PREFIX Scraping Daleys (feed)..."
+echo "$(ts) Scraping Daleys (feed)..."
 if [ -f "$PROJECT_DIR/secrets/feeds.env" ]; then
     set -a; . "$PROJECT_DIR/secrets/feeds.env"; set +a
 fi
 run_scraper "Daleys" "$SCRIPT_DIR/csv_feed_scraper.py"
 
 # Ecwid nurseries (Primal Fruits)
-echo "$LOG_PREFIX Scraping Ecwid nurseries..."
+echo "$(ts) Scraping Ecwid nurseries..."
 run_scraper "Ecwid" "$SCRIPT_DIR/ecwid_scraper.py"
 
 # Wix nurseries (Heaven On Earth)
-echo "$LOG_PREFIX Scraping Wix nurseries..."
+echo "$(ts) Scraping Wix nurseries..."
 run_scraper "Wix" "$SCRIPT_DIR/wix_scraper.py"
 
 # WooCommerce nurseries (Guildford Garden Centre)
-echo "$LOG_PREFIX Scraping WooCommerce nurseries..."
+echo "$(ts) Scraping WooCommerce nurseries..."
 run_scraper "WooCommerce" "$SCRIPT_DIR/woocommerce_scraper.py"
 
 # BigCommerce nurseries (Heritage Fruit Trees)
-echo "$LOG_PREFIX Scraping BigCommerce nurseries..."
+echo "$(ts) Scraping BigCommerce nurseries..."
 run_scraper "BigCommerce" "$SCRIPT_DIR/bigcommerce_scraper.py"
 
 # Squarespace nurseries (Perry's Fruit & Nut, our first South Australian one)
-echo "$LOG_PREFIX Scraping Squarespace nurseries..."
+echo "$(ts) Scraping Squarespace nurseries..."
 run_scraper "Squarespace" "$SCRIPT_DIR/squarespace_scraper.py"
 
-echo "$LOG_PREFIX Scrape complete."
+echo "$(ts) Scrape complete."
 
 # Tell Benedict what failed before any later step gets the chance to abort.
 report_scrape_health
 
 FAILED_COUNT=${#SCRAPER_FAILURES[@]}
 if [ "$FAILED_COUNT" -gt "$MAX_SCRAPER_FAILURES" ]; then
-    echo "$LOG_PREFIX ERROR: $FAILED_COUNT of $SCRAPER_COUNT scrapers failed (${SCRAPER_FAILURES[*]}), above the floor of $MAX_SCRAPER_FAILURES. Not publishing; keeping yesterday's site."
+    echo "$(ts) ERROR: $FAILED_COUNT of $SCRAPER_COUNT scrapers failed (${SCRAPER_FAILURES[*]}), above the floor of $MAX_SCRAPER_FAILURES. Not publishing; keeping yesterday's site."
     exit 1
 fi
 if [ "$FAILED_COUNT" -gt 0 ]; then
-    echo "$LOG_PREFIX $FAILED_COUNT of $SCRAPER_COUNT scrapers failed (${SCRAPER_FAILURES[*]}). Those nurseries keep their last-known-good data; continuing."
+    echo "$(ts) $FAILED_COUNT of $SCRAPER_COUNT scrapers failed (${SCRAPER_FAILURES[*]}). Those nurseries keep their last-known-good data; continuing."
 fi
 
 # Update availability history
-echo "$LOG_PREFIX Updating availability history..."
+echo "$(ts) Updating availability history..."
 python3 "$SCRIPT_DIR/availability_tracker.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 \
-    || echo "$LOG_PREFIX WARNING: Availability history update failed (non-fatal; history page may be stale)"
+    || echo "$(ts) WARNING: Availability history update failed (non-fatal; history page may be stale)"
 
 # Backup previous dashboard before rebuilding (keep last-known-good for rollback)
 DASHBOARD_FILE="$PROJECT_DIR/dashboard/index.html"
@@ -125,7 +143,7 @@ fi
 # Build dashboard (atomic write + post-build verification built into script).
 # --needs-review-out runs the categorize ladder (DEC-200) and feeds the /admin
 # needs-review queue; it does not change the dashboard output.
-echo "$LOG_PREFIX Building dashboard..."
+echo "$(ts) Building dashboard..."
 if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$PROJECT_DIR/dashboard" \
     --needs-review-out "$PROJECT_DIR/data/needs-review.json" 2>&1; then
     # Verify JS syntax of the dashboard client app (now external: static/dashboard.js,
@@ -135,40 +153,40 @@ if python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" "$
     cp "$SCRIPT_DIR/static/dashboard.js" "$JS_TMP"
     JS_ERR_TMP=$(mktemp)
     if node --check "$JS_TMP" >"$JS_ERR_TMP" 2>&1; then
-        echo "$LOG_PREFIX Dashboard build complete. JS syntax verified."
+        echo "$(ts) Dashboard build complete. JS syntax verified."
     else
-        echo "$LOG_PREFIX ERROR: Dashboard JS syntax error: $(cat "$JS_ERR_TMP")"
-        echo "$LOG_PREFIX Rolling back to backup."
+        echo "$(ts) ERROR: Dashboard JS syntax error: $(cat "$JS_ERR_TMP")"
+        echo "$(ts) Rolling back to backup."
         if [ -f "$DASHBOARD_BACKUP" ]; then
             cp "$DASHBOARD_BACKUP" "$DASHBOARD_FILE"
-            echo "$LOG_PREFIX Rollback complete. Serving previous dashboard."
+            echo "$(ts) Rollback complete. Serving previous dashboard."
         else
-            echo "$LOG_PREFIX ERROR: No backup available. Dashboard may have broken JS!"
+            echo "$(ts) ERROR: No backup available. Dashboard may have broken JS!"
         fi
     fi
     rm -f "$JS_TMP" "$JS_ERR_TMP"
 else
     BUILD_EXIT=$?
-    echo "$LOG_PREFIX ERROR: Dashboard build failed (exit $BUILD_EXIT). Rolling back to backup."
+    echo "$(ts) ERROR: Dashboard build failed (exit $BUILD_EXIT). Rolling back to backup."
     if [ -f "$DASHBOARD_BACKUP" ]; then
         cp "$DASHBOARD_BACKUP" "$DASHBOARD_FILE"
-        echo "$LOG_PREFIX Rollback complete. Serving previous dashboard."
+        echo "$(ts) Rollback complete. Serving previous dashboard."
     else
-        echo "$LOG_PREFIX ERROR: No backup available. Dashboard may be missing!"
+        echo "$(ts) ERROR: No backup available. Dashboard may be missing!"
     fi
 fi
 
 # Build the /bush-tucker/ category landing page (DEC-200 / DAL-198): same
 # dashboard components, scoped to bush tucker stock, into dashboard/bush-tucker/.
 # Non-fatal: a failure here must not block the homepage or the rest of the run.
-echo "$LOG_PREFIX Building bush tucker landing page..."
+echo "$(ts) Building bush tucker landing page..."
 mkdir -p "$PROJECT_DIR/dashboard/bush-tucker"
 python3 "$SCRIPT_DIR/build-dashboard.py" "$PROJECT_DIR/data/nursery-stock" \
     "$PROJECT_DIR/dashboard/bush-tucker" --category bush_tucker 2>&1 \
-    || echo "$LOG_PREFIX WARNING: Bush tucker landing build failed (non-fatal)"
+    || echo "$(ts) WARNING: Bush tucker landing build failed (non-fatal)"
 
 # Generate daily digest (text + HTML + shareable web page versions)
-echo "$LOG_PREFIX Generating daily digest..."
+echo "$(ts) Generating daily digest..."
 TODAY=$(date '+%Y-%m-%d')
 DIGEST_DIR="$PROJECT_DIR/dashboard"
 ARCHIVE_DIR="$DIGEST_DIR/archive"
@@ -179,19 +197,19 @@ mkdir -p "$ARCHIVE_DIR"
 # too, so a digest build failure would have taken every page builder below it
 # and both subscriber sends with it.
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --save "$DIGEST_DIR/digest.txt" 2>&1 || echo "$LOG_PREFIX WARNING: digest.txt build failed (non-fatal)"
+    --save "$DIGEST_DIR/digest.txt" 2>&1 || echo "$(ts) WARNING: digest.txt build failed (non-fatal)"
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --wa-only --save "$DIGEST_DIR/digest-wa.txt" 2>&1 || echo "$LOG_PREFIX WARNING: digest-wa.txt build failed (non-fatal)"
+    --wa-only --save "$DIGEST_DIR/digest-wa.txt" 2>&1 || echo "$(ts) WARNING: digest-wa.txt build failed (non-fatal)"
 
 # Email HTML digest (unfiltered; send_digest.py handles per-subscriber state filtering)
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --html --save "$DIGEST_DIR/digest-email.html" 2>&1 || echo "$LOG_PREFIX WARNING: digest-email.html build failed (non-fatal)"
+    --html --save "$DIGEST_DIR/digest-email.html" 2>&1 || echo "$(ts) WARNING: digest-email.html build failed (non-fatal)"
 
 # Shareable web page digests (main ones served at /digest.html)
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --page --save "$DIGEST_DIR/digest.html" 2>&1 || echo "$LOG_PREFIX WARNING: digest.html build failed (non-fatal)"
+    --page --save "$DIGEST_DIR/digest.html" 2>&1 || echo "$(ts) WARNING: digest.html build failed (non-fatal)"
 python3 "$SCRIPT_DIR/daily_digest.py" "$PROJECT_DIR/data/nursery-stock" \
-    --page --wa-only --save "$DIGEST_DIR/digest-wa.html" 2>&1 || echo "$LOG_PREFIX WARNING: digest-wa.html build failed (non-fatal)"
+    --page --wa-only --save "$DIGEST_DIR/digest-wa.html" 2>&1 || echo "$(ts) WARNING: digest-wa.html build failed (non-fatal)"
 
 # Archive dated copies. Only archive what actually exists, so a failed digest
 # build above does not abort the run here (and does not archive a stale page
@@ -202,49 +220,49 @@ fi
 if [ -f "$DIGEST_DIR/digest-wa.html" ]; then
     cp "$DIGEST_DIR/digest-wa.html" "$ARCHIVE_DIR/digest-wa-$TODAY.html"
 fi
-echo "$LOG_PREFIX Digest complete (archived as $TODAY)."
+echo "$(ts) Digest complete (archived as $TODAY)."
 
 # Build price/stock change history page
-echo "$LOG_PREFIX Building history page..."
-python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: History page build failed (non-fatal)"
-python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" --wa-only 2>&1 || echo "$LOG_PREFIX WARNING: History page (WA) build failed (non-fatal)"
-echo "$LOG_PREFIX History page complete."
+echo "$(ts) Building history page..."
+python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: History page build failed (non-fatal)"
+python3 "$SCRIPT_DIR/build_history.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" --wa-only 2>&1 || echo "$(ts) WARNING: History page (WA) build failed (non-fatal)"
+echo "$(ts) History page complete."
 
 # Build market trends page (30-day rolling availability + price trends per species).
 # The builder is designed to run daily ("Run daily after scrapers"); without this it
 # went stale between rare manual rebuilds. No email side effects, reads snapshots only.
-echo "$LOG_PREFIX Building trends page..."
-python3 "$SCRIPT_DIR/build_species_trends.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Trends page build failed (non-fatal)"
-echo "$LOG_PREFIX Trends page complete."
+echo "$(ts) Building trends page..."
+python3 "$SCRIPT_DIR/build_species_trends.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Trends page build failed (non-fatal)"
+echo "$(ts) Trends page complete."
 
 # Build nursery profile pages (SEO)
-echo "$LOG_PREFIX Building nursery pages..."
-python3 "$SCRIPT_DIR/build_nursery_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Nursery page build failed (non-fatal)"
-echo "$LOG_PREFIX Nursery pages complete."
+echo "$(ts) Building nursery pages..."
+python3 "$SCRIPT_DIR/build_nursery_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Nursery page build failed (non-fatal)"
+echo "$(ts) Nursery pages complete."
 
 # Build nursery comparison page (SEO)
-echo "$LOG_PREFIX Building nursery comparison page..."
-python3 "$SCRIPT_DIR/build_nursery_compare.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Nursery compare page build failed (non-fatal)"
-echo "$LOG_PREFIX Nursery comparison page complete."
+echo "$(ts) Building nursery comparison page..."
+python3 "$SCRIPT_DIR/build_nursery_compare.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Nursery compare page build failed (non-fatal)"
+echo "$(ts) Nursery comparison page complete."
 
 # Build species pages (SEO)
-echo "$LOG_PREFIX Building species pages..."
-python3 "$SCRIPT_DIR/build_species_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Species page build failed (non-fatal)"
-echo "$LOG_PREFIX Species pages complete."
+echo "$(ts) Building species pages..."
+python3 "$SCRIPT_DIR/build_species_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Species page build failed (non-fatal)"
+echo "$(ts) Species pages complete."
 
 # Build compare pages (price comparison, SEO)
-echo "$LOG_PREFIX Building compare pages..."
+echo "$(ts) Building compare pages..."
 # --ledger, and deliberately NOT --allow-delete. A compare page that drops
 # below MIN_NURSERIES redirects to its species page, which always exists;
 # nothing in this family is ever unlinked. See build_compare_pages.run_lifecycle.
 python3 "$SCRIPT_DIR/build_compare_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" \
-    --ledger "$PROJECT_DIR/data/page-ledger/compare.json" --seed 2>&1 | tail -5 || echo "$LOG_PREFIX WARNING: Compare page build failed (non-fatal)"
-echo "$LOG_PREFIX Compare pages complete."
+    --ledger "$PROJECT_DIR/data/page-ledger/compare.json" --seed 2>&1 | tail -5 || echo "$(ts) WARNING: Compare page build failed (non-fatal)"
+echo "$(ts) Compare pages complete."
 
 # Build rare finds page
-echo "$LOG_PREFIX Building rare finds page..."
-python3 "$SCRIPT_DIR/build_rare_finds.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Rare finds page build failed (non-fatal)"
-echo "$LOG_PREFIX Rare finds page complete."
+echo "$(ts) Building rare finds page..."
+python3 "$SCRIPT_DIR/build_rare_finds.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Rare finds page build failed (non-fatal)"
+echo "$(ts) Rare finds page complete."
 
 # Build variety pages (cultivar-level SEO)
 # --ledger is what turns a disappearing slug into a tombstone or a redirect stub
@@ -259,154 +277,154 @@ echo "$LOG_PREFIX Rare finds page complete."
 # --decisions is the same contract for the buttons on /admin/varieties/review:
 # the UI queues an intent, this is where it becomes a page, and without this
 # flag every click in that screen reaches nothing at all.
-echo "$LOG_PREFIX Building variety pages..."
+echo "$(ts) Building variety pages..."
 python3 "$SCRIPT_DIR/build_variety_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" \
     --ledger "$PROJECT_DIR/data/page-ledger/variety.json" --allow-delete \
     --seed-reviewed "$PROJECT_DIR/data/variety-redirect-proposals.json" \
-    --decisions "$PROJECT_DIR/data/variety-decisions.json" 2>&1 || echo "$LOG_PREFIX WARNING: Variety page build failed (non-fatal)"
-echo "$LOG_PREFIX Variety pages complete."
+    --decisions "$PROJECT_DIR/data/variety-decisions.json" 2>&1 || echo "$(ts) WARNING: Variety page build failed (non-fatal)"
+echo "$(ts) Variety pages complete."
 
 # Build companion planting guide (SEO content)
-echo "$LOG_PREFIX Building companion planting guide..."
-python3 "$SCRIPT_DIR/build_companion_guide.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Companion guide build failed (non-fatal)"
-echo "$LOG_PREFIX Companion guide complete."
+echo "$(ts) Building companion planting guide..."
+python3 "$SCRIPT_DIR/build_companion_guide.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Companion guide build failed (non-fatal)"
+echo "$(ts) Companion guide complete."
 
 # Build fruit-tree pollination guide (SEO content)
-echo "$LOG_PREFIX Building pollination guide..."
-python3 "$SCRIPT_DIR/build_pollination_guide.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Pollination guide build failed (non-fatal)"
-echo "$LOG_PREFIX Pollination guide complete."
+echo "$(ts) Building pollination guide..."
+python3 "$SCRIPT_DIR/build_pollination_guide.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Pollination guide build failed (non-fatal)"
+echo "$(ts) Pollination guide complete."
 
 # Build "when to plant" seasonal planting calendar (SEO content)
-echo "$LOG_PREFIX Building when-to-plant calendar..."
-python3 "$SCRIPT_DIR/build_when_to_plant.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: When-to-plant build failed (non-fatal)"
-echo "$LOG_PREFIX When-to-plant calendar complete."
+echo "$(ts) Building when-to-plant calendar..."
+python3 "$SCRIPT_DIR/build_when_to_plant.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: When-to-plant build failed (non-fatal)"
+echo "$(ts) When-to-plant calendar complete."
 
 # Build bare-root season page (seasonal SEO content, season-aware)
-echo "$LOG_PREFIX Building bare-root season page..."
-python3 "$SCRIPT_DIR/build_bare_root_page.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Bare-root page build failed (non-fatal)"
-echo "$LOG_PREFIX Bare-root season page complete."
+echo "$(ts) Building bare-root season page..."
+python3 "$SCRIPT_DIR/build_bare_root_page.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Bare-root page build failed (non-fatal)"
+echo "$(ts) Bare-root season page complete."
 
 # Build the shipping-reachability dataset page (DAL-254). This is the one page
 # on the site built to be CITED rather than to convert: it publishes what every
 # tracked nursery x every day since March says about which species each state
 # can actually buy. It also writes /shipping-reachability.json, which is the
 # half a machine links to.
-echo "$LOG_PREFIX Building shipping reachability dataset..."
-python3 "$SCRIPT_DIR/build_shipping_reachability.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Shipping reachability build failed (non-fatal)"
-echo "$LOG_PREFIX Shipping reachability dataset complete."
+echo "$(ts) Building shipping reachability dataset..."
+python3 "$SCRIPT_DIR/build_shipping_reachability.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Shipping reachability build failed (non-fatal)"
+echo "$(ts) Shipping reachability dataset complete."
 
 # Build rootstock and grafting guide (SEO content, curated per-species JSON layer)
-echo "$LOG_PREFIX Building rootstock guide..."
-python3 "$SCRIPT_DIR/build_rootstock_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Rootstock guide build failed (non-fatal)"
-echo "$LOG_PREFIX Rootstock guide complete."
+echo "$(ts) Building rootstock guide..."
+python3 "$SCRIPT_DIR/build_rootstock_page.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Rootstock guide build failed (non-fatal)"
+echo "$(ts) Rootstock guide complete."
 
 # Build sample digest preview page (subscriber conversion)
-echo "$LOG_PREFIX Building sample digest page..."
-python3 "$SCRIPT_DIR/build_sample_digest.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sample digest page build failed (non-fatal)"
-echo "$LOG_PREFIX Sample digest page complete."
+echo "$(ts) Building sample digest page..."
+python3 "$SCRIPT_DIR/build_sample_digest.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Sample digest page build failed (non-fatal)"
+echo "$(ts) Sample digest page complete."
 
 # Build Treesmith app landing page (cross-promotion)
-echo "$LOG_PREFIX Building Treesmith landing page..."
-python3 "$SCRIPT_DIR/build_treesmith_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Treesmith landing page build failed (non-fatal)"
-echo "$LOG_PREFIX Treesmith landing page complete."
+echo "$(ts) Building Treesmith landing page..."
+python3 "$SCRIPT_DIR/build_treesmith_page.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Treesmith landing page build failed (non-fatal)"
+echo "$(ts) Treesmith landing page complete."
 
 # Build location pages (WA/QLD/NSW/VIC, fruit-species-filtered)
-echo "$LOG_PREFIX Building location pages..."
-python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Location page build failed (non-fatal)"
-echo "$LOG_PREFIX Location pages complete."
+echo "$(ts) Building location pages..."
+python3 "$SCRIPT_DIR/build_location_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Location page build failed (non-fatal)"
+echo "$(ts) Location pages complete."
 
 # Build species+state combo pages (buy-[species]-trees-[state].html)
 # The ledger is what stops a combo freezing: below RETAIN_MIN_PRODUCTS it
 # tombstones instead of serving last season's in-stock table forever. The
 # trailing JSON page list this pipes to `tail -3` is still the last stdout line;
 # everything the lifecycle prints goes to stderr.
-echo "$LOG_PREFIX Building species+state combo pages..."
+echo "$(ts) Building species+state combo pages..."
 python3 "$SCRIPT_DIR/build_species_state_pages.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" \
-    --ledger "$PROJECT_DIR/data/page-ledger/species-state.json" --allow-delete 2>&1 | tail -3 || echo "$LOG_PREFIX WARNING: Species+state page build failed (non-fatal)"
-echo "$LOG_PREFIX Species+state combo pages complete."
+    --ledger "$PROJECT_DIR/data/page-ledger/species-state.json" --allow-delete 2>&1 | tail -3 || echo "$(ts) WARNING: Species+state page build failed (non-fatal)"
+echo "$(ts) Species+state combo pages complete."
 
 # Build sitemap. MUST come after every page builder: it globs the output dir and
 # reads each page's declared lifecycle state, so running it earlier described
 # last night's combo files. That was harmless while page states did not exist
 # and wrong the moment they did.
-echo "$LOG_PREFIX Building sitemap..."
-python3 "$SCRIPT_DIR/build_sitemap.py" "$DIGEST_DIR/species" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: Sitemap build failed (non-fatal)"
-echo "$LOG_PREFIX Sitemap complete."
+echo "$(ts) Building sitemap..."
+python3 "$SCRIPT_DIR/build_sitemap.py" "$DIGEST_DIR/species" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Sitemap build failed (non-fatal)"
+echo "$(ts) Sitemap complete."
 
 # Build llms.txt (curated AI/LLM site map; robots.txt ships as a static asset)
-echo "$LOG_PREFIX Building llms.txt..."
-python3 "$SCRIPT_DIR/build_llms.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: llms.txt build failed (non-fatal)"
-echo "$LOG_PREFIX llms.txt complete."
+echo "$(ts) Building llms.txt..."
+python3 "$SCRIPT_DIR/build_llms.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: llms.txt build failed (non-fatal)"
+echo "$(ts) llms.txt complete."
 
 # Detect significant stock count changes (surges/drops) across nurseries
-echo "$LOG_PREFIX Checking for stock surges..."
-python3 "$SCRIPT_DIR/detect_stock_surges.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Stock surge detection failed (non-fatal)"
-echo "$LOG_PREFIX Stock surge check complete."
+echo "$(ts) Checking for stock surges..."
+python3 "$SCRIPT_DIR/detect_stock_surges.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$(ts) WARNING: Stock surge detection failed (non-fatal)"
+echo "$(ts) Stock surge check complete."
 
 # Send digest to email subscribers (frequency=daily only — others handled below).
-echo "$LOG_PREFIX Sending digest to email subscribers..."
-python3 "$SCRIPT_DIR/send_digest.py" 2>&1 || echo "$LOG_PREFIX WARNING: Digest email send failed (non-fatal)"
-echo "$LOG_PREFIX Subscriber send complete."
+echo "$(ts) Sending digest to email subscribers..."
+python3 "$SCRIPT_DIR/send_digest.py" 2>&1 || echo "$(ts) WARNING: Digest email send failed (non-fatal)"
+echo "$(ts) Subscriber send complete."
 
 # On Sundays, also send the weekly summary to subscribers with frequency=weekly.
 # date +%u: 1=Mon ... 7=Sun
 if [ "$(date +%u)" = "7" ]; then
-    echo "$LOG_PREFIX Sending weekly digest to weekly subscribers..."
-    python3 "$SCRIPT_DIR/send_weekly_digest.py" 2>&1 || echo "$LOG_PREFIX WARNING: Weekly digest send failed (non-fatal)"
-    echo "$LOG_PREFIX Weekly digest send complete."
+    echo "$(ts) Sending weekly digest to weekly subscribers..."
+    python3 "$SCRIPT_DIR/send_weekly_digest.py" 2>&1 || echo "$(ts) WARNING: Weekly digest send failed (non-fatal)"
+    echo "$(ts) Weekly digest send complete."
 fi
 
 # Check nobody has silently fallen out of the send loop (DAL-262). Runs AFTER
 # both senders on purpose: it reads their send logs, so running it earlier would
 # always judge them one night stale.
-echo "$LOG_PREFIX Checking subscriber delivery..."
-python3 "$SCRIPT_DIR/detect_silent_subscribers.py" 2>&1 || echo "$LOG_PREFIX WARNING: Subscriber delivery check failed (non-fatal)"
-echo "$LOG_PREFIX Subscriber delivery check complete."
+echo "$(ts) Checking subscriber delivery..."
+python3 "$SCRIPT_DIR/detect_silent_subscribers.py" 2>&1 || echo "$(ts) WARNING: Subscriber delivery check failed (non-fatal)"
+echo "$(ts) Subscriber delivery check complete."
 
 # Send per-variety restock alerts to watchers
 # (Species-level alerts deprecated 2026-04-19: trigger condition was too strict
 # to ever fire in practice, and only variety watches are meaningful.)
-echo "$LOG_PREFIX Sending variety restock alerts..."
-python3 "$SCRIPT_DIR/send_variety_alerts.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$LOG_PREFIX WARNING: Variety alerts failed (non-fatal)"
-echo "$LOG_PREFIX Variety alert send complete."
+echo "$(ts) Sending variety restock alerts..."
+python3 "$SCRIPT_DIR/send_variety_alerts.py" "$PROJECT_DIR/data/nursery-stock" 2>&1 || echo "$(ts) WARNING: Variety alerts failed (non-fatal)"
+echo "$(ts) Variety alert send complete."
 
 # Build 404 page (served by Caddy handle_errors)
-echo "$LOG_PREFIX Building 404 page..."
-python3 "$SCRIPT_DIR/build_404_page.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: 404 page build failed (non-fatal)"
-echo "$LOG_PREFIX 404 page complete."
+echo "$(ts) Building 404 page..."
+python3 "$SCRIPT_DIR/build_404_page.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: 404 page build failed (non-fatal)"
+echo "$(ts) 404 page complete."
 
 # Affiliate disclosure. Generated from stocklib.utm.AFFILIATES, so it stays in
 # step with which nurseries actually pay us. Every page footer links to it.
-echo "$LOG_PREFIX Building affiliate disclosure page..."
-python3 "$SCRIPT_DIR/build_affiliate_disclosure.py" "$DIGEST_DIR" 2>&1 || echo "$LOG_PREFIX WARNING: affiliate disclosure build failed (non-fatal)"
-echo "$LOG_PREFIX Affiliate disclosure complete."
+echo "$(ts) Building affiliate disclosure page..."
+python3 "$SCRIPT_DIR/build_affiliate_disclosure.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: affiliate disclosure build failed (non-fatal)"
+echo "$(ts) Affiliate disclosure complete."
 
 # Build Tailwind CSS (purged, scans all generated HTML for used classes)
-echo "$LOG_PREFIX Building Tailwind CSS..."
+echo "$(ts) Building Tailwind CSS..."
 if tailwindcss --input "$SCRIPT_DIR/tailwind-input.css" \
     --output "$DIGEST_DIR/styles.css" \
     --content "$DIGEST_DIR/**/*.html" --minify 2>&1; then
-    echo "$LOG_PREFIX Tailwind CSS complete ($(wc -c < "$DIGEST_DIR/styles.css") bytes)."
+    echo "$(ts) Tailwind CSS complete ($(wc -c < "$DIGEST_DIR/styles.css") bytes)."
 else
-    echo "$LOG_PREFIX WARNING: Tailwind CSS build failed (non-fatal)"
+    echo "$(ts) WARNING: Tailwind CSS build failed (non-fatal)"
 fi
 
 # Purge Cloudflare edge cache so the rebuilt pages go live immediately. HTML is
 # edge-cached for 1 day via a Cache Rule; without this the edge would keep serving
 # yesterday's pages until the TTL expires. Runs before the smoke test so that
 # re-warms the cache with the fresh pages.
-echo "$LOG_PREFIX Purging Cloudflare cache..."
-bash "$SCRIPT_DIR/purge_cloudflare.sh" 2>&1 || echo "$LOG_PREFIX WARNING: Cloudflare purge failed (non-fatal)"
-echo "$LOG_PREFIX Cloudflare purge complete."
+echo "$(ts) Purging Cloudflare cache..."
+bash "$SCRIPT_DIR/purge_cloudflare.sh" 2>&1 || echo "$(ts) WARNING: Cloudflare purge failed (non-fatal)"
+echo "$(ts) Cloudflare purge complete."
 
 # Post-deploy smoke test — check key pages are up and correct size
-echo "$LOG_PREFIX Running post-deploy smoke test..."
-python3 "$SCRIPT_DIR/smoke_test.py" --quiet 2>&1 || echo "$LOG_PREFIX WARNING: Smoke test failed — alert sent to Benedict"
-echo "$LOG_PREFIX Smoke test complete."
+echo "$(ts) Running post-deploy smoke test..."
+python3 "$SCRIPT_DIR/smoke_test.py" --quiet 2>&1 || echo "$(ts) WARNING: Smoke test failed — alert sent to Benedict"
+echo "$(ts) Smoke test complete."
 
 # Scrape-health anomaly check (failed runs, zero-product days, 403/429 blocks,
 # failure streaks) already ran, right after the scrapers, and the EXIT trap
 # would have run it even if a step above aborted. It used to live here, which
 # is precisely why two dead scrape nights went unreported: everything that can
 # report a failure must sit upstream of the things that can fail.
-echo "$LOG_PREFIX Scrape health check complete (reported above)."
+echo "$(ts) Scrape health check complete (reported above)."
