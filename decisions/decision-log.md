@@ -16166,3 +16166,107 @@ and pinned both golden cases to the fixture day, the same pattern as the bare-ro
 **Not done:** the Shopify scraper has no weekly-probe backoff (only BigCommerce does), so
 it will fail and raise `failure_streak` nightly until they reopen. Harmless noise.
 Self-clearing: the first successful scrape after 20 October restores search and the page.
+
+## DEC-351 (2026-09-24): scraper audit. Two nurseries were selling stock that cannot be bought, and 20 of 32 scrape minutes were one closed nursery
+
+**Trigger:** Benedict asked for a deep pass over the treestock scraper: gaps,
+reliability, performance. Everything below was measured on the live server or
+against the live stores, not read off the code.
+
+### Where the 32 minutes went (scraper-health, 2026-09-23)
+
+| Nursery | Seconds | Why |
+|---|---|---|
+| heritage-fruit-trees | **1,240** | 617 sitemap URLs x (1.5s sleep + fetch), one page per product |
+| guildford | **305** | paged all ~7,400 store products (75 pages) to keep 921 |
+| ladybird | 81 | 30 pages, 2s sleep each |
+| all 24 others | ~290 | |
+
+### What was wrong, worst first
+
+1. **Unbuyable stock shown as in stock.**
+   - Heritage: `/nursery/heritage-fruit-trees.html` said "53 in stock". Every one
+     of the 53 carried `"purchasable":false`; their homepage says to register
+     for 2027 stock alerts. BigCommerce keeps `instock` and `purchasable` apart.
+   - PlantNet: 60 of the first 100 products are WooCommerce `type=external`
+     "Find a stockist" links, all `is_in_stock=true`. In stock went 80 -> 2.
+2. **490 rows on 173 pages said "In stock" for Aus Nurseries**, closed for a
+   holiday since 09-20. DEC-350 fixed search and the nursery page only; every
+   other builder read the frozen latest.json as current.
+3. **Partial catalogues published as the day's stock.** WooCommerce and
+   Squarespace `break` on a failed page and saved pages 1..N-1 (Guildford page
+   50, a 502, in the 2026-04-22 run). Shopify was fixed for this in July; these
+   two never were.
+4. **Retry covered 429/503/509 and timeouts only.** Every 500 and 502 in seven
+   weeks of scraper.log (Ladybird pages 4-6, Fruit Tree Lane page 1, Primal
+   product pages) was a one-off that served 200 the next night, and each cost a
+   nursery its day. Connection resets were not retried either.
+5. **Non-atomic writes** of every latest.json and of availability.json
+   (Ladybird ~40MB).
+6. **Aus Nurseries emailed "failed" every night**, 4 identical mails by 09-23
+   with a month to go, under the same subject a real outage gets.
+7. **Backups never pruned.** tar exits 1 on "file changed as we read it",
+   routine with the uptime monitor writing into data/, and the script treated
+   that as fatal before the prune: 13 archives, 2.3GB, each ~9MB larger than
+   the last, disk full around mid-2027.
+8. **No step timing and no run lock.** LOG_PREFIX was evaluated once, so all
+   127 log lines of a run read 00:00:01. Nothing prevented a manual run
+   overlapping cron.
+9. Latent: Heritage's "stable" variant id was Python `hash()`, randomised per
+   process: 0 of 378 ids equal across two days. Harmless only because history
+   keys on SKU first.
+
+### Decision
+
+All nine fixed on branch `scraper-reliability`, each with a test that fails on
+the old code:
+
+- Heritage reads the BigCommerce Storefront GraphQL API (token scraped from the
+  homepage each run; it expires in ~2 days). 13 requests, **26s instead of
+  1,240s**, same 378 handles/URLs/SKUs as production. Availability is
+  `isInStock AND purchasable`. Falls back to the old page walk if the token is
+  missing, GraphQL errors, or it returns under half the sitemap count.
+- Guildford resolves the same substring rule against the category list and
+  fetches only matching categories: **66s instead of ~300s**, identical 924
+  products and prices.
+- External Woo products are not stock. Any failed page aborts the snapshot.
+- Retry covers 500/502/504/520-524 and connection-level errors.
+- `stocklib.jsonio.atomic_write_json` for every snapshot and history write.
+- `iter_nursery_snapshots` withdraws a dormant nursery's stock for every
+  builder (490 -> 0 on a copy of the live data); page lifecycles treat dormant
+  nurseries as untrusted, so a holiday cannot tombstone a page.
+- Anomaly mail mutes `failed`/`failure_streak` only for a nursery with a
+  human-written `dormant_note` AND a failed previous night; the first failure
+  after a good night always alerts. Muted nurseries are named in the footer.
+- Live log timestamps, flock, and a backup that prunes.
+
+### Considered and rejected
+
+- **Weekly-probe backoff for Shopify** (as BigCommerce has). For Aus Nurseries
+  a failure costs one 0.3s request, and weekly probing would have noticed their
+  20 October reopening on the 26th. The harm was the email, fixed there.
+- **Muting on is_dormant() (5 failed nights)**: a real outage nobody has looked
+  at would go quiet on day six.
+
+### Left open
+
+- No absolute or last-trusted-count floor on a successful-but-short scrape
+  outside Daleys; the 60%-of-median guard ratchets down with a slow decline
+  (Heritage 366 -> 136 over a week in August was trusted again by day four).
+- `availability_tracker` and the daily digest do not consult
+  `untrusted_nurseries()`, so a truncated day still enters permanent history.
+- nursery-stock grows ~14MB/day (Ladybird 6.6MB/day, ~14x smaller gzipped).
+- Rayners: 14 `is_purchasable=false` products still counted in stock; unclear
+  whether that is price-on-application or unbuyable. Needs a look at the site.
+- Diaco's has reported 71/71 in stock on every date checked: the shape of a
+  store that deletes sold-out lines rather than marking them.
+- Woo variable products collapse to one "Default" variant (house rule 3 risk);
+  none found in samples yet.
+- Three rambutan buy pages whose only stockist is Aus are held, not rebuilt,
+  so they keep their stale rows until Aus reopens.
+- `run-all-scrapers-server.sh` is a dead, unguarded copy of the old pipeline.
+
+**Process note.** A finding file for this could not be added:
+`tests/test_prompt_size` requires every finding to name a `tracks.*` origin in
+the DEC-349 migration manifest, so the split admits no finding born after it.
+Flagged to Benedict rather than loosened inside a scraper change.
