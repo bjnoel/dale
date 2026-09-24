@@ -50,6 +50,7 @@ import urllib.request
 from datetime import datetime, date
 from pathlib import Path
 
+from stocklib.jsonio import atomic_write_json
 from stocklib.classify import is_real_product
 from stocklib.model import validate_and_warn
 from stocklib.scrape_health import count_priced, ScrapeHealth
@@ -237,8 +238,13 @@ def scrape_squarespace(nursery_key, config, health=None, *, _fetch=None):
                 if health:
                     health.note_error("store collection unfetchable")
                 return []
-            print(f"  Page {page + 1} failed; stopping with {len(raw_items)} products")
-            break
+            # Same rule as page 0: a partial catalogue is worse than none. It
+            # used to `break` here and publish the pages it had, which every
+            # consumer reads as the rest of the nursery delisting overnight.
+            print(f"  Page {page + 1} failed; aborting (keeping last snapshot)")
+            if health:
+                health.note_error(f"page {page + 1} failed; snapshot aborted")
+            return []
 
         if not categories:
             categories = category_names(payload)
@@ -321,10 +327,8 @@ def save_snapshot(nursery_key, products, config):
     }
     validate_and_warn(snapshot, nursery_key)
 
-    with open(nursery_dir / f"{today}.json", "w") as f:
-        json.dump(snapshot, f, indent=2)
-    with open(nursery_dir / "latest.json", "w") as f:
-        json.dump(snapshot, f, indent=2)
+    atomic_write_json(nursery_dir / f"{today}.json", snapshot)
+    atomic_write_json(nursery_dir / "latest.json", snapshot)
 
     print(f"  Saved: {nursery_dir / (today + '.json')}")
     print(f"  In stock: {len(in_stock)} / Out of stock: {len(out_of_stock)}")

@@ -210,6 +210,21 @@ class PaginationTest(unittest.TestCase):
                                          _fetch=lambda u: None)
         self.assertEqual(products, [])
 
+    def test_a_failed_later_page_writes_nothing_either(self):
+        """Page 1 fine, page 2 fails. This used to `break` and publish page 1
+        as the whole nursery, which is the same false delisting the first-page
+        rule exists to prevent, just smaller."""
+        first = [_item(f"i{n}", f"Tree {n}", [_variant(f"v{n}", 5000, qty=1)])
+                 for n in range(3)]
+
+        def pages(offset):
+            return dict(CATEGORIES, items=first) if offset == 0 else None
+
+        fetch, _ = self._store(pages)
+        products = sq.scrape_squarespace("t", {"name": "T", "domain": "d", "delay": 0},
+                                         _fetch=fetch)
+        self.assertEqual(products, [])
+
 
 class NonStockFilterTest(unittest.TestCase):
     def _scrape(self, titles, exclude=None):

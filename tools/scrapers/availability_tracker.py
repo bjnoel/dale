@@ -36,6 +36,8 @@ import sys
 from datetime import date
 from pathlib import Path
 
+from stocklib.jsonio import atomic_write_json
+
 
 def snapshot_day(scrape: dict):
     """The date the snapshot was actually taken, from its own `scraped_at`.
@@ -181,8 +183,9 @@ def update_nursery(nursery_dir: Path):
             updated += 1
 
     # Save
-    with open(avail_file, "w") as f:
-        json.dump(history, f, separators=(",", ":"))
+    # Atomic: Ladybird's history alone is ~40MB, a long window to be killed in,
+    # and a torn file breaks every history page until someone backfills.
+    atomic_write_json(avail_file, history, indent=None, separators=(",", ":"))
 
     total_products = len(history["products"])
     total_days = len(set(

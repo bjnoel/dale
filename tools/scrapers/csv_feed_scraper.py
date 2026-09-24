@@ -43,6 +43,7 @@ import urllib.request
 from datetime import date, datetime
 from pathlib import Path
 
+from stocklib.jsonio import atomic_write_json
 from stocklib.availability import PURCHASABLE_STATES, roll_up
 from stocklib.model import validate_and_warn
 from stocklib.retry import request_with_retry
@@ -335,17 +336,14 @@ def save_snapshot(nursery_key: str, config: dict, products: list[dict],
     validate_and_warn(snapshot, nursery_key)
 
     today = date.today().isoformat()
-    snapshot_file = nursery_dir / f"{today}.json"
-    with open(snapshot_file, "w") as f:
-        json.dump(snapshot, f, indent=2)
-    with open(nursery_dir / "latest.json", "w") as f:
-        json.dump(snapshot, f, indent=2)
+    snapshot_file = atomic_write_json(nursery_dir / f"{today}.json", snapshot)
+    atomic_write_json(nursery_dir / "latest.json", snapshot)
 
     # Overwritten, never date-versioned: descriptions and image URLs do not
     # change day to day and are most of the feed's bytes.
-    with open(nursery_dir / "catalogue.json", "w") as f:
-        json.dump({"nursery": nursery_key, "captured_at": snapshot["scraped_at"],
-                   "products": catalogue}, f, indent=2)
+    atomic_write_json(nursery_dir / "catalogue.json",
+                      {"nursery": nursery_key, "captured_at": snapshot["scraped_at"],
+                       "products": catalogue})
 
     print(f"  Saved: {snapshot_file}")
     return snapshot_file

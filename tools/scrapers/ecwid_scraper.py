@@ -41,6 +41,7 @@ import urllib.error
 from datetime import datetime, date
 from pathlib import Path
 
+from stocklib.jsonio import atomic_write_json
 from stocklib.model import validate_and_warn
 from stocklib.scrape_health import count_priced, ScrapeHealth
 
@@ -320,13 +321,8 @@ def save_snapshot(nursery_key, products, config):
     }
     validate_and_warn(snapshot, nursery_key)
 
-    snapshot_file = nursery_dir / f"{today}.json"
-    with open(snapshot_file, "w") as f:
-        json.dump(snapshot, f, indent=2)
-
-    latest_file = nursery_dir / "latest.json"
-    with open(latest_file, "w") as f:
-        json.dump(snapshot, f, indent=2)
+    snapshot_file = atomic_write_json(nursery_dir / f"{today}.json", snapshot)
+    atomic_write_json(nursery_dir / "latest.json", snapshot)
 
     print(f"  Saved: {snapshot_file}")
     print(f"  In stock: {len(in_stock)} / Out of stock: {len(out_of_stock)}")
