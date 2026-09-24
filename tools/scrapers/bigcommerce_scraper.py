@@ -10,9 +10,21 @@ Product format: In BigCommerce, each size/rootstock variant is a *separate produ
 (e.g. /akane-apple-medium/ and /akane-apple-dwarf/ are two products). We treat each
 as a separate product with a single "Default Title" variant.
 
+Two ways in, fastest first:
+
+1. Storefront GraphQL (primary, since 2026-09-23). Every Stencil page embeds a
+   short-lived storefront token; with it, /graphql returns the whole catalogue
+   (price, stock, purchasability, every category breadcrumb) in ~13 requests of
+   50. The HTML path below took ~620 sequential page fetches and 1,240s a night,
+   64% of the entire scrape run, for the same data.
+2. Products sitemap + one HTML page per product (fallback). Used when the token
+   is missing or GraphQL fails or comes back short, so a theme change degrades
+   us to slow rather than to nothing.
+
 Usage:
     python3 bigcommerce_scraper.py             # Scrape Heritage Fruit Trees
-    python3 bigcommerce_scraper.py --dry-run   # Parse URLs only, don't fetch product pages
+    python3 bigcommerce_scraper.py --dry-run   # List product URLs only, fetch no pages
+    python3 bigcommerce_scraper.py --html      # Force the sitemap+HTML fallback path
 """
 
 import html as html_module
@@ -22,11 +34,13 @@ import re
 import sys
 import time
 import urllib.request
-import urllib.error
+import zlib
 from datetime import datetime, date
 from pathlib import Path
 
+from stocklib.jsonio import atomic_write_json
 from stocklib.model import validate_and_warn
+from stocklib.retry import request_with_retry
 from stocklib.scrape_health import (ScrapeHealth, consecutive_failures,
                                     count_priced, last_success_day, should_probe)
 
@@ -34,6 +48,7 @@ DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent / "
 NURSERY_KEY = "heritage-fruit-trees"
 NURSERY_NAME = "Heritage Fruit Trees"
 BASE_URL = "https://www.heritagefruittrees.com.au"
+GRAPHQL_URL = BASE_URL + "/graphql"
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 
 # Product discovery is driven by the store's products sitemap (the complete
@@ -63,6 +78,9 @@ SKIP_SLUGS = {
     "search", "account", "login", "sitemap", "ordering-information",
     "shipping-information", "privacy-policy", "returns-policy",
 }
+# Slug fragments that are never trees (labels, workshops, tools, vouchers).
+SKIP_SLUG_FRAGMENTS = ("label", "workshop", "class", "fertiliz", "secateur",
+                       "gift-card", "gift-voucher")
 
 # Title keywords that indicate non-plant items to skip
 from stocklib.classify import NON_PLANT_KEYWORDS
@@ -90,7 +108,35 @@ FRUIT_NAMES = _enabled_fruit_names()
 # flowering form is ornamental, not edible stock).
 _ORNAMENTAL_GUARD = ("crabapple", "crab apple", "flowering", "ornamental")
 
-REQUEST_DELAY = 1.5  # seconds between requests (be polite)
+REQUEST_DELAY = 1.5   # seconds between HTML page fetches (be polite)
+GRAPHQL_DELAY = 1.0   # seconds between GraphQL pages
+GRAPHQL_PAGE_SIZE = 50  # the Storefront API maximum
+# GraphQL must return at least this share of the sitemap's product count, or
+# we distrust it and take the slow path. A short answer is the dangerous one:
+# it would publish as a successful scrape and read as mass delistings.
+GRAPHQL_MIN_SHARE = 0.5
+
+# A Stencil storefront token is an ES256 JWT embedded in every page.
+_TOKEN_RE = re.compile(r"eyJ0eXAiOiJKV1Qi[A-Za-z0-9_-]*\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+")
+
+GRAPHQL_QUERY = """query Catalogue($after: String) {
+  site {
+    products(first: %d, after: $after) {
+      pageInfo { hasNextPage endCursor }
+      edges { node {
+        entityId name path sku
+        prices(includeTax: true) {
+          price { value } basePrice { value } salePrice { value }
+        }
+        inventory { isInStock }
+        availabilityV2 { status }
+        categories { edges { node {
+          breadcrumbs(depth: 5) { edges { node { name } } }
+        } } }
+      } }
+    }
+  }
+}""" % GRAPHQL_PAGE_SIZE
 
 
 def extract_breadcrumbs(page_html):
@@ -130,87 +176,246 @@ def in_scope(title, crumbs):
     return any(re.search(r"\b%s\b" % re.escape(n), tl) for n in FRUIT_NAMES)
 
 
-def fetch_html(url, delay=True, health=None):
-    """Fetch HTML from URL with proper headers."""
+def in_scope_all_categories(title, crumbs):
+    """in_scope() for a product whose crumbs come from EVERY category it is in.
+
+    A product page shows one breadcrumb; GraphQL lists all of them. The 20
+    flowering crabapples are filed under both Fruit Trees > Crabapples and
+    Ornamental Plants > Flowering Trees, and their page breadcrumb was the
+    ornamental one, so the HTML path always left them out. With every category
+    visible, Fruit Trees would win. An ornamental-looking title that is ALSO
+    filed as ornamental stays out; a fruiting crab apple filed only under Fruit
+    Trees (Huonville Crab Apple) stays in, exactly as before.
+    """
+    lower = {c.lower() for c in crumbs}
+    tl = title.lower()
+    # "crab" not just "crabapple": Sonning Crab (Malus x purpurea) is one of
+    # the dual-listed flowering forms and its title never says crabapple.
+    if lower & EXCLUDE_TOP_CATEGORIES and any(g in tl for g in _ORNAMENTAL_GUARD + ("crab",)):
+        return False
+    return in_scope(title, crumbs)
+
+
+def is_junk(slug, title):
+    """Labels, workshops, tools, vouchers: never trees, whatever their category."""
+    if any(kw in slug for kw in SKIP_SLUG_FRAGMENTS):
+        return True
+    return any(kw in title.lower() for kw in NON_PLANT_KEYWORDS)
+
+
+def variant_id_for(url):
+    """Deterministic synthetic id for an HTML-path product.
+
+    This used to be hash(url) & 0x7FFFFFFF. Python randomises str hashes per
+    process (PYTHONHASHSEED), so on 2026-09-22 vs 09-23 0 of 378 ids matched.
+    Nothing broke only because every consumer keys on the sku first."""
+    return zlib.crc32(url.encode("utf-8")) & 0x7FFFFFFF
+
+
+def build_product(slug, title, price_float, in_stock, variant_id, compare_at=None):
+    """One snapshot product in the shape every other scraper writes.
+
+    The variant sku is the URL slug, and it must stay that way: the
+    availability history keys on url|sku:<slug>, so changing it would fork every
+    Heritage product's history into a new one."""
+    price = f"{price_float:.2f}" if price_float is not None else None
+    on_sale = bool(compare_at and price_float is not None and compare_at > price_float)
+    return {
+        "nursery": NURSERY_KEY,
+        "nursery_name": NURSERY_NAME,
+        "title": title,
+        "handle": slug,
+        "url": f"{BASE_URL}/{slug}/",
+        "product_type": "",
+        "tags": [],
+        "created_at": None,
+        "updated_at": None,
+        "variants": [{
+            "id": variant_id,
+            "title": "Default Title",
+            "price": price,
+            "compare_at_price": f"{compare_at:.2f}" if on_sale else None,
+            "available": in_stock,
+            "sku": slug,
+        }],
+        "min_price": price_float,
+        "max_price": price_float,
+        "any_available": in_stock,
+        "on_sale": on_sale,
+    }
+
+
+# --------------------------------------------------------------------------
+# Path 1: Storefront GraphQL
+# --------------------------------------------------------------------------
+
+def extract_storefront_token(page_html):
+    """The storefront JWT embedded in a Stencil page, or None."""
+    if not page_html:
+        return None
+    m = _TOKEN_RE.search(page_html)
+    return m.group(0) if m else None
+
+
+def _graphql_page(token, after, health=None, *, _opener=None, _sleep=time.sleep):
+    """One page of the catalogue query. Returns the `products` connection dict,
+    or None on transport failure or a GraphQL error payload."""
+    body = json.dumps({"query": GRAPHQL_QUERY, "variables": {"after": after}}).encode()
+    req = urllib.request.Request(GRAPHQL_URL, data=body, method="POST", headers={
+        "User-Agent": USER_AGENT,
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    })
+    raw = request_with_retry(req, timeout=30, health=health, _opener=_opener, _sleep=_sleep)
+    if raw is None:
+        return None
+    try:
+        payload = json.loads(raw)
+    except ValueError as e:
+        print(f"  GraphQL returned non-JSON: {e}")
+        return None
+    if payload.get("errors"):
+        print(f"  GraphQL errors: {str(payload['errors'])[:200]}")
+        return None
+    try:
+        return payload["data"]["site"]["products"]
+    except (KeyError, TypeError):
+        print("  GraphQL response missing data.site.products")
+        return None
+
+
+def fetch_graphql_catalog(token, health=None, *, _opener=None, _sleep=time.sleep):
+    """Every product node in the store, or None if any page failed.
+
+    All-or-nothing on purpose: a catalogue missing its last few pages would be
+    published as a successful scrape and read downstream as delistings."""
+    nodes, after, page = [], None, 0
+    while True:
+        page += 1
+        conn = _graphql_page(token, after, health, _opener=_opener, _sleep=_sleep)
+        if conn is None:
+            print(f"  GraphQL page {page} failed")
+            return None
+        edges = conn.get("edges") or []
+        nodes.extend(e["node"] for e in edges if e.get("node"))
+        info = conn.get("pageInfo") or {}
+        if not info.get("hasNextPage"):
+            break
+        after = info.get("endCursor")
+        if not after:
+            print(f"  GraphQL page {page} says hasNextPage but gave no cursor")
+            return None
+        _sleep(GRAPHQL_DELAY)
+    print(f"  GraphQL: {len(nodes)} products in {page} requests")
+    return nodes
+
+
+def node_crumbs(node):
+    """Every category breadcrumb name on a GraphQL product node, deduplicated
+    in order, without Home/Shop."""
+    crumbs = []
+    for cat in (node.get("categories") or {}).get("edges") or []:
+        bc = ((cat.get("node") or {}).get("breadcrumbs") or {}).get("edges") or []
+        for b in bc:
+            name = html_module.unescape(((b.get("node") or {}).get("name") or "").strip())
+            if name and name.lower() not in ("home", "shop") and name not in crumbs:
+                crumbs.append(name)
+    return crumbs
+
+
+def _money(obj):
+    try:
+        v = (obj or {}).get("value")
+        return float(v) if v is not None else None
+    except (TypeError, ValueError):
+        return None
+
+
+def parse_graphql_node(node):
+    """Normalise one GraphQL product node, or None if it is junk/out of scope.
+
+    Availability is stock AND purchasable. BigCommerce keeps them apart: on
+    2026-09-23 Heritage had 53 products with isInStock=true and
+    availabilityV2.status="Unavailable" (online sales closed for 2026; the site
+    says to register for 2027 stock alerts). The HTML path read only BCData
+    `instock`, so treestock showed those 53 as buyable."""
+    slug = (node.get("path") or "").strip("/")
+    if not slug or "/" in slug or slug in SKIP_SLUGS:
+        return None
+    title = html_module.unescape((node.get("name") or "").strip()) or slug.replace("-", " ").title()
+    if is_junk(slug, title):
+        return None
+    if not in_scope_all_categories(title, node_crumbs(node)):
+        return None
+
+    prices = node.get("prices") or {}
+    price = _money(prices.get("price"))
+    base = _money(prices.get("basePrice"))
+    in_stock = bool((node.get("inventory") or {}).get("isInStock"))
+    purchasable = ((node.get("availabilityV2") or {}).get("status") == "Available")
+    return build_product(slug, title, price, in_stock and purchasable,
+                         node.get("entityId") or variant_id_for(f"{BASE_URL}/{slug}/"),
+                         compare_at=base)
+
+
+def scrape_graphql(expected_count, health=None, *, _opener=None, _sleep=time.sleep):
+    """Products via GraphQL, or None if the caller should fall back to HTML."""
+    home = fetch_html(BASE_URL + "/", delay=False, health=health, _opener=_opener, _sleep=_sleep)
+    token = extract_storefront_token(home)
+    if not token:
+        print("  No storefront token on the homepage; falling back to HTML pages")
+        if health:
+            health.note_error("storefront token not found; used HTML fallback")
+        return None
+    nodes = fetch_graphql_catalog(token, health, _opener=_opener, _sleep=_sleep)
+    if nodes is None:
+        if health:
+            health.note_error("GraphQL catalogue failed; used HTML fallback")
+        return None
+    if expected_count and len(nodes) < GRAPHQL_MIN_SHARE * expected_count:
+        print(f"  GraphQL returned {len(nodes)} products against {expected_count} "
+              f"in the sitemap; distrusting it, falling back to HTML pages")
+        if health:
+            health.note_error(f"GraphQL short ({len(nodes)}/{expected_count}); used HTML fallback")
+        return None
+    products = [p for p in (parse_graphql_node(n) for n in nodes) if p]
+    print(f"  In scope: {len(products)} of {len(nodes)}")
+    return products
+
+
+# --------------------------------------------------------------------------
+# Path 2: products sitemap + one HTML page per product (fallback)
+# --------------------------------------------------------------------------
+
+class _NotFoundIsNotAnError:
+    """Health proxy: a 404 on a sitemap-listed product URL is a delisting, not
+    a scrape fault, so it must not count toward the 403/429 block alarms."""
+
+    def __init__(self, health):
+        self._health = health
+
+    def note_http_error(self, code, url=""):
+        if code != 404 and self._health:
+            self._health.note_http_error(code, url)
+
+    def note_error(self, message):
+        if self._health:
+            self._health.note_error(message)
+
+
+def fetch_html(url, delay=True, health=None, *, _opener=None, _sleep=time.sleep):
+    """Fetch HTML with retry on transient failures. None on failure or 404."""
     if delay:
-        time.sleep(REQUEST_DELAY)
+        _sleep(REQUEST_DELAY)
     req = urllib.request.Request(url, headers={
         "User-Agent": USER_AGENT,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-AU,en;q=0.9",
     })
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return resp.read().decode("utf-8", errors="replace")
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None  # expected for guessed product URLs; not a health event
-        print(f"  HTTP {e.code} fetching {url}")
-        if health:
-            health.note_http_error(e.code, url)
-        return None
-    except Exception as e:
-        print(f"  Error fetching {url}: {e}")
-        if health:
-            health.note_error(str(e))
-        return None
-
-
-def get_product_urls_from_category(category_slug, health=None):
-    """Paginate through a BigCommerce category and collect product URLs."""
-    urls = []
-    page = 1
-
-    while True:
-        url = f"{BASE_URL}/{category_slug}/?page={page}"
-        html = fetch_html(url, delay=(page > 1), health=health)
-        if not html:
-            print(f"    page {page}: failed")
-            break
-
-        # BigCommerce uses absolute URLs in listing pages
-        base_escaped = re.escape(BASE_URL)
-
-        # Find product links via "Choose Options" / "Add to Cart" buttons — one per product
-        choose_options = re.findall(
-            rf'href="({base_escaped}/[a-z0-9][a-z0-9\-]+/)"[^>]*>\s*(?:Choose Options|Add to Cart)',
-            html
-        )
-
-        if not choose_options:
-            # Fallback: links in h4/h2 tags (product title links)
-            choose_options = re.findall(
-                rf'<h[24][^>]*>\s*<a\s+href="({base_escaped}/[a-z0-9][a-z0-9\-]+/)"',
-                html
-            )
-
-        if not choose_options:
-            # Fallback: any absolute product URL in the listing
-            choose_options = re.findall(
-                rf'href="({base_escaped}/[a-z0-9][a-z0-9\-]{{3,}}/)"',
-                html
-            )
-
-        # Extract just the path component and filter known non-product slugs
-        new_urls = []
-        for u in choose_options:
-            path = u.replace(BASE_URL, "")
-            if path.strip("/") not in SKIP_SLUGS:
-                new_urls.append(path)
-        new_urls = list(dict.fromkeys(new_urls))  # deduplicate
-
-        print(f"    page {page}: {len(new_urls)} products", end="")
-        urls.extend(new_urls)
-
-        # Check if next page exists
-        if f"page={page + 1}" in html:
-            page += 1
-            print()
-        else:
-            print(" (last page)")
-            break
-
-    return list(dict.fromkeys(urls))  # deduplicate across pages
+    raw = request_with_retry(req, timeout=30, health=_NotFoundIsNotAnError(health),
+                             _opener=_opener, _sleep=_sleep)
+    return raw.decode("utf-8", errors="replace") if raw is not None else None
 
 
 def parse_product_page(product_path, html):
@@ -280,6 +485,13 @@ def parse_product_page(product_path, html):
             if "out of stock" in html.lower() or "notify me" in html.lower():
                 in_stock = False
 
+    # In stock is not the same as buyable. BCData carries both, and with
+    # online sales closed Heritage had 53 lines at instock:true,
+    # purchasable:false (see parse_graphql_node).
+    m = re.search(r'"purchasable"\s*:\s*(true|false)', html)
+    if m and m.group(1) == "false":
+        in_stock = False
+
     price_float = None
     if price:
         try:
@@ -295,11 +507,9 @@ def parse_product_page(product_path, html):
     }
 
 
-def get_all_product_urls(health=None):
+def get_all_product_urls(health=None, *, _opener=None, _sleep=time.sleep):
     """Collect every product URL from the store's products sitemap (the complete
-    catalogue). Replaces the old category-walk discovery, which silently missed
-    fruit in subcategories the three top-level listings did not roll up
-    (DEC-209). Products are single-path-segment slugs; nav/category/page slugs
+    catalogue). Products are single-path-segment slugs; nav/category/page slugs
     and known SKIP_SLUGS are filtered out (the breadcrumb scope filter and the
     title junk filter handle the rest downstream)."""
     paths = []
@@ -307,7 +517,7 @@ def get_all_product_urls(health=None):
     page = 1
     while True:
         url = PRODUCTS_SITEMAP.format(page=page)
-        html = fetch_html(url, delay=(page > 1), health=health)
+        html = fetch_html(url, delay=(page > 1), health=health, _opener=_opener, _sleep=_sleep)
         if not html:
             break
         locs = re.findall(r"<loc>\s*([^<]+?)\s*</loc>", html)
@@ -328,24 +538,8 @@ def get_all_product_urls(health=None):
     return paths
 
 
-def scrape(dry_run=False, health=None):
-    """Main scrape function. Returns list of normalized products."""
-    print(f"\nScraping {NURSERY_NAME} ({BASE_URL})")
-    print("=" * 60)
-
-    # Step 1: Collect every product URL from the products sitemap.
-    print("\nFetching products sitemap...")
-    all_product_paths = get_all_product_urls(health)
-
-    print(f"\nTotal product URLs from sitemap: {len(all_product_paths)}")
-
-    if dry_run:
-        print("\n[DRY RUN] Skipping individual product page fetches.")
-        for p in all_product_paths[:10]:
-            print(f"  {BASE_URL}{p}")
-        return []
-
-    # Step 2: Fetch each product page for price + stock data
+def scrape_html(all_product_paths, health=None):
+    """Products via one HTML page fetch each (slow: ~2s a product)."""
     print(f"\nFetching {len(all_product_paths)} product pages...")
     products = []
     skipped = 0
@@ -355,8 +549,7 @@ def scrape(dry_run=False, health=None):
         slug = product_path.strip("/")
         print(f"  [{i+1}/{len(all_product_paths)}] /{slug}/", end=" ", flush=True)
 
-        # Pre-filter by slug
-        if any(kw in slug for kw in ["label", "workshop", "class", "fertiliz", "secateur", "gift-card", "gift-voucher"]):
+        if any(kw in slug for kw in SKIP_SLUG_FRAGMENTS):
             print("skip (slug filter)")
             skipped += 1
             continue
@@ -377,50 +570,47 @@ def scrape(dry_run=False, health=None):
             out_of_scope += 1
             continue
 
-        price = data["price"]
-        price_float = data["price_float"]
-        in_stock = data["in_stock"]
-        title = data["title"]
-
-        # Synthetic variant ID (stable hash of URL)
-        variant_id = hash(f"{BASE_URL}{product_path}") & 0x7FFFFFFF
-
-        product = {
-            "nursery": NURSERY_KEY,
-            "nursery_name": NURSERY_NAME,
-            "title": title,
-            "handle": slug,
-            "url": f"{BASE_URL}{product_path}",
-            "product_type": "",
-            "tags": [],
-            "created_at": None,
-            "updated_at": None,
-            "variants": [{
-                "id": variant_id,
-                "title": "Default Title",
-                "price": price,
-                "compare_at_price": None,
-                "available": in_stock,
-                "sku": slug,  # use slug as SKU for stable variant tracking
-            }],
-            "min_price": price_float,
-            "max_price": price_float,
-            "any_available": in_stock,
-            "on_sale": False,
-        }
-
-        status = "✓" if in_stock else "✗"
-        price_str = f"${price_float:.2f}" if price_float else "?"
-        print(f"{status} {title[:45]:<45} {price_str}")
+        url = f"{BASE_URL}{product_path}"
+        product = build_product(slug, data["title"], data["price_float"],
+                                data["in_stock"], variant_id_for(url))
+        status = "✓" if data["in_stock"] else "✗"
+        price_str = f"${data['price_float']:.2f}" if data["price_float"] else "?"
+        print(f"{status} {data['title'][:45]:<45} {price_str}")
         products.append(product)
+
+    print(f"Skipped (junk):   {skipped}")
+    print(f"Out of scope:     {out_of_scope}")
+    return products
+
+
+def scrape(dry_run=False, health=None, force_html=False):
+    """Main scrape function. Returns list of normalized products."""
+    print(f"\nScraping {NURSERY_NAME} ({BASE_URL})")
+    print("=" * 60)
+
+    # The sitemap is one request, and it is both the HTML path's work list and
+    # the yardstick that tells us whether GraphQL answered in full.
+    print("\nFetching products sitemap...")
+    all_product_paths = get_all_product_urls(health)
+    print(f"\nTotal product URLs from sitemap: {len(all_product_paths)}")
+
+    if dry_run:
+        print("\n[DRY RUN] Skipping product fetches.")
+        for p in all_product_paths[:10]:
+            print(f"  {BASE_URL}{p}")
+        return []
+
+    products = None
+    if not force_html:
+        print("\nFetching catalogue via Storefront GraphQL...")
+        products = scrape_graphql(len(all_product_paths), health)
+    if products is None:
+        products = scrape_html(all_product_paths, health)
 
     print(f"\n{'='*60}")
     print(f"Products scraped: {len(products)}")
-    print(f"Skipped (junk):   {skipped}")
-    print(f"Out of scope:     {out_of_scope}")
     print(f"In stock:         {sum(1 for p in products if p['any_available'])}")
     print(f"Out of stock:     {sum(1 for p in products if not p['any_available'])}")
-
     return products
 
 
@@ -428,7 +618,6 @@ def save_snapshot(products):
     """Save dated snapshot in standard nursery-stock format."""
     today = date.today().isoformat()
     nursery_dir = DATA_DIR / NURSERY_KEY
-    nursery_dir.mkdir(parents=True, exist_ok=True)
 
     snapshot = {
         "nursery": NURSERY_KEY,
@@ -442,14 +631,9 @@ def save_snapshot(products):
     }
     validate_and_warn(snapshot, NURSERY_KEY)
 
-    snapshot_file = nursery_dir / f"{today}.json"
-    with open(snapshot_file, "w") as f:
-        json.dump(snapshot, f, indent=2)
+    snapshot_file = atomic_write_json(nursery_dir / f"{today}.json", snapshot)
     print(f"\nSaved: {snapshot_file}")
-
-    latest_file = nursery_dir / "latest.json"
-    with open(latest_file, "w") as f:
-        json.dump(snapshot, f, indent=2)
+    latest_file = atomic_write_json(nursery_dir / "latest.json", snapshot)
     print(f"Saved: {latest_file}")
 
     return snapshot
@@ -458,20 +642,21 @@ def save_snapshot(products):
 if __name__ == "__main__":
     dry_run = "--dry-run" in sys.argv
     force = "--force" in sys.argv
+    force_html = "--html" in sys.argv
     today = date.today().isoformat()
 
     # A closed store is not a broken scraper. Heritage shut online sales for
-    # 2026 on 2026-08-24 and every URL, sitemap included, now serves HTTP 503.
-    # There is no retry or backoff below, so a nightly run walks the whole
-    # known catalogue into that wall: the 08-24 run spent 357s doing exactly
-    # that. Left alone until the 2027 season that is tens of thousands of
-    # pointless requests at a nursery Benedict has a relationship with, and
-    # scraping has cost us goodwill before (Beewise, DEC-198).
+    # 2026 on 2026-08-24 and every URL, sitemap included, served HTTP 503 for
+    # days. A nightly run walked the whole known catalogue into that wall: the
+    # 08-24 run spent 357s doing exactly that. Left alone until the 2027 season
+    # that is tens of thousands of pointless requests at a nursery Benedict has
+    # a relationship with, and scraping has cost us goodwill before (Beewise,
+    # DEC-198).
     #
     # Skipping writes no health record, which untrusted_nurseries() already
     # reads as "do not believe this nursery's absences today", so the ledger
     # and the alerts stay protected. Exit 0, not 1: this is a decision, not a
-    # failure, and it must not count against run-all-scrapers.sh's 3-of-6 floor.
+    # failure, and it must not count against run-all-scrapers.sh's failure floor.
     if not dry_run and not force and not should_probe(NURSERY_KEY, today):
         streak = consecutive_failures(NURSERY_KEY, today)
         last_ok = last_success_day(NURSERY_KEY, today) or "never"
@@ -482,7 +667,7 @@ if __name__ == "__main__":
 
     health = ScrapeHealth(NURSERY_KEY, source="bigcommerce") if not dry_run else None
     try:
-        products = scrape(dry_run=dry_run, health=health)
+        products = scrape(dry_run=dry_run, health=health, force_html=force_html)
         if products:
             save_snapshot(products)
     except Exception as e:
