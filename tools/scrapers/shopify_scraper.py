@@ -192,6 +192,7 @@ NURSERIES = {
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
+PAGE_SIZE = 250   # Shopify's maximum for products.json
 REQUEST_DELAY = 2  # seconds between paginated requests
 NURSERY_DELAY = 5  # seconds between stores; they share Shopify's edge, so an
                    # instant-failure cascade must not turn into a request burst
@@ -267,7 +268,7 @@ def scrape_shopify(nursery_key, config, health=None):
     print(f"Scraping {config['name']} ({domain})...")
 
     while True:
-        url = f"https://{domain}/products.json?limit=250&page={page}"
+        url = f"https://{domain}/products.json?limit={PAGE_SIZE}&page={page}"
         print(f"  Page {page}...", end=" ", flush=True)
 
         data = fetch_json(url, health)
@@ -287,6 +288,10 @@ def scrape_shopify(nursery_key, config, health=None):
 
         print(f"{len(products)} products")
         all_products.extend(products)
+        # A short page is the last page. Stopping here saves every store one
+        # request for an empty page plus a REQUEST_DELAY sleep after it.
+        if len(products) < PAGE_SIZE:
+            break
         page += 1
         time.sleep(REQUEST_DELAY)
 

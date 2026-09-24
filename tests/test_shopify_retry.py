@@ -156,6 +156,14 @@ class TruncatedSnapshotAbortTest(unittest.TestCase):
         self.assertEqual(len(self._health.errors), 1)
         self.assertIn("aborted", self._health.errors[0])
 
+    def test_short_page_ends_pagination_without_fetching_another(self):
+        page1 = {"products": [{"id": n} for n in range(ss.PAGE_SIZE)]}
+        page2 = {"products": [{"id": 1000 + n} for n in range(7)]}
+        # A third entry that would blow up if requested.
+        products = self._run_with_pages([page1, page2, None])
+        self.assertEqual(len(products), ss.PAGE_SIZE + 7)
+        self.assertEqual(self._health.errors, [])
+
     def test_clean_end_of_pagination_keeps_products(self):
         page1 = {"products": [{"id": n} for n in range(3)]}
         products = self._run_with_pages([page1, {"products": []}])

@@ -277,7 +277,44 @@ def detect_anomalies(days):
     return anomalies
 
 
-def build_email(anomalies, today):
+# Rows a human has already acted on. When a nursery's own site says it is shut
+# and someone has written a dormant_note for it (stocklib.registry), "failed"
+# and "failure streak" are the expected state, not news. Aus Nurseries went on
+# holiday 2026-09-20 with a reopen date of 2026-10-20, and this alarm emailed
+# about it every night: four identical mails in four days, with a month to go,
+# under the same subject a real outage gets. An alarm that repeats a known fact
+# nightly trains its reader to skip it.
+#
+# Deliberately NOT keyed on is_dormant() (five failed nights): that is the
+# scraper's own inference, and a real outage nobody has looked at would go
+# quiet on day six. Only a human-written note mutes. Every other anomaly type
+# still fires for these nurseries, and a muted nursery is still named in the
+# footer of any mail that does go out.
+EXPECTED_WHILE_CLOSED = {"failed", "failure_streak"}
+
+
+def acknowledged_closures():
+    """Nursery keys with a human-verified closure note."""
+    from stocklib import registry
+    note = getattr(registry, "dormant_note", None)
+    if note is None:
+        return set()
+    return {n.key for n in registry.NURSERIES if note(n.key)}
+
+
+def split_acknowledged(anomalies, acknowledged):
+    """(alertable, muted): muted rows are EXPECTED_WHILE_CLOSED rows for an
+    acknowledged nursery."""
+    alertable, muted = [], []
+    for a in anomalies:
+        if a.get("nursery") in acknowledged and a.get("type") in EXPECTED_WHILE_CLOSED:
+            muted.append(a)
+        else:
+            alertable.append(a)
+    return alertable, muted
+
+
+def build_email(anomalies, today, muted=()):
     """Build (subject, html, text) for the alert email.
 
     A panel-coverage anomaly leads, in the subject line as well as the body.
@@ -312,6 +349,13 @@ def build_email(anomalies, today):
         )
         rows_text.append(f"  {a['nursery']}: {label} - {a['detail']}")
 
+    muted_names = sorted({a["nursery"] for a in muted})
+    muted_html = muted_text = ""
+    if muted_names:
+        muted_html = (f'<p style="font-size:0.85em;color:#555">Known closures, not '
+                      f'alerted: {", ".join(muted_names)}.</p>\n')
+        muted_text = f"\n\nKnown closures, not alerted: {', '.join(muted_names)}."
+
     html = f"""<h2>Scrape Health Alert &mdash; {today}</h2>
 {banner_html}
 <p>{len(anomalies)} anomaly/ies in last night's scrape:</p>
@@ -323,12 +367,13 @@ def build_email(anomalies, today):
 </tr>
 {rows_html}
 </table>
-<p style="font-size:0.85em;color:#888;margin-top:16px">
+{muted_html}<p style="font-size:0.85em;color:#888;margin-top:16px">
 Conditions: failed run, zero products where yesterday had stock, any 403/429,
 {STREAK_DAYS}-day failure streak, data source change, product count swing beyond
 {COUNT_SWING_RATIO:g}x. Health grid: treestock.com.au/admin.</p>"""
 
-    text = f"Scrape Health Alert -- {today}\n\n" + banner_text + "\n".join(rows_text)
+    text = (f"Scrape Health Alert -- {today}\n\n" + banner_text + "\n".join(rows_text)
+            + muted_text)
     if panel:
         subject = (f"Scrape health: PANEL OUTAGE, {panel['coverage']:.0%} of "
                    f"nurseries ran -- {today}")
@@ -364,6 +409,9 @@ def main(argv=None):
     panel = detect_panel_coverage(today.isoformat(), days, health_dir)
     if panel:
         anomalies.insert(0, panel)
+    anomalies, muted = split_acknowledged(anomalies, acknowledged_closures())
+    for a in muted:
+        print(f"  {a['nursery']}: {a['type']} (known closure, not alerted)")
     if not anomalies:
         print(f"Scrape health: {len(latest_by_nursery(days[0]))} nurseries, no anomalies.")
         return 0
@@ -371,7 +419,7 @@ def main(argv=None):
     for a in anomalies:
         print(f"  {a['nursery']}: {a['type']} - {a['detail']}")
 
-    subject, html, text = build_email(anomalies, today.isoformat())
+    subject, html, text = build_email(anomalies, today.isoformat(), muted)
 
     if dry_run:
         print(f"\n[DRY RUN] Would send:\nSubject: {subject}\n\n{text}")
