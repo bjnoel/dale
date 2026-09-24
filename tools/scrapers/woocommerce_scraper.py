@@ -20,6 +20,7 @@ from datetime import datetime, date
 from html import unescape
 from pathlib import Path
 
+from stocklib.jsonio import atomic_write_json
 from stocklib.model import validate_and_warn
 from stocklib.retry import request_with_retry
 from stocklib.scrape_health import count_priced, ScrapeHealth
@@ -213,8 +214,55 @@ def category_matches(cats, fruit_cats):
     return any(fc in cats or any(fc in c for c in cats) for fc in fruit_cats)
 
 
+def _page_through(base_url, health=None, *, per_page=100, _fetch=None, _sleep=None):
+    """Every product from a paged Store API listing, or None if any page failed.
+
+    None, not the pages we managed to get, because a partial catalogue is worse
+    than no snapshot: the last good latest.json stays live, the failure is
+    recorded, and nobody reads 400 missing products as 400 delistings. In the
+    2026-04-22 run Guildford's page 50 returned a 502, and this loop used to
+    `break` there and save pages 1-49 as the day's stock.
+    """
+    fetch = _fetch or (lambda url: fetch_json(url, health))
+    sleep = _sleep or time.sleep
+    sep = "&" if "?" in base_url else "?"
+    products = []
+    page = 1
+    while True:
+        url = f"{base_url}{sep}per_page={per_page}&page={page}"
+        data = fetch(url)
+        if data is None:
+            print(f"  Page {page} failed; aborting (keeping last snapshot)")
+            if health:
+                health.note_error(f"page {page} failed; snapshot aborted")
+            return None
+        products.extend(data)
+        if len(data) < per_page:
+            return products
+        page += 1
+        sleep(REQUEST_DELAY)
+
+
+def resolve_category_ids(domain, fruit_cats, health=None, *, _fetch=None, _sleep=None):
+    """Store category ids whose slug passes category_matches(), or None.
+
+    Guildford files fruit under leaf categories (DEC-207), so it used to page
+    through all ~7,400 products in the store to keep ~920: 75 pages at ~4.5s,
+    about 300s a night, 16% of the whole scrape. Applying the same substring
+    rule to the category list instead, and asking only for those categories,
+    fetched the same 921 products in 18 requests (measured 2026-09-23: 0
+    missing, 3 new since midnight). A category Guildford adds later is picked
+    up the same way it was before, because the list is read fresh every run.
+    """
+    cats = _page_through(f"https://{domain}/wp-json/wc/store/v1/products/categories",
+                         health, _fetch=_fetch, _sleep=_sleep)
+    if cats is None:
+        return None
+    return [c["id"] for c in cats if category_matches([c.get("slug", "")], fruit_cats)]
+
+
 def scrape_woocommerce(nursery_key, config, health=None):
-    """Scrape all products from a WooCommerce store."""
+    """Scrape all products from a WooCommerce store. Returns [] on any failure."""
     domain = config["domain"]
     fruit_cats = config.get("fruit_categories", [])
     excl_cats = set(config.get("exclude_categories", []))
@@ -226,73 +274,55 @@ def scrape_woocommerce(nursery_key, config, health=None):
     if use_category_api:
         return _scrape_by_category(nursery_key, config, domain, fruit_cats, health)
 
+    base = f"https://{domain}/wp-json/wc/store/v1/products"
+    if fruit_cats:
+        ids = resolve_category_ids(domain, fruit_cats, health)
+        if ids:
+            print(f"  {len(ids)} matching categories; fetching only those")
+            base += "?category=" + ",".join(str(i) for i in ids)
+        else:
+            # Falling back is safe, only slower: the filter below still applies.
+            print("  Category list unavailable or empty; paging the whole store")
+
+    raw = _page_through(base, health)
+    if raw is None:
+        return []
+
     all_products = []
-    page = 1
-    per_page = 100
+    for product in raw:
+        cats = [c["slug"] for c in product.get("categories", [])]
+        if not category_matches(cats, fruit_cats):
+            continue
+        # Exclude non-tree categories / titles (for stores without an
+        # include-filter, e.g. Rayners: drop wines, preserves, gifts, tours).
+        if excl_cats and any(c in excl_cats for c in cats):
+            continue
+        if excl_kw and any(k in product.get("name", "").lower() for k in excl_kw):
+            continue
+        all_products.append(product)
 
-    while True:
-        url = f"https://{domain}/wp-json/wc/store/v1/products?per_page={per_page}&page={page}"
-        print(f"  Page {page}...", end=" ", flush=True)
-
-        data = fetch_json(url, health)
-        if data is None:
-            print("failed")
-            break
-
-        if not data:
-            print("empty (done)")
-            break
-
-        # Filter to fruit/edible categories only
-        for product in data:
-            cats = [c["slug"] for c in product.get("categories", [])]
-            if not category_matches(cats, fruit_cats):
-                continue
-            # Exclude non-tree categories / titles (for stores without an
-            # include-filter, e.g. Rayners: drop wines, preserves, gifts, tours).
-            if excl_cats and any(c in excl_cats for c in cats):
-                continue
-            if excl_kw and any(k in product.get("name", "").lower() for k in excl_kw):
-                continue
-            all_products.append(product)
-
-        print(f"{len(data)} products ({len(all_products)} fruit/edible)")
-
-        if len(data) < per_page:
-            break
-
-        page += 1
-        time.sleep(REQUEST_DELAY)
-
-    print(f"  Total fruit/edible: {len(all_products)} products")
+    print(f"  {len(raw)} fetched, {len(all_products)} fruit/edible")
     return all_products
 
 
 def _scrape_by_category(nursery_key, config, domain, fruit_cats, health=None):
-    """Fetch products by iterating specific category slugs (for large stores)."""
+    """Fetch products by iterating specific category slugs (for large stores).
+    Returns [] if any page of any category fails (see _page_through)."""
     seen_ids = set()
     all_products = []
-    per_page = 100
 
     for cat_slug in fruit_cats:
-        page = 1
+        data = _page_through(f"https://{domain}/wp-json/wc/store/v1/products?category={cat_slug}",
+                             health)
+        if data is None:
+            return []
         cat_new = 0
-        while True:
-            url = (f"https://{domain}/wp-json/wc/store/v1/products"
-                   f"?per_page={per_page}&page={page}&category={cat_slug}")
-            data = fetch_json(url, health)
-            if not data:
-                break
-            for product in data:
-                pid = product.get("id")
-                if pid and pid not in seen_ids:
-                    seen_ids.add(pid)
-                    all_products.append(product)
-                    cat_new += 1
-            if len(data) < per_page:
-                break
-            page += 1
-            time.sleep(REQUEST_DELAY)
+        for product in data:
+            pid = product.get("id")
+            if pid and pid not in seen_ids:
+                seen_ids.add(pid)
+                all_products.append(product)
+                cat_new += 1
         print(f"  Category '{cat_slug}'... {cat_new} ({cat_new} new, {len(all_products)} total)")
 
     print(f"  Total fruit/edible: {len(all_products)} products")
@@ -331,7 +361,11 @@ def normalize_product(raw, nursery_key, config):
     price = parse_store_price(prices.get("price"), minor_unit)
 
     on_sale = raw.get("on_sale", False)
-    available = raw.get("is_in_stock", False)
+    # An "external" product is a catalogue entry whose button sends the buyer
+    # somewhere else ("Find a stockist"). WooCommerce reports it in stock, but
+    # it cannot be bought from this nursery. On 2026-09-23, 60 of PlantNet's
+    # first 100 products were external and all 60 showed as in stock here.
+    available = bool(raw.get("is_in_stock", False)) and raw.get("type") != "external"
 
     # Clean HTML entities from name
     title = unescape(raw.get("name", ""))
@@ -377,13 +411,8 @@ def save_snapshot(nursery_key, products, config):
     }
     validate_and_warn(snapshot, nursery_key)
 
-    snapshot_file = nursery_dir / f"{today}.json"
-    with open(snapshot_file, "w") as f:
-        json.dump(snapshot, f, indent=2)
-
-    latest_file = nursery_dir / "latest.json"
-    with open(latest_file, "w") as f:
-        json.dump(snapshot, f, indent=2)
+    snapshot_file = atomic_write_json(nursery_dir / f"{today}.json", snapshot)
+    atomic_write_json(nursery_dir / "latest.json", snapshot)
 
     print(f"  Saved: {snapshot_file}")
     print(f"  In stock: {in_stock} / Out of stock: {len(normalized) - in_stock}")
