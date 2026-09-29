@@ -15,6 +15,7 @@ import json
 import os
 import sys
 import time
+import traceback
 import urllib.request
 from datetime import datetime, date
 from html import unescape
@@ -242,6 +243,17 @@ def _page_through(base_url, health=None, *, per_page=100, _fetch=None, _sleep=No
             if health:
                 health.note_error(f"page {page} failed; snapshot aborted")
             return None
+        if not isinstance(data, list) or not all(isinstance(x, dict) for x in data):
+            # A 200 carrying a JSON object (2026-09-27 to 09-29, Guildford's
+            # category list at 00:05 UTC) used to be extend()ed key by key,
+            # and the first c.get() on a str crashed the run. Log what came
+            # back so the next occurrence names its cause.
+            print(f"  Page {page} is not a list of objects; aborting (keeping last "
+                  f"snapshot): {json.dumps(data)[:300]}")
+            if health:
+                health.note_error(f"page {page} not a list ({type(data).__name__}); "
+                                  "snapshot aborted")
+            return None
         products.extend(data)
         if len(data) < per_page:
             return products
@@ -465,15 +477,21 @@ def main():
     else:
         targets = NURSERIES
 
+    # One nursery's crash is recorded and the loop moves on. Re-raising here
+    # cost Guildford's seven successors three nights (2026-09-27 to 09-29).
+    crashed = []
     for key, config in targets.items():
         health = ScrapeHealth(key, source="woocommerce")
         try:
             products = scrape_woocommerce(key, config, health)
             snapshot = save_snapshot(key, products, config, health) if products else None
         except Exception as e:
+            traceback.print_exc()
             health.note_error(repr(e))
             health.finish(ok=False)
-            raise
+            crashed.append(key)
+            print()
+            continue
         if snapshot:
             health.finish(products=snapshot["product_count"],
                           in_stock=snapshot["in_stock_count"],
@@ -481,6 +499,10 @@ def main():
         else:
             health.finish()
         print()
+
+    if crashed:
+        print(f"Crashed: {', '.join(crashed)} (the other nurseries still ran)")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -92,6 +92,50 @@ class ResolvedCategoryFetch(unittest.TestCase):
         self.assertEqual(len(out), 1)
 
 
+class NonListPage(unittest.TestCase):
+    """2026-09-27 to 09-29: Guildford answered page 1 of the category list with
+    HTTP 200 and a JSON object instead of a list. extend() took the object's keys,
+    c.get() hit a str, and the crash cost all eight WooCommerce nurseries three
+    nights. A page that is not a list of objects is a failed page."""
+
+    WP_ERROR = {"code": "rest_error", "message": "x", "data": {"status": 200}}
+
+    def test_object_as_category_list_falls_back_to_whole_store(self):
+        store = _Store([[_prod(1)]], cat_pages=[self.WP_ERROR])
+        self.assertEqual([p["id"] for p in _run(store)], [1])
+
+    def test_object_as_product_page_publishes_nothing(self):
+        store = _Store([self.WP_ERROR], cat_pages=None)
+        self.assertEqual(_run(store), [])
+
+    def test_list_of_strings_publishes_nothing(self):
+        store = _Store([["code", "message"]], cat_pages=None)
+        self.assertEqual(_run(store), [])
+
+
+class OneNurseryCrashDoesNotStopThePanel(unittest.TestCase):
+    def test_later_nurseries_still_run_and_exit_is_nonzero(self):
+        ran = []
+
+        def scrape(key, config, health=None):
+            ran.append(key)
+            if key == "first":
+                raise AttributeError("'str' object has no attribute 'get'")
+            return [_prod(1)]
+
+        snap = {"product_count": 1, "in_stock_count": 1, "products": []}
+        with mock.patch.object(wc, "NURSERIES", {"first": {}, "second": {}}), \
+                mock.patch.object(wc, "scrape_woocommerce", scrape), \
+                mock.patch.object(wc, "save_snapshot", return_value=snap), \
+                mock.patch.object(wc, "ScrapeHealth"), \
+                mock.patch.object(wc.sys, "argv", ["woocommerce_scraper.py"]), \
+                mock.patch("sys.stderr"):
+            with self.assertRaises(SystemExit) as cm:
+                wc.main()
+        self.assertEqual(ran, ["first", "second"])
+        self.assertEqual(cm.exception.code, 1)
+
+
 class ExternalProducts(unittest.TestCase):
     def test_find_a_stockist_product_is_not_in_stock(self):
         raw = _prod(1, type="external", is_purchasable=False)
