@@ -51,6 +51,9 @@ GUARDS = [
     (re.compile(r"^def auth_headers\b"), "stocklib/gsc_auth.py"),
     (re.compile(r"^RETRYABLE_HTTP\s*[:=]"), "stocklib/retry.py"),
     (re.compile(r"^def request_with_retry\b"), "stocklib/retry.py"),
+    # The per-nursery loop. Five scrapers each had their own copy, and all five
+    # re-raised, so one crash cost every nursery after it (2026-09-27 to 09-29).
+    (re.compile(r"^def run_panel\b"), "stocklib/panel.py"),
     (re.compile(r"^def backoff_delay\b"), "stocklib/retry.py"),
     # Scrape-health reading. The anomaly detector and the page-lifecycle
     # ledger's health gate must agree on which record wins for a nursery on a

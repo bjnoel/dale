@@ -113,29 +113,6 @@ class NonListPage(unittest.TestCase):
         self.assertEqual(_run(store), [])
 
 
-class OneNurseryCrashDoesNotStopThePanel(unittest.TestCase):
-    def test_later_nurseries_still_run_and_exit_is_nonzero(self):
-        ran = []
-
-        def scrape(key, config, health=None):
-            ran.append(key)
-            if key == "first":
-                raise AttributeError("'str' object has no attribute 'get'")
-            return [_prod(1)]
-
-        snap = {"product_count": 1, "in_stock_count": 1, "products": []}
-        with mock.patch.object(wc, "NURSERIES", {"first": {}, "second": {}}), \
-                mock.patch.object(wc, "scrape_woocommerce", scrape), \
-                mock.patch.object(wc, "save_snapshot", return_value=snap), \
-                mock.patch.object(wc, "ScrapeHealth"), \
-                mock.patch.object(wc.sys, "argv", ["woocommerce_scraper.py"]), \
-                mock.patch("sys.stderr"):
-            with self.assertRaises(SystemExit) as cm:
-                wc.main()
-        self.assertEqual(ran, ["first", "second"])
-        self.assertEqual(cm.exception.code, 1)
-
-
 class ExternalProducts(unittest.TestCase):
     def test_find_a_stockist_product_is_not_in_stock(self):
         raw = _prod(1, type="external", is_purchasable=False)

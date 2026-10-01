@@ -15,7 +15,6 @@ import json
 import os
 import sys
 import time
-import traceback
 import urllib.request
 from datetime import datetime, date
 from html import unescape
@@ -25,7 +24,8 @@ from stocklib.jsonio import atomic_write_json
 from stocklib import page_verify
 from stocklib.model import validate_and_warn
 from stocklib.retry import request_with_retry
-from stocklib.scrape_health import count_priced, ScrapeHealth
+from stocklib.panel import run_panel
+from stocklib.scrape_health import count_priced
 
 NURSERIES = {
     "guildford": {
@@ -477,32 +477,17 @@ def main():
     else:
         targets = NURSERIES
 
-    # One nursery's crash is recorded and the loop moves on. Re-raising here
-    # cost Guildford's seven successors three nights (2026-09-27 to 09-29).
-    crashed = []
-    for key, config in targets.items():
-        health = ScrapeHealth(key, source="woocommerce")
-        try:
-            products = scrape_woocommerce(key, config, health)
-            snapshot = save_snapshot(key, products, config, health) if products else None
-        except Exception as e:
-            traceback.print_exc()
-            health.note_error(repr(e))
-            health.finish(ok=False)
-            crashed.append(key)
-            print()
-            continue
-        if snapshot:
-            health.finish(products=snapshot["product_count"],
-                          in_stock=snapshot["in_stock_count"],
-                          priced=count_priced(snapshot["products"]))
-        else:
-            health.finish()
-        print()
+    run_panel(targets, "woocommerce", _scrape_one)
 
-    if crashed:
-        print(f"Crashed: {', '.join(crashed)} (the other nurseries still ran)")
-        sys.exit(1)
+
+def _scrape_one(key, config, health):
+    products = scrape_woocommerce(key, config, health)
+    snapshot = save_snapshot(key, products, config, health) if products else None
+    if not snapshot:
+        return None
+    return {"products": snapshot["product_count"],
+            "in_stock": snapshot["in_stock_count"],
+            "priced": count_priced(snapshot["products"])}
 
 
 if __name__ == "__main__":

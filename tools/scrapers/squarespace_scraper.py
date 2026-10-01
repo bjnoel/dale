@@ -53,7 +53,8 @@ from pathlib import Path
 from stocklib.jsonio import atomic_write_json
 from stocklib.classify import is_real_product
 from stocklib.model import validate_and_warn
-from stocklib.scrape_health import count_priced, ScrapeHealth
+from stocklib.panel import run_panel
+from stocklib.scrape_health import count_priced
 
 # `exclude_pattern` is a per-store title filter for items that are real
 # products but not nursery stock, and which the shared NON_PLANT_KEYWORDS
@@ -352,21 +353,16 @@ def main():
     else:
         targets = NURSERIES
 
-    for key, config in targets.items():
-        health = ScrapeHealth(key, source="squarespace")
-        products = []
-        try:
-            products = scrape_squarespace(key, config, health)
-            if products:
-                save_snapshot(key, products, config)
-        except Exception as e:
-            health.note_error(repr(e))
-            health.finish(ok=False)
-            raise
-        health.finish(products=len(products),
-                      in_stock=sum(1 for p in products if p["available"]),
-                      priced=count_priced(products))
-        print()
+    run_panel(targets, "squarespace", _scrape_one)
+
+
+def _scrape_one(key, config, health):
+    products = scrape_squarespace(key, config, health)
+    if products:
+        save_snapshot(key, products, config)
+    return {"products": len(products),
+            "in_stock": sum(1 for p in products if p["available"]),
+            "priced": count_priced(products)}
 
 
 if __name__ == "__main__":

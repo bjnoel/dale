@@ -38,7 +38,8 @@ from datetime import datetime, date
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
-from stocklib.scrape_health import count_priced, ScrapeHealth
+from stocklib.panel import run_panel
+from stocklib.scrape_health import count_priced
 
 # Empty on purpose. Heaven On Earth Fruit Trees was the only Wix nursery and
 # was REMOVED 2026-08-27 at their own request (see registry.py). DO NOT re-add
@@ -333,20 +334,16 @@ def main():
     else:
         targets = NURSERIES
 
-    for key, config in targets.items():
-        health = ScrapeHealth(key, source="wix")
-        try:
-            products = scrape_wix(key, config, health)
-            if products:
-                save_snapshot(key, products, config)
-        except Exception as e:
-            health.note_error(repr(e))
-            health.finish(ok=False)
-            raise
-        health.finish(products=len(products),
-                      in_stock=sum(1 for p in products if p["available"]),
-                      priced=count_priced(products))
-        print()
+    run_panel(targets, "wix", _scrape_one)
+
+
+def _scrape_one(key, config, health):
+    products = scrape_wix(key, config, health)
+    if products:
+        save_snapshot(key, products, config)
+    return {"products": len(products),
+            "in_stock": sum(1 for p in products if p["available"]),
+            "priced": count_priced(products)}
 
 
 if __name__ == "__main__":

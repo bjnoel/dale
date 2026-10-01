@@ -22,7 +22,8 @@ from pathlib import Path
 from stocklib.jsonio import atomic_write_json
 from stocklib.model import validate_and_warn
 from stocklib.retry import request_with_retry
-from stocklib.scrape_health import count_priced, ScrapeHealth
+from stocklib.panel import run_panel
+from stocklib.scrape_health import count_priced
 
 # Nursery configurations
 NURSERIES = {
@@ -421,24 +422,19 @@ def main():
     else:
         targets = NURSERIES
 
-    for key, config in targets.items():
-        health = ScrapeHealth(key, source="shopify")
-        try:
-            products = scrape_shopify(key, config, health)
-            normalized = []
-            if products:
-                normalized = save_snapshot(key, products, config)
-                print_summary(key, normalized)
-        except Exception as e:
-            health.note_error(repr(e))
-            health.finish(ok=False)
-            raise
-        health.finish(products=len(normalized),
-                      in_stock=sum(1 for p in normalized if p["any_available"]),
-                      priced=count_priced(normalized))
-        print()
-        if len(targets) > 1:
-            time.sleep(NURSERY_DELAY)
+    run_panel(targets, "shopify", _scrape_one,
+              pause=lambda: time.sleep(NURSERY_DELAY))
+
+
+def _scrape_one(key, config, health):
+    products = scrape_shopify(key, config, health)
+    normalized = []
+    if products:
+        normalized = save_snapshot(key, products, config)
+        print_summary(key, normalized)
+    return {"products": len(normalized),
+            "in_stock": sum(1 for p in normalized if p["any_available"]),
+            "priced": count_priced(normalized)}
 
 
 if __name__ == "__main__":
