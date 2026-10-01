@@ -16306,3 +16306,63 @@ than the page's own message).
 **Caught on the way:** DEC-351's `atomic_write_json` wrote every file 0600, because
 `mkstemp` does, where `open()` gave 0664. Harmless today (every reader runs as dale) but
 unintended; it now keeps an existing file's mode, else open()'s default.
+
+## DEC-353 (2026-10-01): The analytics server ran a published RCE for four months; images are now checked weekly
+
+**Trigger:** "Panel outage: only 19 of 26 nurseries ran" on Benedict's return. While
+investigating, a command was killed for lack of memory, and the cause was a cryptominer.
+
+**What happened.** The self-hosted Plausible CE (`data.bjnoel.com`) was on v3.2.0.
+CVE-2026-8467 (GHSA-mhcv-h7gf-57cf), unauthenticated remote code execution via `/storybook`,
+was fixed in v3.2.1 on 2026-05-15 and advised on 2026-06-03. From 2026-09-25 a Monero miner
+ran inside the Plausible container (2.1 GB of 3.8 GB RAM, ~1.85 cores). On 2026-09-29 a
+loader that hot-patched Plausible's live socket was added to its data volume. Scope checked:
+the container was unprivileged with no host mounts beyond its own volume and the MaxMind
+env file. The host showed no new cron jobs, services, SSH keys or logins. There were no
+rogue Plausible users, sites or API keys.
+
+**Done (Benedict chose "recreate"):** evidence preserved on the server; the volume's
+backdoor quarantined; v3.2.1 pulled and the container recreated. `SECRET_KEY_BASE` and the
+Erlang cookie were rotated. Rotating the key base silently invalidates every Plausible API
+key (the stored hash is `sha256(secret + key)`): Dale's was re-hashed and the TreeSmith
+dashboard key re-issued. MaxMind licence rotated and the old one revoked (verified 401).
+Benedict changed his password and turned on 2FA. Analytics data kept.
+
+**Why it was never patched.** `monthly_maintenance.py` applies apt updates and reboots.
+Docker images are pinned by tag, so nothing looked at them, and nothing read upstream
+advisories.
+
+**Decision.** `tools/autonomous/image_advisories.py`, Sundays 21:30 UTC. For each running
+container it reads the version actually running and the upstream GitHub security
+advisories, and flags any that cover it. An exact tag gets a notice when a newer release
+exists; a floating tag gets one when it has not been re-pulled in 120 days. Unwatched
+images are named. An unreadable feed or range is an error, never a clean result. The daily
+digest reads the status file: an affected advisory goes in the subject every day until
+fixed, and a check that has not run in 8 days appears in the body. Its first live run
+found three faults in the checker, including a ClickHouse false alarm; all fixed, each with
+a test.
+
+**Declined for now (Benedict):** Cloudflare Access on `data.bjnoel.com`. It would have
+blocked this route, but the host is DNS-only and reachable by IP, so it needs a proxied
+record, an origin certificate and an origin allowlist. The tracking and stats paths must
+stay public regardless.
+
+**Open:** the ClickHouse image (`24.12-alpine`) was built 568 days ago and has never been
+re-pulled. Running 24.12.6.70 is not covered by any of its 7 advisories.
+
+## DEC-354 (2026-10-01): Guildford's "edibles" stops letting vegetables in
+
+**Trigger:** Onion Purplette appeared in Benedict's digest as a new product.
+
+**What is going on.** Guildford files herbs, potted vegetables, mushroom kits, seed potatoes
+and pond plants under `edibles`, a parent on our keep-list. 95 such products were in the
+data (58 in April), and some reached fruit pages: Geranium "Cook's Apple Cider" on the apple
+species page, Mint "Apple" and "Grapefruit" on the compare pages. `edibles` cannot simply be
+dropped: Banana Williams Cavendish and Miracle Fruit carry nothing else.
+
+**Decision.** Per-store `nonfruit_categories` (`herbs-and-potted-vegetables`, `growing-kit`,
+`seed-potato`, `water-plants`, `herbs-seeds`): a product in one is dropped unless it also has
+a specific fruit category. The broad parents (`fruits-nuts`, `edibles`) do not count. That
+keeps three strawberries filed under vegetables + `berries-vines`, which a plain exclusion
+would have dropped, and still drops Native Thyme, a herb also tagged `fruits-nuts`. A dry
+run against the live store gave 926 → 834, exactly as predicted. Below the 2x count-swing alarm.
