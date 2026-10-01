@@ -445,6 +445,37 @@ DATASET_SLUG = "shipping-reachability.json"
 DATASET_STALE_DAYS = 2
 
 
+IMAGE_CHECK_STALE_DAYS = 8
+
+
+def get_image_advisory_status(data_dir, now=None):
+    """(critical, problems) from the weekly Docker image security check.
+
+    image_advisories.py emails when it finds something, but a weekly cron that
+    stops running sends nothing, which reads exactly like a clean week. So the
+    digest checks that it ran recently, and repeats an affected advisory daily
+    until the image is updated (Plausible sat on a published RCE fix for four
+    and a half months before it was mined on, 2026-09-25)."""
+    now = now or datetime.now(timezone.utc)
+    path = os.path.join(data_dir, "image-advisories.json")
+    try:
+        with open(path) as f:
+            status = json.load(f)
+        checked = datetime.fromisoformat(status["checked_at"])
+    except (OSError, ValueError, KeyError) as e:
+        return [], [f"Docker image security check has no readable result ({e})."]
+    critical, problems = [], []
+    age = (now - checked).days
+    if age > IMAGE_CHECK_STALE_DAYS:
+        problems.append(f"Docker image security check last ran {age} days ago.")
+    for f in status.get("findings", []):
+        if f.get("severity") == "affected":
+            critical.append(f"SECURITY: {f.get('container')}: {f.get('detail')}")
+        elif f.get("severity") == "error":
+            problems.append(f"Docker image check, {f.get('container')}: {f.get('detail')}")
+    return critical, problems
+
+
 def get_dataset_freshness(dashboard_dir=DASHBOARD_DIR, today=None):
     """Is the published shipping-reachability dataset as fresh as it claims?
 
@@ -592,6 +623,13 @@ def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
     dataset = get_dataset_freshness(dashboard_dir, now.date())
     health["dataset_generated"] = dataset["generated"]
     health["problems"].extend(dataset["problems"])
+
+    # Not treestock's pipeline, but this block is the one report Benedict reads.
+    sec_critical, sec_problems = get_image_advisory_status(data_dir, now)
+    health["critical"].extend(sec_critical)
+    health["problems"].extend(sec_problems)
+    if sec_critical and not health["headline"]:
+        health["headline"] = "security advisory affects a running service"
 
     # Critical items are problems too; they just also escape into the subject.
     health["problems"] = health["critical"] + health["problems"]

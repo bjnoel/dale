@@ -52,6 +52,7 @@ class PipelineHealthTest(unittest.TestCase):
         # Healthy by default so the pre-existing cases keep testing what they
         # were written to test. The DAL-295 cases below override it.
         self.write_dataset()
+        self.write_image_check()
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -67,6 +68,13 @@ class PipelineHealthTest(unittest.TestCase):
             "generated": generated,
             "window": {"first_day": "2026-03-05", "last_day": last_day, "days": 160},
         }))
+
+    def write_image_check(self, days_ago=1, findings=()):
+        """image_advisories.py's status file. Clean and recent by default."""
+        p = self.data / "image-advisories.json"
+        p.write_text(json.dumps({
+            "checked_at": (NOW - timedelta(days=days_ago)).isoformat(timespec="seconds"),
+            "containers": [], "findings": list(findings)}))
 
     def write_index(self, age_hours):
         p = self.dashboard / "index.html"
@@ -293,3 +301,51 @@ class PipelineHealthTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ImageAdvisoryInDigestTest(unittest.TestCase):
+    """The weekly Docker image check reports through the daily digest too, so a
+    check that stops running cannot pass for a clean week (2026-10-01)."""
+
+    # Borrow the fixture helpers without inheriting (and re-running) the tests.
+    tearDown = PipelineHealthTest.tearDown
+    write_health = PipelineHealthTest.write_health
+    write_dataset = PipelineHealthTest.write_dataset
+    write_image_check = PipelineHealthTest.write_image_check
+    write_index = PipelineHealthTest.write_index
+    check = PipelineHealthTest.check
+
+    def setUp(self):
+        PipelineHealthTest.setUp(self)
+        self.write_health([health_record("daleys")])
+        self.write_index(age_hours=2)
+
+    def test_clean_recent_check_adds_nothing(self):
+        h = self.check()
+        self.assertTrue(h["ok"], h["problems"])
+
+    def test_affected_advisory_reaches_the_subject(self):
+        self.write_image_check(findings=[{
+            "severity": "affected", "container": "plausible-plausible-1",
+            "detail": "3.2.0 is affected by GHSA-mhcv-h7gf-57cf"}])
+        h = self.check()
+        self.assertIn("SECURITY", " ".join(h["critical"]))
+        self.assertEqual(h["headline"], "security advisory affects a running service")
+
+    def test_stale_check_is_a_problem_not_a_headline(self):
+        self.write_image_check(days_ago=15)
+        h = self.check()
+        self.assertFalse(h["ok"])
+        self.assertIn("last ran 15 days ago", " ".join(h["problems"]))
+        self.assertIsNone(h["headline"])
+
+    def test_missing_status_file_is_reported(self):
+        (self.data / "image-advisories.json").unlink()
+        h = self.check()
+        self.assertIn("no readable result", " ".join(h["problems"]))
+
+    def test_notices_stay_out_of_the_daily_digest(self):
+        self.write_image_check(findings=[{
+            "severity": "notice", "container": "x", "detail": "image is old"}])
+        self.assertTrue(self.check()["ok"])
+
