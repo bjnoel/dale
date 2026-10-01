@@ -71,12 +71,27 @@ def in_range(version, range_str):
     if not clauses:
         return None
     for clause in clauses:
-        m = re.fullmatch(r"\s*(>=|<=|>|<|=)?\s*v?(\d+(?:\.\d+)*)\s*", clause)
+        m = re.fullmatch(r"\s*(>=|<=|>|<|=)?\s*v?(\d+(?:\.\d+)*)(?:-[A-Za-z]+)?\s*", clause)
         if not m:
             return None
         if not ops[m.group(1) or "="](_cmp(version, parse_version(m.group(2)))):
             return False
     return True
+
+
+def applicable(vulns, version):
+    """The advisory entries that speak for `version`'s release line.
+
+    ClickHouse publishes one entry per line ("< 24.12.5.65" fixed in
+    24.12.5.65, "< 25.1.5.5" fixed in 25.1.5.5, ...). Read flat, 24.12.6.70 is
+    "< 25.1.5.5" and looks vulnerable although its own line was fixed at
+    24.12.5.65 (a false alarm on the first live run, 2026-10-01). When an entry
+    is patched within the running major.minor, only those entries count; when
+    none is, every range applies, so a line too old to have its own fix is
+    still caught."""
+    same = [v for v in vulns
+            if (parse_version(v.get("patched_versions") or "") or ())[:2] == version[:2]]
+    return same or vulns
 
 
 def fetch_json(url):
@@ -91,9 +106,13 @@ def run(cmd):
 
 
 def running_containers(_run=run):
-    out = _run(["docker", "ps", "--format", "{{.Names}}\t{{.Image}}\t{{.ImageID}}"])
-    return [dict(zip(("name", "image", "image_id"), line.split("\t")))
-            for line in out.splitlines() if line.strip()]
+    # `docker ps --format` has no image-id field; the container's inspect does.
+    out = _run(["docker", "ps", "--format", "{{.Names}}\t{{.Image}}"])
+    containers = [dict(zip(("name", "image"), line.split("\t")))
+                  for line in out.splitlines() if line.strip()]
+    for c in containers:
+        c["image_id"] = _run(["docker", "inspect", "--format", "{{.Image}}", c["name"]]).strip()
+    return containers
 
 
 def image_created(image_id, _run=run):
@@ -124,10 +143,26 @@ def check(now=None, _run=run, _fetch=fetch_json):
         vtext = ".".join(map(str, version)) if version else "unknown"
         entry = {"container": c["name"], "image": c["image"], "version": vtext}
 
+        # A floating tag (16-alpine, 24.12-alpine) only moves when re-pulled, so
+        # its build date is how stale it is. An exact tag (v3.2.1) is as old as
+        # its release; the question there is whether a newer one exists.
+        exact = re.fullmatch(r"v?\d+\.\d+\.\d+", tag) is not None
+        if exact and watch["repo"] and version:
+            try:
+                latest = _fetch(f"https://api.github.com/repos/{watch['repo']}/releases/latest")
+                newest = parse_version(latest.get("tag_name"))
+                if newest and _cmp(newest, version) > 0:
+                    findings.append({"severity": "notice", "container": c["name"],
+                                     "detail": f"running {vtext}; {latest['tag_name']} was released "
+                                               f"{(latest.get('published_at') or '?')[:10]}"})
+            except Exception as e:  # noqa: BLE001
+                findings.append({"severity": "error", "container": c["name"],
+                                 "detail": f"could not read the latest release of {watch['repo']}: {e}"})
+
         try:
             age = (now - image_created(c["image_id"], _run)).days
             entry["image_age_days"] = age
-            if age > IMAGE_AGE_DAYS:
+            if age > IMAGE_AGE_DAYS and not exact:
                 findings.append({"severity": "notice", "container": c["name"],
                                  "detail": f"{c['image']} was built {age} days ago and has not been re-pulled since"})
         except Exception as e:  # noqa: BLE001
@@ -146,12 +181,13 @@ def check(now=None, _run=run, _fetch=fetch_json):
             for adv in advisories:
                 if adv.get("withdrawn_at"):
                     continue
-                ranges = [v.get("vulnerable_version_range") for v in adv.get("vulnerabilities") or []]
+                vulns = applicable(adv.get("vulnerabilities") or [], version)
+                ranges = [v.get("vulnerable_version_range") for v in vulns]
                 verdicts = [in_range(version, r) for r in ranges]
                 label = (f"{adv.get('ghsa_id')} ({adv.get('cve_id') or 'no CVE'}, "
                          f"{adv.get('severity')}): {adv.get('summary')}")
                 if any(v is True for v in verdicts):
-                    patched = ", ".join(sorted({v.get("patched_versions") or "?" for v in adv["vulnerabilities"]}))
+                    patched = ", ".join(sorted({v.get("patched_versions") or "?" for v in vulns}))
                     findings.append({"severity": "affected", "container": c["name"],
                                      "detail": f"{vtext} is affected by {label}. Fixed in: {patched}",
                                      "url": adv.get("html_url")})
