@@ -113,6 +113,18 @@ class NonListPage(unittest.TestCase):
         self.assertEqual(_run(store), [])
 
 
+class NonFruitCategories(unittest.TestCase):
+    def test_scrape_drops_vegetables_but_keeps_strawberries(self):
+        cfg = {"name": "Test", "domain": "x.test",
+               "fruit_categories": ["edibles", "berries-vines"],
+               "broad_categories": ["edibles"],
+               "nonfruit_categories": ["herbs-and-potted-vegetables"]}
+        store = _Store([[_prod(1, cats=("edibles", "herbs-and-potted-vegetables")),
+                         _prod(2, cats=("berries-vines", "herbs-and-potted-vegetables")),
+                         _prod(3, cats=("edibles",))]], cat_pages=None)
+        self.assertEqual([p["id"] for p in _run(store, cfg)], [2, 3])
+
+
 class ExternalProducts(unittest.TestCase):
     def test_find_a_stockist_product_is_not_in_stock(self):
         raw = _prod(1, type="external", is_purchasable=False)

@@ -52,6 +52,18 @@ NURSERIES = {
             "raspberry", "passion-fruit", "guava-feijoa", "mango", "avocado",
             "banana", "mulberry", "soft-skin", "currant",
         ],
+        # "edibles" also holds herbs, vegetables, mushroom kits and pond plants:
+        # 95 products on 2026-10-01, e.g. Onion Purplette in a subscriber's digest
+        # and a scented geranium on the apple species page. It cannot simply be
+        # dropped, because Banana Williams and Miracle Fruit carry nothing else.
+        # So a product in one of these is dropped unless it also has a specific
+        # fruit category: three strawberries are filed under
+        # herbs-and-potted-vegetables + berries-vines and must stay.
+        "nonfruit_categories": [
+            "herbs-and-potted-vegetables", "growing-kit", "seed-potato",
+            "water-plants", "herbs-seeds",
+        ],
+        "broad_categories": ["fruits-nuts", "edibles"],
     },
     "yalca-fruit-trees": {
         "name": "Yalca Fruit Trees",
@@ -221,6 +233,20 @@ def category_matches(cats, fruit_cats):
     return any(fc in cats or any(fc in c for c in cats) for fc in fruit_cats)
 
 
+def is_nonfruit(cats, config):
+    """True if a product is filed under one of the store's `nonfruit_categories`
+    and under no specific fruit category. `broad_categories` are parents such as
+    "edibles" that hold fruit and vegetables alike, so they do not count as
+    specific: Native Thyme, a herb Guildford also filed under fruits-nuts, is
+    still dropped."""
+    nonfruit = set(config.get("nonfruit_categories", []))
+    if not any(c in nonfruit for c in cats):
+        return False
+    broad = set(config.get("broad_categories", []))
+    specific = [fc for fc in config.get("fruit_categories", []) if fc not in broad]
+    return not (specific and category_matches(cats, specific))
+
+
 def _page_through(base_url, health=None, *, per_page=100, _fetch=None, _sleep=None):
     """Every product from a paged Store API listing, or None if any page failed.
 
@@ -310,6 +336,8 @@ def scrape_woocommerce(nursery_key, config, health=None):
     for product in raw:
         cats = [c["slug"] for c in product.get("categories", [])]
         if not category_matches(cats, fruit_cats):
+            continue
+        if is_nonfruit(cats, config):
             continue
         # Exclude non-tree categories / titles (for stores without an
         # include-filter, e.g. Rayners: drop wines, preserves, gifts, tours).

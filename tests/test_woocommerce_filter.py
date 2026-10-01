@@ -19,7 +19,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 sys.path.insert(0, str(SCRAPERS))
 
-from woocommerce_scraper import category_matches, NURSERIES  # noqa: E402
+from woocommerce_scraper import category_matches, is_nonfruit, NURSERIES  # noqa: E402
 
 GUILDFORD_CATS = NURSERIES["guildford"]["fruit_categories"]
 ENGALLS_CATS = NURSERIES["engalls"]["fruit_categories"]
@@ -82,6 +82,48 @@ class TestGuildfordRegression(unittest.TestCase):
         # Products that already carried the parent must not regress.
         cats = ["fruits-nuts", "exotic-tropical-fruit-trees", "fig-tree"]
         self.assertTrue(category_matches(cats, GUILDFORD_CATS))
+
+
+class TestGuildfordNonFruit(unittest.TestCase):
+    """Guildford files herbs, vegetables, mushroom kits and pond plants under
+    "edibles", a parent we keep. 2026-10-01: 95 such products were in the data
+    (Onion Purplette reached a subscriber's digest; Geranium "Cook's Apple
+    Cider" sat on the apple species page). Category slugs below are Guildford's
+    real ones, read from the Store API that day."""
+
+    CFG = NURSERIES["guildford"]
+
+    def assertDropped(self, cats):
+        self.assertTrue(category_matches(cats, self.CFG["fruit_categories"]), cats)
+        self.assertTrue(is_nonfruit(cats, self.CFG), cats)
+
+    def assertKept(self, cats):
+        self.assertTrue(category_matches(cats, self.CFG["fruit_categories"]), cats)
+        self.assertFalse(is_nonfruit(cats, self.CFG), cats)
+
+    def test_vegetable_under_edibles_is_dropped(self):
+        self.assertDropped(["edibles", "herbs-and-potted-vegetables"])  # Onion Purplette
+
+    def test_mushroom_kit_is_dropped(self):
+        self.assertDropped(["edibles", "growing-kit"])
+
+    def test_herb_tagged_with_the_broad_fruit_parent_is_still_dropped(self):
+        # Native Thyme: a herb Guildford also filed under fruits-nuts.
+        self.assertDropped(["australian-native-food-plants-edibles", "fruits-nuts",
+                            "herbs-and-potted-vegetables"])
+
+    def test_strawberry_filed_under_vegetables_is_kept(self):
+        # Strawberry Tioga Runners: berries-vines is a specific fruit category.
+        self.assertKept(["berries-vines", "herbs-and-potted-vegetables"])
+
+    def test_fruit_tagged_only_edibles_is_kept(self):
+        # Why "edibles" cannot simply be removed from fruit_categories.
+        self.assertKept(["edibles"])  # Banana Williams Cavendish Super Dwarf
+        self.assertKept(["australian-native-food-plants-edibles", "edibles"])  # Desert Lime
+
+    def test_no_config_means_nothing_is_nonfruit(self):
+        self.assertFalse(is_nonfruit(["edibles", "herbs-and-potted-vegetables"],
+                                     NURSERIES["engalls"]))
 
 
 class TestEngallsRegression(unittest.TestCase):
