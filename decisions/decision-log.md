@@ -16366,3 +16366,11 @@ a specific fruit category. The broad parents (`fruits-nuts`, `edibles`) do not c
 keeps three strawberries filed under vegetables + `berries-vines`, which a plain exclusion
 would have dropped, and still drops Native Thyme, a herb also tagged `fruits-nuts`. A dry
 run against the live store gave 926 → 834, exactly as predicted. Below the 2x count-swing alarm.
+
+**DEC-353 follow-up (same day):** on Benedict's "update clickhouse", `24.12-alpine` was
+re-pulled (backup taken, 13s down, 850,934 events before and after) and **the same image
+came back**: 24.12.6.70 is the line's last build, and Plausible's own v3.2.1 compose pins
+exactly this tag, so ClickHouse stays until Plausible moves its pin. That made the checker's
+"not re-pulled in 120 days" notice a weekly false alarm. It now compares the digest we pulled
+with the one the registry serves for the tag, so it fires only when a re-pull would change
+something. The first run under the new rule found one: `postgres:16-alpine` has a newer build.

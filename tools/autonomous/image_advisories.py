@@ -8,9 +8,10 @@ images are pinned by tag in compose files, so nothing ever looked at them.
 
 For each running container this reads the version actually running, reads the
 upstream repo's GitHub security advisories, and flags any advisory whose
-vulnerable range contains that version. It also notes images that have not been
-re-pulled in IMAGE_AGE_DAYS, and lists running images that are not in WATCHED,
-so a new container cannot escape the check by being new.
+vulnerable range contains that version. It also notes when the registry holds a
+newer build under the tag we run (a re-pull would change something), when an
+exact tag has a newer release, and lists running images that are not in
+WATCHED, so a new container cannot escape the check by being new.
 
 A feed that cannot be read, or a range that cannot be parsed, is reported as
 such, never as "no advisories" (DEC-317: a reading that looks the same either
@@ -33,7 +34,12 @@ from pathlib import Path
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", "/opt/dale/data"))
 STATUS_FILE = DATA_DIR / "image-advisories.json"
-IMAGE_AGE_DAYS = 120
+MANIFEST_ACCEPT = ", ".join([
+    "application/vnd.oci.image.index.v1+json",
+    "application/vnd.docker.distribution.manifest.list.v2+json",
+    "application/vnd.docker.distribution.manifest.v2+json",
+    "application/vnd.oci.image.manifest.v1+json",
+])
 
 # Image repository -> where its advisories are published, and how to read the
 # running version. "tag" trusts the image tag; a list is run inside the
@@ -101,6 +107,36 @@ def fetch_json(url):
         return json.loads(resp.read())
 
 
+def split_image(image):
+    """(registry host, repository, tag) for an image as `docker ps` prints it."""
+    name, tag = image, "latest"
+    if ":" in image.rsplit("/", 1)[-1]:
+        name, tag = image.rsplit(":", 1)
+    first = name.split("/", 1)[0]
+    if "/" in name and ("." in first or ":" in first):
+        return first, name.split("/", 1)[1], tag
+    return "registry-1.docker.io", name if "/" in name else f"library/{name}", tag
+
+
+def registry_digest(image):
+    """The digest the registry currently serves for this image's tag."""
+    registry, repo, tag = split_image(image)
+    token_urls = {
+        "registry-1.docker.io": "https://auth.docker.io/token?service=registry.docker.io"
+                                f"&scope=repository:{repo}:pull",
+        "ghcr.io": f"https://ghcr.io/token?scope=repository:{repo}:pull",
+    }
+    if registry not in token_urls:
+        raise ValueError(f"no anonymous token flow known for {registry}")
+    with urllib.request.urlopen(token_urls[registry], timeout=30) as resp:
+        token = json.loads(resp.read())["token"]
+    req = urllib.request.Request(
+        f"https://{registry}/v2/{repo}/manifests/{tag}", method="HEAD",
+        headers={"Authorization": f"Bearer {token}", "Accept": MANIFEST_ACCEPT})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return resp.headers["Docker-Content-Digest"]
+
+
 def run(cmd):
     return subprocess.run(cmd, capture_output=True, text=True, timeout=60, check=True).stdout
 
@@ -115,12 +151,16 @@ def running_containers(_run=run):
     return containers
 
 
-def image_created(image_id, _run=run):
-    out = _run(["docker", "image", "inspect", image_id, "--format", "{{.Created}}"]).strip()
-    return datetime.fromisoformat(out[:19]).replace(tzinfo=timezone.utc)
+def image_info(image_id, _run=run):
+    """(build time, the registry digests this image was pulled as)."""
+    out = _run(["docker", "image", "inspect", image_id,
+                "--format", "{{.Created}}\t{{json .RepoDigests}}"]).strip()
+    created, digests = out.split("\t", 1)
+    return (datetime.fromisoformat(created[:19]).replace(tzinfo=timezone.utc),
+            {d.rsplit("@", 1)[-1] for d in json.loads(digests) or []})
 
 
-def check(now=None, _run=run, _fetch=fetch_json):
+def check(now=None, _run=run, _fetch=fetch_json, _digest=registry_digest):
     """Return the status dict. Findings carry a severity: "affected" (a known
     advisory covers what is running), "error" (could not tell), "notice"."""
     now = now or datetime.now(timezone.utc)
@@ -143,9 +183,8 @@ def check(now=None, _run=run, _fetch=fetch_json):
         vtext = ".".join(map(str, version)) if version else "unknown"
         entry = {"container": c["name"], "image": c["image"], "version": vtext}
 
-        # A floating tag (16-alpine, 24.12-alpine) only moves when re-pulled, so
-        # its build date is how stale it is. An exact tag (v3.2.1) is as old as
-        # its release; the question there is whether a newer one exists.
+        # An exact tag (v3.2.1) asks whether a newer release exists: that is the
+        # warning Plausible's four and a half months on v3.2.0 never got.
         exact = re.fullmatch(r"v?\d+\.\d+\.\d+", tag) is not None
         if exact and watch["repo"] and version:
             try:
@@ -159,15 +198,21 @@ def check(now=None, _run=run, _fetch=fetch_json):
                 findings.append({"severity": "error", "container": c["name"],
                                  "detail": f"could not read the latest release of {watch['repo']}: {e}"})
 
+        # Any tag: would a re-pull change anything? Build age cannot say. The
+        # first version nagged about ClickHouse's 568-day-old image, but
+        # 24.12-alpine had simply had its last build; a re-pull (2026-10-01)
+        # returned the same digest. Comparing digests answers the real question.
         try:
-            age = (now - image_created(c["image_id"], _run)).days
-            entry["image_age_days"] = age
-            if age > IMAGE_AGE_DAYS and not exact:
+            created, local = image_info(c["image_id"], _run)
+            entry["image_age_days"] = (now - created).days
+            remote = _digest(c["image"])
+            if remote not in local:
                 findings.append({"severity": "notice", "container": c["name"],
-                                 "detail": f"{c['image']} was built {age} days ago and has not been re-pulled since"})
+                                 "detail": f"the registry has a newer build of {c['image']} than the "
+                                           f"one running ({remote[7:19]}); a re-pull would update it"})
         except Exception as e:  # noqa: BLE001
             findings.append({"severity": "error", "container": c["name"],
-                             "detail": f"could not read the image date: {e}"})
+                             "detail": f"could not compare {c['image']} with its registry: {e}"})
 
         if watch["repo"] and version:
             try:

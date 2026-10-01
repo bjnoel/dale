@@ -58,7 +58,8 @@ def fake_run(plausible_tag="v3.2.0", extra=(), built="2026-05-15T09:19:45Z",
         if cmd[:2] == ["docker", "inspect"]:
             return ids.get(cmd[-1], "sha256:other") + "\n"
         if cmd[:3] == ["docker", "image", "inspect"]:
-            return (built if cmd[3] != "sha256:c" else "2025-03-11T12:17:16Z") + "\n"
+            created = built if cmd[3] != "sha256:c" else "2025-03-11T12:17:16Z"
+            return f'{created}\t["repo@sha256:{cmd[3][-1]}-pulled"]\n'  # RepoDigests
         if cmd[:2] == ["docker", "exec"]:
             return clickhouse + "\n"
         raise AssertionError(cmd)
@@ -111,11 +112,28 @@ class InRange(unittest.TestCase):
         self.assertIsNone(ia.parse_version("latest"))
 
 
+class SplitImage(unittest.TestCase):
+    def test_the_three_naming_styles_we_run(self):
+        self.assertEqual(ia.split_image("postgres:16-alpine"),
+                         ("registry-1.docker.io", "library/postgres", "16-alpine"))
+        self.assertEqual(ia.split_image("clickhouse/clickhouse-server:24.12-alpine"),
+                         ("registry-1.docker.io", "clickhouse/clickhouse-server", "24.12-alpine"))
+        self.assertEqual(ia.split_image("ghcr.io/plausible/community-edition:v3.2.1"),
+                         ("ghcr.io", "plausible/community-edition", "v3.2.1"))
+        self.assertEqual(ia.split_image("redis"), ("registry-1.docker.io", "library/redis", "latest"))
+
+
 class Check(unittest.TestCase):
-    def run_check(self, **kw):
+    def run_check(self, newer_build_for=(), **kw):
         fetch = kw.pop("fetch", fake_fetch({"plausible/analytics": [STORYBOOK],
                                             "ClickHouse/ClickHouse": []}))
-        return ia.check(now=NOW, _run=fake_run(**kw), _fetch=fetch)
+
+        def digest(image):  # what the registry serves now
+            if isinstance(newer_build_for, Exception):
+                raise newer_build_for
+            tag_id = "c" if "clickhouse" in image else "p"
+            return f"sha256:{tag_id}-{'rebuilt' if any(n in image for n in newer_build_for) else 'pulled'}"
+        return ia.check(now=NOW, _run=fake_run(**kw), _fetch=fetch, _digest=digest)
 
     def test_the_version_we_were_running_is_flagged(self):
         affected = of(self.run_check(plausible_tag="v3.2.0"), "affected")
@@ -136,10 +154,21 @@ class Check(unittest.TestCase):
         status = self.run_check(extra=["cache-1\tredis:7"])
         self.assertTrue(any("redis:7" in f["detail"] for f in of(status, "notice")))
 
-    def test_an_old_image_is_a_notice(self):
-        notices = of(self.run_check(plausible_tag="v3.2.1"), "notice")
-        self.assertTrue(any("clickhouse" in f["detail"] and "re-pulled" in f["detail"]
-                            for f in notices), notices)
+    def test_an_old_image_with_nothing_newer_is_not_a_notice(self):
+        # 2026-10-01: clickhouse 24.12-alpine was built 568 days ago, and a re-pull
+        # returned the same digest. Age alone is not actionable.
+        status = self.run_check(plausible_tag="v3.2.1")
+        self.assertEqual(status["findings"], [])
+        self.assertGreater(status["containers"][1]["image_age_days"], 500)
+
+    def test_a_newer_build_under_the_same_tag_is_a_notice(self):
+        notices = of(self.run_check(plausible_tag="v3.2.1", newer_build_for=("clickhouse",)), "notice")
+        self.assertEqual(len(notices), 1)
+        self.assertIn("a re-pull would update it", notices[0]["detail"])
+
+    def test_an_unreachable_registry_is_an_error(self):
+        status = self.run_check(plausible_tag="v3.2.1", newer_build_for=OSError("timed out"))
+        self.assertTrue(any("could not compare" in f["detail"] for f in of(status, "error")))
 
     def test_clickhouse_patched_within_its_own_line_is_not_flagged(self):
         fetch = fake_fetch({"plausible/analytics": [], "ClickHouse/ClickHouse": [CLICKHOUSE_1385]})
@@ -170,7 +199,8 @@ class Check(unittest.TestCase):
 
     def test_subject_leads_with_the_worst_severity(self):
         self.assertTrue(ia.subject_for(self.run_check(plausible_tag="v3.2.0")).startswith("SECURITY"))
-        self.assertTrue(ia.subject_for(self.run_check(plausible_tag="v3.2.1")).startswith("Docker images:"))
+        notice_only = self.run_check(plausible_tag="v3.2.1", newer_build_for=("clickhouse",))
+        self.assertTrue(ia.subject_for(notice_only).startswith("Docker images: 1"))
 
 
 if __name__ == "__main__":
