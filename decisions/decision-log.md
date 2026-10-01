@@ -16374,3 +16374,5 @@ exactly this tag, so ClickHouse stays until Plausible moves its pin. That made t
 "not re-pulled in 120 days" notice a weekly false alarm. It now compares the digest we pulled
 with the one the registry serves for the tag, so it fires only when a re-pull would change
 something. The first run under the new rule found one: `postgres:16-alpine` has a newer build.
+Benedict said yes, and it was updated the same day: a rebuild of the same 16.15 (`pg_dumpall` taken, 7s down, users, sites,
+API keys and goals identical). The checker now reports nothing to act on for all three images.
