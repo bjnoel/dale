@@ -76,3 +76,4 @@
 # so the series survives about 10 days without a pull. A weekly job has 3 days of
 # slack and one missed run loses days permanently (DEC-332). Re-running is a no-op.
 50 22 * * * /usr/bin/python3 /opt/dale/repo/tools/autonomous/appstore_downloads.py >> /opt/dale/autonomous/logs/appstore_downloads.log 2>&1
+30 21 * * 0 /usr/bin/python3 /opt/dale/autonomous/image_advisories.py >> /opt/dale/autonomous/logs/image_advisories.log 2>&1
