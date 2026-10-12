@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{{ name }} · treestock report · {{ month_label }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+{# Pageview-only script on purpose: the outbound-links variant would count
+   this report's own links as treestock referral clicks to the nursery. #}
+<script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.js"></script>
+<style>
+:root{
+  --paper:#F7F8F5;
+  --card:#FFFFFF;
+  --ink:#14201D;
+  --ink-2:#3A4A45;
+  --muted:#697C76;
+  --line:#DBE2DD;
+  --line-strong:#C2CEC8;
+  --accent:#0E5C55;
+  --accent-2:#12776D;
+  --accent-wash:#E4EFEB;
+  --out:#A4402A;
+  --out-wash:#F6E6E1;
+  --in:#2E6B3B;
+  --in-wash:#E3EFE4;
+  --warn:#8A6412;
+  --warn-wash:#F5EDDC;
+  --shadow:0 1px 2px rgba(20,32,29,.05),0 8px 24px -16px rgba(20,32,29,.28);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#101614;
+    --card:#161F1C;
+    --ink:#E8EFEB;
+    --ink-2:#B6C5BF;
+    --muted:#84978F;
+    --line:#26332E;
+    --line-strong:#33443E;
+    --accent:#5FBFAF;
+    --accent-2:#7FD3C3;
+    --accent-wash:#16302C;
+    --out:#E08A70;
+    --out-wash:#33201A;
+    --in:#7FC08C;
+    --in-wash:#1B2E1F;
+    --warn:#D6AC5C;
+    --warn-wash:#2E2617;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101614;
+  --card:#161F1C;
+  --ink:#E8EFEB;
+  --ink-2:#B6C5BF;
+  --muted:#84978F;
+  --line:#26332E;
+  --line-strong:#33443E;
+  --accent:#5FBFAF;
+  --accent-2:#7FD3C3;
+  --accent-wash:#16302C;
+  --out:#E08A70;
+  --out-wash:#33201A;
+  --in:#7FC08C;
+  --in-wash:#1B2E1F;
+  --warn:#D6AC5C;
+  --warn-wash:#2E2617;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px 96px}
+.prose{max-width:720px}
+
+/* ---------- masthead ---------- */
+.masthead{
+  border-bottom:2px solid var(--ink);
+  padding:44px 0 22px;
+  margin-bottom:40px;
+}
+.brandrow{
+  display:flex;flex-wrap:wrap;gap:16px;
+  align-items:baseline;justify-content:space-between;
+  margin-bottom:28px;
+}
+.brand{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:13px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);
+}
+.issue{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);
+}
+.masthead h1{
+  font-family:Bitter,Georgia,serif;
+  font-weight:600;
+  font-size:clamp(30px,4.4vw,44px);
+  line-height:1.12;
+  letter-spacing:-.015em;
+  margin:0 0 10px;
+  text-wrap:balance;
+}
+.dek{
+  font-size:17px;color:var(--ink-2);margin:0;max-width:62ch;
+}
+.dek strong{color:var(--ink);font-weight:600}
+
+/* ---------- tier bands ---------- */
+.band{margin:0 0 56px}
+.bandhead{
+  display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  padding-bottom:12px;margin-bottom:26px;
+  border-bottom:1px solid var(--line-strong);
+}
+.tier{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 9px;border-radius:3px;
+  white-space:nowrap;
+}
+.tier.free{background:var(--in-wash);color:var(--in);border:1px solid currentColor}
+.tier.paid{background:var(--accent-wash);color:var(--accent);border:1px solid currentColor}
+.bandhead h2{
+  font-family:Bitter,Georgia,serif;
+  font-size:24px;font-weight:600;letter-spacing:-.01em;
+  margin:0;flex:1 1 240px;
+}
+.bandnote{
+  font-size:13px;color:var(--muted);
+  font-family:"IBM Plex Mono",monospace;
+  letter-spacing:.02em;
+}
+
+/* ---------- modules ---------- */
+.mod{margin:0 0 40px}
+.mod:last-child{margin-bottom:0}
+.mod h3{
+  font-family:Bitter,Georgia,serif;
+  font-size:19px;font-weight:600;margin:0 0 6px;letter-spacing:-.005em;
+}
+.mod > p{margin:0 0 18px;max-width:68ch;color:var(--ink-2)}
+.mod > p strong{color:var(--ink);font-weight:600}
+
+/* ---------- stat strip ---------- */
+.stats{
+  display:grid;gap:1px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:6px;overflow:hidden;
+  margin-bottom:26px;
+}
+.stat{background:var(--card);padding:18px 20px}
+.stat .k{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;
+}
+.stat .v{
+  font-family:Bitter,Georgia,serif;
+  font-size:30px;font-weight:600;line-height:1;
+  font-variant-numeric:tabular-nums;
+  color:var(--ink);
+}
+.stat .sub{font-size:13px;color:var(--muted);margin-top:6px}
+.stat .v.up{color:var(--accent)}
+
+/* ---------- bar chart ---------- */
+.chart{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:6px;padding:22px 24px;margin-bottom:26px;
+}
+.chart .ct{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:18px;
+}
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar{display:grid;grid-template-columns:76px 1fr 52px;align-items:center;gap:12px}
+.bar .lbl{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);
+}
+.bar .track{height:22px;background:var(--accent-wash);border-radius:3px;overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:3px}
+.bar .num{
+  font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;
+  text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);
+}
+
+/* ---------- tables ---------- */
+.tablewrap{
+  overflow-x:auto;background:var(--card);
+  border:1px solid var(--line);border-radius:6px;margin-bottom:14px;
+}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th,td{
+  text-align:left;padding:11px 16px;
+  border-bottom:1px solid var(--line);
+  font-size:14px;vertical-align:top;
+}
+thead th{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);background:var(--paper);
+  border-bottom:1px solid var(--line-strong);white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{
+  text-align:right;font-family:"IBM Plex Mono",monospace;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+td.item{font-weight:500;color:var(--ink)}
+.pill{
+  display:inline-block;font-family:"IBM Plex Mono",monospace;
+  font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 7px;border-radius:3px;white-space:nowrap;
+}
+.pill.out{background:var(--out-wash);color:var(--out)}
+.pill.instock{background:var(--in-wash);color:var(--in)}
+.pill.only{background:var(--warn-wash);color:var(--warn)}
+.cap{font-size:13px;color:var(--muted);margin:0 0 26px;max-width:68ch}
+
+/* ---------- callout ---------- */
+.callout{
+  border-left:3px solid var(--accent);
+  background:var(--accent-wash);
+  padding:16px 20px;border-radius:0 5px 5px 0;
+  margin:0 0 26px;font-size:14.5px;color:var(--ink-2);
+  max-width:68ch;
+}
+.callout strong{color:var(--ink);font-weight:600}
+
+/* ---------- offer ---------- */
+.offer{
+  background:var(--card);border:1px solid var(--line-strong);
+  border-radius:8px;padding:30px 32px;box-shadow:var(--shadow);
+  margin-top:8px;
+}
+.offer h2{
+  font-family:Bitter,Georgia,serif;font-size:22px;font-weight:600;
+  margin:0 0 16px;
+}
+.offer ul{margin:0 0 20px;padding-left:20px}
+.offer li{margin-bottom:10px;color:var(--ink-2);max-width:64ch}
+.offer li strong{color:var(--ink);font-weight:600}
+.guarantee{
+  border-top:1px solid var(--line);padding-top:18px;margin-top:4px;
+  font-size:14px;color:var(--ink-2);
+}
+.guarantee .g{
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
+  display:block;margin-bottom:8px;
+}
+
+.foot{
+  margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+  color:var(--muted);letter-spacing:.03em;
+}
+@media (max-width:560px){
+  .bar{grid-template-columns:62px 1fr 44px}
+  .offer,.notes{padding:22px 20px}
+}
+code{font-family:"IBM Plex Mono",monospace;font-size:.92em;background:var(--card);padding:1px 5px;border-radius:3px}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+{% macro money(p) %}{% if p %}${{ "%.2f"|format(p) }}{% else %}POA{% endif %}{% endmacro %}
+{% macro nowpill(now) %}{% if now is none %}<span class="pill only">Delisted</span>{% elif now %}<span class="pill instock">In stock</span>{% else %}<span class="pill out">Sold out</span>{% endif %}{% endmacro %}
+{% macro pct(x) %}{{ "%.0f"|format(x * 100) }}%{% endmacro %}
+<div class="wrap">
+
+<header class="masthead">
+  <div class="brandrow">
+    <span class="brand">treestock.com.au</span>
+    <span class="issue">Nursery report · {{ month_label }}</span>
+  </div>
+  <h1>{{ name }}</h1>
+  <p class="dek">What treestock sent you in {{ month_name }}, and what our dataset says about the stock behind it.{% if contact %} Prepared for {{ contact }}.{% endif %} Built {{ generated }}.</p>
+</header>
+
+<section class="band">
+  <div class="bandhead">
+    <span class="tier free">Free, always</span>
+    <h2>Traffic we sent you</h2>
+    <span class="bandnote">yours, no strings</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">{{ month_name }} clicks</div><div class="v">{{ this.clicks }}</div><div class="sub">to {{ domain }}</div></div>
+    <div class="stat"><div class="k">Month on month</div><div class="v up">{% if prev.clicks %}{{ "%+.0f"|format((this.clicks - prev.clicks) / prev.clicks * 100) }}%{% else %}new{% endif %}</div><div class="sub">{{ prev.clicks }} in {{ prev.label }}</div></div>
+    <div class="stat"><div class="k">Share of all outbound</div><div class="v">{{ "%.1f"|format(share * 100) }}%</div><div class="sub">{{ rank }}{{ {1:"st",2:"nd",3:"rd"}.get(rank, "th") }} of {{ n_nurseries }} nurseries</div></div>
+    <div class="stat"><div class="k">Tagged for you</div><div class="v">{{ pct(tagged_share) }}</div><div class="sub">carry utm_source=treestock</div></div>
+  </div>
+
+  <div class="chart">
+    <div class="ct">Clicks to your store, by month</div>
+    <div class="bars">
+{% for m in monthly %}
+      <div class="bar"><span class="lbl">{{ m.label }}</span><span class="track"><span class="fill" style="width:{{ "%.1f"|format(m.clicks / max_monthly * 100) }}%"></span></span><span class="num">{{ m.clicks }}</span></div>
+{% endfor %}
+    </div>
+  </div>
+
+  <div class="callout"><strong>You can check this yourself.</strong> Every link we send you carries <code>utm_source=treestock</code>, so filtering your Shopify sessions on it should show close to the same {{ this.clicks }}. In August only about half our links carried the tag, which is why your 90-day report then came in lower than our count. Since late August all of them do.</div>
+
+  <div class="mod">
+    <h3>Where the clicks came from</h3>
+    <p>By the visitor's state. {% if regions.unshippable %}<strong>{{ regions.unshippable }} clicks ({{ pct(regions.unshippable / this.clicks) }}) came from {{ no_ship|join(", ") }}</strong>, where you don't ship, so they can't turn into orders today.{% endif %}</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>State</th><th class="num">Clicks</th><th class="num">Share</th><th>You ship there</th></tr></thead>
+      <tbody>
+{% for r in regions.rows %}
+        <tr><td class="item">{{ r.state }}</td><td class="num">{{ r.clicks }}</td><td class="num">{{ pct(r.clicks / this.clicks) }}</td><td>{% if r.ships %}<span class="pill instock">Yes</span>{% else %}<span class="pill out">No</span>{% endif %}</td></tr>
+{% endfor %}
+{% if regions.elsewhere %}
+        <tr><td class="item">Overseas or unknown</td><td class="num">{{ regions.elsewhere }}</td><td class="num">{{ pct(regions.elsewhere / this.clicks) }}</td><td></td></tr>
+{% endif %}
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="mod">
+    <h3>Your most clicked lines in {{ month_name }}</h3>
+    <p>{{ cls.product }} of the {{ this.clicks }} clicks went to a specific product page. The rest went to your homepage and collections.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Product</th><th class="num">Price</th><th class="num">Clicks</th><th>Now</th></tr></thead>
+      <tbody>
+{% for r in top_clicked %}
+        <tr><td class="item">{{ r.title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.clicks }}</td><td>{{ nowpill(r.now) }}</td></tr>
+{% endfor %}
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="bandhead">
+    <span class="tier paid">Partnership</span>
+    <h2>What our dataset says</h2>
+    <span class="bandnote">{{ n_nurseries }} nurseries, daily stock history since March</span>
+  </div>
+
+  <div class="mod">
+    <h3>1. Sold out when they arrived</h3>
+    <p>We read your stock every day, so each click can be checked against whether that product was actually available on the day it happened. <strong>{{ cls.sold_out }} of {{ cls.product }} product clicks ({{ pct(cls.sold_out / cls.product) }}) landed on something sold out</strong>, across {{ lost_products }} products.</p>
+{% if baseline %}
+    <div class="callout">On an average {{ month_name }} day, <strong>{{ pct(baseline) }} of your listed products were sold out.</strong> Traffic sent at random would hit a sold-out page about that often. Ours hit one {{ pct(cls.sold_out / cls.product) }} of the time, because treestock sorts in-stock lines first. The ones below are where it still happened.</div>
+{% endif %}
+    <div class="tablewrap"><table>
+      <thead><tr><th>Product</th><th class="num">Price</th><th class="num">Clicks</th><th class="num">Days sold out in {{ month_name }}</th><th>Now</th></tr></thead>
+      <tbody>
+{% for r in lost[:12] %}
+        <tr><td class="item">{{ r.title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.clicks }}</td><td class="num">{{ r.days_out }} of {{ n_days }}</td><td>{{ nowpill(r.now) }}</td></tr>
+{% endfor %}
+      </tbody>
+    </table></div>
+{% if lost|length > 12 %}<p class="cap">Top 12 of {{ lost|length }}. The other {{ lost|length - 12 }} had one click each.</p>{% endif %}
+  </div>
+
+{% if restricted %}
+  <div class="mod">
+    <h3>2. Queensland-only lines</h3>
+    <p>{{ cls.restricted }} clicks went to lines you only sell inside Queensland. <strong>{{ regions.restricted_home }} came from Queensland and {{ regions.restricted_away }} from other states.</strong>{% if regions.restricted_away > regions.restricted_home %} Most of the interest in these lines is from people who can't buy them.{% endif %}{% if cls.restricted - regions.restricted_home - regions.restricted_away > 0 %} The other {{ cls.restricted - regions.restricted_home - regions.restricted_away }} had no location.{% endif %}</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Product</th><th class="num">Price</th><th class="num">From QLD</th><th class="num">Elsewhere</th></tr></thead>
+      <tbody>
+{% for r in restricted[:10] %}
+        <tr><td class="item">{{ r.title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.home }}</td><td class="num">{{ r.away }}</td></tr>
+{% endfor %}
+      </tbody>
+    </table></div>
+{% if restricted|length > 10 %}<p class="cap">Top 10 of {{ restricted|length }} Queensland-only lines that were clicked.</p>{% endif %}
+  </div>
+{% endif %}
+
+  <div class="mod">
+    <h3>3. What people are waiting for</h3>
+    <p>{{ n_watchers }} people have asked treestock to email them when a particular variety comes back in stock. <strong>{{ n_watching_yours }} of them are watching at least one of {{ n_varieties_yours }} varieties you list.</strong> The most-watched variety on the whole site is {{ top_watched.title }}, with {{ top_watched.n }}{% if top_watched.yours %}, and you list it{% endif %}.</p>
+
+{% if only_you %}
+    <h3 style="font-size:16px;margin-top:22px">You're the only one with it in stock</h3>
+    <p class="cap">Varieties people are watching where your listing is the only one in stock across the {{ n_nurseries }} nurseries we track.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Variety</th><th class="num">Waiting</th><th class="num">Your price</th><th>Also listed by (sold out)</th></tr></thead>
+      <tbody>
+{% for w in only_you %}
+        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}</td><td class="num">{% for p in w.mine_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td>{% if w.other_names %}{{ w.other_names|join(", ") }}{% else %}Nobody else lists it{% endif %}</td></tr>
+{% endfor %}
+      </tbody>
+    </table></div>
+{% endif %}
+
+{% set nob = nobody|selectattr("waiting", "ge", 2)|list %}
+{% if nob %}
+    <h3 style="font-size:16px;margin-top:22px">Sold out everywhere</h3>
+    <p class="cap">Varieties you list with two or more people waiting, where no nursery we track has stock right now.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Variety</th><th class="num">Waiting</th><th class="num">Your price</th><th>Who else lists it</th></tr></thead>
+      <tbody>
+{% for w in nob %}
+        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}</td><td class="num">{% for p in w.mine_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td>{% if w.other_names %}{{ w.other_names|join(", ") }}, all sold out{% else %}<strong>Only you</strong>{% endif %}</td></tr>
+{% endfor %}
+      </tbody>
+    </table></div>
+{% endif %}
+    <p class="cap">Counts are national. Only {{ n_state_known }} of the {{ n_watchers }} have told us which state they're in{% if n_dropped %}, and we've removed the {{ n_dropped }} of those in states you don't ship to{% endif %}. The rest are counted, so some will be in {{ no_ship|join(", ") }}. Most varieties have one or two people waiting, so read these as "nobody can buy this right now" rather than as big numbers.</p>
+  </div>
+</section>
+
+<section class="offer">
+  <h2>What it costs</h2>
+  <ul>
+    <li><strong>The traffic section is free every month</strong>, whatever else happens. It's your traffic and your data.</li>
+    <li><strong>The rest comes with a referral arrangement.</strong> Install GoAffPro on Shopify (its free plan has no monthly fee) and add treestock as an affiliate at 5%. You only pay when a click turns into a completed order.</li>
+    <li><strong>Nothing else changes.</strong> No feed to maintain, no listing fee, no contract. Uninstall the app to stop.</li>
+  </ul>
+  <div class="guarantee">
+    <span class="g">The part that matters</span>
+    Search results and ordering on treestock never take commission into account. Sorting is on price and stock alone, and no nursery can pay to rank higher, to be listed or to stay listed. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
+  </div>
+</section>
+
+<p class="foot">Sources: treestock outbound clicks (Plausible), {{ monthly[0].label }} to {{ month_label }} · your stock read daily at about 8am WA time, so a product that sold out and came back within a day may be misjudged · variety alerts as at {{ generated }} · {{ n_nurseries }} nursery catalogues, latest snapshot each.</p>
+</div>
+</body>
+</html>

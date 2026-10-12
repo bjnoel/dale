@@ -161,7 +161,7 @@ _NOISE_RES = [
         r'\bsemi[\s-]?dwarf\b',                        # before bare dwarf, or it leaves "Semi-"
         r'\bdwarf\b',
         r'\b\d+\s*mm\b',
-        r'(?<=\s)\d+\s*(?:l|lt|ltr|litre|liter)\b',    # trailing volume only (space before)
+        r'(?<=\s)\d+(?:\.\d+)?\s*(?:l|lt|ltr|litre|liter)\b',  # trailing volume only (space before); 2.4l whole, not just 4l
     )
 ]
 
@@ -506,10 +506,10 @@ _CLEAN_WORD_RES = [
 # dwarf are the shared _TYPE_LABELS regexes.
 _CLEAN_SIZEFORM_RES = [_RE_SUPER_DWARF, _RE_SEMI_DWARF, _RE_SUPER, _RE_SEMI, _RE_DWARF]
 
-# Volume / pot tokens stripped anywhere. Litres ("2L", "45Ltr") and pot
+# Volume / pot tokens stripped anywhere. Litres ("2L", "45Ltr", "2.4l") and pot
 # dimensions in mm/cm/ml ("90mm", "20 cm", "100/130mm", "140ml"). Verified NOT
 # to match "2way" or "R2E2" (no word boundary before the digits there).
-_CLEAN_VOLUME_RE = re.compile(r'\b\d+\s*(?:l|lt|ltr|litre|liter)\b', re.I)
+_CLEAN_VOLUME_RE = re.compile(r'\b\d+(?:\.\d+)?\s*(?:l|lt|ltr|litre|liter)\b', re.I)
 _CLEAN_POTMM_RE = re.compile(r'\b\d+(?:\s*/\s*\d+)*\s*(?:mm|cm|ml)\b', re.I)
 
 # A cleaned variety made of nothing but these is not a real cultivar -> reject.

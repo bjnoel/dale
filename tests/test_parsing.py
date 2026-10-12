@@ -195,6 +195,26 @@ class ProductVarietySlug(unittest.TestCase):
             {cp.product_variety_slug(t) for t in feijoa}, {"feijoa-mammoth"}
         )
 
+    def test_decimal_litre_pot_does_not_fragment(self):
+        # 2026-10-12: "2.4l" stripped only the "4l", so the "2." survived into
+        # the variety and the 2.4L pot got its own "-2" page. Three people
+        # watching Shiranui Dekupon were never alerted that Ross Creek's 2.4L
+        # pot was in stock, because it lived on mandarin-shiranui-dekupon-2.
+        cases = [
+            ("Mandarin- Shiranui Dekupon 2.4l (Qld only)", "mandarin-shiranui-dekupon"),
+            ("Finger lime Rainforest pearl 2.4l QLD ONLY", "finger-lime-rainforest-pearl"),
+            ("Macadamia - Pinkalicious 2.5l", "macadamia-pinkalicious"),
+            ("Avocado Hass 1.5L", "avocado-hass"),
+        ]
+        for title, expected in cases:
+            with self.subTest(title=title):
+                self.assertEqual(bvp.slug_for_title(title), expected)
+        # The whole-litre sibling must land on the same page.
+        self.assertEqual(
+            bvp.slug_for_title("Mandarin- Shiranui Dekupon 5l (Qld only)"),
+            bvp.slug_for_title("Mandarin- Shiranui Dekupon 2.4l (Qld only)"),
+        )
+
 
 # ---------------------------------------------------------------------------
 # Alert-fallback titles (2026-06-11). ~10% of OOS "Alerts" links sitewide fell
