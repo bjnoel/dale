@@ -370,6 +370,7 @@ def build(key: str, month: str) -> dict:
             "waiting": len(set(ok)), "kind": classify_variety(mine, others),
             "mine_in": any(l["available"] for l in mine),
             "mine_prices": sorted({l["price"] for l in mine if l["price"]}),
+            "mine_in_prices": sorted({l["price"] for l in mine if l["price"] and l["available"]}),
             "mine_restricted": all(RESTRICTED_RE.search(l["title"]) for l in mine),
             "others_n": len({l["nursery"] for l in others}),
             "others_in": len({l["nursery"] for l in others if l["available"]}),

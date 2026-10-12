@@ -122,7 +122,7 @@ class TemplateRenders(unittest.TestCase):
     def test_renders_and_escapes(self):
         row = {"title": "Fig & Olive <b>", "url": "https://x", "price": 49.9,
                "clicks": 3, "now": False, "days_out": 30, "home": 1, "away": 2}
-        w = {"title": "Blueberry - OB1", "waiting": 6, "mine_prices": [49.9],
+        w = {"title": "Blueberry - OB1", "waiting": 6, "mine_prices": [49.9], "mine_in_prices": [49.9],
              "mine_restricted": False, "other_names": ["Ladybird Nursery"]}
         html = render(
             "partner_report.html.j2",

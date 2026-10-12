@@ -325,7 +325,7 @@ a{color:var(--accent)}
 
   <div class="mod">
     <h3>Where the clicks came from</h3>
-    <p>By the visitor's state. {% if regions.unshippable %}<strong>{{ regions.unshippable }} clicks ({{ pct(regions.unshippable / this.clicks) }}) came from {{ no_ship|join(", ") }}</strong>, where you don't ship, so they can't turn into orders today.{% endif %}</p>
+    <p>By the visitor's state. {% if regions.unshippable %}<strong>{{ regions.unshippable }} clicks ({{ pct(regions.unshippable / this.clicks) }}) came from {{ regions.rows|rejectattr("ships")|map(attribute="state")|join(" and ") }}</strong>, where you don't ship, so they can't turn into orders today.{% endif %}</p>
     <div class="tablewrap"><table>
       <thead><tr><th>State</th><th class="num">Clicks</th><th class="num">Share</th><th>You ship there</th></tr></thead>
       <tbody>
@@ -364,7 +364,7 @@ a{color:var(--accent)}
     <h3>1. Sold out when they arrived</h3>
     <p>We read your stock every day, so each click can be checked against whether that product was actually available on the day it happened. <strong>{{ cls.sold_out }} of {{ cls.product }} product clicks ({{ pct(cls.sold_out / cls.product) }}) landed on something sold out</strong>, across {{ lost_products }} products.</p>
 {% if baseline %}
-    <div class="callout">On an average {{ month_name }} day, <strong>{{ pct(baseline) }} of your listed products were sold out.</strong> Traffic sent at random would hit a sold-out page about that often. Ours hit one {{ pct(cls.sold_out / cls.product) }} of the time, because treestock sorts in-stock lines first. The ones below are where it still happened.</div>
+    <div class="callout">On an average {{ month_name }} day, <strong>{{ pct(baseline) }} of your listed products were sold out.</strong> Traffic sent at random would hit a sold-out page about that often. Ours hit a sold-out page {{ pct(cls.sold_out / cls.product) }} of the time, because treestock lists in-stock lines first. The ones below are where it still happened.</div>
 {% endif %}
     <div class="tablewrap"><table>
       <thead><tr><th>Product</th><th class="num">Price</th><th class="num">Clicks</th><th class="num">Days sold out in {{ month_name }}</th><th>Now</th></tr></thead>
@@ -401,10 +401,10 @@ a{color:var(--accent)}
     <h3 style="font-size:16px;margin-top:22px">You're the only one with it in stock</h3>
     <p class="cap">Varieties people are watching where your listing is the only one in stock across the {{ n_nurseries }} nurseries we track.</p>
     <div class="tablewrap"><table>
-      <thead><tr><th>Variety</th><th class="num">Waiting</th><th class="num">Your price</th><th>Also listed by (sold out)</th></tr></thead>
+      <thead><tr><th>Variety</th><th class="num">Waiting</th><th class="num">Your price, in stock</th><th>Also listed by (sold out)</th></tr></thead>
       <tbody>
 {% for w in only_you %}
-        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}</td><td class="num">{% for p in w.mine_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td>{% if w.other_names %}{{ w.other_names|join(", ") }}{% else %}Nobody else lists it{% endif %}</td></tr>
+        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}</td><td class="num">{% for p in w.mine_in_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td>{% if w.other_names %}{{ w.other_names|join(", ") }}{% else %}Nobody else lists it{% endif %}</td></tr>
 {% endfor %}
       </tbody>
     </table></div>
@@ -418,12 +418,12 @@ a{color:var(--accent)}
       <thead><tr><th>Variety</th><th class="num">Waiting</th><th class="num">Your price</th><th>Who else lists it</th></tr></thead>
       <tbody>
 {% for w in nob %}
-        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}</td><td class="num">{% for p in w.mine_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td>{% if w.other_names %}{{ w.other_names|join(", ") }}, all sold out{% else %}<strong>Only you</strong>{% endif %}</td></tr>
+        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}</td><td class="num">{% for p in w.mine_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td>{% if w.other_names %}{{ w.other_names|join(", ") }}, all sold out{% else %}Nobody else lists it{% endif %}</td></tr>
 {% endfor %}
       </tbody>
     </table></div>
 {% endif %}
-    <p class="cap">Counts are national. Only {{ n_state_known }} of the {{ n_watchers }} have told us which state they're in{% if n_dropped %}, and we've removed the {{ n_dropped }} of those in states you don't ship to{% endif %}. The rest are counted, so some will be in {{ no_ship|join(", ") }}. Most varieties have one or two people waiting, so read these as "nobody can buy this right now" rather than as big numbers.</p>
+    <p class="cap">Counts are national. Only {{ n_state_known }} of the {{ n_watchers }} have told us which state they're in{% if n_dropped %}, and we've removed the {{ n_dropped }} of those in states you don't ship to{% endif %}. The rest are counted, so some will be in {{ no_ship[:-1]|join(", ") }} or {{ no_ship[-1] }}. Most varieties have one or two people waiting, so read these as "nobody can buy this right now" rather than as big numbers.</p>
   </div>
 </section>
 
@@ -436,7 +436,7 @@ a{color:var(--accent)}
   </ul>
   <div class="guarantee">
     <span class="g">The part that matters</span>
-    Search results and ordering on treestock never take commission into account. Sorting is on price and stock alone, and no nursery can pay to rank higher, to be listed or to stay listed. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
+    Search results and ordering on treestock never take commission into account. Results are ordered by search match, stock and price, and no nursery can pay to rank higher, to be listed or to stay listed. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
   </div>
 </section>
 
