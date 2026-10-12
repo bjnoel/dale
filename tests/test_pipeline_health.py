@@ -53,6 +53,7 @@ class PipelineHealthTest(unittest.TestCase):
         # were written to test. The DAL-295 cases below override it.
         self.write_dataset()
         self.write_image_check()
+        self.write_curation()
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -75,6 +76,14 @@ class PipelineHealthTest(unittest.TestCase):
         p.write_text(json.dumps({
             "checked_at": (NOW - timedelta(days=days_ago)).isoformat(timespec="seconds"),
             "containers": [], "findings": list(findings)}))
+
+    def write_curation(self, days_ago=0, fails=0, since=None, queued=0):
+        """promote-curation.sh's status file. Ran last night, clean, by default."""
+        p = self.data / "promote-curation.json"
+        p.write_text(json.dumps({
+            "ran_at": (NOW - timedelta(days=days_ago)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "exit": 1 if fails else 0, "queued": queued,
+            "consecutive_failures": fails, "failing_since": since}))
 
     def write_index(self, age_hours):
         p = self.dashboard / "index.html"
@@ -312,6 +321,7 @@ class ImageAdvisoryInDigestTest(unittest.TestCase):
     write_health = PipelineHealthTest.write_health
     write_dataset = PipelineHealthTest.write_dataset
     write_image_check = PipelineHealthTest.write_image_check
+    write_curation = PipelineHealthTest.write_curation
     write_index = PipelineHealthTest.write_index
     check = PipelineHealthTest.check
 
@@ -348,4 +358,42 @@ class ImageAdvisoryInDigestTest(unittest.TestCase):
         self.write_image_check(findings=[{
             "severity": "notice", "container": "x", "detail": "image is old"}])
         self.assertTrue(self.check()["ok"])
+
+
+class CurationPromotionInDigestTest(unittest.TestCase):
+    """The nightly fold promotion reports through the digest. From 2026-08-20 it
+    failed 53 nights running and nothing said so."""
+
+    write_curation = PipelineHealthTest.write_curation
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.data = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def status(self):
+        return digest.get_curation_promotion_status(str(self.data), NOW)
+
+    def test_clean_run_is_silent(self):
+        self.write_curation()
+        self.assertEqual(self.status(), [])
+
+    def test_one_failed_night_is_tolerated(self):
+        self.write_curation(fails=1, since="2026-08-12T23:30:01Z", queued=5)
+        self.assertEqual(self.status(), [])
+
+    def test_two_failed_nights_is_a_stuck_queue(self):
+        self.write_curation(fails=53, since="2026-08-20T23:30:01Z", queued=138)
+        [msg] = self.status()
+        self.assertIn("53 nights running (since 2026-08-20)", msg)
+        self.assertIn("138 still queued", msg)
+
+    def test_a_job_that_stopped_running_is_reported(self):
+        self.write_curation(days_ago=5)
+        self.assertIn("last ran 5 days ago", self.status()[0])
+
+    def test_missing_file_is_not_silence(self):
+        self.assertIn("no readable result", self.status()[0])
 

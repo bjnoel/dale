@@ -20,7 +20,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from golden_runner import run_builder, EXPECTED_DIR
+from golden_runner import run_builder, EXPECTED_DIR, FIXTURE_OVERRIDES, SCRAPERS
 
 UPDATE = os.environ.get("GOLDEN_UPDATE") == "1"
 
@@ -235,6 +235,38 @@ def _make_test(case):
 
 for _case in GOLDEN_CASES:
     setattr(GoldenTest, f"test_{_case['name']}", _make_test(_case))
+
+
+class GoldensIgnoreLiveCuration(unittest.TestCase):
+    """The goldens render against a frozen curation file, not the live one.
+
+    From 2026-08-20 a queued fold of lychee-kwai-may-pink (a listing in the
+    fixture) changed golden output, promote_curation.py read that as a broken
+    suite and reverted, and 138 folds sat unapplied for 53 nights.
+    """
+
+    def _slug(self, overrides_path):
+        import subprocess
+        code = ("from build_variety_pages import slug_for_title;"
+                "print(slug_for_title('Lychee Kwai May Pink'))")
+        env = dict(os.environ, TREESTOCK_VARIETY_OVERRIDES=str(overrides_path))
+        out = subprocess.run([sys.executable, "-c", code], cwd=str(SCRAPERS), env=env,
+                             capture_output=True, text=True, check=True)
+        return out.stdout.strip().splitlines()[-1]
+
+    def test_fixture_copy_exists(self):
+        self.assertTrue(FIXTURE_OVERRIDES.exists())
+
+    def test_env_var_decides_which_curation_file_is_read(self):
+        import json
+        import tempfile
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump({"deny": [], "alias": {"lychee-kwai-may-pink": "lychee-kwai-mai-pink"}}, f)
+        try:
+            self.assertEqual(self._slug(f.name), "lychee-kwai-mai-pink")
+        finally:
+            os.unlink(f.name)
+        self.assertEqual(self._slug(FIXTURE_OVERRIDES), "lychee-kwai-may-pink")
 
 
 if __name__ == "__main__":

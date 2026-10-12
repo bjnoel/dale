@@ -13,6 +13,7 @@ needs a passing test before being committed.
 from __future__ import annotations
 
 import json
+import os
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -954,7 +955,14 @@ def _synonym_extra(text: str, canonical: str) -> str:
     )
 
 
-VARIETY_OVERRIDES_FILE = Path(__file__).parent / "variety_overrides.json"
+# TREESTOCK_VARIETY_OVERRIDES exists for the golden tests, which must render the
+# frozen fixture against a frozen curation file. Reading the live one coupled
+# them to every fold Benedict queues: from 2026-08-20 one fold
+# (lychee-kwai-may-pink, present in the fixture) failed the goldens every night,
+# promote_curation.py reverted, and 138 queued folds never landed for 53 days.
+VARIETY_OVERRIDES_FILE = Path(
+    os.environ.get("TREESTOCK_VARIETY_OVERRIDES")
+    or Path(__file__).parent / "variety_overrides.json")
 _OVERRIDES_CACHE: dict | None = None
 
 

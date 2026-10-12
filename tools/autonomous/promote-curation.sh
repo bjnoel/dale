@@ -36,6 +36,40 @@ OUT="$(python3 tools/scrapers/promote_curation.py --data-dir "$DATA" \
         --execute --push 2>&1)"
 CODE=$?
 
+# Every run, including "nothing queued", records its outcome for the daily
+# digest. The old alarm was rows sitting in "Queued for tonight" on the review
+# page, which only works if someone goes back to that page: from 2026-08-20 the
+# suite failed every night and 138 folds sat unapplied for 53 nights with nobody
+# told. daily-digest.py reads this file (get_curation_promotion_status).
+write_status() {
+    python3 - "$DATA/promote-curation.json" "$CODE" "$STAMP" "$DATA/variety-decisions.json" <<'PY'
+import json, sys
+path, code, stamp, decisions = sys.argv[1], int(sys.argv[2]), sys.argv[3], sys.argv[4]
+try:
+    prev = json.load(open(path))
+except (OSError, ValueError):
+    prev = {}
+try:
+    queued = len(json.load(open(decisions)).get("curation_pending") or [])
+except (OSError, ValueError):
+    queued = None
+failing = code != 0
+status = {
+    "ran_at": stamp,
+    "exit": code,
+    "queued": queued,
+    "consecutive_failures": (prev.get("consecutive_failures", 0) + 1) if failing else 0,
+    "failing_since": (prev.get("failing_since") or stamp) if failing else None,
+}
+tmp = path + ".tmp"
+with open(tmp, "w") as f:
+    json.dump(status, f, indent=1)
+import os
+os.replace(tmp, path)
+PY
+}
+write_status
+
 # Silence when there is nothing to do, which is most nights. A log that says
 # "nothing queued" 364 times is a log nobody reads on the night it matters.
 if [ "$CODE" -eq 0 ] && printf '%s' "$OUT" | grep -q '^Nothing queued\.'; then

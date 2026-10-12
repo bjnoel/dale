@@ -529,6 +529,45 @@ def get_dataset_freshness(dashboard_dir=DASHBOARD_DIR, today=None):
     return {"problems": problems, "generated": data["generated"]}
 
 
+CURATION_FAILURE_NIGHTS = 2
+CURATION_STALE_DAYS = 2
+
+
+def get_curation_promotion_status(data_dir, now=None):
+    """Problems from the nightly variety-fold promotion (promote-curation.sh).
+
+    Benedict's folds on /admin/varieties/review only queue; promote_curation.py
+    applies them at 23:30 UTC and reverts if the suite fails. From 2026-08-20
+    it failed every night (the goldens read the live curation file) and 138
+    folds sat unapplied for 53 nights, because the only alarm was rows staying
+    "Queued for tonight" on a page nobody had reason to revisit.
+
+    One failed night is tolerated: the queue retries, and a fold queued during
+    a transient red suite should not page anyone. Two in a row is a stuck queue.
+    """
+    now = now or datetime.now(timezone.utc)
+    path = os.path.join(data_dir, "promote-curation.json")
+    try:
+        with open(path) as f:
+            status = json.load(f)
+        ran = datetime.fromisoformat(status["ran_at"].replace("Z", "+00:00"))
+    except (OSError, ValueError, KeyError) as e:
+        return [f"Variety fold promotion has no readable result ({e})."]
+    problems = []
+    age = (now - ran).days
+    if age > CURATION_STALE_DAYS:
+        problems.append(f"Variety fold promotion last ran {age} days ago.")
+    fails = status.get("consecutive_failures") or 0
+    if fails >= CURATION_FAILURE_NIGHTS:
+        since = (status.get("failing_since") or "")[:10]
+        queued = status.get("queued")
+        problems.append(
+            f"Variety folds failed to apply {fails} nights running (since {since}); "
+            f"{queued if queued is not None else 'unknown number of'} still queued. "
+            "See /opt/dale/autonomous/logs/promote-curation.log.")
+    return problems
+
+
 def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
     """Is the treestock publishing pipeline actually alive?
 
@@ -630,6 +669,10 @@ def get_pipeline_health(data_dir, dashboard_dir=DASHBOARD_DIR, now=None):
     health["problems"].extend(sec_problems)
     if sec_critical and not health["headline"]:
         health["headline"] = "security advisory affects a running service"
+
+    # Not critical: a stuck fold queue leaves duplicate variety pages up, it does
+    # not take the site down.
+    health["problems"].extend(get_curation_promotion_status(data_dir, now))
 
     # Critical items are problems too; they just also escape into the subject.
     health["problems"] = health["critical"] + health["problems"]

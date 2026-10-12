@@ -27,6 +27,11 @@ SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 GOLDEN_DIR = Path(__file__).resolve().parent / "golden"
 FIXTURE_DATA = GOLDEN_DIR / "fixture" / "nursery-stock"
 FIXTURE_LEDGER = GOLDEN_DIR / "fixture" / "page-ledger" / "variety.json"
+# A frozen copy of variety_overrides.json. The goldens test builder CODE; the
+# live curation file is DATA that Benedict changes from the admin UI, and a fold
+# touching a fixture listing must not read as a regression (see cultivar_parsing).
+# Copy the live file over this only when deliberately re-baselining the goldens.
+FIXTURE_OVERRIDES = GOLDEN_DIR / "fixture" / "variety_overrides.json"
 EXPECTED_DIR = GOLDEN_DIR / "expected"
 FIXTURE_DAY = "2026-03-05"  # scraped_at of every fixture snapshot
 
@@ -81,7 +86,8 @@ def run_builder(script: str, arg_template: list[str], output_globs: list[str]) -
     # Pin "today" for stocklib.snapshots to the fixture's scrape day. Without it
     # every fixture nursery reads as dormant three days after 2026-03-05 and its
     # stock is withdrawn, so the goldens would change with the calendar.
-    env = dict(os.environ, TREESTOCK_TODAY=FIXTURE_DAY)
+    env = dict(os.environ, TREESTOCK_TODAY=FIXTURE_DAY,
+               TREESTOCK_VARIETY_OVERRIDES=str(FIXTURE_OVERRIDES))
     proc = subprocess.run(
         [sys.executable, str(SCRAPERS / script), *args],
         capture_output=True, text=True, cwd=str(SCRAPERS), env=env,
