@@ -146,6 +146,13 @@ class TemplateRenders(unittest.TestCase):
         self.assertNotIn("outbound-links", html,
                          "the report's own links must not count as referral clicks")
         self.assertNotIn("—", html, "no em dashes in copy")
+        # Only states that actually sent clicks are named as unshippable.
+        self.assertIn("came from WA</strong>", html)
+        self.assertIn("WA, TAS or NT", html)
+        # The fill is a span: without display:block its width is ignored and
+        # every bar draws as an empty track (shipped that way 2026-10-12).
+        self.assertIn(".bar .fill{display:block;", html)
+        self.assertNotIn("Sources:", html)
 
 
 if __name__ == "__main__":

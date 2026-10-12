@@ -198,7 +198,7 @@ body{
   font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);
 }
 .bar .track{height:22px;background:var(--accent-wash);border-radius:3px;overflow:hidden}
-.bar .fill{height:100%;background:var(--accent);border-radius:3px}
+.bar .fill{display:block;height:100%;background:var(--accent);border-radius:3px}
 .bar .num{
   font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;
   text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);
@@ -423,7 +423,7 @@ a{color:var(--accent)}
       </tbody>
     </table></div>
 {% endif %}
-    <p class="cap">Counts are national. Only {{ n_state_known }} of the {{ n_watchers }} have told us which state they're in{% if n_dropped %}, and we've removed the {{ n_dropped }} of those in states you don't ship to{% endif %}. The rest are counted, so some will be in {{ no_ship[:-1]|join(", ") }} or {{ no_ship[-1] }}. Most varieties have one or two people waiting, so read these as "nobody can buy this right now" rather than as big numbers.</p>
+    <p class="cap">These counts are national. Most people haven't told us which state they're in, so some of them will be in {{ no_ship[:-1]|join(", ") }} or {{ no_ship[-1] }}, where you don't ship. Most varieties only have one or two people waiting, so the useful part is that nobody can buy them right now, not the size of the number.</p>
   </div>
 </section>
 
@@ -440,7 +440,6 @@ a{color:var(--accent)}
   </div>
 </section>
 
-<p class="foot">Sources: treestock outbound clicks (Plausible), {{ monthly[0].label }} to {{ month_label }} · your stock read daily at about 8am WA time, so a product that sold out and came back within a day may be misjudged · variety alerts as at {{ generated }} · {{ n_nurseries }} nursery catalogues, latest snapshot each.</p>
 </div>
 </body>
 </html>
