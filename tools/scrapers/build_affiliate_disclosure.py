@@ -55,31 +55,27 @@ def build_body() -> str:
     <h1 class="text-2xl font-bold text-gray-800 mb-4">Affiliate disclosure</h1>
 
     <p class="text-gray-700 mb-4">
-      treestock.com.au tracks stock and prices across {total} Australian nurseries.
-      {'One of them pays' if one else f'{count} of them pay'} us a commission when
-      someone we send {'them' if one else 'to them'} buys something. Everything below
-      is what that does and does not mean.
+      treestock tracks stock and prices across {total} Australian nurseries.
+      {'One of them pays' if one else f'{count} of them pay'} us a small commission
+      when someone clicks through from here and buys something. Here's how that works.
     </p>
 
     <h2 class="text-lg font-semibold text-gray-800 mt-6 mb-2">
-      Search results are never affected
+      It doesn't change the search results
     </h2>
     <p class="text-gray-700 mb-4">
-      This is the important one. Results are ordered on price, stock and how well
-      they match what you searched for. Commission is not an input, and no nursery
-      can pay to rank higher, to be listed, or to stay listed. The prices shown are
-      the nursery's own list prices, collected daily, the same way for every nursery
-      whether they pay us or not.
+      Results are sorted by price, stock and how well they match your search.
+      Commission isn't part of that. No nursery can pay to rank higher, get listed,
+      or stay listed. Prices come straight from each nursery's website and are
+      checked every day, the same way for all of them.
     </p>
     <p class="text-gray-700 mb-4">
-      There are no ads on this site, no sponsored rows and no paid placement. We
-      have turned those down before, and the reason is self-interested as much as
-      ethical: the only thing this site is worth anything for is being accurate
-      about who has what and for how much.
+      There are no ads, sponsored listings or paid placements either. If nurseries
+      could pay to move up the list, the list would be useless.
     </p>
 
     <h2 class="text-lg font-semibold text-gray-800 mt-6 mb-2">
-      {'The nursery' if one else 'The nurseries'} we earn from
+      Who pays us
     </h2>
     <div class="overflow-x-auto">
       <table class="w-full text-sm mb-4">
@@ -97,35 +93,33 @@ def build_body() -> str:
       </table>
     </div>
     <p class="text-gray-700 mb-4">
-      Links to {'this nursery' if one else 'these nurseries'} carry a
-      <code class="text-xs bg-gray-100 px-1 py-0.5 rounded">ref</code> parameter so
-      they can tell the sale came from here. Links to the other
-      {total - count} nurseries carry no such parameter and earn us nothing. Every
-      outbound link also carries a
-      <code class="text-xs bg-gray-100 px-1 py-0.5 rounded">utm_source=treestock</code>
-      tag, which is not a commission arrangement: it just lets a nursery see in
-      their own analytics how much traffic we send them.
+      Links to {'this nursery' if one else 'these nurseries'} include
+      <code class="text-xs bg-gray-100 px-1 py-0.5 rounded">ref=treestock</code>,
+      which is how {'it knows' if one else 'they know'} an order came through us.
+      We don't earn anything from the other {total - count}.
     </p>
     <p class="text-gray-700 mb-4">
-      You never pay more because of it. The commission comes out of the nursery's
-      margin, not off your price, and the price you see here is the price they
-      charge everyone.
+      You'll also see
+      <code class="text-xs bg-gray-100 px-1 py-0.5 rounded">utm_source=treestock</code>
+      on every nursery link. That one has nothing to do with commission. It just
+      shows up in the nursery's own website stats, so they can see how many visitors
+      we send them.
+    </p>
+    <p class="text-gray-700 mb-4">
+      None of this costs you anything. You pay exactly what you'd pay going to the
+      nursery's website directly.
     </p>
 
-    <h2 class="text-lg font-semibold text-gray-800 mt-6 mb-2">Why we do it at all</h2>
+    <h2 class="text-lg font-semibold text-gray-800 mt-6 mb-2">Why bother</h2>
     <p class="text-gray-700 mb-4">
-      Running this site costs money (a server, a domain, and the time to keep 27
-      scrapers working). It has been funded out of pocket since March 2026.
-      Referral commission is the least intrusive way we found to cover that:
-      nothing on the page changes, nobody's results move, and it only pays when
-      someone actually buys a tree they were already looking for.
-    </p>
-    <p class="text-gray-700 mb-4">
-      If that ever stops being true, this page changes first.
+      treestock costs money to run: a server, a domain, and a lot of time fixing
+      scrapers whenever a nursery changes its website. It's been self-funded since it
+      started in March 2026. A referral commission covers a bit of that without
+      putting ads in front of you.
     </p>
 
     <p class="text-gray-600 text-sm mt-8">
-      Questions about any of this, email
+      Questions? Email
       <a href="mailto:ben@treestock.com.au" class="underline">ben@treestock.com.au</a>.
     </p>
   </div>"""
