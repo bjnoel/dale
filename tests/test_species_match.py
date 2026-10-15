@@ -533,5 +533,241 @@ class RegistryBatchTest(unittest.TestCase):
         self.assertEqual(len(slugs), len(set(slugs)))
 
 
+
+# --- 2026-10-15: wrong botanical names on treestock ----------------------
+#
+# Benedict found cherimoyas labelled Annona reticulata, "Burdekin plum, Aussie
+# native" and "Illawarra Plum Pine (Podocarpus elatus)" labelled Prunus
+# domestica. Run over all 14,920 live titles the matcher had three faults, one
+# class each below. Every title here is a live title from that day.
+
+_REGISTRY = json.loads((REPO_ROOT / "tools" / "scrapers" / "fruit_species.json").read_text())
+
+
+class LeadingPunctuationTest(unittest.TestCase):
+    """A comma or colon after the species name rode along on the last word
+    ("plum," is not a key), so the leading match failed and the any-position
+    fallback found "plum" instead of the Burdekin Plum record."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.lookup = load_species_lookup()
+
+    def test_burdekin_plum_with_a_comma_is_burdekin_plum(self):
+        m = match_species("Burdekin plum, Aussie native", self.lookup)
+        self.assertEqual((m["cn"], m["ln"]), ("Burdekin Plum", "Pleiogynium timorense"))
+
+    def test_titles_that_matched_nothing_now_match(self):
+        for title, cn in (("Kaffir Lime: QLD ONLY", "Lime"),
+                          ("Raspberry, Heritage", "Raspberry"),
+                          ("Tamarind, Sweet", "Tamarind"),
+                          ("Coffee, Arabica", "Coffee"),
+                          ("Pummelo/Pomelo – Pink", "Pomelo"),
+                          ("Peach/Nectarine Multi Graft – SweetSensation/RubySensation", "Peach")):
+            with self.subTest(title=title):
+                self.assertEqual(match_species(title, self.lookup)["cn"], cn)
+
+    def test_cultivar_after_the_comma(self):
+        self.assertEqual(match_species("Raspberry, Heritage", self.lookup)["cv"], "Heritage")
+
+
+class NotTheFruitTest(unittest.TestCase):
+    """Other plants whose names contain a fruit word were filed as that fruit."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.lookup = load_species_lookup()
+
+    def _cn(self, title):
+        m = match_species(title, self.lookup)
+        return m["cn"] if m else None
+
+    def test_other_plants_match_nothing(self):
+        for title in ("Illawarra Plum", "Jambolan Plum", "Natal Plum - Desert Star",
+                      "Governors Plum - Select", "Tropical - Hog Plum aka Ambarella",
+                      "Fiddle Leaf Fig", "Sacred Fig", "Mock Orange",
+                      "Tropical - Lemon Drop Mangosteen", "Lemon Aspen Plant",
+                      "Sea Grape", "Fraser Island Apple", "Star Gooseberry (Large)",
+                      "Malabar Chestnut", "Cape Gooseberry", "Native Tamarind",
+                      "Canary Island Strawberry Tree", "American Paw Paw Plant",
+                      "Blueberry Ash - Prima Donna", "Cedar Bay Cherry"):
+            with self.subTest(title=title):
+                # "Illawarra Plum" now has its own record; the rest have none.
+                self.assertIn(self._cn(title), (None, "Illawarra Plum"))
+        self.assertEqual(self._cn("Illawarra Plum"), "Illawarra Plum")
+        self.assertIsNone(self._cn("Jambolan Plum"))
+
+    def test_fruit_word_as_a_colour_on_another_plant(self):
+        for title in ("Grevillea - Orange Marmalade", "Sage - Pineapple",
+                      "Turmeric - Orange", "Apple Cactus - Orange",
+                      "Azalea indica Orange Chimes"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+
+    def test_masking_lets_the_real_species_through(self):
+        # The masked phrase hides only its own fruit word.
+        self.assertEqual(self._cn("Cherry Guava Red  50mm pots"), "Guava")
+        self.assertEqual(self._cn("Brazilian Custard Apple"), "Rollinia")
+        self.assertEqual(self._cn("Brazilian grape tree (Jabuticaba) O/S"), "Jaboticaba")
+
+    def test_controls_still_match(self):
+        for title, cn in (("Narrabeen Plum (Bare-Rooted)", "Plum"),
+                          ("Black Genoa Fig", "Fig"),
+                          ("Cox's Orange Pippin Apple (medium)", "Orange"),
+                          ("Strawberry - Red Flowering", "Strawberry"),
+                          ("Plum - Santa Rosa", "Plum")):
+            with self.subTest(title=title):
+                # Cox's Orange Pippin is a known miss the fallback has always
+                # made ("orange" comes first); pinned so a change is deliberate.
+                self.assertEqual(self._cn(title), cn)
+
+    def test_no_registry_name_is_masked(self):
+        """A phrase that is also a registry name would mask its own match."""
+        from stocklib.species_match import _NOT_THE_FRUIT_RE, _NOT_FRUIT_WORDS
+        import re as _re
+        for r in _REGISTRY:
+            names = [r["common_name"], *r.get("synonyms", []), *r.get("match_synonyms", [])]
+            for name in names:
+                with self.subTest(name=name):
+                    self.assertIsNone(_NOT_THE_FRUIT_RE.search(name.lower()))
+                    self.assertFalse(set(_re.findall(r"[a-z]+", name.lower())) & _NOT_FRUIT_WORDS)
+
+
+class TitleBinomialTest(unittest.TestCase):
+    """The nursery's own bracketed botanical name overrules a fruit word."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.lookup = load_species_lookup()
+
+    def _cn(self, title):
+        m = match_species(title, self.lookup)
+        return m["cn"] if m else None
+
+    def test_title_genus(self):
+        from stocklib.species_match import title_genus
+        cases = {
+            "Mock Orange (Murraya paniculata) - Large": "Murraya",
+            "Hibiscus Orange Pride (Hibiscus rosa-sinensis)": "Hibiscus",
+            "Lilly Pilly Minor (Acmena smithii)": "Acmena",
+            "Star apple Weeping (Grafted) (Chrysophyllum cainito)": "Chrysophyllum",
+            # brackets that are not botanical names
+            "Anzac peach trees (Bare rooted)": None,
+            "Navelina Orange (QLD Only)": None,
+            "Nam Doc mai Mango (tropical trees)": None,
+            "Feijoa Unique (New variety)": None,
+            "Fragaria species (Fragaria species)": None,
+            "Pepino": None,
+        }
+        for title, genus in cases.items():
+            with self.subTest(title=title):
+                self.assertEqual(title_genus(title), genus)
+
+    def test_a_contradicting_genus_drops_the_match(self):
+        for title in ("Australian Beach Cherry (Eugenia reinwardtiana)",
+                      "Lemon-scented Gum (Corymbia citriodora)",
+                      "Oakhurst Pineapple Lily (Eucomis comosa)",
+                      "Chinese Quince (Pseudocydonia sinensis)",
+                      "Guava 'Chilean' (Ugni molinae)",
+                      "Box Elder Sensation Maple (Acer negundo)"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+
+    def test_old_genus_names_and_same_genus_relatives_keep_their_match(self):
+        for title, cn in (("Lilly Pilly Slim Jim (Acmena smithii)", "Lilly Pilly"),
+                          ("Weeping Lilly Pilly 'Amaroo' (Waterhousia floribunda)", "Lilly Pilly"),
+                          ("Feijoa Mammoth (Feijoa sellowiana)", "Feijoa"),
+                          ("Jaboticaba Sabara (Myrciaria cauliflora)", "Jaboticaba"),
+                          ("Finger Lime Red (Citrus australasica)", "Finger Lime"),
+                          ("Black Walnut (Juglans nigra)", "Walnut"),
+                          ("Illawarra Plum Pine (Podocarpus elatus)", "Illawarra Plum")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), cn)
+
+    def test_fig_is_one_species(self):
+        for title in ("'Midnight Petite' Fig (Ficus benjamina)",
+                      "Fig Hillii (Ficus microcarpa)"):
+            with self.subTest(title=title):
+                self.assertIsNone(self._cn(title))
+        self.assertEqual(self._cn("Fig Black Genoa (Ficus carica)"), "Fig")
+        self.assertEqual(self._cn("Tucker bush Sandpaper Fig (Ficus coronata)"), "Sandpaper Fig")
+
+    def test_latin_disagrees(self):
+        from stocklib.species_match import latin_disagrees
+        self.assertEqual(latin_disagrees("Black Walnut (Juglans nigra)", "Juglans regia"),
+                         "Juglans nigra")
+        self.assertIsNone(latin_disagrees("Walnut (Juglans regia)", "Juglans regia"))
+        self.assertIsNone(latin_disagrees("Lilly Pilly (Acmena smithii)", "Syzygium spp."))
+        self.assertIsNone(latin_disagrees("Plum (Prunus domestica)", "Prunus salicina / domestica"))
+        self.assertIsNone(latin_disagrees("Atemoya (Annona atemoya)", "Annona \u00d7 atemoya"))
+        self.assertIsNone(latin_disagrees("Mango - R2E2", "Mangifera indica"))
+
+    def test_full_record_lookup_vetoes_too(self):
+        """match_title over full records (the species-page builders) agrees."""
+        lookup = build_species_lookup()
+        self.assertIsNone(match_title("Mock Orange (Murraya paniculata)", lookup))
+        self.assertEqual(match_title("Feijoa Mammoth (Feijoa sellowiana)", lookup)["slug"], "feijoa")
+
+
+class SynonymLatinTest(unittest.TestCase):
+    """One record, several species: the synonym that matched names the species."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.lookup = load_species_lookup()
+
+    def _latin(self, title):
+        m = match_species(title, self.lookup)
+        return m.get("pln") or m["ln"]
+
+    def test_cherimoya_is_not_annona_reticulata(self):
+        m = match_species("Cherimoya - Sofia", self.lookup)
+        self.assertEqual(m["cn"], "Custard Apple")
+        self.assertEqual(m["pln"], "Annona cherimola")
+        self.assertEqual(m["ln"], "Annona × atemoya")  # the record, for per-species tables
+        self.assertEqual(m["cv"], "Sofia")  # was lost: the title has no "Custard Apple"
+
+    def test_lumped_records(self):
+        cases = {
+            "Custard Apple - Geffner": "Annona × atemoya",
+            "Bullock's Heart - Pink": "Annona reticulata",
+            "Plum - Santa Rosa": "Prunus salicina / domestica",
+            "Japanese Plum Satsuma": "Prunus salicina",
+            "Angelina Burdett European Plum": "Prunus domestica",
+            "Tahitian Lime: QLD ONLY": "Citrus × latifolia",
+            "Lilly Pilly - Resilience": "Syzygium spp.",
+        }
+        for title, latin in cases.items():
+            with self.subTest(title=title):
+                self.assertEqual(self._latin(title), latin)
+
+    def test_override_keys_are_this_records_names_in_this_genus(self):
+        from stocklib.species_match import _same_genus
+        for r in _REGISTRY:
+            names = {n.lower() for n in [*r.get("synonyms", []), *r.get("match_synonyms", [])]}
+            for syn, latin in (r.get("synonym_latin") or {}).items():
+                with self.subTest(record=r["common_name"], synonym=syn):
+                    self.assertIn(syn.lower(), names)
+                    self.assertTrue(_same_genus(latin.split()[0], r["latin_name"].split()[0]))
+
+    def test_pluot_cultivar_follows_the_common_name(self):
+        m = match_species("Pluot Plum - Black Adder", self.lookup)
+        self.assertEqual((m["cv"], m["pln"]), ("Black Adder", "Prunus salicina × armeniaca"))
+
+
+class VarietySlugsUnchangedTest(unittest.TestCase):
+    """match_synonyms exist so a species-bucket fix cannot move a /variety/
+    URL. On 2026-10-15 plum-jambolan carried a live watch, and cherry-guava-red
+    was a 196-day-old page."""
+
+    def test_variety_slugs(self):
+        from cultivar_parsing import product_variety_slug
+        for title, slug in (("Cherry Guava Red  50mm pots", "cherry-guava-red"),
+                            ("Rollinia - Brazilian Custard Apple", "rollinia-brazilian-custard-apple"),
+                            ("Jambolan Plum", "plum-jambolan")):
+            with self.subTest(title=title):
+                self.assertEqual(product_variety_slug(title), slug)
+
+
 if __name__ == "__main__":
     unittest.main()

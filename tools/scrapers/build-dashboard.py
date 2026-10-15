@@ -22,6 +22,7 @@ from stocklib.classify import (CATEGORY_KEYWORDS, TRUE_JUNK, is_seed_packet,
                                 matches_keyword)
 from stocklib.taxonomy import enabled_species, load_species
 from stocklib.species_match import load_species_lookup, match_species
+from stocklib.variety_descriptions import variety_latin
 from stocklib.category_ui import category_keys, CATEGORY_BADGE_CSS
 from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.utm import affiliate
@@ -65,9 +66,10 @@ def _all_records_category_matcher():
     record's category."""
     lookup: dict[str, dict] = {}
     for s in load_species():
-        entry = {"cn": s["common_name"], "category": s.get("category", "fruit")}
+        entry = {"cn": s["common_name"], "ln": s["latin_name"],
+                 "category": s.get("category", "fruit")}
         lookup[s["common_name"].lower()] = entry
-        for syn in s.get("synonyms", []):
+        for syn in [*s.get("synonyms", []), *s.get("match_synonyms", [])]:
             if syn:
                 lookup[syn.lower()] = entry
 
@@ -75,6 +77,19 @@ def _all_records_category_matcher():
         m = match_species(title, lookup)
         return m["category"] if m else None
     return matcher
+
+
+def latin_mismatches(products: list[dict], limit: int = 50) -> dict:
+    """Products whose title carries a botanical name that disagrees with the
+    latin name we print beside it ("ln"), for the /admin report."""
+    from stocklib.species_match import latin_disagrees
+    rows = []
+    for p in products:
+        says = latin_disagrees(p.get("t", ""), p.get("ln", ""))
+        if says:
+            rows.append({"t": p["t"], "nk": p.get("nk", ""), "ln": p["ln"], "says": says})
+    rows.sort(key=lambda r: (r["ln"], r["says"], r["nk"], r["t"]))
+    return {"count": len(rows), "examples": rows[:limit]}
 
 
 def write_needs_review(products: list[dict], out_path: Path) -> None:
@@ -86,6 +101,7 @@ def write_needs_review(products: list[dict], out_path: Path) -> None:
         ((p["t"], p.get("nk", ""), p.get("cat", "")) for p in products),
         categorizer,
     )
+    report["latin_mismatches"] = latin_mismatches(products)
     report["generated_at"] = datetime.now(timezone.utc).isoformat()
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -595,7 +611,14 @@ def load_nursery_data(data_dir: Path, today: str | None = None) -> list[dict]:
 
             if species:
                 matched_count += 1
-                product_data["ln"] = species.get("ln", "")  # latin name
+                # Latin name, most specific source first: the variety's own
+                # blurb ("Green Gage ... (Prunus domestica)"), then the synonym
+                # that matched ("Cherimoya" on the Custard Apple record), then
+                # the record. Plum is two species and the title cannot say
+                # which, so a plum with no blurb shows both.
+                product_data["ln"] = (
+                    (variety_latin(_vs, species.get("sl", ""), species.get("g", "")) if _vs else "")
+                    or species.get("pln") or species.get("ln", ""))
                 product_data["sl"] = species.get("sl", "")  # slug (for species pages)
                 if "g" in species:
                     product_data["g"] = species["g"]  # genus
@@ -706,7 +729,8 @@ def load_nursery_data(data_dir: Path, today: str | None = None) -> list[dict]:
             species_summary[sl]["prices"].append(p["p"])
     # Resolve common names from the species lookup by SLUG. The slug is unique
     # per record (enforced by the taxonomy schema test); the latin name is NOT
-    # -- Riberry and Lilly Pilly both carry Syzygium luehmannii -- so keying cn
+    # -- Riberry and Lilly Pilly both carried Syzygium luehmannii until
+    # 2026-10, and the next lumped pair will repeat it -- so keying cn
     # resolution on the latin name mislabelled one of them (surfaced at the
     # DAL-197 bush tucker enable).
     sl_to_cn: dict[str, str] = {}

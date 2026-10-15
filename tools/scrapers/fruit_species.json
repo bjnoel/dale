@@ -33,7 +33,8 @@
       "Dwarf Fig",
       "Ficus carica"
     ],
-    "description": "Fig (Ficus carica) is one of the most reliable fruiting trees for southern Australian gardens. The common fig thrives in a Mediterranean climate: cool to cold winters and hot, dry summers. It suits Perth, Adelaide, coastal Victoria, inland NSW, and the ACT well. Figs will also grow in subtropical QLD but may fruit less reliably.\n\nFigs are deciduous, losing their leaves in winter. This dormant period is when bare-root trees are planted and shipped. Trees are drought-tolerant once established and require minimal maintenance. They fruit on the previous year's wood, so avoid heavy winter pruning. Figs are self-fertile and do not require the fig wasp for the varieties sold in Australia.\n\nCommon varieties available include Brown Turkey (reliable, mid-season), Preston Prolific (large crops, good for WA), Black Genoa (rich, jam-suitable fruit), White Adriatic (sweet, fresh eating), and Osborn's Prolific. Heritage Fruit Trees (VIC) stocks a wide range of named heritage varieties.\n\nFigs are widely available from Australian nurseries, with the best selection in late autumn and winter (the dormant bare-root season, roughly May to August)."
+    "description": "Fig (Ficus carica) is one of the most reliable fruiting trees for southern Australian gardens. The common fig thrives in a Mediterranean climate: cool to cold winters and hot, dry summers. It suits Perth, Adelaide, coastal Victoria, inland NSW, and the ACT well. Figs will also grow in subtropical QLD but may fruit less reliably.\n\nFigs are deciduous, losing their leaves in winter. This dormant period is when bare-root trees are planted and shipped. Trees are drought-tolerant once established and require minimal maintenance. They fruit on the previous year's wood, so avoid heavy winter pruning. Figs are self-fertile and do not require the fig wasp for the varieties sold in Australia.\n\nCommon varieties available include Brown Turkey (reliable, mid-season), Preston Prolific (large crops, good for WA), Black Genoa (rich, jam-suitable fruit), White Adriatic (sweet, fresh eating), and Osborn's Prolific. Heritage Fruit Trees (VIC) stocks a wide range of named heritage varieties.\n\nFigs are widely available from Australian nurseries, with the best selection in late autumn and winter (the dormant bare-root season, roughly May to August).",
+    "epithet_strict": true
   },
   {
     "common_name": "Lychee",
@@ -60,7 +61,11 @@
       "Satsuma",
       "Mandarin Satsuma"
     ],
-    "description": "Mandarins are among the easiest citrus to grow in Australian home gardens and the most popular for fresh eating. They ripen earlier than oranges, providing fruit from late autumn through winter. They suit a wide range of climates, from subtropical Queensland to cool temperate Victoria.\n\nMandarins thrive in full sun with regular watering and citrus fertiliser. Trees are generally smaller and more manageable than oranges. Most are self-fertile. Grafted trees fruit within 2-3 years. Satsuma varieties are the most cold-tolerant and suit southern climates well.\n\nVarieties available include Imperial (classic, juicy, mid-season), Satsuma (cold-tolerant, early season, very sweet), Emperor (large fruit, good flavour, popular in QLD), Hickson (consistent performer, late season), Page (cross between mandarin and grapefruit, excellent flavour), and Ellendale (large, peels easily).\n\nMandarins are stocked by most nurseries and available year-round. They are one of the most commonly grown backyard fruit trees in Australia."
+    "description": "Mandarins are among the easiest citrus to grow in Australian home gardens and the most popular for fresh eating. They ripen earlier than oranges, providing fruit from late autumn through winter. They suit a wide range of climates, from subtropical Queensland to cool temperate Victoria.\n\nMandarins thrive in full sun with regular watering and citrus fertiliser. Trees are generally smaller and more manageable than oranges. Most are self-fertile. Grafted trees fruit within 2-3 years. Satsuma varieties are the most cold-tolerant and suit southern climates well.\n\nVarieties available include Imperial (classic, juicy, mid-season), Satsuma (cold-tolerant, early season, very sweet), Emperor (large fruit, good flavour, popular in QLD), Hickson (consistent performer, late season), Page (cross between mandarin and grapefruit, excellent flavour), and Ellendale (large, peels easily).\n\nMandarins are stocked by most nurseries and available year-round. They are one of the most commonly grown backyard fruit trees in Australia.",
+    "synonym_latin": {
+      "Satsuma": "Citrus unshiu",
+      "Mandarin Satsuma": "Citrus unshiu"
+    }
   },
   {
     "common_name": "Orange",
@@ -84,7 +89,10 @@
       "Dwarf Lemon",
       "Meyer Lemon"
     ],
-    "description": "Lemon is the most versatile and widely grown citrus in Australian home gardens. Both Lisbon and Eureka lemons are reliably productive across most of Australia, producing fruit year-round in subtropical climates and mainly in winter in temperate regions. Meyer lemon, a hybrid with a sweeter, thinner skin, is popular for smaller gardens and pot growing.\n\nLemons need full sun and well-drained soil. Regular fertilising with citrus food and consistent watering during fruit development gives the best results. Most lemons are grafted onto rootstock for disease resistance and improved performance. Grafted trees typically fruit within 2-3 years of planting.\n\nCommon varieties available include Eureka (seedless, thin-skinned, year-round fruiter), Lisbon (hardier, slightly more acidic), and Meyer (compact, sweet, tolerates cooler conditions). Dwarf and semi-dwarf versions are available for pots or small gardens.\n\nLemons are among the most widely stocked fruit trees in Australia, available from the majority of nurseries year-round."
+    "description": "Lemon is the most versatile and widely grown citrus in Australian home gardens. Both Lisbon and Eureka lemons are reliably productive across most of Australia, producing fruit year-round in subtropical climates and mainly in winter in temperate regions. Meyer lemon, a hybrid with a sweeter, thinner skin, is popular for smaller gardens and pot growing.\n\nLemons need full sun and well-drained soil. Regular fertilising with citrus food and consistent watering during fruit development gives the best results. Most lemons are grafted onto rootstock for disease resistance and improved performance. Grafted trees typically fruit within 2-3 years of planting.\n\nCommon varieties available include Eureka (seedless, thin-skinned, year-round fruiter), Lisbon (hardier, slightly more acidic), and Meyer (compact, sweet, tolerates cooler conditions). Dwarf and semi-dwarf versions are available for pots or small gardens.\n\nLemons are among the most widely stocked fruit trees in Australia, available from the majority of nurseries year-round.",
+    "synonym_latin": {
+      "Meyer Lemon": "Citrus × meyeri"
+    }
   },
   {
     "common_name": "Lime",
@@ -97,7 +105,12 @@
       "Dwarf Lime",
       "Makrut Lime"
     ],
-    "description": "Lime is an essential citrus for tropical and subtropical Australian gardens, with tahitian lime being the most widely grown. Unlike lemons, most limes prefer warmth and do not suit cold climates well. Tahitian lime (also called Persian lime) is the standard supermarket lime and the most reliable home garden choice.\n\nTahitian lime produces large, seedless fruit year-round in warm climates. Kaffir lime (makrut lime) is grown for its aromatic leaves used in Southeast Asian cooking rather than its fruit. Australian finger lime is a native species producing small, caviar-like citrus. All prefer full sun and well-drained soil with regular fertilising.\n\nVarieties tracked include Tahitian Lime, Kaffir Lime (Makrut), Sweet Lime, and various dwarf forms. Finger lime (a native Australian species) is treated separately. Kaffir lime leaves are in high demand from home cooks.\n\nTahitian lime is available from most nurseries year-round. Kaffir lime is less common and sells out quickly."
+    "description": "Lime is an essential citrus for tropical and subtropical Australian gardens, with tahitian lime being the most widely grown. Unlike lemons, most limes prefer warmth and do not suit cold climates well. Tahitian lime (also called Persian lime) is the standard supermarket lime and the most reliable home garden choice.\n\nTahitian lime produces large, seedless fruit year-round in warm climates. Kaffir lime (makrut lime) is grown for its aromatic leaves used in Southeast Asian cooking rather than its fruit. Australian finger lime is a native species producing small, caviar-like citrus. All prefer full sun and well-drained soil with regular fertilising.\n\nVarieties tracked include Tahitian Lime, Kaffir Lime (Makrut), Sweet Lime, and various dwarf forms. Finger lime (a native Australian species) is treated separately. Kaffir lime leaves are in high demand from home cooks.\n\nTahitian lime is available from most nurseries year-round. Kaffir lime is less common and sells out quickly.",
+    "synonym_latin": {
+      "Tahitian Lime": "Citrus × latifolia",
+      "Kaffir Lime": "Citrus hystrix",
+      "Makrut Lime": "Citrus hystrix"
+    }
   },
   {
     "common_name": "Finger Lime",
@@ -147,11 +160,15 @@
       "Nashi Pear",
       "Asian Pear"
     ],
-    "description": "Pears are a classic temperate fruit tree requiring meaningful winter chill (600-900 hours for most European varieties) and a long, warm growing season to ripen fully. Tracked varieties include Beurre Bosc (semi-dwarf form, classic russet-brown pear with buttery, aromatic flesh), Nijiseiki/20th Century Nashi (a popular Japanese nashi with crisp, apple-like texture and sweet, juicy flesh), Beurre Hardy (a heritage European variety with rich, perfumed flesh, cold-hardy and reliable), and William (also known as Williams Bon Chretien, the most widely grown pear in Australia, excellent for fresh eating and bottling). European pears are best in cool climates: Adelaide Hills, Yarra Valley, Orange NSW, Stanthorpe, and the WA south coast. Nashi pears tolerate a slightly wider range and produce well in the Swan Valley and Perth Hills. Most European pears require cross-pollination; plant at least two compatible varieties. Nashi varieties are partially self-fertile. Plant in full sun in deep, free-draining, slightly acidic soil. Water during fruit development and mulch well to retain moisture. Fire blight is a bacterial disease that can devastate pear plantings in humid conditions; choose resistant varieties and sterilise pruning tools between cuts. In WA, pears are grown commercially in the south and in home gardens throughout the south-west."
+    "description": "Pears are a classic temperate fruit tree requiring meaningful winter chill (600-900 hours for most European varieties) and a long, warm growing season to ripen fully. Tracked varieties include Beurre Bosc (semi-dwarf form, classic russet-brown pear with buttery, aromatic flesh), Nijiseiki/20th Century Nashi (a popular Japanese nashi with crisp, apple-like texture and sweet, juicy flesh), Beurre Hardy (a heritage European variety with rich, perfumed flesh, cold-hardy and reliable), and William (also known as Williams Bon Chretien, the most widely grown pear in Australia, excellent for fresh eating and bottling). European pears are best in cool climates: Adelaide Hills, Yarra Valley, Orange NSW, Stanthorpe, and the WA south coast. Nashi pears tolerate a slightly wider range and produce well in the Swan Valley and Perth Hills. Most European pears require cross-pollination; plant at least two compatible varieties. Nashi varieties are partially self-fertile. Plant in full sun in deep, free-draining, slightly acidic soil. Water during fruit development and mulch well to retain moisture. Fire blight is a bacterial disease that can devastate pear plantings in humid conditions; choose resistant varieties and sterilise pruning tools between cuts. In WA, pears are grown commercially in the south and in home gardens throughout the south-west.",
+    "synonym_latin": {
+      "Nashi Pear": "Pyrus pyrifolia",
+      "Asian Pear": "Pyrus pyrifolia"
+    }
   },
   {
     "common_name": "Plum",
-    "latin_name": "Prunus domestica",
+    "latin_name": "Prunus salicina / domestica",
     "slug": "plum",
     "region": "Europe/Asia",
     "synonyms": [
@@ -159,9 +176,17 @@
       "Blood Plum",
       "Dwarf Plum",
       "Plumcot",
-      "Pluot"
+      "Pluot",
+      "European Plum"
     ],
-    "description": "Plums are versatile stone fruits with varieties suited to a wide range of Australian climates, from cool-climate Adelaide Hills and Yarra Valley through to subtropical coastal zones. Tracked varieties include Santa Rosa (self-fertile, reliable, red-skinned with sweet tart flesh, one of the most popular garden plums in Australia), Angelino (large, dark purple, late-season, excellent shelf life), Blood Plum (deep red flesh throughout, rich sweet flavour, heritage type), October Purple (a late-season variety with firm, sweet flesh), and Luisa (a large, golden-yellow plum with sweet, aromatic flesh). Chill requirements vary considerably: Japanese plums such as Santa Rosa need 500-700 hours, while some European-type plums need more. Most need at least one compatible cross-pollinator, though Santa Rosa sets well alone. Plant in full sun in well-drained, deep soil with a pH of 6.0-6.5. Apply a balanced stone fruit fertiliser in late winter. Brown rot and fruit fly are the primary challenges. Prune to an open vase shape to improve airflow and reduce fungal disease. In WA, plums are grown across the Perth Hills and south-west. Movement of stone fruit plant material into WA is restricted; always source from state-accredited suppliers and confirm compliance before ordering interstate. Fruit fly baiting is mandatory across most WA shires."
+    "description": "Plums are versatile stone fruits with varieties suited to a wide range of Australian climates, from cool-climate Adelaide Hills and Yarra Valley through to subtropical coastal zones. Tracked varieties include Santa Rosa (self-fertile, reliable, red-skinned with sweet tart flesh, one of the most popular garden plums in Australia), Angelino (large, dark purple, late-season, excellent shelf life), Blood Plum (deep red flesh throughout, rich sweet flavour, heritage type), October Purple (a late-season variety with firm, sweet flesh), and Luisa (a large, golden-yellow plum with sweet, aromatic flesh). Chill requirements vary considerably: Japanese plums such as Santa Rosa need 500-700 hours, while some European-type plums need more. Most need at least one compatible cross-pollinator, though Santa Rosa sets well alone. Plant in full sun in well-drained, deep soil with a pH of 6.0-6.5. Apply a balanced stone fruit fertiliser in late winter. Brown rot and fruit fly are the primary challenges. Prune to an open vase shape to improve airflow and reduce fungal disease. In WA, plums are grown across the Perth Hills and south-west. Movement of stone fruit plant material into WA is restricted; always source from state-accredited suppliers and confirm compliance before ordering interstate. Fruit fly baiting is mandatory across most WA shires.",
+    "synonym_latin": {
+      "Japanese Plum": "Prunus salicina",
+      "Blood Plum": "Prunus salicina",
+      "Plumcot": "Prunus salicina × armeniaca",
+      "Pluot": "Prunus salicina × armeniaca",
+      "European Plum": "Prunus domestica"
+    }
   },
   {
     "common_name": "Peach",
@@ -227,7 +252,7 @@
   },
   {
     "common_name": "Mulberry",
-    "latin_name": "Morus nigra",
+    "latin_name": "Morus spp.",
     "slug": "mulberry",
     "region": "Western Asia",
     "synonyms": [
@@ -236,7 +261,10 @@
       "Dwarf Mulberry",
       "Weeping Mulberry"
     ],
-    "description": "Mulberry trees are among the most productive and low-maintenance fruit trees available to Australian gardeners, tolerating a wide range of climates from subtropical Queensland to cool-climate Victoria. Tracked varieties include Black (dwarf form, ideal for small gardens and containers, producing sweet dark berries), Majestic (a vigorous large tree with heavy crops of large, sweet black berries), and Red Shahtoot (a white mulberry with elongated red-white fruit, excellent fresh eating flavour). Mulberries thrive in full sun in well-drained soil with a slightly acidic to neutral pH. They are extremely drought-tolerant once established but produce larger, juicier fruit with consistent irrigation. Trees drop fruit heavily as it ripens, so plant away from paths, vehicles, and light-coloured paving. Fruit typically ripens from November to February depending on region and variety. Mulberries are very cold-hardy in the dormant state; most varieties handle frosts to minus 10°C. In subtropical climates they are semi-evergreen and may produce smaller crops in winter. The main challenges are birds (netting is the only reliable solution for clean fruit) and the staining juice. In WA, mulberry is widely grown and has no quarantine restrictions. Dwarf forms are popular in Perth for courtyard gardens."
+    "description": "Mulberry trees are among the most productive and low-maintenance fruit trees available to Australian gardeners, tolerating a wide range of climates from subtropical Queensland to cool-climate Victoria. Tracked varieties include Black (dwarf form, ideal for small gardens and containers, producing sweet dark berries), Majestic (a vigorous large tree with heavy crops of large, sweet black berries), and Red Shahtoot (a white mulberry with elongated red-white fruit, excellent fresh eating flavour). Mulberries thrive in full sun in well-drained soil with a slightly acidic to neutral pH. They are extremely drought-tolerant once established but produce larger, juicier fruit with consistent irrigation. Trees drop fruit heavily as it ripens, so plant away from paths, vehicles, and light-coloured paving. Fruit typically ripens from November to February depending on region and variety. Mulberries are very cold-hardy in the dormant state; most varieties handle frosts to minus 10°C. In subtropical climates they are semi-evergreen and may produce smaller crops in winter. The main challenges are birds (netting is the only reliable solution for clean fruit) and the staining juice. In WA, mulberry is widely grown and has no quarantine restrictions. Dwarf forms are popular in Perth for courtyard gardens.",
+    "synonym_latin": {
+      "White Mulberry": "Morus alba"
+    }
   },
   {
     "common_name": "Grape",
@@ -250,7 +278,10 @@
       "Grapevine",
       "Muscadine Grape"
     ],
-    "description": "Grapes are one of the most widely cultivated fruit plants in Australia, with varieties suited to climates from tropical Queensland to cool-climate Tasmania. Many table and wine varieties are tracked across Australian nurseries. Grapes require a dormant winter period and at least 150 frost-free days to ripen a quality crop. The most productive home garden climates are the Adelaide Plains, Swan Valley, Hunter Valley, Rutherglen, and cooler elevated regions. Grapes need full sun and warm summers to develop sweetness. Plant in deep, well-drained, slightly acidic to neutral soil. Heavy clay soils cause root disease; improve drainage before planting. Grapes are vigorous climbers requiring a sturdy trellis or pergola. Prune hard each winter, removing 80-90% of the previous year's growth. Table varieties are typically cane-pruned; wine varieties are often spur-pruned. Water during establishment and during berry swell, but reduce irrigation as harvest approaches to concentrate sugar. Powdery mildew is the most common fungal disease across all regions; apply sulfur sprays preventatively from budburst. In WA, grapevines are subject to strict biosecurity rules due to phylloxera. All vines imported to WA must come from certified phylloxera-free sources. Many table grapes grown in WA are sold without varietal labelling."
+    "description": "Grapes are one of the most widely cultivated fruit plants in Australia, with varieties suited to climates from tropical Queensland to cool-climate Tasmania. Many table and wine varieties are tracked across Australian nurseries. Grapes require a dormant winter period and at least 150 frost-free days to ripen a quality crop. The most productive home garden climates are the Adelaide Plains, Swan Valley, Hunter Valley, Rutherglen, and cooler elevated regions. Grapes need full sun and warm summers to develop sweetness. Plant in deep, well-drained, slightly acidic to neutral soil. Heavy clay soils cause root disease; improve drainage before planting. Grapes are vigorous climbers requiring a sturdy trellis or pergola. Prune hard each winter, removing 80-90% of the previous year's growth. Table varieties are typically cane-pruned; wine varieties are often spur-pruned. Water during establishment and during berry swell, but reduce irrigation as harvest approaches to concentrate sugar. Powdery mildew is the most common fungal disease across all regions; apply sulfur sprays preventatively from budburst. In WA, grapevines are subject to strict biosecurity rules due to phylloxera. All vines imported to WA must come from certified phylloxera-free sources. Many table grapes grown in WA are sold without varietal labelling.",
+    "synonym_latin": {
+      "Muscadine Grape": "Vitis rotundifolia"
+    }
   },
   {
     "common_name": "Pomegranate",
@@ -307,7 +338,15 @@
       "Strawberry Guava",
       "Lemon Guava"
     ],
-    "description": "Guava is one of the most productive and adaptable tropical fruit trees available to Australian gardeners, producing abundant fruit across a wide range of warm climates. Tracked varieties include Brazilian guava (large, cream-fleshed, sweet), China Pear guava (pear-shaped, mild flavour), Hawaiian (large, pink-fleshed, aromatic, well-suited to tropical gardens), and Strawberry Guava (a smaller-leafed species producing tart, red fruit used mainly in jams and juices). Guavas thrive in coastal Queensland, northern NSW, the NT, and the warm Kimberley and coastal regions of WA. Trees prefer full sun and are highly drought-tolerant once established, though regular watering during fruiting improves yield and fruit size. They will grow in a wide range of soils, including poor and slightly alkaline types, but perform best in free-draining loam. Fruit is produced year-round in the tropics and from late summer to winter in subtropical zones. Guavas are generous feeders; apply a balanced fertiliser every 2-3 months. Note that Strawberry Guava is classified as an invasive weed in parts of Queensland and NSW. In WA, Strawberry Guava is on the alert list; check local regulations before planting. Common guava is not restricted in WA."
+    "description": "Guava is one of the most productive and adaptable tropical fruit trees available to Australian gardeners, producing abundant fruit across a wide range of warm climates. Tracked varieties include Brazilian guava (large, cream-fleshed, sweet), China Pear guava (pear-shaped, mild flavour), Hawaiian (large, pink-fleshed, aromatic, well-suited to tropical gardens), and Strawberry Guava (a smaller-leafed species producing tart, red fruit used mainly in jams and juices). Guavas thrive in coastal Queensland, northern NSW, the NT, and the warm Kimberley and coastal regions of WA. Trees prefer full sun and are highly drought-tolerant once established, though regular watering during fruiting improves yield and fruit size. They will grow in a wide range of soils, including poor and slightly alkaline types, but perform best in free-draining loam. Fruit is produced year-round in the tropics and from late summer to winter in subtropical zones. Guavas are generous feeders; apply a balanced fertiliser every 2-3 months. Note that Strawberry Guava is classified as an invasive weed in parts of Queensland and NSW. In WA, Strawberry Guava is on the alert list; check local regulations before planting. Common guava is not restricted in WA.",
+    "synonym_latin": {
+      "Strawberry Guava": "Psidium cattleyanum",
+      "Lemon Guava": "Psidium cattleyanum",
+      "Cherry Guava": "Psidium cattleyanum"
+    },
+    "match_synonyms": [
+      "Cherry Guava"
+    ]
   },
   {
     "common_name": "Feijoa",
@@ -383,7 +422,10 @@
     "synonyms": [
       "Jabuticaba"
     ],
-    "description": "Jaboticaba is a remarkable Brazilian tree that produces grapes directly on its trunk and main branches, a habit called cauliflory. It is slow-growing but extraordinarily productive once mature, erupting in dense clusters of dark fruit multiple times per year in warm climates. Tracked varieties include Sabara (the most common, small dark purple fruit with translucent sweet flesh), Grimal (larger fruit, thicker skin), and yellow jaboticaba (a rare golden-fruited form). Jaboticaba prefers a subtropical to warm temperate climate. It grows well in coastal Queensland, northern NSW, and the warmer parts of WA. Trees tolerate mild frosts but perform best in frost-free conditions. They prefer slightly acidic, moist, well-drained soil and respond well to mulching and organic matter. Jaboticaba is slow to establish: seedlings may take 8-15 years to fruit. Grafted or air-layered trees from superior selections fruit significantly earlier, often within 3-5 years. In tropical areas trees may produce 4-6 crops per year. In subtropical zones, 2-3 annual crops are typical. Fruit has a short shelf life of just 3-4 days; this is almost exclusively a garden and local market tree. No significant quarantine restrictions apply in WA."
+    "description": "Jaboticaba is a remarkable Brazilian tree that produces grapes directly on its trunk and main branches, a habit called cauliflory. It is slow-growing but extraordinarily productive once mature, erupting in dense clusters of dark fruit multiple times per year in warm climates. Tracked varieties include Sabara (the most common, small dark purple fruit with translucent sweet flesh), Grimal (larger fruit, thicker skin), and yellow jaboticaba (a rare golden-fruited form). Jaboticaba prefers a subtropical to warm temperate climate. It grows well in coastal Queensland, northern NSW, and the warmer parts of WA. Trees tolerate mild frosts but perform best in frost-free conditions. They prefer slightly acidic, moist, well-drained soil and respond well to mulching and organic matter. Jaboticaba is slow to establish: seedlings may take 8-15 years to fruit. Grafted or air-layered trees from superior selections fruit significantly earlier, often within 3-5 years. In tropical areas trees may produce 4-6 crops per year. In subtropical zones, 2-3 annual crops are typical. Fruit has a short shelf life of just 3-4 days; this is almost exclusively a garden and local market tree. No significant quarantine restrictions apply in WA.",
+    "match_synonyms": [
+      "Brazilian Grape"
+    ]
   },
   {
     "common_name": "Jackfruit",
@@ -438,7 +480,7 @@
   },
   {
     "common_name": "Custard Apple",
-    "latin_name": "Annona reticulata",
+    "latin_name": "Annona × atemoya",
     "slug": "custard-apple",
     "region": "Central America",
     "synonyms": [
@@ -446,7 +488,11 @@
       "Atemoya",
       "Bullock's Heart"
     ],
-    "description": "Custard apples are subtropical trees producing creamy, sweet fruit with a flavour resembling vanilla custard. They grow best in coastal Queensland and northern NSW, though sheltered positions in subtropical WA also suit them. Tracked varieties include Geffner and Paxton Prolific. Geffner is widely considered the best commercial variety in Australia, producing large, smooth-skinned fruit with fewer seeds and excellent shelf life. Paxton Prolific is an older type valued for consistent productivity. Trees need frost-free conditions, warm nights during flowering, and a distinct dry season to encourage simultaneous leaf drop and uniform flower set. Hand-pollination dramatically improves yields; transfer pollen from male-phase flowers to female-phase flowers with a small brush in the early morning. Plant in full sun in well-drained, deep soil enriched with compost. Custard apples are sensitive to waterlogging. Fertilise with a balanced tropical fruit fertiliser every 8 weeks during the growing season. Fruit is ready to harvest when it just begins to soften and develops a cream-green blush. In WA, custard apples can be grown in the Kimberley and Pilbara, though summer heat requires careful irrigation management. No specific state movement restrictions apply, but always verify with local biosecurity authorities."
+    "description": "Custard apples are subtropical trees producing creamy, sweet fruit with a flavour resembling vanilla custard. They grow best in coastal Queensland and northern NSW, though sheltered positions in subtropical WA also suit them. Tracked varieties include Geffner and Paxton Prolific. Geffner is widely considered the best commercial variety in Australia, producing large, smooth-skinned fruit with fewer seeds and excellent shelf life. Paxton Prolific is an older type valued for consistent productivity. Trees need frost-free conditions, warm nights during flowering, and a distinct dry season to encourage simultaneous leaf drop and uniform flower set. Hand-pollination dramatically improves yields; transfer pollen from male-phase flowers to female-phase flowers with a small brush in the early morning. Plant in full sun in well-drained, deep soil enriched with compost. Custard apples are sensitive to waterlogging. Fertilise with a balanced tropical fruit fertiliser every 8 weeks during the growing season. Fruit is ready to harvest when it just begins to soften and develops a cream-green blush. In WA, custard apples can be grown in the Kimberley and Pilbara, though summer heat requires careful irrigation management. No specific state movement restrictions apply, but always verify with local biosecurity authorities.",
+    "synonym_latin": {
+      "Cherimoya": "Annona cherimola",
+      "Bullock's Heart": "Annona reticulata"
+    }
   },
   {
     "common_name": "Olive",
@@ -480,7 +526,7 @@
   },
   {
     "common_name": "Lilly Pilly",
-    "latin_name": "Syzygium luehmannii",
+    "latin_name": "Syzygium spp.",
     "slug": "lilly-pilly",
     "region": "Australia",
     "synonyms": [
@@ -514,7 +560,10 @@
       "Java Apple",
       "Rose Apple"
     ],
-    "description": "Wax jambu, also known as wax apple or rose apple (Syzygium samarangense), is a tropical tree from Southeast Asia producing crisp, juicy, bell-shaped fruit with a delicate sweet flavour reminiscent of watermelon rind. It is grown mainly as a novelty and specialty fruit crop in tropical Australia. Tracked varieties include Pink (pale pink to white fruit, mild and crisp, very attractive) and Red (deeper red fruit, slightly sweeter, more visually striking). Wax jambu requires a tropical to subtropical climate and grows best in coastal far north Queensland and the NT. It will not tolerate frost. Trees prefer rich, moist, well-drained soil in full sun to light shade. They are moderate feeders; apply a balanced tropical fruit fertiliser every 2-3 months during the growing season. Wax jambu trees are fast-growing and can begin fruiting within 2-3 years of planting. They produce several crops per year in tropical conditions. Fruit is highly perishable and best eaten fresh; it does not store or transport well. The hollow, crisp texture and delicate flavour are best appreciated straight from the tree. In WA, wax jambu can be grown in the Kimberley and in exceptionally sheltered tropical or warm subtropical microclimates. No specific quarantine restrictions apply in WA."
+    "description": "Wax jambu, also known as wax apple or rose apple (Syzygium samarangense), is a tropical tree from Southeast Asia producing crisp, juicy, bell-shaped fruit with a delicate sweet flavour reminiscent of watermelon rind. It is grown mainly as a novelty and specialty fruit crop in tropical Australia. Tracked varieties include Pink (pale pink to white fruit, mild and crisp, very attractive) and Red (deeper red fruit, slightly sweeter, more visually striking). Wax jambu requires a tropical to subtropical climate and grows best in coastal far north Queensland and the NT. It will not tolerate frost. Trees prefer rich, moist, well-drained soil in full sun to light shade. They are moderate feeders; apply a balanced tropical fruit fertiliser every 2-3 months during the growing season. Wax jambu trees are fast-growing and can begin fruiting within 2-3 years of planting. They produce several crops per year in tropical conditions. Fruit is highly perishable and best eaten fresh; it does not store or transport well. The hollow, crisp texture and delicate flavour are best appreciated straight from the tree. In WA, wax jambu can be grown in the Kimberley and in exceptionally sheltered tropical or warm subtropical microclimates. No specific quarantine restrictions apply in WA.",
+    "synonym_latin": {
+      "Rose Apple": "Syzygium jambos"
+    }
   },
   {
     "common_name": "Sapodilla",
@@ -574,7 +623,10 @@
     "synonyms": [
       "Biriba"
     ],
-    "description": "Rollinia, also known as biriba or Brazilian custard apple, is a tropical fruit tree from the Annonaceae family, closely related to custard apple and soursop. It produces large, conical fruit with soft, creamy, lemon-flavoured flesh that many consider among the most delicious of all tropical fruits. In Australia, rollinia is primarily sold as seedlings rather than named varieties, as selected grafted material remains scarce in the commercial trade. Rollinia requires a frost-free tropical to subtropical climate. It grows best in coastal far north Queensland, the NT, and warm sheltered positions in southeast Queensland. Unlike its Annona relatives, rollinia tolerates higher humidity and is somewhat faster-growing. Trees prefer rich, well-drained soil with plenty of organic matter. They have a relatively shallow root system and benefit from a thick mulch layer and regular fertilising with a balanced tropical fruit fertiliser. Rollinia trees can begin fruiting within 3-4 years from seed when conditions are optimal. Fruit must be eaten when freshly ripe as it deteriorates rapidly; the soft, almost liquid flesh bruises and ferments within 24-48 hours of peak ripeness. This makes rollinia almost exclusively a backyard tree. In WA, rollinia can be attempted in warm, frost-free tropical locations. No specific quarantine restrictions apply."
+    "description": "Rollinia, also known as biriba or Brazilian custard apple, is a tropical fruit tree from the Annonaceae family, closely related to custard apple and soursop. It produces large, conical fruit with soft, creamy, lemon-flavoured flesh that many consider among the most delicious of all tropical fruits. In Australia, rollinia is primarily sold as seedlings rather than named varieties, as selected grafted material remains scarce in the commercial trade. Rollinia requires a frost-free tropical to subtropical climate. It grows best in coastal far north Queensland, the NT, and warm sheltered positions in southeast Queensland. Unlike its Annona relatives, rollinia tolerates higher humidity and is somewhat faster-growing. Trees prefer rich, well-drained soil with plenty of organic matter. They have a relatively shallow root system and benefit from a thick mulch layer and regular fertilising with a balanced tropical fruit fertiliser. Rollinia trees can begin fruiting within 3-4 years from seed when conditions are optimal. Fruit must be eaten when freshly ripe as it deteriorates rapidly; the soft, almost liquid flesh bruises and ferments within 24-48 hours of peak ripeness. This makes rollinia almost exclusively a backyard tree. In WA, rollinia can be attempted in warm, frost-free tropical locations. No specific quarantine restrictions apply.",
+    "match_synonyms": [
+      "Brazilian Custard Apple"
+    ]
   },
   {
     "common_name": "Miracle Fruit",
@@ -657,7 +709,11 @@
       "Kiwi",
       "Kiwi Berry",
       "Kiwiberry"
-    ]
+    ],
+    "synonym_latin": {
+      "Kiwi Berry": "Actinidia arguta",
+      "Kiwiberry": "Actinidia arguta"
+    }
   },
   {
     "common_name": "Kumquat",
@@ -669,7 +725,11 @@
       "Calamondin",
       "Calamansi",
       "Nagami Cumquat"
-    ]
+    ],
+    "synonym_latin": {
+      "Calamondin": "Citrus × microcarpa",
+      "Calamansi": "Citrus × microcarpa"
+    }
   },
   {
     "common_name": "Coconut",
@@ -722,7 +782,11 @@
       "Redcurrant",
       "Black Currant",
       "Red Currant"
-    ]
+    ],
+    "synonym_latin": {
+      "Redcurrant": "Ribes rubrum",
+      "Red Currant": "Ribes rubrum"
+    }
   },
   {
     "common_name": "Gooseberry",
@@ -1299,5 +1363,20 @@
     "slug": "african-breadfruit",
     "region": "Tropical Africa",
     "synonyms": []
+  },
+  {
+    "common_name": "Illawarra Plum",
+    "latin_name": "Podocarpus elatus",
+    "slug": "illawarra-plum",
+    "region": "Australia (NSW/QLD coastal rainforest)",
+    "category": "bush_tucker",
+    "synonyms": [
+      "Illawarra Plum Pine",
+      "Plum Pine",
+      "Australian Plum Pine",
+      "Plum Illawarra",
+      "Brown Pine"
+    ],
+    "description": "Illawarra plum (Podocarpus elatus), also called plum pine or brown pine, is a native conifer of the east coast rainforests from southern NSW to north Queensland, and it is not related to the true plums. The edible part is the swollen, dark purple stalk under the seed, a grape-sized fleshy fruit with a sweet, plum-like and slightly resinous flavour. It is eaten fresh or cooked into jam, sauces and chutney, and the hard seed attached to the outside is discarded. Trees are either male or female, so a female tree needs a male nearby to fruit. Illawarra plum is a hardy, adaptable tree that grows in full sun or part shade and in a wide range of soils, and it is widely planted as a street tree and clipped hedge. It is slow to moderate in growth and stays far smaller in a garden than in the forest. Fruit ripens in autumn and early winter."
   }
 ]

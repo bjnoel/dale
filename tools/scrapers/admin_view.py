@@ -1526,6 +1526,41 @@ def _needs_review_section(report) -> str:
     )
 
 
+def _latin_mismatch_section(report) -> str:
+    """Products whose own title names a different species from the latin name
+    printed beside them on the homepage (2026-10-15: Benedict found cherimoyas
+    shown as Annona reticulata by reading the site). The fix is a
+    synonym_latin entry or a record in fruit_species.json."""
+    mism = (report or {}).get("latin_mismatches")
+    if not mism:
+        return ""
+    count = mism.get("count", 0)
+    if not count:
+        return (
+            '<section><h2>Botanical names</h2><p class="muted">No product title '
+            'disagrees with the botanical name shown beside it.</p></section>'
+        )
+    body = "".join(
+        "<tr>"
+        f"<td>{_esc(r.get('t', ''))}</td>"
+        f"<td>{_esc(r.get('nk', ''))}</td>"
+        f"<td><i>{_esc(r.get('ln', ''))}</i></td>"
+        f"<td><i>{_esc(r.get('says', ''))}</i></td>"
+        "</tr>"
+        for r in mism.get("examples", [])
+    )
+    shown = len(mism.get("examples", []))
+    more = f" Showing {shown}." if shown < count else ""
+    return (
+        '<section><h2>Botanical names</h2>'
+        f'<p class="muted">{count} products whose title names a different species '
+        f'from the botanical name we show.{more} Fix with a synonym_latin entry or '
+        'a species record in fruit_species.json.</p>'
+        '<table><thead><tr><th>Title</th><th>Nursery</th><th>We show</th>'
+        '<th>Title says</th></tr></thead><tbody>' + body + '</tbody></table></section>'
+    )
+
+
 _STATUS_CLASS = {
     "warm": "st-warm",
     "personal": "st-warm",
@@ -1973,6 +2008,7 @@ def render_nurseries_html(model: dict, generated_at: str = None) -> str:
         _nursery_section(model.get("nurseries")),
         _health_section(model.get("health")),
         _needs_review_section(model.get("needs_review")),
+        _latin_mismatch_section(model.get("needs_review")),
     ]
     return render_page(
         title="treestock admin — nurseries",

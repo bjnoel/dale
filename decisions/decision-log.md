@@ -16376,3 +16376,37 @@ with the one the registry serves for the tag, so it fires only when a re-pull wo
 something. The first run under the new rule found one: `postgres:16-alpine` has a newer build.
 Benedict said yes, and it was updated the same day: a rebuild of the same 16.15 (`pg_dumpall` taken, 7s down, users, sites,
 API keys and goals identical). The checker now reports nothing to act on for all three images.
+
+## DEC-355 (2026-10-15): treestock's botanical names, and the plants that are not the fruit in their name
+
+**Trigger:** Benedict saw cherimoyas labelled *Annona reticulata*, and "Burdekin plum, Aussie
+native" and "Illawarra Plum Pine (Podocarpus elatus)" labelled *Prunus domestica*.
+
+**What is going on.** A product's latin name is its species record's, and the record is
+chosen by common name. Over all 14,920 live titles that had three faults:
+
+1. **Another plant with a fruit word in its name** was filed as the fruit: Mock Orange
+   (*Murraya*), Fiddle Leaf Fig, Lemon-scented Gum, Pineapple Lily, Fraser Island Apple,
+   Natal Plum. ~440 products, most of them ornamentals sitting on fruit species pages.
+2. **Punctuation broke the leading match** ("Burdekin plum,", "Kaffir Lime:"), so the
+   any-position fallback found "plum" and "lime" instead of the right record, or nothing.
+3. **One record, several species, one name.** Custard Apple carried *A. reticulata* for
+   atemoyas and cherimoyas; Lilly Pilly carried riberry's *Syzygium luehmannii*; Plum said
+   *P. domestica* for mostly Japanese plums.
+
+**Decision.** In `stocklib.species_match`: the title's own bracketed binomial vetoes a match in
+another genus (old genus names grouped, so "Feijoa sellowiana" stays Feijoa); a closed list of
+other plants' names is masked before matching; plant words that borrow a fruit as a colour
+("Grevillea - Orange Marmalade") reject; the leading name stops at `, : ; /`. In the registry:
+`synonym_latin` names the species a synonym means (Cherimoya is *A. cherimola*), corrected
+base names (Custard Apple *A. × atemoya*, Lilly Pilly *Syzygium spp.*, Mulberry *Morus spp.*,
+Plum *Prunus salicina / domestica*), a new Illawarra Plum record, Fig made `epithet_strict`.
+The dashboard prints the variety blurb's own name first, so Green Gage says *P. domestica*
+and Amber Jewel *P. salicina*. /admin lists every product whose title still disagrees.
+
+**Not done, deliberately.** Jambolan and Ambarella get no records yet: a subscriber watches
+`/variety/plum-jambolan`, and a record would retire that slug. They are now unmatched
+rather than Plum. Names that fix the species bucket but must not move a variety URL
+("Cherry Guava") live in `match_synonyms`, which the variety parser does not read. The
+measured result: 452 products change species (mostly to none), 804 change only their latin
+name, 4 variety slugs change, all Illawarra Plum (no watches).

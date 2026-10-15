@@ -136,3 +136,59 @@ def render_blurb(variety_slug: str, species_slug: str) -> str:
         f'    <p class="text-gray-700 text-sm leading-relaxed mb-3">{p}</p>' for p in paras
     )
     return f'  <div class="mb-6" id="variety-about">\n{body}\n  </div>\n'
+
+
+# A botanical name in brackets, alone: "(Prunus salicina)", "(Prunus domestica
+# subsp. insititia)", "(Prunus salicina × P. armeniaca)". Anything with other
+# words in the bracket ("(also called Reine Claude)") is not one.
+_BRACKET_RE = re.compile(r"\(([^()]+)\)")
+_BINOMIAL_RE = re.compile(
+    r"^([A-Z][a-z]+) (?:× )?[a-z][a-z-]+(?: (?:subsp\.|var\.) [a-z][a-z-]+| × [A-Z]\. [a-z][a-z-]+)?$")
+# Past one of these words the sentence is naming PARENTS: "Geffner is an
+# atemoya, the hybrid of sugar apple (Annona squamosa) and cherimoya", "a cross
+# between the Australian finger lime (Citrus australasica) and a calamondin".
+# A bracket before it still names the variety itself: "The Clementine (Citrus
+# clementina) is an easy-peel mandarin hybrid".
+_PARENTAGE_RE = re.compile(
+    r"\b(?:hybrid|cross|seedling of|parent|ancestry|rootstock|grafted onto)", re.I)
+
+
+def _first_sentence(text: str) -> str:
+    """Up to the first full stop OUTSIDE brackets. _SENTENCE_RE splits at the
+    "subsp." inside "(Prunus domestica subsp. insititia)"; the whole paragraph
+    reaches Biloxi's "native ancestry (Vaccinium darrowii)" two sentences on."""
+    depth = 0
+    for i, ch in enumerate(text):
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth = max(0, depth - 1)
+        elif ch in ".!?" and depth == 0 and (i + 1 == len(text) or text[i + 1].isspace()):
+            return text[:i + 1]
+    return text
+
+
+def variety_latin(variety_slug: str, species_slug: str, genus: str = "") -> str:
+    """The botanical name a variety's blurb gives itself, or "".
+
+    Read from the first sentence only, where the blurbs introduce the variety
+    ("Amber Jewel is an Australian-bred Japanese-type plum (Prunus salicina)
+    that ..."), and only up to any talk of parentage. Some records lump
+    species (Plum is Japanese and European, and no title says which), and this
+    is the only per-product source that knows. With `genus`, a bracketed name
+    in another genus is ignored rather than trusted."""
+    entry = _load_species(species_slug).get(variety_slug)
+    if not entry:
+        return ""
+    paras = [p.strip() for p in entry.get("paragraphs", []) if isinstance(p, str) and p.strip()]
+    if not paras:
+        return ""
+    first = _first_sentence(paras[0])
+    parentage = _PARENTAGE_RE.search(first)
+    if parentage:
+        first = first[:parentage.start()]
+    for inner in _BRACKET_RE.findall(first):
+        b = _BINOMIAL_RE.match(inner.strip())
+        if b and (not genus or b.group(1) == genus):
+            return inner.strip()
+    return ""

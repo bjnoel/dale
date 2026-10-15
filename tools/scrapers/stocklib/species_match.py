@@ -68,9 +68,31 @@ def _cleaned(title: str) -> tuple[str, str]:
     return title_lower, title
 
 
+# Punctuation that ends the leading name. "Burdekin plum, Aussie native" and
+# "Kaffir Lime: QLD ONLY" used to fail the leading match because the comma or
+# colon rode along on the last word ("plum," is not a key), so the title fell
+# through to the any-position fallback, which found "plum" and filed a
+# Pleiogynium as Prunus domestica. "Peach/Nectarine Multi Graft" is the same
+# shape with a slash. The name stops at the first of these.
+_LEADING_STOP_RE = re.compile(r"[,:;/]")
+
+
+def _leading_words(t_lower: str) -> list[str]:
+    """Words of the leading name: split on spaces/dashes, cut at punctuation."""
+    words = []
+    for w in re.split(r'[\s\-–—]+', t_lower):
+        m = _LEADING_STOP_RE.search(w)
+        if m:
+            if m.start():
+                words.append(w[:m.start()])
+            break
+        words.append(w)
+    return words
+
+
 def _leading_candidate(t_lower: str, lookup: dict) -> str | None:
     """Longest leading word sequence that is a lookup key."""
-    words = re.split(r'[\s\-–—]+', t_lower)
+    words = _leading_words(t_lower)
     for n in range(len(words), 0, -1):
         candidate = " ".join(words[:n])
         if candidate in lookup:
@@ -147,6 +169,230 @@ def _is_ornamental_relative(t_lower: str, candidate: str) -> bool:
     return False
 
 
+# --- Other plants named after a fruit (1.7) -----------------------------
+#
+# The any-position fallback reads "Variety Species" titles ("Black Genoa Fig"),
+# and it cannot tell a variety name from a common-name qualifier. So on
+# 2026-10-15 "Illawarra Plum Pine" showed as Prunus domestica, "Mock Orange"
+# as Citrus sinensis, "Fiddle Leaf Fig" as Ficus carica and "Lemon Drop
+# Mangosteen" as a lemon. Each of these names is a different plant that
+# happens to contain a fruit word.
+#
+# _NOT_THE_FRUIT is masked out of the title BEFORE matching, so the fruit word
+# inside it is invisible and the search carries on past it: "Cox's Orange
+# Pippin Apple" still finds Apple, "Tropical - Hog Plum aka Ambarella" still
+# finds Ambarella, "Mock Orange" finds nothing. A closed list of names read off
+# live titles, not a rule, because no rule separates "Illawarra Plum" (another
+# plant) from "Narrabeen Plum" (a plum).
+#
+# A phrase that is a registry name would mask its own match, so it belongs
+# here only while no record claims it. tests/test_species_match.py enforces
+# that. Edible fruits on this list (Natal Plum, Malay Apple, Cape Gooseberry,
+# ...) are candidates for their own records; until then they are listed
+# without a species, which beats being counted as the wrong one.
+_NOT_THE_FRUIT = (
+    # plum
+    "hog plum", "jambolan plum", "java plum", "natal plum", "governors plum",
+    "governor's plum", "governor’s plum", "kaffir plum", "plum mango", "wild plum",
+    "purple leaf plum",
+    # apple
+    "fraser island apple", "black apple", "malay apple", "kei apple",
+    "elephant apple", "velvet apple", "apple cactus", "smooth-barked apple",
+    "apple gum", "apple blossom",
+    # fig
+    "fiddle leaf fig", "fiddle-leaf fig", "sacred fig", "weeping fig",
+    "climbing fig", "creeping fig", "strangler fig", "moreton bay fig",
+    "port jackson fig", "rubber fig",
+    # grape
+    "sea grape", "oregon grape", "burmese grape", "grape ivy", "tree grape",
+    # orange
+    "mock orange", "mexican orange", "wild orange", "orange jasmin",
+    "orange jasmine", "orange jessamine", "osage orange", "orange trumpet",
+    # lemon / lime
+    "lemon scented", "lemon-scented", "lemon aspen", "lemon grass", "lemongrass",
+    "lemon balm", "lemon verbena", "lemon thyme", "lemon savory",
+    "lemon bergamot", "lemon drop mangosteen", "lemon ball", "lemon button",
+    "native lemon", "small leaf lime", "large leaf lime", "spanish lime",
+    # cherry
+    "cedar bay cherry", "beach cherry", "brush cherry", "bush cherry",
+    "capulin cherry", "nanking cherry", "native cherry", "cornelian cherry",
+    # gooseberry
+    "star gooseberry", "cape gooseberry", "indian gooseberry",
+    "ceylon gooseberry", "hill gooseberry", "otaheite gooseberry",
+    # chestnut
+    "malabar chestnut", "guiana chestnut", "cape chestnut", "water chestnut",
+    "horse chestnut", "moreton bay chestnut",
+    # tamarind
+    "native tamarind", "small leaf tamarind", "large leaf tamarind",
+    "small-leaf tamarind", "small-leaved tamarind", "large-leaved tamarind",
+    "small leaved tamarind", "large leaved tamarind", "fern leaved tamarind",
+    "fern-leaved tamarind", "spanish tamarind", "manila tamarind",
+    # olive, mulberry, currant, guava, pawpaw, almond, peach
+    "native olive", "sweet olive", "red olive", "indian olive", "russian olive",
+    "native mulberry", "native currant", "wild currant", "native guava",
+    "chilean guava", "american paw paw", "american pawpaw", "american papaw",
+    "indian almond", "beach almond", "atherton almond", "tropical almond",
+    "african peach", "peach palm",
+    # mangosteen (Garcinia relatives sold under the name)
+    "yellow mangosteen", "african mangosteen", "native mangosteen",
+    "mundu mangosteen", "button mangosteen", "seashore mangosteen",
+    # everything else
+    "pineapple lily", "pineapple sage", "blueberry ash", "blueberry lily",
+    "strawberry tree", "mountain soursop", "hairy walnut", "eumundi quandong",
+    "hard quandong", "box elder", "weeping pear", "string of bananas",
+)
+
+_NOT_THE_FRUIT_RE = re.compile(
+    r"(?<!\w)(?:" + "|".join(re.escape(p) for p in sorted(_NOT_THE_FRUIT, key=len, reverse=True))
+    + r")(?:e?s)?(?!\w)"
+    # "Lemon-scented Myrtle" is a Lemon Myrtle synonym, while "Lemon-scented
+    # Gum" and "Tea Tree - Lemon Scented" are not lemons. Nothing on the list
+    # names a plant when "myrtle" follows it.
+    r"(?![ -]myrtle)")
+
+# Non-fruit plants that borrow a fruit name as a COLOUR or FLAVOUR, usually
+# leading the title: "Grevillea - Orange Marmalade", "Sage - Pineapple",
+# "Turmeric - Orange", "Azalea indica Orange Chimes". The genus or plant word
+# anywhere in the title means it is not the fruit. Distinct from
+# cultivar_parsing._ORNAMENTAL_WORDS (see the 1.6a note): that list carries
+# "myrtle" and "fern", which would cost Lemon Myrtle and Cinnamon Myrtle here.
+_NOT_FRUIT_WORDS = frozenset({
+    "agapanthus", "allamanda", "aspen", "azalea", "begonia", "bougainvillea",
+    "cactus", "camellia", "canna", "chlorophytum", "clivia", "eucomis", "frangipani",
+    "ginkgo", "grevillea", "heuchera", "hibiscus", "leucadendron", "mangave",
+    "murraya", "nephrolepis", "oleander", "osmanthus", "philodendron",
+    "russelia", "sage", "turmeric",
+})
+
+
+def _mask_not_the_fruit(t_lower: str) -> str:
+    """Blank out other plants' names, keeping string positions aligned."""
+    return _NOT_THE_FRUIT_RE.sub(lambda m: "~" * len(m.group()), t_lower)
+
+
+def _names_another_plant(t_lower: str) -> bool:
+    """Read on the UNMASKED title: masking "apple cactus" also hid "cactus"."""
+    return bool(set(re.findall(r"[a-z]+", t_lower)) & _NOT_FRUIT_WORDS)
+
+
+# --- The title's own binomial (1.8) -------------------------------------
+#
+# Many nurseries put the botanical name in brackets, and it is a free ground
+# truth: "Illawarra Plum Pine (Podocarpus elatus)" cannot be a Prunus, and
+# "Lemon-scented Gum (Corymbia citriodora)" cannot be a Citrus. When the
+# bracketed genus disagrees with the record we matched, the match is dropped.
+# On 2026-10-15 that removed 119 wrong matches, from Mock Orange (Murraya) to
+# Pineapple Lily (Eucomis), and no right ones.
+#
+# Genus only, never the species epithet: "Black Walnut (Juglans nigra)" is a
+# walnut even though the Walnut record says Juglans regia.
+#
+# A title genus has to look like one. "(Bare rooted)", "(Qld only)" and
+# "(New variety)" are capitalised word pairs too, so the second word must
+# carry a Latin ending and the first must not be a known English word.
+_TITLE_BINOMIAL_RE = re.compile(r"\(\s*([A-Z][a-z]{2,})\s+(?:[x×]\s*)?([a-z][a-z\-]{2,})")
+_LATIN_EPITHET_RE = re.compile(
+    r"(?:a|ae|i|ii|o|um|us|is|ensis|oides|ex|ix|on|ans|ens|or|ys|os|es)$")
+_NOT_A_GENUS = frozenset({
+    "advanced", "bare", "dwarf", "fruit", "grafted", "new", "nut", "organic",
+    "pick", "pickup", "qld", "queen", "seedling", "tropical", "velvick",
+})
+_NOT_AN_EPITHET = frozenset({"trees", "species", "rootstock", "only", "plants"})
+
+# Botanists move species between genera, and nursery labels lag by decades:
+# feijoa is still sold as "Feijoa sellowiana" (now Acca), jaboticaba as
+# "Myrciaria cauliflora" (now Plinia), finger lime as "Citrus australasica".
+# Genera in one group are the same genus for this check. Acmena and
+# Waterhousia are here because both were sunk into Syzygium, which keeps the
+# Lilly Pilly record's Acmena smithii hedging plants.
+_GENUS_GROUPS = (
+    {"acca", "feijoa"},
+    {"plinia", "myrciaria"},
+    {"syzygium", "eugenia", "acmena", "waterhousia"},
+    {"selenicereus", "hylocereus"},
+    {"annona", "rollinia"},
+    {"citrus", "microcitrus", "eremocitrus", "fortunella", "poncirus"},
+    {"vasconcellea", "carica"},
+    {"solanum", "cyphomandra"},
+    {"synsepalum", "richadella"},
+    {"manilkara", "achras"},
+    {"ziziphus", "zizyphus"},
+    {"pouteria", "lucuma"},
+    {"tasmannia", "drimys"},
+    {"dimocarpus", "euphoria"},
+    {"prunus", "amygdalus", "armeniaca", "cerasus", "persica"},
+)
+
+
+def _same_genus(a: str, b: str) -> bool:
+    a, b = a.lower(), b.lower()
+    return a == b or any(a in g and b in g for g in _GENUS_GROUPS)
+
+
+def title_binomial(title: str) -> tuple[str, str] | None:
+    """(genus, epithet) of a bracketed botanical name in the title, or None."""
+    for m in _TITLE_BINOMIAL_RE.finditer(title):
+        genus, epithet = m.group(1), m.group(2)
+        if genus.lower() in _NOT_A_GENUS or epithet in _NOT_AN_EPITHET:
+            continue
+        if not _LATIN_EPITHET_RE.search(epithet):
+            continue
+        return genus, epithet
+    return None
+
+
+def title_genus(title: str) -> str | None:
+    """The genus of a bracketed botanical name in the title, or None."""
+    b = title_binomial(title)
+    return b[0] if b else None
+
+
+def latin_disagrees(title: str, latin: str) -> str | None:
+    """The title's own binomial when it names a different SPECIES from the
+    latin name we show, else None. The genus can no longer disagree (1.8
+    drops those matches), so what this finds is a lumped record whose name
+    is too narrow: "Black Walnut (Juglans nigra)" shown as Juglans regia.
+    The nightly /admin report lists them so the next one is found by a
+    machine rather than by Benedict reading the homepage."""
+    b = title_binomial(title)
+    if not b or not latin:
+        return None
+    words = latin.lower().replace("×", " ").replace("/", " ").split()
+    if "spp." in words or b[1].lower() in words:
+        return None
+    return f"{b[0]} {b[1]}"
+
+
+def _record_genus(value: dict) -> str:
+    """Genus of a lookup value: a full species record or a compressed entry."""
+    latin = value.get("latin_name") or value.get("ln") or ""
+    return latin.split()[0] if latin else ""
+
+
+def _contradicts_title(title: str, value: dict) -> bool:
+    b, ours = title_binomial(title), _record_genus(value)
+    # A lookup built without latin names (the /admin category matcher) has
+    # nothing to contradict.
+    if not (b and ours):
+        return False
+    if not _same_genus(b[0], ours):
+        return True
+    # "epithet_strict" records are one species in a genus full of ornamentals:
+    # every fig sold as fruit is Ficus carica, while "'Midnight Petite' Fig
+    # (Ficus benjamina)" and Ficus microcarpa are houseplants and hedges.
+    if value.get("epithet_strict") or value.get("es"):
+        latin = (value.get("latin_name") or value.get("ln") or "").split()
+        return len(latin) > 1 and b[1].lower() != latin[1].lower()
+    return False
+
+
+def _rejected(title: str, t_lower: str, candidate: str, value: dict) -> bool:
+    """Every reason a found candidate is still not the product's species."""
+    return (_is_ornamental_relative(t_lower, candidate)
+            or _names_another_plant(title.lower())
+            or _contradicts_title(title, value))
+
+
 # --- Derived lookup keys (1.6b) -----------------------------------------
 #
 # match_title only ever matched a registry name written exactly as the
@@ -200,6 +446,17 @@ def _add_derived(lookup: dict, names_to_value: list) -> None:
             lookup.setdefault(key, value)
 
 
+def _match_names(record: dict) -> list[str]:
+    """A record's synonyms plus its "match_synonyms".
+
+    match_synonyms are names this matcher should recognise but the variety
+    parser (cultivar_parsing) must not: adding "Cherry Guava" as a plain
+    synonym rewrote the live /variety/cherry-guava-red page's slug to
+    guava-cherry-red. Variety slugs carry watches and inbound links, so a
+    name that only fixes the species bucket goes here instead."""
+    return list(record.get("synonyms", [])) + list(record.get("match_synonyms", []))
+
+
 def build_species_lookup(species_list: list[dict] | None = None) -> dict:
     """Lowercase common_name/synonym -> the FULL species record."""
     if species_list is None:
@@ -209,7 +466,7 @@ def build_species_lookup(species_list: list[dict] | None = None) -> dict:
     for s in species_list:
         lookup[s["common_name"].lower()] = s
         derived.append((s["common_name"], s))
-        for syn in s.get("synonyms", []):
+        for syn in _match_names(s):
             if syn:
                 lookup[syn.lower()] = s
                 derived.append((syn, s))
@@ -218,7 +475,14 @@ def build_species_lookup(species_list: list[dict] | None = None) -> dict:
 
 
 def load_species_lookup() -> dict:
-    """Load fruit species data and build a title-matching lookup."""
+    """Load fruit species data and build a title-matching lookup.
+
+    A record may carry "synonym_latin": {synonym: latin}, for records that
+    lump several species under one bucket. Custard Apple holds atemoya,
+    cherimoya and bullock's heart, three species with three names; the record's
+    single latin_name was printed beside all of them. The synonym's own entry
+    carries the override as "pln" (product latin name). "ln" stays the
+    record's name, because per-species tables (nursery pages) read it."""
     species = enabled_species()
 
     lookup = {}
@@ -235,83 +499,94 @@ def load_species_lookup() -> dict:
         parts = s["latin_name"].split()
         if len(parts) >= 2:
             entry["g"] = parts[0]  # genus
+        if s.get("epithet_strict"):
+            entry["es"] = True  # see _contradicts_title
 
+        overrides = {k.lower(): v for k, v in (s.get("synonym_latin") or {}).items()}
         lookup[common] = entry
         derived.append((s["common_name"], entry))
-        for syn in s.get("synonyms", []):
+        for syn in _match_names(s):
             if syn:
-                lookup[syn.lower()] = entry
-                derived.append((syn, entry))
+                value = entry
+                if syn.lower() in overrides:
+                    value = dict(entry, pln=overrides[syn.lower()])
+                lookup[syn.lower()] = value
+                derived.append((syn, value))
 
     _add_derived(lookup, derived)
     return lookup
 
 
-def match_title(title: str, lookup: dict):
-    """Match a product title to a lookup entry (values returned as-is)."""
+def _find(title: str, lookup: dict):
+    """(candidate, t_lower, t_orig, leading) for the species named in a title,
+    or None. A candidate that is found but rejected is None too: the title
+    named a fruit word and it was the wrong plant, so nothing else in the
+    title is trusted to be the species either."""
     title = _strip_invisible(title)
     pairs = [(title.lower(), title), _cleaned(title)]
-    for t_lower, _ in pairs:
-        candidate = _leading_candidate(t_lower, lookup)
-        if candidate:
-            if _is_ornamental_relative(t_lower, candidate):
-                return None
-            return lookup[candidate]
-    for t_lower, _ in pairs:
-        candidate = _fallback_candidate(t_lower, lookup)
-        if candidate:
-            if _is_ornamental_relative(t_lower, candidate):
-                return None
-            return lookup[candidate]
+    pairs = [(_mask_not_the_fruit(tl), to) for tl, to in pairs]
+    for leading, finder in ((True, _leading_candidate), (False, _fallback_candidate)):
+        for t_lower, t_orig in pairs:
+            candidate = finder(t_lower, lookup)
+            if candidate:
+                if _rejected(title, t_lower, candidate, lookup[candidate]):
+                    return None
+                return candidate, t_lower, t_orig, leading
     return None
+
+
+def match_title(title: str, lookup: dict):
+    """Match a product title to a lookup entry (values returned as-is)."""
+    found = _find(title, lookup)
+    return lookup[found[0]] if found else None
+
+
+def _match_span(t_orig: str, name: str) -> tuple[int, int]:
+    """(index, length) of name in the original title, or (-1, 0)."""
+    idx = t_orig.lower().find(name)
+    return (idx, len(name)) if idx >= 0 else (-1, 0)
 
 
 def match_species(title: str, lookup: dict) -> dict | None:
     """match_title on the compressed-entry lookup, plus cultivar extraction."""
-    title = _strip_invisible(title)
-    pairs = [(title.lower(), title), _cleaned(title)]
+    found = _find(title, lookup)
+    if not found:
+        return None
+    candidate, _, t_orig, leading = found
+    result = dict(lookup[candidate])
+    cn = result["cn"].lower()
 
-    for t_lower, t_orig in pairs:
-        candidate = _leading_candidate(t_lower, lookup)
-        if candidate:
-            if _is_ornamental_relative(t_lower, candidate):
-                return None
-            result = dict(lookup[candidate])
-            # Extract cultivar: everything after the matched common name
-            matched = lookup[candidate]["cn"]
-            # Find where the match ends in the original title
-            match_idx = t_orig.lower().find(matched.lower())
-            if match_idx >= 0:
-                remainder = t_orig[match_idx + len(matched):].strip(" -–—'\"")
+    if leading:
+        # Whichever of the matched name and the common name ENDS later. A
+        # synonym match ("Cherimoya - Sofia" on the Custard Apple record) has
+        # no common name in it, and looking only for that lost the variety;
+        # "Pluot Plum - Black Adder" has both, and the variety follows "Plum".
+        spans = [_match_span(t_orig, name) for name in (candidate, cn)]
+        spans = [sp for sp in spans if sp[0] >= 0]
+        match_idx, match_len = max(spans, key=lambda sp: sp[0] + sp[1]) if spans else (-1, 0)
+        # Extract cultivar: everything after the matched name
+        if match_idx >= 0:
+            remainder = t_orig[match_idx + match_len:].strip(" -–—'\",:;")
+        else:
+            remainder = ""
+        if remainder and not remainder.startswith("("):
+            # Check for quoted cultivar name: "Apple 'Granny Smith'"
+            cv_match = re.match(r"['\"]([^'\"]+)['\"]", remainder)
+            if cv_match:
+                result["cv"] = cv_match.group(1)
             else:
-                remainder = ""
-            if remainder and not remainder.startswith("("):
-                # Check for quoted cultivar name: "Apple 'Granny Smith'"
-                cv_match = re.match(r"['\"]([^'\"]+)['\"]", remainder)
-                if cv_match:
-                    result["cv"] = cv_match.group(1)
-                else:
-                    cv = remainder.split(" - ")[0].split(" (")[0].strip()
-                    # Don't treat size/pot info as cultivar
-                    if cv and not re.match(r'\d+mm|\d+cm|\d+ltr|pot|pack|pick\s*up', cv.lower()):
-                        result["cv"] = cv
-            return result
-
-    for t_lower, t_orig in pairs:
-        candidate = _fallback_candidate(t_lower, lookup)
-        if candidate:
-            if _is_ornamental_relative(t_lower, candidate):
-                return None
-            result = dict(lookup[candidate])
-            # Cultivar is the part BEFORE the species name
-            matched = lookup[candidate]["cn"]
-            match_idx = t_orig.lower().find(matched.lower())
-            if match_idx > 0:
-                cv = t_orig[:match_idx].strip(" -–—'\"()")
-                # Remove trailing size info like (dwarf), (medium), (semi-dwarf)
-                cv = re.sub(r'\s*\(?(dwarf|semi-dwarf|standard|medium|large|small|miniature)\)?$', '', cv, flags=re.I).strip()
-                if cv and not re.match(r'\d+mm|\d+cm|\d+ltr|pot|pack', cv.lower()):
+                cv = remainder.split(" - ")[0].split(" (")[0].strip()
+                # Don't treat size/pot info as cultivar
+                if cv and not re.match(r'\d+mm|\d+cm|\d+ltr|pot|pack|pick\s*up|(?:tree|plant)s?$', cv.lower()):
                     result["cv"] = cv
-            return result
+        return result
 
-    return None
+    # Cultivar is the part BEFORE the species name
+    match_idx, _ = _match_span(t_orig, cn)
+    if match_idx > 0:
+        cv = t_orig[:match_idx].strip(" -–—'\"()")
+        # Remove trailing size info like (dwarf), (medium), (semi-dwarf)
+        cv = re.sub(r'\s*\(?(dwarf|semi-dwarf|standard|medium|large|small|miniature)\)?$', '', cv, flags=re.I).strip()
+        if cv and not re.match(r'\d+mm|\d+cm|\d+ltr|pot|pack', cv.lower()):
+            result["cv"] = cv
+    return result

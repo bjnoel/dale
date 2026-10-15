@@ -201,6 +201,27 @@ class DashboardIntegrationTest(unittest.TestCase):
             self.assertIn("generated_at", report)
             self.assertEqual(report["nurseries"]["daleys"]["total"], 2)
             self.assertEqual(report["nurseries"]["daleys"]["unclassified"], 1)
+            self.assertEqual(report["latin_mismatches"], {"count": 0, "examples": []})
+
+    def test_all_records_matcher_honours_the_title_binomial(self):
+        # Its lookup carries latin names, so the 1.8 veto applies here too:
+        # a hedge plant is unclassified, not fruit.
+        matcher = self.bd._all_records_category_matcher()
+        self.assertIsNone(matcher("Mock Orange (Murraya paniculata)"))
+        self.assertEqual(matcher("Feijoa Mammoth (Feijoa sellowiana)"), "fruit")
+
+    def test_latin_mismatches_lists_titles_naming_another_species(self):
+        products = [
+            {"t": "Black Walnut (Juglans nigra)", "nk": "ladybird", "ln": "Juglans regia"},
+            {"t": "Walnut Chandler (Juglans regia)", "nk": "daleys", "ln": "Juglans regia"},
+            {"t": "Lilly Pilly Minor (Acmena smithii)", "nk": "ladybird", "ln": "Syzygium spp."},
+            {"t": "Plum Gulf Ruby (Prunus salicina)", "nk": "daleys",
+             "ln": "Prunus salicina / domestica"},
+            {"t": "Mango - R2E2", "nk": "daleys", "ln": "Mangifera indica"},
+        ]
+        report = self.bd.latin_mismatches(products)
+        self.assertEqual(report["count"], 1)
+        self.assertEqual(report["examples"][0]["says"], "Juglans nigra")
 
 
 if __name__ == "__main__":

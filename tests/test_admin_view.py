@@ -257,6 +257,20 @@ class BuildHealthModelTest(unittest.TestCase):
         page = admin_view._needs_review_section(None)
         self.assertIn("No needs-review report yet", page)
 
+    def test_latin_mismatch_section(self):
+        report = {"latin_mismatches": {"count": 1, "examples": [
+            {"t": "Black Walnut (Juglans nigra)", "nk": "ladybird",
+             "ln": "Juglans regia", "says": "Juglans nigra"}]}}
+        page = admin_view._latin_mismatch_section(report)
+        self.assertIn("Botanical names", page)
+        self.assertIn("Black Walnut (Juglans nigra)", page)
+        self.assertIn("<i>Juglans regia</i>", page)
+        self.assertIn("No product title", admin_view._latin_mismatch_section(
+            {"latin_mismatches": {"count": 0, "examples": []}}))
+        # Reports written before the field existed render nothing.
+        self.assertEqual(admin_view._latin_mismatch_section({"nurseries": {}}), "")
+        self.assertEqual(admin_view._latin_mismatch_section(None), "")
+
     def test_full_page_includes_needs_review_section(self):
         model = admin_view.build_admin_model(SUBSCRIBERS, PENDING, WATCHES)
         page = admin_view.render_nurseries_html(model)

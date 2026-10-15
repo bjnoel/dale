@@ -269,5 +269,41 @@ class RenderExcerptTests(unittest.TestCase):
         self.assertEqual(vd.render_excerpt("anything", "no-such-species-xyz"), "")
 
 
+
+class VarietyLatinTest(unittest.TestCase):
+    """The Plum record is Japanese and European plums together, and no title
+    says which. The variety blurb's own opening sentence does, so the
+    dashboard prints it instead of "Prunus salicina / domestica"."""
+
+    def test_names_the_variety_itself(self):
+        cases = {
+            ("plum-amber-jewel", "plum"): "Prunus salicina",
+            ("plum-green-gage", "plum"): "Prunus domestica",
+            # "subsp." inside the bracket must not end the sentence
+            ("plum-damson", "plum"): "Prunus domestica subsp. insititia",
+            ("custard-apple-bays", "custard-apple"): "Annona cherimola",
+        }
+        for (variety, species), latin in cases.items():
+            with self.subTest(variety=variety):
+                self.assertEqual(vd.variety_latin(variety, species, latin.split()[0]), latin)
+
+    def test_ignores_parents_ancestry_and_rootstock(self):
+        # "the hybrid of sugar apple (Annona squamosa)", "native ancestry
+        # (Vaccinium darrowii)" in sentence two, "grafted onto blue
+        # passionflower (Passiflora caerulea) rootstock"
+        for variety, species, genus in (("custard-apple-geffner", "custard-apple", "Annona"),
+                                        ("lime-sunrise", "lime", "Citrus"),
+                                        ("blueberry-biloxi", "blueberry", "Vaccinium"),
+                                        ("passionfruit-nellie-kelly", "passionfruit", "Passiflora")):
+            with self.subTest(variety=variety):
+                self.assertEqual(vd.variety_latin(variety, species, genus), "")
+
+    def test_another_genus_is_not_trusted(self):
+        self.assertEqual(vd.variety_latin("plum-amber-jewel", "plum", "Annona"), "")
+
+    def test_unknown_variety(self):
+        self.assertEqual(vd.variety_latin("plum-no-such-thing", "plum", "Prunus"), "")
+
+
 if __name__ == "__main__":
     unittest.main()
