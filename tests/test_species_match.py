@@ -604,6 +604,15 @@ class NotTheFruitTest(unittest.TestCase):
             with self.subTest(title=title):
                 self.assertIsNone(self._cn(title))
 
+    def test_lemon_drop_is_never_a_lemon(self):
+        self.assertNotEqual(self._cn("Lemon drop - Mangosteen"), "Lemon")
+        self.assertIsNone(self._cn("Tropical - Lemon Drop Mangosteen"))
+
+    def test_the_longer_leading_name_wins_over_a_dwarf_synonym(self):
+        # "Dwarf Plum" is a Plum synonym; "Plum Pine" (after the prefix) is longer.
+        self.assertEqual(self._cn("Dwarf Plum Pine"), "Illawarra Plum")
+        self.assertEqual(self._cn("Dwarf Plum - Santa Rosa"), "Plum")
+
     def test_masking_lets_the_real_species_through(self):
         # The masked phrase hides only its own fruit word.
         self.assertEqual(self._cn("Cherry Guava Red  50mm pots"), "Guava")
@@ -734,7 +743,7 @@ class SynonymLatinTest(unittest.TestCase):
             "Plum - Santa Rosa": "Prunus salicina / domestica",
             "Japanese Plum Satsuma": "Prunus salicina",
             "Angelina Burdett European Plum": "Prunus domestica",
-            "Tahitian Lime: QLD ONLY": "Citrus × latifolia",
+            "Tahitian Lime: QLD ONLY": "Citrus latifolia",  # as the lime blurbs spell it
             "Lilly Pilly - Resilience": "Syzygium spp.",
         }
         for title, latin in cases.items():

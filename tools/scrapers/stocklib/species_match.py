@@ -211,7 +211,7 @@ _NOT_THE_FRUIT = (
     # lemon / lime
     "lemon scented", "lemon-scented", "lemon aspen", "lemon grass", "lemongrass",
     "lemon balm", "lemon verbena", "lemon thyme", "lemon savory",
-    "lemon bergamot", "lemon drop mangosteen", "lemon ball", "lemon button",
+    "lemon bergamot", "lemon drop mangosteen", "lemon drop", "lemon ball", "lemon button",
     "native lemon", "small leaf lime", "large leaf lime", "spanish lime",
     # cherry
     "cedar bay cherry", "beach cherry", "brush cherry", "bush cherry",
@@ -525,13 +525,30 @@ def _find(title: str, lookup: dict):
     title = _strip_invisible(title)
     pairs = [(title.lower(), title), _cleaned(title)]
     pairs = [(_mask_not_the_fruit(tl), to) for tl, to in pairs]
-    for leading, finder in ((True, _leading_candidate), (False, _fallback_candidate)):
-        for t_lower, t_orig in pairs:
-            candidate = finder(t_lower, lookup)
-            if candidate:
-                if _rejected(title, t_lower, candidate, lookup[candidate]):
-                    return None
-                return candidate, t_lower, t_orig, leading
+
+    # Leading: the raw title and the prefix-stripped one can both match, and
+    # the one reaching further into the title wins. "Dwarf Plum Pine" matched
+    # the Plum synonym "Dwarf Plum" before the stripped "Plum Pine" (Illawarra
+    # Plum) was ever tried. On a tie the raw title wins, as it always did.
+    best = None
+    for t_lower, t_orig in pairs:
+        candidate = _leading_candidate(t_lower, lookup)
+        if candidate:
+            end = len(title) - len(t_orig) + len(candidate)
+            if best is None or end > best[0]:
+                best = (end, candidate, t_lower, t_orig)
+    if best:
+        _, candidate, t_lower, t_orig = best
+        if _rejected(title, t_lower, candidate, lookup[candidate]):
+            return None
+        return candidate, t_lower, t_orig, True
+
+    for t_lower, t_orig in pairs:
+        candidate = _fallback_candidate(t_lower, lookup)
+        if candidate:
+            if _rejected(title, t_lower, candidate, lookup[candidate]):
+                return None
+            return candidate, t_lower, t_orig, False
     return None
 
 
