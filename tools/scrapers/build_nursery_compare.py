@@ -100,7 +100,6 @@ def build_compare_page(nurseries_data: dict, species_lookup: dict, today: str) -
         })
 
     # Summary stats
-    wa_count = sum(1 for r in rows if r["wa"])
     total_in_stock = sum(r["in_stock"] for r in rows)
     total_products = sum(r["total"] for r in rows)
 
@@ -129,7 +128,7 @@ def build_compare_page(nurseries_data: dict, species_lookup: dict, today: str) -
         total_nurseries=total_nurseries,
         total_in_stock_fmt=f"{total_in_stock:,}",
         total_products_fmt=f"{total_products:,}",
-        wa_count=wa_count, today=today, row_view=row_view,
+        today=today, row_view=row_view,
     )
 
 

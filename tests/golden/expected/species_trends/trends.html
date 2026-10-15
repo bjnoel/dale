@@ -111,12 +111,12 @@ document.addEventListener('click', function(e) {
   <div class="mb-6">
     <h1 class="text-3xl font-bold text-green-900 mb-2">Market Trends</h1>
     <p class="text-gray-600 mb-3">
-      Availability and price trends for 50 species across 27 Australian nurseries.
-      Updated daily. 0 days of data (N/A).
+      How stock and prices are moving for each species we track, across 27 Australian
+      nurseries. Updated daily, using the last 0 days of data (N/A).
     </p>
     <p class="text-xs text-gray-400">
-      Trends compare last 7 days vs prior 7 days. ↑ = rising, ↓ = falling, → = stable.
-      Availability % = days this species had any stock in the tracked period.
+      Trends compare the last 7 days with the 7 days before. ↑ rising, ↓ falling, → steady.
+      Availability is the share of days a species had any stock.
     </p>
   </div>
 
@@ -125,25 +125,25 @@ document.addEventListener('click', function(e) {
     <h2 class="text-lg font-semibold text-gray-800 mb-1">Good time to buy</h2>
     <p class="text-sm text-gray-500 mb-3">Well-stocked species with stable or falling prices.</p>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      <p class='text-sm text-gray-400'>No clear signals yet. Check back as more data accumulates.</p>
+      <p class='text-sm text-gray-400'>Nothing stands out right now.</p>
     </div>
   </section>
 
   <!-- Act fast -->
   <section class="mb-8">
-    <h2 class="text-lg font-semibold text-gray-800 mb-1">Act fast</h2>
-    <p class="text-sm text-gray-500 mb-3">Rare species that are in stock now but hard to find (in stock less than 30% of tracked days).</p>
+    <h2 class="text-lg font-semibold text-gray-800 mb-1">Hard to find, in stock now</h2>
+    <p class="text-sm text-gray-500 mb-3">Species that are in stock today but have had stock on less than 30% of days.</p>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      <p class='text-sm text-gray-400'>No rare in-stock species right now.</p>
+      <p class='text-sm text-gray-400'>No hard-to-find species in stock right now.</p>
     </div>
   </section>
 
   <!-- Trending up -->
   <section class="mb-8">
     <h2 class="text-lg font-semibold text-gray-800 mb-1">Stock trending up</h2>
-    <p class="text-sm text-gray-500 mb-3">Species with more stock available recently than last week.</p>
+    <p class="text-sm text-gray-500 mb-3">Species with more stock this week than last week.</p>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      <p class='text-sm text-gray-400'>No species with notably rising stock right now.</p>
+      <p class='text-sm text-gray-400'>Nothing's trending up right now.</p>
     </div>
   </section>
 
@@ -1265,17 +1265,16 @@ document.addEventListener('click', function(e) {
       </table>
     </div>
     <p class="text-xs text-gray-400 mt-3">
-      Availability = % of days tracked that species had at least one product in stock.
-      Price shown is current lowest available price across all nurseries.
+      Availability is the percentage of days a species had at least one plant in stock.
+      Price is the lowest current price across all nurseries.
     </p>
   </section>
 
   <section class="p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600">
     <p class="font-medium text-gray-700 mb-1">About this data</p>
     <p>
-      treestock.com.au scrapes 27 Australian nurseries daily. This page shows 0 days of accumulated
-      data (since launch). Seasonal patterns become clearer with 90+ days.
-      Check back monthly for stronger signals.
+      We check 27 Australian nurseries every day. This page uses the last 0 days
+      of that data (since launch).
     </p>
   </section>
 </main>
@@ -1300,8 +1299,8 @@ document.addEventListener('click', function(e) {
     <a href="/compare/" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare</a> &middot;
     <a href="/rare.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Rare Finds</a>
     <p class="mt-2"><a href="/buy-fruit-trees-wa.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in WA</a> &middot; <a href="/buy-fruit-trees-qld.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in QLD</a> &middot; <a href="/buy-fruit-trees-nsw.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in NSW</a> &middot; <a href="/buy-fruit-trees-vic.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in VIC</a> &middot; <a href="/compare/nurseries.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare Nurseries</a> &middot; <a href="/treesmith.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Treesmith app</a></p>
-    <p class="mt-2">Data updated daily. Prices and availability may change.</p>
-    <p class="mt-1">Some nursery links earn us a commission. It never affects search results or ordering. <a href="/affiliate-disclosure.html" class="underline">How this works</a></p>
+    <p class="mt-2">Updated daily, but prices and stock can change between updates.</p>
+    <p class="mt-1">Some nursery links earn us a small commission. It doesn't change the search results or the order they're in. <a href="/affiliate-disclosure.html" class="underline">How this works</a></p>
     <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
   </div>
 </footer>

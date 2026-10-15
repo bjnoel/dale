@@ -77,14 +77,14 @@
 <div class="hero">
   <div class="hero-inner">
     <h1>Your daily fruit tree digest</h1>
-    <p>Price drops, restocks, and new arrivals from {{ n }} Australian nurseries — delivered free each morning.</p>
-    <p class="meta">Real example from {{ today }}. Sent every day, unsubscribe any time.</p>
+    <p>Price drops, restocks and new arrivals from {{ n }} Australian nurseries, in your inbox each morning. It's free.</p>
+    <p class="meta">This is the real email from {{ today }}. It goes out every day and you can unsubscribe any time.</p>
     <div class="features">
       <span class="feature">📦 {{ n }} nurseries</span>
       <span class="feature">💰 Price drop alerts</span>
       <span class="feature">✅ Restock notifications</span>
       <span class="feature">🆕 New arrivals</span>
-      <span class="feature">🚛 WA shipping filter</span>
+      <span class="feature">🚛 Filter by state</span>
     </div>
   </div>
 </div>
@@ -96,7 +96,7 @@
   {{ highlights_section|safe }}
 
   <hr class="divider">
-  <p class="email-label">Full digest — sent to subscribers this morning</p>
+  <p class="email-label">The full email subscribers got this morning</p>
   <div class="email-frame">
     {{ email_body|safe }}
   </div>
@@ -113,7 +113,7 @@
     <a href="/rare.html">Rare &amp; Exotic</a> ·
     <a href="/compare/">Compare prices</a>
   </p>
-  <p style="margin-top:6px">Data updated daily from {{ n }} Australian nurseries. Not affiliated with any nursery.</p>
+  <p style="margin-top:6px">Updated daily from {{ n }} Australian nurseries.</p>
 </footer>
 
 {{ js1|safe }}

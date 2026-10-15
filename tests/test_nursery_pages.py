@@ -207,14 +207,14 @@ class DormantNurseryTests(unittest.TestCase):
         html = self.page("2026-08-30")
         self.assertIn("closed online sales for 2026", html)
         self.assertIn("on-farm clearance", html)
-        self.assertNotIn("We have not been able to reach", html)
+        self.assertNotIn("We haven't been able to reach", html)
 
     def test_unknown_reason_falls_back_to_the_generic_wording(self):
         data = snapshot([product(t) for t in TREES],
                         scraped_at="2026-08-23T00:26:29")
         html = build_nursery_page("guildford", data, {}, today="2026-08-30")
         self.assertIn("Closed for the season", html)
-        self.assertIn("We have not been able to reach Guildford Garden Centre", html)
+        self.assertIn("We haven't been able to reach Guildford Garden Centre", html)
 
     def test_dormancy_outranks_the_low_stock_banner(self):
         """"Only 0% of tracked products are in stock, check back later" is the
@@ -231,13 +231,13 @@ class DormantNurseryTests(unittest.TestCase):
         monitoring three paragraphs later has not really said anything."""
         html = self.page("2026-08-30")
         self.assertNotIn("other nurseries daily", html)
-        self.assertIn("weekly while they are closed", html)
+        self.assertIn("weekly while they're closed", html)
         self.assertNotIn("Showing top 20 in-stock products", html)
 
     def test_live_page_keeps_the_original_small_print(self):
         html = self.page("2026-08-23")
         self.assertIn("other nurseries daily", html)
-        self.assertNotIn("weekly while they are closed", html)
+        self.assertNotIn("weekly while they're closed", html)
 
     def test_index_card_agrees_with_the_profile_page(self):
         index = build_index_page({"heritage-fruit-trees": self.data}, {}, "2026-08-30")

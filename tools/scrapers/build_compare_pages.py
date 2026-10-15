@@ -283,7 +283,7 @@ def build_compare_redirect_stub(slug: str, entry: dict) -> str:
         target_title=f"{name} Trees",
         target_href=target_href,
         heading=f"{name} price comparison has moved",
-        lede=(f"Too few nurseries are listing {name} to compare prices across them. "
+        lede=(f"Not enough nurseries have {name} to compare prices. "
               f"The {name} species page has every current listing, with prices and "
               f"shipping."),
     )

@@ -236,9 +236,9 @@ def render_dormancy_banner(meta: dict, name: str, scraped_at_fmt: str) -> str:
     the number below is a record, not an offer.
     """
     note = meta.get("dormant_note") or (
-        f"We have not been able to reach {name} since {scraped_at_fmt}, so the stock "
-        "below is the last we recorded rather than current availability. We keep "
-        "checking weekly and this page updates as soon as they are back."
+        f"We haven't been able to reach {name} since {scraped_at_fmt}, so the stock "
+        "below is from our last check and might not be available now. We'll keep "
+        "checking weekly and update this page when they're back."
     )
     return (
         '<div class="border rounded-lg p-4 mb-6 text-sm bg-amber-50 border-amber-200 text-amber-900">'
@@ -312,8 +312,8 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
         seasonality_banner = (
             '<div class="border rounded-lg p-4 mb-6 text-sm bg-amber-50 border-amber-200 text-amber-900">'
             '<p class="font-semibold mb-1">Low stock period</p>'
-            f'<p>Only {pct_str} of tracked products are currently in stock. '
-            'Check back later or browse other nurseries for more options.</p>'
+            f'<p>Only {pct_str} of the products we track here are in stock right now. '
+            'Check back later, or try another nursery.</p>'
             '</div>'
         )
 
@@ -358,7 +358,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
     # stays. Its cadence claim does not survive the backoff, though, and "daily"
     # on the one page that just said checks are paused is the sort of small lie
     # that costs more than the sentence is worth.
-    monitor_cadence = "weekly while they are closed" if dormant else "daily"
+    monitor_cadence = "weekly while they're closed" if dormant else "daily"
 
     restrict_badge = f'<span class="text-xs px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-semibold ml-2">{restrict}</span>' if restrict else ''
     tag_badges_tw = "".join(f'<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 border border-gray-200 rounded mr-1 mb-1 whitespace-nowrap">{t}</span>' for t in tags)
@@ -490,57 +490,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
 
   <p class="text-xs text-gray-400 mt-4">{freshness_line}</p>
 
-  <!-- Subscribe CTA -->
-  <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-sm">
-    <p class="font-medium text-green-800 mb-1">Get restock alerts for {name}</p>
-    <p class="text-gray-600 mb-3">We monitor {name} and {nursery_count_minus_one} other nurseries {monitor_cadence}. Free email when varieties restock or prices drop.</p>
-    <form id="nurserySubForm" class="flex flex-col sm:flex-row gap-2 flex-wrap">
-      <input type="email" id="nurserySubEmail" placeholder="your@email.com" required
-        class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 max-w-xs">
-      <select id="nurserySubState" class="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
-        <option value="ALL">All states</option>
-        <option value="NSW">NSW</option><option value="VIC">VIC</option>
-        <option value="QLD">QLD</option><option value="WA">WA</option>
-        <option value="SA">SA</option><option value="TAS">TAS</option>
-        <option value="NT">NT</option><option value="ACT">ACT</option>
-      </select>
-      <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">
-        Get free alerts
-      </button>
-    </form>
-    <div id="nurserySubMessage" class="mt-2 text-sm hidden"></div>
-  </div>
-  <script>
-  document.getElementById('nurserySubForm').addEventListener('submit', function(e) {{
-    e.preventDefault();
-    var email = document.getElementById('nurserySubEmail').value.trim();
-    var state = document.getElementById('nurserySubState').value;
-    var msg = document.getElementById('nurserySubMessage');
-    fetch('/api/subscribe', {{
-      method: 'POST',
-      headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{email: email, state: state}})
-    }})
-    .then(function(r) {{ return r.json().then(function(d) {{ return {{status: r.status, data: d}}; }}); }})
-    .then(function(res) {{
-      if (res.status === 202) {{
-        msg.textContent = '\u2713 Check your email \u2014 we sent you a confirmation link.';
-      }} else if (res.data.message && res.data.message.includes('already')) {{
-        msg.textContent = 'You\'re already subscribed.';
-      }} else {{
-        msg.textContent = '\u2713 Done! You\'ll get alerts when stock changes.';
-      }}
-      msg.className = 'mt-2 text-sm text-green-700';
-      msg.classList.remove('hidden');
-      document.getElementById('nurserySubForm').style.display = 'none';
-    }})
-    .catch(function() {{
-      msg.textContent = 'Something went wrong \u2014 please try again.';
-      msg.className = 'mt-2 text-sm text-red-600';
-      msg.classList.remove('hidden');
-    }});
-  }});
-  </script>
+  <p class="text-xs text-gray-400 mt-1">We check {name} and {nursery_count_minus_one} other nurseries {monitor_cadence}.</p>
 </main>
 
 {footer}
@@ -609,7 +559,7 @@ def build_index_page(nurseries_data: dict, species_lookup: dict, today: str) -> 
 
 <main class="{CONTENT_MAX_WIDTH} mx-auto px-4 py-6">
   <h1 class="text-2xl font-bold text-gray-900 mb-1">Australian Fruit Tree Nurseries</h1>
-  <p class="text-gray-500 text-sm mb-2">Daily stock tracking across {count} nurseries. Updated {today}.</p>
+  <p class="text-gray-500 text-sm mb-2">We check stock at {count} nurseries every day. Updated {today}.</p>
   <p class="text-sm mb-6"><a href="/compare/nurseries.html" class="text-green-700 hover:underline">Compare all nurseries side-by-side &rarr;</a></p>
 
   <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

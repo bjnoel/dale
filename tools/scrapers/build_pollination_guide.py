@@ -57,13 +57,13 @@ FAMILIES = [
             ("Most mid-season apples (Pink Lady, Fuji, Gala, Granny Smith)", None,
              "Pollinate each other freely: plant any two whose flowering overlaps.", "research-backed"),
             ("Triploid varieties (Gravenstein, Bramley's Seedling, Jonagold)", None,
-             "Have sterile pollen and cannot pollinate anything, so they need TWO other diploid apples nearby, not one.", "research-backed"),
+             "Have sterile pollen and can't pollinate anything, so they need two other diploid apples nearby (one isn't enough).", "research-backed"),
             ("Crabapple", None,
              "Any ornamental crabapple (a small-fruited Malus such as Gorgeous, Golden Hornet or Jack Humm), not a seedling apple and not one special variety. It flowers long and heavily, so a single crab in the garden pollinates a mix of apple varieties.", "established-practice"),
         ],
         "notes": (
             "No room for two trees? A multi-graft apple (several varieties on one trunk) or a self-fertile "
-            "variety such as some strains of Granny Smith solves it. Bees do the actual work, so avoid spraying "
+            "variety such as some strains of Granny Smith solves it. Bees do the work, so don't spray "
             "insecticide during blossom."
         ),
         "sources": [
@@ -105,9 +105,9 @@ FAMILIES = [
         "need_partner": True,
         "intro": (
             "Older sweet cherries are self-incompatible and sorted into 'incompatibility groups': two cherries "
-            "in the same group will not pollinate each other, so you must pick a compatible pair from different "
-            "groups with overlapping bloom. The modern shortcut is a self-fertile variety, which crops alone AND "
-            "pollinates almost any other cherry."
+            "in the same group won't pollinate each other, so you need to pick a compatible pair from different "
+            "groups with overlapping bloom. The easy fix is a self-fertile variety, which crops alone and "
+            "also pollinates almost any other cherry."
         ),
         "partners": [
             ("Stella, Lapins, Sunburst, Sweetheart", None, "Self-fertile: one tree crops on its own, and each is a universal pollinator for other cherries.", "research-backed"),
@@ -130,7 +130,7 @@ FAMILIES = [
         "intro": (
             "Most Japanese plums (Santa Rosa, Mariposa, Satsuma) need a second Japanese plum for a good crop. "
             "European plums and prunes (D'Agen, Angelina) are more often self-fertile. The two types flower at "
-            "different times and generally will not pollinate each other, so match a partner within the same type."
+            "different times and generally won't pollinate each other, so match a partner within the same type."
         ),
         "partners": [
             ("Santa Rosa", "plum-santa-rosa", "Partially self-fertile and the classic pollinator for other Japanese plums; a good single-tree choice that also partners the rest.", "established-practice"),
@@ -160,9 +160,9 @@ FAMILIES = [
         "partners": [
             ("Hass, Reed, Wurtz, Lamb Hass", "avocado-hass", "Type A. Set fruit alone; pair with a Type B to lift yield.", "context-dependent"),
             ("Fuerte, Bacon, Sharwil, Shepard", "avocado-fuerte", "Type B. Same story: productive alone, better with a Type A nearby.", "context-dependent"),
-            ("Wurtz (Little Cado)", None, "A naturally dwarf Type A, the usual pick where there is room for only one tree.", "established-practice"),
+            ("Wurtz (Little Cado)", None, "A naturally dwarf Type A, the usual pick where there's room for only one tree.", "established-practice"),
         ],
-        "notes": "You do not strictly need two avocados. Drainage and frost protection matter far more to a young avocado than a pollination partner does.",
+        "notes": "You don't strictly need two avocados. Drainage and frost protection matter far more to a young avocado than a pollination partner does.",
         "sources": [
             ("Avocado flowering basics: Type A and Type B (UC Riverside Avocado Collection)", "https://avocado.ucr.edu/avocado-flowering-basics"),
         ],
@@ -222,7 +222,7 @@ FAMILIES = [
         "intro": (
             "Highbush blueberries (the common southern and northern highbush types) are largely self-fertile, "
             "but planting two different varieties gives bigger berries and heavier crops. Rabbiteye blueberries, "
-            "grown in warmer areas, are mostly self-infertile and DO need a second rabbiteye variety."
+            "grown in warmer areas, are mostly self-infertile and do need a second rabbiteye variety."
         ),
         "partners": [
             ("Southern / northern highbush", None, "Crop alone, but two varieties with overlapping bloom lift size and yield.", "research-backed"),
@@ -248,7 +248,7 @@ FAMILIES = [
         ),
         "partners": [],
         "notes": (
-            "'Self-fertile' does not mean 'no bees needed'. Most of these still rely on insects to move pollen "
+            "'Self-fertile' doesn't mean 'no bees needed'. Most of these still rely on insects to move pollen "
             "within the flower or between flowers on the same tree, so a bee-friendly garden and no spraying at "
             "blossom still pays off. A few (olive, macadamia, some feijoa) are self-fertile but crop noticeably "
             "better with a second variety, covered below."
@@ -309,11 +309,11 @@ FAQS = [
     ),
     (
         "Which fruit trees are self pollinating in Australia?",
-        "Citrus (lemons, limes, oranges, mandarins, grapefruit), peaches, nectarines, most apricots, common figs, mango, mulberry, pomegranate, guava, loquat and tamarillo all crop as a single tree. Olives, macadamias, some feijoas and a few plums (Santa Rosa) also fruit alone but crop better with a second variety. Apples, pears, sweet cherries, most Japanese plums, kiwifruit and pistachios genuinely need a partner.",
+        "Citrus (lemons, limes, oranges, mandarins, grapefruit), peaches, nectarines, most apricots, common figs, mango, mulberry, pomegranate, guava, loquat and tamarillo all crop as a single tree. Olives, macadamias, some feijoas and a few plums (Santa Rosa) also fruit alone but crop better with a second variety. Apples, pears, sweet cherries, most Japanese plums, kiwifruit and pistachios need a partner.",
     ),
     (
         "What is the difference between Type A and Type B avocados?",
-        "It describes when the flowers are receptive. Avocado flowers open female one day and male the next. Type A varieties (Hass, Reed, Wurtz) are female in the morning and male the next afternoon; Type B varieties (Fuerte, Bacon, Sharwil) are the reverse. Planting one of each overlaps the female and male windows and lifts the crop. You do not strictly need both: a single avocado still sets useful fruit because the timing blurs at real garden temperatures.",
+        "It describes when the flowers are receptive. Avocado flowers open female one day and male the next. Type A varieties (Hass, Reed, Wurtz) are female in the morning and male the next afternoon; Type B varieties (Fuerte, Bacon, Sharwil) are the reverse. Planting one of each overlaps the female and male windows and lifts the crop. You don't strictly need both. A single avocado still sets useful fruit because the timing blurs at real garden temperatures.",
     ),
     (
         "Do I need a male and female kiwifruit?",
@@ -321,11 +321,11 @@ FAQS = [
     ),
     (
         "Will a single cherry tree fruit on its own?",
-        "Only if it is a self-fertile variety such as Stella, Lapins, Sunburst or Sweetheart, which crop alone and also pollinate other cherries. Older sweet cherries (Bing, Napoleon) are self-infertile and fussy about partners because of compatibility groups, so for one tree, choose a self-fertile variety. Sour cherries like Morello are self-fertile too.",
+        "Only if it's a self-fertile variety such as Stella, Lapins, Sunburst or Sweetheart, which crop alone and also pollinate other cherries. Older sweet cherries (Bing, Napoleon) are self-infertile and fussy about partners because of compatibility groups, so for one tree, choose a self-fertile variety. Sour cherries like Morello are self-fertile too.",
     ),
     (
         "Does self-fertile mean I do not need bees?",
-        "No. Self-fertile means a tree can set fruit with its own pollen, but that pollen still usually has to be carried within the flower or between flowers by insects. Bees remain essential, so a garden that feeds pollinators and is not sprayed with insecticide during blossom will fruit far better. Wind-pollinated fruit (pistachio, some nuts) and parthenocarpic fruit (common figs, astringent persimmons) are the exceptions that manage without insects.",
+        "No. Self-fertile means a tree can set fruit with its own pollen, but that pollen still usually has to be carried within the flower or between flowers by insects. Bees remain essential, so a garden that feeds pollinators and isn't sprayed with insecticide during blossom will fruit far better. Wind-pollinated fruit (pistachio, some nuts) and parthenocarpic fruit (common figs, astringent persimmons) are the exceptions that manage without insects.",
     ),
     (
         "How close do pollinating fruit trees need to be?",
@@ -428,7 +428,7 @@ def build_summary_table() -> str:
     return f"""
 <section class="mb-10" id="chart">
   <h2 class="text-xl font-bold text-green-900 mb-3">Pollination Chart: Do You Need Two Trees?</h2>
-  <p class="text-gray-600 text-sm mb-4">Check this before you buy a single tree. Getting it wrong can mean years of healthy growth and no fruit.</p>
+  <p class="text-gray-600 text-sm mb-4">Check this before you buy. Getting it wrong can mean years of healthy growth and no fruit.</p>
   <div class="overflow-x-auto rounded-lg border border-gray-200">
     <table class="w-full bg-white text-left">
       <thead class="bg-gray-50 border-b border-gray-200">
@@ -458,7 +458,7 @@ def build_how_to_read() -> str:
     return f"""
 <section class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 text-sm">
   <p class="font-semibold text-amber-900 mb-1">How to read this guide</p>
-  <p class="text-gray-700 mb-3">Pollination advice is where a lot of fruit-tree buying goes wrong. We grade every claim by how good the evidence is, and note where a rule holds only for certain varieties. The short version is in the chart below; the cards explain each fruit.</p>
+  <p class="text-gray-700 mb-3">A lot of fruit-tree buying goes wrong on pollination. We've graded each claim by how good the evidence is, and noted where a rule only holds for certain varieties. The chart below is the short version, and the cards after it explain each fruit.</p>
   <ul class="space-y-1">
     {legend}
   </ul>
@@ -489,7 +489,7 @@ def build_references_section() -> str:
     return f"""
 <section class="mb-10" id="references">
   <h2 class="text-xl font-bold text-green-900 mb-3">References and Further Reading</h2>
-  <p class="text-gray-600 text-sm mb-3">Pollination guidance on this page draws on Australian state agriculture departments, university horticulture extension and established nursery references. Per-fruit sources are on each card above.</p>
+  <p class="text-gray-600 text-sm mb-3">The pollination advice here comes from university extension services, BeeAware and Australian nurseries. Each card above has its own sources.</p>
   <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
     {items}
   </ul>

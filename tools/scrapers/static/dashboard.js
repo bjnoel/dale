@@ -196,7 +196,7 @@ function updateSubCTA(q) {
   const subState = document.getElementById('subState');
 
   if (!q) {
-    ctaEl.innerHTML = `<strong>Get the free WA Rare Fruit Guide + restock alerts</strong> \u2014 free daily email, unsubscribe any time. <a href="/wa-rare-fruit-guide.html" class="text-green-700 underline whitespace-nowrap">Preview the guide \u2192</a>`;
+    ctaEl.innerHTML = `<strong>Get the free WA Rare Fruit Guide + restock alerts.</strong> Free daily email, unsubscribe any time. <a href="/wa-rare-fruit-guide.html" class="text-green-700 underline whitespace-nowrap">Preview the guide \u2192</a>`;
     if (floatInput) floatInput.placeholder = 'Get daily alerts (free)';
     if (subBtn) subBtn.textContent = 'Subscribe free';
     if (subState) subState.style.display = '';
@@ -312,7 +312,7 @@ async function submitWatch(wrap, email) {
     msg.classList.remove('hidden');
     wrap.querySelector('.notify-link').classList.add('hidden');
   } catch (err) {
-    msg.textContent = 'Could not set that alert. Try again.';
+    msg.textContent = "Couldn't set that alert. Try again.";
     msg.classList.remove('hidden');
     msg.classList.add('watch-err');
     btn.disabled = false;
@@ -365,20 +365,7 @@ function render() {
   if (showing.length === 0) {
     const q = searchInput.value.trim();
     if (q) {
-      const slug = q.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-      container.innerHTML =
-        '<div class="py-10 px-4">' +
-        '<p class="text-center text-gray-500 mb-5">Nothing found for <strong class="text-gray-600">' + esc(q) + '</strong></p>' +
-        '<div class="max-w-sm mx-auto bg-green-50 border border-green-200 rounded-xl p-5">' +
-        '<p class="text-sm font-semibold text-green-800 mb-1">Watch <span class="text-green-900">' + esc(q) + '</span></p>' +
-        '<p class="text-xs text-gray-500 mb-3">Get an email when it comes into stock at any monitored nursery. Free.</p>' +
-        '<form id="watchForm" data-species="' + slug + '" class="flex gap-2">' +
-        '<input type="email" id="watchEmail" placeholder="your@email.com" required class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">' +
-        '<button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium whitespace-nowrap">Watch this</button>' +
-        '</form>' +
-        '<div id="watchMsg" class="mt-2 text-sm hidden"></div>' +
-        '</div></div>';
-      setupWatchForm('watchForm', 'watchEmail', 'watchMsg');
+      container.innerHTML = '<div class="text-center py-12 text-gray-500">No results found for <strong class="text-gray-600">' + esc(q) + '</strong>. Try a different spelling, or clear the filters.</div>';
     } else {
       container.innerHTML = '<div class="text-center py-12 text-gray-500">No plants found matching your filters.</div>';
     }
@@ -396,7 +383,7 @@ function render() {
     const hasPrice = typeof p.p === 'number' && p.p > 0;
     const price = hasPrice
       ? ('$' + p.p.toFixed(2))
-      : '<span class="price-poa" title="This nursery does not publish a price online">POA</span>';
+      : '<span class="price-poa" title="This nursery doesn&#39;t list a price online">POA</span>';
     // Three states, not two. p.pre means orderable now, ships later, so it must
     // not read as "In stock" (the buyer turns up expecting a plant) nor as
     // "Out of stock" (they give up on something they could have ordered).
@@ -964,7 +951,7 @@ if (subscribeFormEl) subscribeFormEl.addEventListener('submit', async (e) => {
     const data = await resp.json();
     if (resp.ok) {
       if (resp.status === 202) {
-        msg.textContent = `Check your email \u2014 we sent you a confirmation link.`;
+        msg.textContent = `Check your email. We've sent you a confirmation link.`;
         document.getElementById('subEmail').value = '';
       } else if (resp.status === 201) {
         msg.textContent = `Subscribed! You'll get tomorrow\u2019s changes in your inbox.`;
@@ -1049,7 +1036,7 @@ if (subscribeFormEl) subscribeFormEl.addEventListener('submit', async (e) => {
       });
       const data = await resp.json();
       if (resp.status === 202) {
-        bar.innerHTML = `<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-white font-medium">Check your email \u2014 we sent a confirmation link.</div>`;
+        bar.innerHTML = `<div class="flex items-center justify-center gap-2 py-3 px-4 text-sm text-white font-medium">Check your email. We've sent you a confirmation link.</div>`;
         setTimeout(function() { bar.classList.add('translate-y-full'); }, 4000);
       } else if (resp.status === 201 || resp.status === 200) {
         localStorage.setItem('ts_subscribed', '1');

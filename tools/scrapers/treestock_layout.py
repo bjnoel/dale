@@ -204,8 +204,8 @@ def render_footer(max_width: str = CONTENT_MAX_WIDTH, extra_text: str = "") -> s
   <div class="{max_width} mx-auto px-4">
     {nav_line}
     <p class="mt-2">{state_links}</p>
-    <p class="mt-2">Data updated daily. Prices and availability may change.</p>
-    <p class="mt-1">Some nursery links earn us a commission. It never affects search results or ordering. <a href="/affiliate-disclosure.html" class="underline">How this works</a></p>
+    <p class="mt-2">Updated daily, but prices and stock can change between updates.</p>
+    <p class="mt-1">Some nursery links earn us a small commission. It doesn't change the search results or the order they're in. <a href="/affiliate-disclosure.html" class="underline">How this works</a></p>
     <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>{extra}
   </div>
 </footer>"""
@@ -228,10 +228,10 @@ def render_treesmith_promo(context: str = "variety") -> str:
     grafting-techniques reference and graft-tracking pages live.
     """
     lead = {
-        "variety": "Tracking a variety here? Keep a record of the one you actually buy, and of the grafts you take off it.",
-        "species": "Found a tree to buy? Keep a record of the one you actually plant.",
-        "rootstock": "Once the graft is on, the details are worth keeping: technique, date, and where the scion wood came from.",
-        "homepage": "You searched for it, you bought it, now you need somewhere to remember it.",
+        "variety": "Watching a variety? Keep a record of the one you end up buying, and any grafts you take from it.",
+        "species": "Found a tree to buy? Keep a record of it once it's in the ground.",
+        "rootstock": "Once the graft's on, it's worth writing down how and when you did it, and where the scion wood came from.",
+        "homepage": "Found what you were after? You'll want somewhere to keep track of it.",
     }.get(context, "Keep a record of the trees you actually buy.")
     grafting = context in ("variety", "rootstock")
     anchor = "#grafting" if grafting else ""
@@ -245,9 +245,9 @@ def render_treesmith_promo(context: str = "variety") -> str:
       <div class="min-w-0">
         <h3 class="font-semibold text-green-900 mb-1">Track your collection with Treesmith</h3>
         <p class="text-sm text-green-900 mb-3">
-          {lead} Treesmith is a mobile app for plant collectors: catalog every tree,
-          log grafts and harvests, and capture growth photos over time. Free for up to
-          30 plants, on iOS and Android. Built by the same person behind treestock.
+          {lead} Treesmith is a phone app for keeping track of your trees. Log grafts
+          and harvests, and add photos as they grow. It's free for up to 30 plants on
+          iOS and Android, and it's made by the same person who runs treestock.
         </p>
         <a href="/treesmith.html?utm_source=treestock&amp;utm_medium=web&amp;utm_campaign=promo_block&amp;utm_content={context}{anchor}"
            class="inline-block bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-800 no-underline">

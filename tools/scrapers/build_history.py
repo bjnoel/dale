@@ -21,6 +21,7 @@ from daily_digest import (
     compare_snapshots,
     load_snapshot,
 )
+from stocklib.registry import restriction_warning
 from stocklib.coverage import nursery_coverage, usable_dates
 from stocklib.utm import affiliate
 from stocklib.templates import render as render_template
@@ -86,7 +87,7 @@ def build_history_data(data_dir: Path, wa_only: bool = False) -> list[dict]:
                 nursery_data = {
                     "key": nursery_key,
                     "name": NURSERY_NAMES.get(nursery_key, nursery_key),
-                    "wa": nursery_key in WA_NURSERIES,
+                    "restrict": restriction_warning(nursery_key),
                     "changes": {},
                 }
                 # Only include non-empty change categories. URLs get the
@@ -113,12 +114,12 @@ def build_history_data(data_dir: Path, wa_only: bool = False) -> list[dict]:
 def build_html(history: list[dict], wa_only: bool = False) -> str:
     """Generate the history page HTML with embedded data."""
     history_json = json.dumps(history, separators=(",", ":"))
-    title_suffix = " (Ships to WA)" if wa_only else ""
+    title_suffix = " (WA)" if wa_only else ""
 
     extra_style = """\
   .change-card { border-left: 3px solid #d1d5db; }
   .change-card.has-changes { border-left-color: #059669; }
-  .wa-badge { background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 9999px; font-size: 0.7rem; }
+  .restrict-badge { background: #fef2f2; color: #b91c1c; padding: 2px 6px; border-radius: 9999px; font-size: 0.7rem; }
   .day-header { cursor: pointer; }
   .day-header:hover { background: #f9fafb; }
   .change-item { padding: 4px 0; border-bottom: 1px solid #f3f4f6; }

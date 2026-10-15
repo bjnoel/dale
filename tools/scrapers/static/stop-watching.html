@@ -24,7 +24,7 @@
 
 <div id="panel">
   <h2 id="heading">Stop these alerts?</h2>
-  <p id="lead">You are about to stop receiving treestock.com.au alerts.</p>
+  <p id="lead">You're about to stop getting treestock.com.au alerts.</p>
   <p class="email" id="email-display"></p>
   <button id="confirm">Yes, stop these alerts</button>
   <a href="#" class="alt" id="stop-all-link">Or stop every treestock alert for this address</a>
@@ -54,20 +54,20 @@
   if (!email || !token) {
     panel.style.display = 'none';
     msg.className = 'err';
-    msg.textContent = 'This link is missing information. Please use the link from your alert email.';
+    msg.textContent = 'This link is incomplete. Try the one in your alert email again.';
     return;
   }
 
   if (variety) {
     var label = title || variety.replace(/-/g, ' ');
     heading.textContent = 'Stop alerts for this variety?';
-    lead.innerHTML = 'You will stop getting emails about <span class="variety"></span>. Any other varieties you watch are unaffected.';
+    lead.innerHTML = 'You\'ll stop getting emails about <span class="variety"></span>. Any other varieties you\'re watching won\'t be affected.';
     lead.querySelector('.variety').textContent = label;
   } else {
     dropAll = true;
     stopAllLink.style.display = 'none';
     heading.textContent = 'Stop all treestock alerts?';
-    lead.textContent = 'You will stop getting emails about every variety you are watching.';
+    lead.textContent = 'You\'ll stop getting emails about every variety you\'re watching.';
   }
 
   function send() {
@@ -83,12 +83,12 @@
       panel.style.display = 'none';
       msg.className = 'ok';
       msg.textContent = dropAll
-        ? 'Done. You will not get any more treestock alerts.'
+        ? 'Done. You won\'t get any more treestock alerts.'
         : 'Done. That alert has been removed.';
     }).catch(function () {
       confirmBtn.disabled = false;
       msg.className = 'err';
-      msg.textContent = 'Something went wrong. Please try again, or reply to the email and we will sort it out.';
+      msg.textContent = 'Something went wrong. Try again, or reply to the email and we\'ll sort it out.';
     });
   }
 
@@ -97,7 +97,7 @@
     e.preventDefault();
     dropAll = true;
     heading.textContent = 'Stop all treestock alerts?';
-    lead.textContent = 'You will stop getting emails about every variety you are watching.';
+    lead.textContent = 'You\'ll stop getting emails about every variety you\'re watching.';
     stopAllLink.style.display = 'none';
     confirmBtn.textContent = 'Yes, stop all alerts';
   });

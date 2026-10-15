@@ -61,27 +61,27 @@ CITE_DALEYS = ("Daleys chill guide", "https://www.daleysfruit.com.au/fruit%20pag
 FAQS = [
     (
         "What does bare root mean?",
-        "A bare-root tree is a deciduous tree dug up while dormant in winter and sold with the soil shaken off its roots, usually wrapped in damp sawdust or coir instead of a pot. Because nurseries skip the pot, the soil and the freight weight, bare-root trees typically cost less than the same variety sold potted, and the range of varieties offered is much wider.",
+        "A bare-root tree is a deciduous tree that's dug up while it's dormant in winter and sold with the soil shaken off its roots, usually wrapped in damp sawdust or coir instead of a pot. With no pot or potting mix and much less weight to freight, bare-root trees usually cost less than the same variety in a pot, and nurseries can offer a much wider range.",
     ),
     (
         "When is bare-root season in Australia?",
-        "Roughly June to September. Nurseries lift and release dormant stock from early June, availability peaks in July, and most sellers wind up shipping by mid September as trees break dormancy. Popular varieties routinely sell out within days of release, so it pays to order early in the window.",
+        "Roughly June to September. Nurseries start lifting and releasing dormant stock in early June, availability peaks in July, and most stop shipping by mid September as the trees wake up. Popular varieties often sell out within days of release, so order early.",
     ),
     (
         "Which fruit trees are sold bare-root?",
-        "Deciduous species: apples, pears, plums, peaches, nectarines, apricots, cherries, figs, mulberries, grapes, pecans, jujubes, pomegranates and cool-climate blueberries, plus quince, persimmon and many multi-graft combinations. Evergreens like citrus, avocado and mango are never sold bare-root; they are only available potted.",
+        "Deciduous species: apples, pears, plums, peaches, nectarines, apricots, cherries, figs, mulberries, grapes, pecans, jujubes, pomegranates and cool-climate blueberries, plus quince, persimmon and many multi-graft combinations. Evergreens like citrus, avocado and mango aren't sold bare-root. You can only buy them potted.",
     ),
     (
         "How do I plant a bare-root tree?",
-        "Plant as soon as possible after it arrives. Soak the roots in a bucket of water for a few hours, dig a hole wide enough to spread the roots without bending them, plant at the same depth the tree grew at (look for the soil mark on the trunk, and keep the graft union above ground), backfill with the soil you dug out, water in well, and mulch. Do not add fertiliser to the planting hole. If you cannot plant straight away, heel the tree into damp soil or potting mix and keep the roots moist.",
+        "Plant as soon as you can after it arrives. Soak the roots in a bucket of water for a few hours, dig a hole wide enough to spread the roots without bending them, plant at the same depth the tree grew at (look for the soil mark on the trunk, and keep the graft union above ground), backfill with the soil you dug out, water in well, and mulch. Don't add fertiliser to the planting hole. If you can't plant straight away, heel the tree into damp soil or potting mix and keep the roots moist.",
     ),
     (
         "Are bare-root trees cheaper than potted trees?",
-        "Usually, yes. The nursery saves on the pot, potting mix and freight weight, and those savings carry into the price. Bare-root stock also establishes quickly when planted in winter, because the roots grow into your soil before the tree leafs out in spring.",
+        "Usually, yes. The nursery saves on the pot, the potting mix and the freight, and you see that in the price. Bare-root trees also establish quickly when planted in winter, because the roots grow into your soil before the tree leafs out in spring.",
     ),
     (
         "Can I buy bare-root trees in WA, NT or TAS?",
-        "Sometimes, but check the nursery first. WA, NT and TAS have strict plant quarantine, and many eastern-states nurseries do not ship there at all. The nursery list on this page shows each seller's restrictions. WA buyers also have local growers that sell bare-root stock in season without the border paperwork.",
+        "Sometimes, but check with the nursery first. WA, NT and TAS have strict plant quarantine, and a lot of eastern-states nurseries don't ship there at all. The nursery list on this page shows each seller's restrictions. WA buyers can also get bare-root trees in season from local growers, with no border paperwork.",
     ),
 ]
 
@@ -187,20 +187,20 @@ def build_status_box(state: str, rows: list[dict], today: date) -> str:
         return f"""
 <div class="bg-gray-50 border border-gray-300 rounded-lg p-4 mb-8" id="season-status">
   <p class="font-semibold text-gray-800 mb-1">Season closed. Bare-root runs June to September.</p>
-  <p class="text-sm text-gray-700">Nurseries lift and ship dormant trees through winter. Subscribe below and the daily digest will tell you the moment {yr} season stock starts dropping.</p>
+  <p class="text-sm text-gray-700">Nurseries lift and ship dormant trees through winter. Live listings for the {yr} season start showing here on 1 June.</p>
 </div>
 """
     if state == "sparse":
         return f"""
 <div class="bg-amber-50 border border-amber-300 rounded-lg p-4 mb-8" id="season-status">
   <p class="font-semibold text-amber-800 mb-1">Bare-root season is on (June to September).</p>
-  <p class="text-sm text-amber-900">Stock listings are thin right now: new releases sell out within days, and nurseries list the next batch as they lift it. Subscribe below to catch the next drop.</p>
+  <p class="text-sm text-amber-900">Not much is listed right now. New releases sell out within days, and nurseries list the next batch as they lift it. This page updates every night.</p>
 </div>
 """
     return f"""
 <div class="bg-green-50 border border-green-300 rounded-lg p-4 mb-8" id="season-status">
-  <p class="font-semibold text-green-900 mb-1">Bare-root season is on: {len(in_stock)} trees in stock across {len(nurseries)} nurseries.</p>
-  <p class="text-sm text-green-900">Live from last night's scrape of every nursery treestock tracks. The best varieties sell out within days of release, so if you see the one you want, move.</p>
+  <p class="font-semibold text-green-900 mb-1">Bare-root season is on. {len(in_stock)} trees in stock across {len(nurseries)} nurseries.</p>
+  <p class="text-sm text-green-900">From last night's check of every nursery we track. The best varieties sell out within days of release, so if you see the one you want, don't wait.</p>
 </div>
 """
 
@@ -208,10 +208,10 @@ def build_status_box(state: str, rows: list[dict], today: date) -> str:
 def build_what_is_section() -> str:
     return f"""
 <section class="mb-10" id="what-is-bare-root">
-  <h2 class="text-xl font-bold text-green-900 mb-3">What Bare Root Means (and Why It Is the Cheapest Way to Buy)</h2>
-  <p class="text-sm text-gray-600 mb-3">Deciduous fruit trees go fully dormant in winter. Nurseries dig them from the growing field, shake the soil off the roots, and sell them with bare roots wrapped in damp packing instead of a pot. No pot, no potting mix and far less freight weight means the same grafted variety usually costs noticeably less bare-root than potted, and nurseries can offer a much longer variety list than they could ever hold in pots.{inline_cite(*CITE_SGA)}</p>
-  <p class="text-sm text-gray-600 mb-3">Planted while dormant, a bare-root tree starts pushing new roots into your soil weeks before the top wakes up, so it establishes at least as well as a potted tree planted in spring. The trade-off is the window: stock is lifted, sold and shipped only while the trees sleep, roughly June to September, and the popular varieties are gone early.{inline_cite(*CITE_ABC)}</p>
-  <p class="text-sm text-gray-600">One thing to check before you buy: chill hours. Most bare-root species need a certain amount of winter cold to fruit properly, and high-chill cherries or apples will disappoint in Brisbane or coastal Perth. Low-chill varieties exist for most species, so match the variety to your climate, not just the species.{inline_cite(*CITE_DALEYS)}</p>
+  <h2 class="text-xl font-bold text-green-900 mb-3">What Bare Root Means (and Why It's the Cheapest Way to Buy)</h2>
+  <p class="text-sm text-gray-600 mb-3">Deciduous fruit trees go fully dormant in winter. Nurseries dig them out of the field, shake the soil off, and sell them with the roots wrapped in damp packing instead of a pot. With no pot or potting mix and much less weight to freight, the same grafted variety usually costs a fair bit less bare-root than potted. Nurseries can also offer far more varieties than they could ever keep in pots.{inline_cite(*CITE_SGA)}</p>
+  <p class="text-sm text-gray-600 mb-3">Plant it while it's dormant and a bare-root tree starts pushing new roots into your soil weeks before the top wakes up, so it establishes at least as well as a potted tree planted in spring. The catch is timing. Nurseries can only lift and ship them while the trees are dormant, roughly June to September, and the popular varieties go early.{inline_cite(*CITE_ABC)}</p>
+  <p class="text-sm text-gray-600">Check chill hours before you buy. Most bare-root species need a certain amount of winter cold to fruit properly, and high-chill cherries or apples won't do well in Brisbane or coastal Perth. There are low-chill varieties of most species, so pick the variety for your climate as well as the species.{inline_cite(*CITE_DALEYS)}</p>
 </section>
 """
 
@@ -237,7 +237,7 @@ def build_species_section(valid_slugs: set) -> str:
     return f"""
 <section class="mb-10" id="species">
   <h2 class="text-xl font-bold text-green-900 mb-3">Which Fruit Trees Come Bare-Root</h2>
-  <p class="text-sm text-gray-600 mb-3">Only deciduous species are sold bare-root. Evergreens (citrus, avocado, mango and the tropical fruits) are only ever sold potted. Each species links to its live stock page with prices across every tracked nursery.</p>
+  <p class="text-sm text-gray-600 mb-3">Only deciduous species are sold bare-root. Evergreens (citrus, avocado, mango and the tropicals) are always sold potted. Each species links to its stock page, with prices from every nursery we track.</p>
   <ul class="text-sm columns-2 sm:columns-3 list-none">
     {items_html}
   </ul>
@@ -253,7 +253,7 @@ def build_live_table(state: str, rows: list[dict], today: date) -> str:
   <h2 class="text-xl font-bold text-green-900 mb-3">Bare-Root Trees in Stock</h2>
   <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
     <p class="text-sm text-gray-700 mb-1 font-medium">The bare-root season is over for this year.</p>
-    <p class="text-sm text-gray-600">Nurseries will start listing {yr} season stock from late autumn. Subscribe below and the daily digest will flag bare-root listings as they appear.</p>
+    <p class="text-sm text-gray-600">Nurseries start listing {yr} season stock from late autumn, and the live listings come back here on 1 June.</p>
   </div>
 </section>
 """
@@ -273,7 +273,7 @@ def build_live_table(state: str, rows: list[dict], today: date) -> str:
         return f"""
 <section class="mb-10" id="in-stock">
   <h2 class="text-xl font-bold text-green-900 mb-3">Bare-Root Trees in Stock Now</h2>
-  <p class="text-sm text-gray-600">Very little bare-root stock is showing in stock right now. That usually means one batch has sold out and the next has not been listed yet; releases move fast in season. The nurseries below carry bare-root lines:</p>
+  <p class="text-sm text-gray-600">Very little bare-root stock is in stock right now. That usually means one batch has sold out and the next one isn't listed yet. These nurseries sell bare-root:</p>
   {listing_note}
 </section>
 """
@@ -297,7 +297,7 @@ def build_live_table(state: str, rows: list[dict], today: date) -> str:
     return f"""
 <section class="mb-10" id="in-stock">
   <h2 class="text-xl font-bold text-green-900 mb-3">Bare-Root Trees in Stock Now ({len(in_stock)})</h2>
-  <p class="text-sm text-gray-600 mb-3">Every bare-root listing currently showing in stock across the nurseries treestock tracks, cheapest first. Prices are today's listed prices; click through for pot-free details and shipping costs. The shipping column flags interstate quarantine limits (No WA/NT/TAS); local nurseries show their delivery area instead.</p>
+  <p class="text-sm text-gray-600 mb-3">Every bare-root tree in stock at the nurseries we track, cheapest first. Prices are what each nursery is listing today. Click through for details and shipping costs. The shipping column shows quarantine limits (No WA/NT/TAS), or the delivery area for local nurseries.</p>
   <div style="overflow-x:auto;">
     <table class="br-table">
       <thead>
@@ -333,7 +333,7 @@ def build_nursery_section(rows: list[dict]) -> str:
     return f"""
 <section class="mb-10" id="nurseries">
   <h2 class="text-xl font-bold text-green-900 mb-3">Which Nurseries Sell Bare-Root</h2>
-  <p class="text-sm text-gray-600 mb-3">Tracked nurseries with bare-root lines in their current catalogue. Shipping restrictions are shown; WA, NT and TAS have quarantine rules that many eastern nurseries do not ship through.</p>
+  <p class="text-sm text-gray-600 mb-3">Nurseries we track that have bare-root trees in their current catalogue. Many eastern nurseries don't ship to WA, NT or TAS because of quarantine rules, so check the restriction next to each one.</p>
   <ul class="text-sm list-none">
     {items_html}
   </ul>
@@ -374,7 +374,7 @@ def build_references() -> str:
     return f"""
 <section class="mb-10" id="references">
   <h2 class="text-xl font-bold text-green-900 mb-3">Sources</h2>
-  <p class="text-gray-600 text-sm mb-3">Bare-root guidance on this page draws on Sustainable Gardening Australia, ABC Gardening Australia and established Australian nurseries. Stock and prices come from treestock's own nightly scrape.</p>
+  <p class="text-gray-600 text-sm mb-3">The bare-root advice here comes from Sustainable Gardening Australia, ABC Gardening Australia and Daleys. Stock and prices come from our nightly check of each nursery's website.</p>
   <ul class="text-sm space-y-1 list-disc pl-5">
     {items}
   </ul>

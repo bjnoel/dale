@@ -57,19 +57,19 @@ STATE_INTROS = {
         "most nurseries are east coast only. These are the ones that do."
     ),
     "QLD": (
-        "Queensland's warm, subtropical climate supports year-round fruit tree growing. "
-        "Several of Australia's largest fruit nurseries are based here, with strong "
-        "selections of tropical and subtropical varieties."
+        "Queensland is warm enough to plant fruit trees most of the year. Plenty of "
+        "good fruit tree nurseries are based here, and they're strong on tropical and "
+        "subtropical varieties."
     ),
     "NSW": (
-        "NSW spans three distinct growing zones: subtropical north coast, temperate "
-        "Sydney basin, and cool Southern Highlands. Most of these nurseries ship statewide "
-        "so you can order from any zone."
+        "NSW runs from the subtropical north coast to the cool Southern Highlands. "
+        "Most of these nurseries ship statewide, so it doesn't matter which part "
+        "you're in."
     ),
     "VIC": (
-        "Victoria's cool winters deliver the chill hours stone fruit and apples need. "
-        "Bare-root season (June to August) is when Victorian growers stock up. "
-        "These nurseries ship to VIC."
+        "Victoria's cold winters give stone fruit and apples the chill hours they need. "
+        "Bare-root season (June to August) is when most people here stock up. "
+        "These nurseries all ship to VIC."
     ),
     "SA": (
         "South Australia's Mediterranean climate runs from the cool Adelaide Hills, "
@@ -82,28 +82,28 @@ STATE_INTROS = {
 STATE_INFO_BOX = {
     "WA": (
         "WA has strict quarantine rules, so only a handful of nurseries can legally "
-        "ship fruit trees here. We track them all so you don't have to."
+        "send fruit trees here. These are the ones we track."
     ),
     "QLD": (
-        "Queensland has its own biosecurity rules: some stone fruit and citrus stock "
-        "must be treated before crossing state borders. Nurseries listed below are "
-        "authorised to ship to QLD."
+        "Queensland has its own biosecurity rules, and some stone fruit and citrus "
+        "stock has to be treated before it can come across the border. The nurseries "
+        "below all ship to QLD."
     ),
     "NSW": (
-        "NSW allows most fruit trees to be shipped in from other states, but "
-        "check with your local council if you live near any fruit fly exclusion zones "
-        "in the Riverina or Murray region."
+        "Most fruit trees can be sent into NSW from other states. If you're near a "
+        "fruit fly exclusion zone in the Riverina or Murray region, check with your "
+        "local council first."
     ),
     "VIC": (
-        "Victoria requires that all imported nursery stock comes with a "
-        "plant health certificate. The nurseries below are authorised suppliers "
-        "and handle all interstate compliance paperwork."
+        "Plants coming into Victoria from interstate need a plant health "
+        "certificate. The nurseries below ship to VIC and sort out that paperwork "
+        "for you."
     ),
     "SA": (
-        "South Australia is the only mainland state with fruit fly free area status, "
-        "so there are strict rules on carrying fruit across the border. Those rules "
-        "cover fruit, not nursery trees: the nurseries below ship trees to SA and "
-        "handle the plant health paperwork."
+        "South Australia has fruit fly free status, so there are strict rules on "
+        "bringing fruit across the border. Those rules are about fruit. Nursery trees "
+        "are fine, and the nurseries below ship to SA and handle the plant health "
+        "paperwork."
     ),
 }
 
@@ -114,33 +114,33 @@ STATE_GROWING_GUIDE = {
     <h2 class="text-lg font-semibold mb-3">Growing fruit trees in Queensland</h2>
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
       <p>Queensland's climate divides into three fruit-growing zones. The far north (Cairns, Townsville) is true tropical territory: mangoes, bananas, carambola, durian and rambutan thrive here with little fuss. The southeast (Brisbane, Gold Coast, Sunshine Coast) is subtropical, supporting avocados, lychees, custard apples, macadamias and most citrus. The Darling Downs and granite belt at elevation can grow stone fruit and even apples with adequate chill hours.</p>
-      <p>Key advantage in QLD: you don't need to wait for a planting window. Pot-grown trees can go in the ground any time of year as long as you water through the first summer. That said, bare-root stone fruit is still best planted during the winter dormancy period (June to August).</p>
-      <p>Species to prioritise for Brisbane and southeast QLD: avocado, lychee, mango (dwarf varieties do well in suburban yards), macadamia, dragon fruit, mulberry, fig, and feijoa. Species that struggle: cherries, apples, and pears, which lack enough chill hours except on the Granite Belt.</p>
+      <p>In QLD you don't need to wait for a planting window. Pot-grown trees can go in the ground any time of year, as long as you water them through the first summer. Bare-root stone fruit is still best planted in winter while it's dormant (June to August).</p>
+      <p>Good choices for Brisbane and southeast QLD are avocado, lychee, mango (dwarf varieties do well in suburban yards), macadamia, dragon fruit, mulberry, fig and feijoa. Cherries, apples and pears struggle because they don't get enough chill, except up on the Granite Belt.</p>
     </div>
   </section>""",
     "NSW": """<section class="mb-8">
     <h2 class="text-lg font-semibold mb-3">Growing fruit trees in New South Wales</h2>
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
-      <p>NSW has more fruit-growing diversity than any other state. The north coast (Byron Bay, Coffs Harbour) is subtropical and suits avocados, macadamias, lychees and citrus. Sydney and the Central Coast are warm temperate, good for figs, citrus, stone fruit and subtropical exotics like feijoa and guava. The Southern Highlands and tablelands are cool enough for apples, pears, cherries and plums, the same varieties that thrive in Victoria.</p>
-      <p>In the Riverina and Murray basin, hot dry summers and cold winters create excellent conditions for stone fruit, almonds and table grapes. This is also commercial orchard country, so variety selection matters: choose low-chill stone fruit for coastal areas and high-chill varieties for the ranges.</p>
-      <p>Most NSW growers can plant pot-grown trees year-round. Bare-root stock (available June to August) is cheaper and transplants well for deciduous species. A useful guide: if your winter temperatures regularly drop below 7°C, you can grow temperate stone fruit; if they rarely do, stick to subtropical varieties.</p>
+      <p>NSW has a huge range of growing conditions. The north coast (Byron Bay, Coffs Harbour) is subtropical and suits avocados, macadamias, lychees and citrus. Sydney and the Central Coast are warm temperate, good for figs, citrus, stone fruit and subtropical exotics like feijoa and guava. The Southern Highlands and tablelands are cool enough for apples, pears, cherries and plums, the same varieties that thrive in Victoria.</p>
+      <p>In the Riverina and Murray basin, hot dry summers and cold winters are great for stone fruit, almonds and table grapes. It's commercial orchard country. Wherever you are in NSW, match the variety to your chill: low-chill stone fruit on the coast, high-chill varieties up in the ranges.</p>
+      <p>Most NSW growers can plant pot-grown trees year-round. Bare-root stock (available June to August) is cheaper and transplants well for deciduous species. As a rough guide, if your winter temperatures regularly drop below 7°C you can grow temperate stone fruit. If they rarely do, stick to subtropical varieties.</p>
     </div>
   </section>""",
     "VIC": """<section class="mb-8">
     <h2 class="text-lg font-semibold mb-3">Growing fruit trees in Victoria</h2>
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
-      <p>Victoria is Australia's heartland for cool-climate fruit. The state's reliable cold winters deliver the chill hours that apples, pears, cherries, plums, peaches, nectarines and quinces need to fruit well. Heritage apple varieties that would struggle in Queensland or WA perform beautifully in the Yarra Ranges, Mornington Peninsula, and central highlands.</p>
-      <p>Bare-root season (June to August) is the most important buying window for Victorian growers. Bare-root trees are cheaper, establish faster, and give you access to the widest variety selection. Heritage Fruit Trees (VIC-based) and Aus Nurseries both carry extensive bare-root ranges during this window, so set an alert and you will not miss it.</p>
-      <p>Melbourne and coastal Victoria can also support subtropical species in sheltered spots: figs, feijoas, persimmons and mulberries all do well. Avocados are marginal in Melbourne but succeed in frost-free microclimates on the Mornington Peninsula. The key limiting factor is frost: if your site gets regular frost below -3°C, stick to fully cold-hardy deciduous fruit.</p>
+      <p>Victoria is great for cool-climate fruit. Its reliably cold winters give apples, pears, cherries, plums, peaches, nectarines and quinces the chill hours they need to fruit well. Heritage apples that would struggle in Queensland or WA do really well in the Yarra Ranges, the Mornington Peninsula and the central highlands.</p>
+      <p>Bare-root season (June to August) is the main time to buy in Victoria. Bare-root trees are cheaper, they settle in quickly, and that's when you get the widest choice of varieties. Heritage Fruit Trees (in VIC) and Aus Nurseries both have big bare-root ranges then, so set an alert and you won't miss it.</p>
+      <p>Melbourne and coastal Victoria can also support subtropical species in sheltered spots: figs, feijoas, persimmons and mulberries all do well. Avocados are marginal in Melbourne but succeed in frost-free microclimates on the Mornington Peninsula. Frost is the main limit. If your site regularly gets frost below -3°C, stick to fully cold-hardy deciduous fruit.</p>
     </div>
   </section>""",
     "SA": """<section class="mb-8">
     <h2 class="text-lg font-semibold mb-3">Growing fruit trees in South Australia</h2>
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
-      <p>South Australia packs an unusual range of growing conditions into a short drive. The Adelaide Hills sit high enough to bank real winter chill, which is why they are long-established apple, pear and cherry country around Lenswood and Forest Range. The Adelaide plains are warm, dry and close to frost free on the coast, suiting citrus, figs, olives, pomegranates, loquats and almonds. An hour east, the irrigated Riverland supplies the sustained summer heat that ripens some of the country's best oranges, mandarins and grapefruit.</p>
-      <p>The state is the driest in Australia, so summer irrigation is the single biggest factor in whether a young tree survives, more so than frost or variety choice. Plan watering before you plan the planting. Soils through much of the settled south are alkaline, which rules out acid-loving blueberries in open ground (grow them in pots or raised beds of acidic mix) but suits pomegranates, figs, olives and jujubes, all of which tolerate alkaline and even mildly salty ground.</p>
-      <p>Choose varieties by chill, not by postcode. If you are in the hills, high-chill apples, pears, cherries and plums will fruit well. On the plains and through the Riverland, chilling hours fall away quickly, so pick low-chill stone fruit and lean on the citrus, Mediterranean and subtropical species that do not need cold winters at all.</p>
-      <p>One point worth being clear about: South Australia holds fruit fly free area status, the only mainland state that does, and the well-known border restrictions on carrying fruit are about FRUIT, not nursery stock. Buying a tree from an interstate nursery listed here is normal and legal, and those nurseries handle the plant health certification. The upside of that status is real, because backyard growers here face far less fruit fly pressure than growers in the eastern states.</p>
+      <p>South Australia packs an unusual range of growing conditions into a short drive. The Adelaide Hills sit high enough to bank real winter chill, which is why they are long-established apple, pear and cherry country around Lenswood and Forest Range. The Adelaide plains are warm, dry and close to frost free on the coast, suiting citrus, figs, olives, pomegranates, loquats and almonds. An hour east, the irrigated Riverland has the long hot summers that ripen some of the country's best oranges, mandarins and grapefruit.</p>
+      <p>SA is the driest state in Australia, so summer watering matters more than frost or variety choice when it comes to keeping a young tree alive. Sort out your watering before you plant. Soils through much of the settled south are alkaline, which rules out acid-loving blueberries in open ground (grow them in pots or raised beds of acidic mix) but suits pomegranates, figs, olives and jujubes, all of which tolerate alkaline and even mildly salty ground.</p>
+      <p>Pick varieties by how much winter chill you get. If you're in the hills, high-chill apples, pears, cherries and plums will fruit well. On the plains and through the Riverland the chill drops off quickly, so go for low-chill stone fruit and lean on citrus, Mediterranean and subtropical species that don't need cold winters at all.</p>
+      <p>South Australia has fruit fly free status, and the well-known border rules on carrying fruit are about fruit only. Buying a tree from an interstate nursery listed here is normal and legal, and those nurseries handle the plant health certificates. The good news is that backyard growers here deal with far less fruit fly than people in the eastern states.</p>
     </div>
   </section>""",
 }

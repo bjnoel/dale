@@ -101,13 +101,13 @@ CATEGORY_GUIDANCE = [
         "icon": "&#127809;",  # fallen leaf
         "body": (
             "Apples, pears, plums, peaches, nectarines, apricots, cherries, figs, mulberries, grapes, "
-            "persimmons, pomegranates and jujubes drop their leaves and go dormant in winter. That is when "
+            "persimmons, pomegranates and jujubes drop their leaves and go dormant in winter. That's when "
             "nurseries lift and sell them bare-root, with no soil around the roots. Bare-root stock is cheaper "
             "than potted trees and establishes quickly, because the roots start growing into your soil before "
             "the tree wakes up in spring. The bare-root season runs from about June to August, peaking in July. "
-            "Order early, as the best varieties sell out fast."
+            "Order early, because the best varieties sell out fast."
         ),
-        "key_fact": "Match the variety's chill-hour needs to your zone. High-chill cherries and many apples will not fruit in warm areas, but low-chill peach, apple and plum varieties are bred for the subtropics.",
+        "key_fact": "Match the variety's chill-hour needs to your zone. High-chill cherries and many apples won't fruit in warm areas. Low-chill peach, apple and plum varieties are bred for the subtropics.",
     },
     {
         "key": "citrus",
@@ -116,10 +116,10 @@ CATEGORY_GUIDANCE = [
         "body": (
             "Lemons, limes, oranges, mandarins, grapefruit and the native finger lime are best planted in spring "
             "(September to November) once the soil has warmed. In frost-free coastal and subtropical areas you can "
-            "also plant in autumn. Avoid putting young citrus into cold wet winter soil where frost is likely, as "
-            "they are tender when small. Lemons (especially Meyer) and finger lime are the most cold-hardy."
+            "also plant in autumn. Avoid putting young citrus into cold wet winter soil where frost is likely, because "
+            "they're tender when they're small. Lemons (especially Meyer) and finger lime are the most cold-hardy."
         ),
-        "key_fact": "Citrus wants warm soil and good drainage. Spring planting gives a full warm season to establish before the next winter.",
+        "key_fact": "Citrus wants warm soil and good drainage. Plant in spring and it gets a full warm season to settle in before winter.",
     },
     {
         "key": "subtropical",
@@ -128,11 +128,11 @@ CATEGORY_GUIDANCE = [
         "body": (
             "Avocado, mango, custard apple, lychee, longan, macadamia, guava, white sapote and feijoa are evergreen "
             "and keep growing through the cool months, so they need warm soil to establish. Plant them in spring "
-            "once frost risk has passed, not into cold winter soil. Avocados in particular need excellent drainage "
+            "once the frost risk has passed. Avocados in particular need excellent drainage "
             "(plant on a mound if your soil is heavy) and shelter from frost for the first couple of winters. Some of "
             "this group, including feijoa, loquat, jaboticaba and white sapote, tolerate light frost once established."
         ),
-        "key_fact": "Spring planting into warming soil, with frost protection for the first winter or two, is the safe default for this group.",
+        "key_fact": "Plant in spring into warming soil, and protect from frost for the first winter or two.",
     },
     {
         "key": "tropical",
@@ -152,7 +152,7 @@ CATEGORY_GUIDANCE = [
         "title": "Arid and dry-inland gardens",
         "icon": "&#9728;",  # sun
         "body": (
-            "In hot dry inland districts the summer is the hardest season on a new tree, not the winter. Autumn planting "
+            "In hot dry inland districts, summer is the hardest season on a new tree. Autumn planting "
             "(March to May) is usually best, giving roots a mild winter and spring to establish before the heat. Deciduous "
             "fruit still goes in as bare-root over winter. Watch for winter frost on tender evergreens, and plan deep "
             "watering and heavy mulch from day one. Heat and drought tolerant species (olive, pomegranate, fig, grape, "
@@ -165,7 +165,7 @@ CATEGORY_GUIDANCE = [
 # Species planting data. zones: tropical | subtropical | temperate | cool | arid.
 # Updated from the DEC-100 table after an adversarial research audit.
 SPECIES = [
-    {"name": "Mango", "slug": "mango", "zones": ["tropical", "subtropical"], "best": [9, 10, 11], "ok": [12, 8], "bareRoot": [], "notes": "Container grown, spring planting. Frost-tender. Most QLD/NSW nurseries do not ship to WA."},
+    {"name": "Mango", "slug": "mango", "zones": ["tropical", "subtropical"], "best": [9, 10, 11], "ok": [12, 8], "bareRoot": [], "notes": "Container grown, spring planting. Frost-tender. Most QLD/NSW nurseries don't ship to WA."},
     {"name": "Lychee", "slug": "lychee", "zones": ["tropical", "subtropical"], "best": [9, 10, 11], "ok": [12, 8], "bareRoot": [], "notes": "Spring planting. Needs a frost-free winter."},
     {"name": "Longan", "slug": "longan", "zones": ["tropical", "subtropical"], "best": [9, 10, 11], "ok": [12, 8], "bareRoot": [], "notes": "Spring planting. Similar needs to lychee."},
     {"name": "Rambutan", "slug": "rambutan", "zones": ["tropical"], "best": [9, 10, 11], "ok": [12, 8], "bareRoot": [], "notes": "Tropical only. Very sensitive to cold."},
@@ -224,15 +224,15 @@ FAQS = [
     ),
     (
         "What is the bare-root season in Australia?",
-        "Bare-root season runs roughly from June to early August, peaking in July. Deciduous trees (apples, pears, cherries, plums, peaches, grapes and others) go fully dormant in winter and can be sold without soil around the roots. Bare-root trees are usually cheaper than potted stock and establish quickly. Order early, as popular varieties sell out within days of release.",
+        "Bare-root season runs roughly from June to early August, peaking in July. Deciduous trees (apples, pears, cherries, plums, peaches, grapes and others) go fully dormant in winter and can be sold without soil around the roots. Bare-root trees are usually cheaper than potted stock and establish quickly. Order early, because popular varieties sell out within days of release.",
     ),
     (
         "Can I plant fruit trees in summer?",
-        "It is possible but not ideal for most species. Summer heat stresses a newly planted tree before it has built a strong root system. If you must plant in summer, water deeply every two or three days, mulch heavily, and avoid heatwaves. Container-grown tropicals (bananas, papayas) cope better with warm-season planting than deciduous or subtropical trees.",
+        "You can, but it's not ideal for most species. Summer heat stresses a newly planted tree before it has built a strong root system. If you must plant in summer, water deeply every two or three days, mulch heavily, and avoid heatwaves. Container-grown tropicals (bananas, papayas) cope better with warm-season planting than deciduous or subtropical trees.",
     ),
     (
         "When is the best time to plant citrus trees?",
-        "Spring (September to November) is best in most of Australia, once the soil has warmed. In frost-free coastal and subtropical areas you can also plant in autumn. Avoid winter planting where frost is likely, as young citrus is frost-tender. Lemons and finger lime are the most cold-hardy citrus.",
+        "Spring (September to November) is best in most of Australia, once the soil has warmed. In frost-free coastal and subtropical areas you can also plant in autumn. Avoid winter planting where frost is likely, because young citrus is frost-tender. Lemons and finger lime are the most cold-hardy citrus.",
     ),
     (
         "When should I plant avocados and mangoes?",
@@ -240,11 +240,11 @@ FAQS = [
     ),
     (
         "What are chill hours and why do they matter?",
-        "Chill hours are the number of winter hours below about 7 degrees Celsius. Deciduous fruit needs a certain amount of winter chill to flower and fruit properly. High-chill types (most cherries, many apples and apricots) will not fruit well in warm areas, while low-chill varieties are bred for the subtropics. Match the variety to your zone before you buy.",
+        "Chill hours are the number of winter hours below about 7 degrees Celsius. Deciduous fruit needs a certain amount of winter chill to flower and fruit properly. High-chill types (most cherries, many apples and apricots) won't fruit well in warm areas, and low-chill varieties are bred for the subtropics. Match the variety to your zone before you buy.",
     ),
     (
         "Where can I buy fruit trees online in Australia?",
-        "treestock.com.au tracks stock and prices across Australian nurseries every day. Search by species, filter by your state, and subscribe to a free daily digest that flags back-in-stock items, price drops and new arrivals so you do not miss the bare-root window.",
+        "treestock.com.au checks stock and prices at Australian nurseries every day. Search by species and filter by your state to see which nurseries can send a tree to you.",
     ),
 ]
 
@@ -362,7 +362,7 @@ def build_zone_cards() -> str:
     return f"""
 <section class="mb-10" id="zones">
   <h2 class="text-xl font-bold text-green-900 mb-3">Australian Climate Zones</h2>
-  <p class="text-gray-600 text-sm mb-4">Australia spans several growing climates. Your zone decides both the best planting season and which varieties will thrive. Find yours below, then use the calendar to time your planting.{inline_cite("ABC climate zones", "https://www.organicgardener.com.au/understanding-climate-zones/")}</p>
+  <p class="text-gray-600 text-sm mb-4">Australia covers several growing climates. Your zone decides the best time to plant and which varieties will do well. Find yours below, then use the calendar.{inline_cite("ABC climate zones", "https://www.organicgardener.com.au/understanding-climate-zones/")}</p>
   <div class="zone-grid">
 {cards}
   </div>
@@ -472,8 +472,8 @@ def build_calendar_table(valid_slugs: set) -> str:
   </div>
   <p class="text-xs text-gray-500 mt-3">
     Green is the best planting window, light green is acceptable, amber is the bare-root season (deciduous trees only).
-    Container-grown trees can often be planted outside these windows with care. Timing assumes the main southern growing
-    pattern, so adjust for your own zone using the guide above (autumn-weight in arid areas, spring only for tender trees in cool zones).
+    Potted trees can often go in outside these windows if you look after them. The timing assumes a typical southern
+    pattern, so adjust for your zone using the guide above (lean towards autumn in arid areas, and spring only for tender trees in cool zones).
   </p>
 </section>
 """
@@ -522,7 +522,7 @@ def build_references() -> str:
     return f"""
 <section class="mb-10" id="references">
   <h2 class="text-xl font-bold text-green-900 mb-3">Sources</h2>
-  <p class="text-gray-600 text-sm mb-3">Planting times and chill-hour guidance on this page draw on Australian state agriculture departments, ABC Gardening Australia, and established Australian nurseries.</p>
+  <p class="text-gray-600 text-sm mb-3">The planting times and chill-hour advice here come from state agriculture departments, ABC Gardening Australia, Sustainable Gardening Australia and Australian nurseries.</p>
   <ul class="text-sm space-y-1 list-disc pl-5">
     {items}
   </ul>
@@ -537,8 +537,8 @@ def build_cta() -> str:
         return ""
     return """
 <section class="bg-green-50 border border-green-300 rounded-lg p-6 mb-8" id="alerts">
-  <h2 class="text-lg font-semibold text-green-900 mb-1">Know the moment bare-root trees drop</h2>
-  <p class="text-sm text-green-900 mb-4">Each winter the best bare-root varieties sell out within days. Subscribe to the free treestock daily digest: back-in-stock items, price drops and new arrivals across every nursery we track. Filter by your state.</p>
+  <h2 class="text-lg font-semibold text-green-900 mb-1">Get an email when bare-root trees come in</h2>
+  <p class="text-sm text-green-900 mb-4">Each winter the best bare-root varieties sell out within days. Subscribe to the free treestock daily digest for back-in-stock items, price drops and new arrivals at every nursery we track, filtered to your state.</p>
   <form id="subscribeForm" class="flex flex-col sm:flex-row gap-2 sm:items-center max-w-xl">
     <input type="email" id="subEmail" placeholder="your@email.com" required
       class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 flex-1 min-w-0">
@@ -580,9 +580,9 @@ SUBSCRIBE_SCRIPT = r"""
       if (res.status === 202) {
         msg.textContent = 'Check your email. We sent you a confirmation link.';
       } else if (res.data && res.data.message === 'Already subscribed') {
-        msg.textContent = 'You are already subscribed.';
+        msg.textContent = "You're already subscribed.";
       } else {
-        msg.textContent = 'Subscribed. You will get the daily digest.';
+        msg.textContent = "Subscribed. You'll get the daily digest.";
       }
       msg.className = 'mt-2 text-sm text-green-700';
       msg.style.display = 'block';

@@ -5,12 +5,12 @@
   <div class="mb-6">
     <h1 class="text-3xl font-bold text-green-900 mb-2">Market Trends</h1>
     <p class="text-gray-600 mb-3">
-      Availability and price trends for 50 species across {{ nursery_count }} Australian nurseries.
-      Updated daily. {{ days_count }} days of data ({{ date_range }}).
+      How stock and prices are moving for each species we track, across {{ nursery_count }} Australian
+      nurseries. Updated daily, using the last {{ days_count }} days of data ({{ date_range }}).
     </p>
     <p class="text-xs text-gray-400">
-      Trends compare last 7 days vs prior 7 days. ↑ = rising, ↓ = falling, → = stable.
-      Availability % = days this species had any stock in the tracked period.
+      Trends compare the last 7 days with the 7 days before. ↑ rising, ↓ falling, → steady.
+      Availability is the share of days a species had any stock.
     </p>
   </div>
 
@@ -25,8 +25,8 @@
 
   <!-- Act fast -->
   <section class="mb-8">
-    <h2 class="text-lg font-semibold text-gray-800 mb-1">Act fast</h2>
-    <p class="text-sm text-gray-500 mb-3">Rare species that are in stock now but hard to find (in stock less than 30% of tracked days).</p>
+    <h2 class="text-lg font-semibold text-gray-800 mb-1">Hard to find, in stock now</h2>
+    <p class="text-sm text-gray-500 mb-3">Species that are in stock today but have had stock on less than 30% of days.</p>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
       {{ act_fast_html|safe }}
     </div>
@@ -35,7 +35,7 @@
   <!-- Trending up -->
   <section class="mb-8">
     <h2 class="text-lg font-semibold text-gray-800 mb-1">Stock trending up</h2>
-    <p class="text-sm text-gray-500 mb-3">Species with more stock available recently than last week.</p>
+    <p class="text-sm text-gray-500 mb-3">Species with more stock this week than last week.</p>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
       {{ trending_html|safe }}
     </div>
@@ -71,17 +71,16 @@
       </table>
     </div>
     <p class="text-xs text-gray-400 mt-3">
-      Availability = % of days tracked that species had at least one product in stock.
-      Price shown is current lowest available price across all nurseries.
+      Availability is the percentage of days a species had at least one plant in stock.
+      Price is the lowest current price across all nurseries.
     </p>
   </section>
 
   <section class="p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600">
     <p class="font-medium text-gray-700 mb-1">About this data</p>
     <p>
-      treestock.com.au scrapes {{ nursery_count }} Australian nurseries daily. This page shows {{ days_count }} days of accumulated
-      data (since {{ since_str }}). Seasonal patterns become clearer with 90+ days.
-      Check back monthly for stronger signals.
+      We check {{ nursery_count }} Australian nurseries every day. This page uses the last {{ days_count }} days
+      of that data (since {{ since_str }}).
     </p>
   </section>
 </main>

@@ -120,12 +120,11 @@ def build(output_dir=DEFAULT_OUTPUT_DIR):
   <div class="mb-6">
     <h1 class="text-3xl font-bold text-green-900 mb-2">Most Wanted Species</h1>
     <p class="text-gray-600 mb-3">
-      We track what's <em>in stock</em> across {len(SHIPPING_MAP)} Australian nurseries. But we also want to know
-      what you're <em>looking for</em>. Vote for the species you want to find, and we'll
-      notify you when they come into stock.
+      We track what's <em>in stock</em> across {len(SHIPPING_MAP)} Australian nurseries, but we'd
+      also like to know what you're <em>looking for</em>. Vote for the species you're after.
     </p>
     <div class="flex flex-wrap gap-3 text-sm">
-      <span class="px-3 py-1 bg-green-50 text-green-800 rounded-full font-medium">50 species tracked</span>
+      <span class="px-3 py-1 bg-green-50 text-green-800 rounded-full font-medium">{len(species_list)} species tracked</span>
       <span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-full">{vote_summary}</span>
     </div>
   </div>
@@ -146,9 +145,8 @@ def build(output_dir=DEFAULT_OUTPUT_DIR):
   <section class="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600">
     <p class="font-medium text-gray-700 mb-1">Why vote?</p>
     <ul class="list-disc list-inside space-y-1">
-      <li>Get notified when your wanted species comes into stock</li>
-      <li>Help us prioritise which nurseries to add next</li>
-      <li>Show nurseries where the demand is</li>
+      <li>It helps us decide which nurseries to add next</li>
+      <li>It shows nurseries what people are looking for</li>
     </ul>
   </section>"""
 
@@ -157,14 +155,14 @@ def build(output_dir=DEFAULT_OUTPUT_DIR):
   <div class="bg-white rounded-xl shadow-xl max-w-sm w-full mx-4 p-6">
     <h2 id="modalTitle" class="text-lg font-semibold text-gray-900 mb-1">I want <span id="modalSpeciesName"></span></h2>
     <p class="text-sm text-gray-500 mb-4">
-      Enter your email to vote and get notified when this species comes into stock.
+      Enter your email to vote. It's one vote per email.
     </p>
     <form id="voteForm" class="flex flex-col gap-3">
       <input type="email" id="voteEmail" placeholder="your@email.com" required
         class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
       <div class="flex gap-2">
         <button type="submit" id="voteSubmitBtn" class="flex-1 bg-green-700 text-white font-semibold py-2 rounded-lg text-sm hover:bg-green-800 transition-colors">
-          Vote + notify me
+          Vote
         </button>
         <button type="button" id="voteCancel" class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50">
           Cancel
@@ -172,7 +170,7 @@ def build(output_dir=DEFAULT_OUTPUT_DIR):
       </div>
     </form>
     <p id="voteMsg" class="text-sm mt-3 hidden"></p>
-    <p class="text-xs text-gray-400 mt-3">No spam. One email when your species comes into stock.</p>
+    <p class="text-xs text-gray-400 mt-3">Voting doesn't sign you up to any emails.</p>
   </div>
 </div>
 
@@ -243,7 +241,7 @@ voteForm.addEventListener('submit', async (e) => {{
     }});
     const data = await resp.json();
     if (resp.ok) {{
-      voteMsg.textContent = data.message + ' We will email you when ' + data.species_slug.replace(/-/g, ' ') + ' comes into stock.';
+      voteMsg.textContent = data.message;
       voteMsg.style.color = '#065f46';
       voteMsg.classList.remove('hidden');
       // Update count display
@@ -268,7 +266,7 @@ voteForm.addEventListener('submit', async (e) => {{
     voteMsg.classList.remove('hidden');
   }}
   voteSubmitBtn.disabled = false;
-  voteSubmitBtn.textContent = 'Vote + notify me';
+  voteSubmitBtn.textContent = 'Vote';
 }});
 
 // Filter by search

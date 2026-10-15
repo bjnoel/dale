@@ -94,6 +94,18 @@ class TestScanStaged(unittest.TestCase):
         self.git("add", "ok.py")
         self.assertEqual(self.scan(), [])
 
+    def test_inline_script_reading_a_url_token_commits_freely(self):
+        # stop-watching.html reads the unsubscribe token from its own URL.
+        self.write("page.html",
+                   "<script>\n  var token = p.get('token') || '';\n</script>\n")
+        self.git("add", "page.html")
+        self.assertEqual(self.scan(), [])
+
+    def test_a_real_key_in_html_is_still_blocked(self):
+        self.write("page.html", f"<script>var k = '{FAKE}';</script>\n")
+        self.git("add", "page.html")
+        self.assertTrue(self.scan())
+
     def test_it_reads_the_staged_bytes_not_the_working_file(self):
         # Stage the secret, then clean the working copy. A scanner reading the
         # working tree sees nothing while the commit still publishes the token.

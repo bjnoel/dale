@@ -39,8 +39,11 @@ from config_scan import scan_text  # noqa: E402 - sibling module, the shared gat
 # with a literal VALUE is the credential. In source, `TOKEN = os.environ.get(...)`
 # is a reference and the correct way to write it, so those files are judged only
 # on value-shaped detectors. See scan_text's `style` argument.
+# HTML is here because its inline <script> is JS: `var token = p.get('token')`
+# in stop-watching.html read as a config credential and blocked the commit.
 SOURCE_SUFFIXES = (".py", ".js", ".mjs", ".ts", ".jsx", ".tsx", ".sh", ".bash",
-                   ".rb", ".go", ".java", ".cs", ".php", ".md", ".txt", ".json")
+                   ".rb", ".go", ".java", ".cs", ".php", ".md", ".txt", ".json",
+                   ".html", ".j2")
 
 # Files whose "secrets" are deliberate test fixtures. Kept deliberately tiny:
 # every entry here is a hole, and a growing allowlist means the scanner is

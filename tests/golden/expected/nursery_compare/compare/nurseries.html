@@ -121,15 +121,13 @@ document.addEventListener('click', function(e) {
 
   <h1 class="text-2xl font-bold text-gray-900 mb-1">Compare Australian Fruit Tree Nurseries</h1>
   <p class="text-gray-500 text-sm mb-4">
-    3 nurseries tracked, 23 products in stock across 25 tracked.
-    2 nurseries ship to WA. Updated DATE.
+    We track 3 nurseries. 23 of their 25 products are in stock right now.
+    Updated DATE.
   </p>
 
   <div class="flex flex-wrap gap-2 mb-4">
     <button class="filter-btn active text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
             onclick="filterNurseries('all', this)">All nurseries</button>
-    <button class="filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
-            onclick="filterNurseries('wa', this)">Ships to WA</button>
     <button class="filter-btn text-xs px-3 py-1.5 rounded border border-gray-300 hover:border-green-600"
             onclick="filterNurseries('instock', this)">50+ in stock</button>
   </div>
@@ -141,7 +139,6 @@ document.addEventListener('click', function(e) {
           <th class="py-2 px-3">Nursery</th>
           <th class="py-2 px-3 text-center">In Stock / Total</th>
           <th class="py-2 px-3 text-center">Species</th>
-          <th class="py-2 px-3 text-center">Ships to WA</th>
           <th class="py-2 px-3">States</th>
         </tr>
       </thead>
@@ -158,7 +155,6 @@ document.addEventListener('click', function(e) {
             <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-green-500 h-1.5 rounded-full" style="width:90%"></div></div>
           </td>
           <td class="py-2 px-3 text-center text-sm">7</td>
-          <td class="py-2 px-3 text-center text-sm"><span class="text-green-700 font-semibold">Yes</span></td>
           <td class="py-2 px-3 text-xs text-gray-600">ACT, NSW, QLD, SA, VIC, WA <span class="text-xs text-red-700">No NT/TAS</span></td>
         </tr>
         <tr class="bg-gray-50 hover:bg-green-50 border-b border-gray-100">
@@ -172,7 +168,6 @@ document.addEventListener('click', function(e) {
             <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-green-500 h-1.5 rounded-full" style="width:100%"></div></div>
           </td>
           <td class="py-2 px-3 text-center text-sm">6</td>
-          <td class="py-2 px-3 text-center text-sm"><span class="text-amber-700 font-semibold">Perth metro only</span></td>
           <td class="py-2 px-3 text-xs text-gray-600">Perth metro only </td>
         </tr>
         <tr class="bg-white hover:bg-green-50 border-b border-gray-100">
@@ -186,7 +181,6 @@ document.addEventListener('click', function(e) {
             <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-green-500 h-1.5 rounded-full" style="width:86%"></div></div>
           </td>
           <td class="py-2 px-3 text-center text-sm">6</td>
-          <td class="py-2 px-3 text-center text-sm"><span class="text-red-600">No</span></td>
           <td class="py-2 px-3 text-xs text-gray-600">ACT, NSW, QLD, SA, VIC <span class="text-xs text-red-700">No WA/NT/TAS</span></td>
         </tr>
       </tbody>
@@ -195,10 +189,10 @@ document.addEventListener('click', function(e) {
 
   <div class="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm text-gray-700">
     <h2 class="font-semibold mb-2">About this comparison</h2>
-    <p class="mb-2">This table compares all nurseries tracked by treestock.com.au on stock depth, species range, and shipping reach. Data is updated daily from each nursery's website.</p>
-    <p class="mb-2"><strong>In Stock / Total:</strong> How many products are currently available vs the full range tracked. The progress bar shows the in-stock percentage.</p>
-    <p class="mb-2"><strong>Species:</strong> The number of distinct fruit species (e.g., mango, avocado, lychee) stocked by that nursery, regardless of variety count.</p>
-    <p><strong>Ships to WA:</strong> Western Australia has strict biosecurity requirements, so not all interstate nurseries can ship there. Nurseries marked Yes either ship directly to WA or have a WA partner arrangement.</p>
+    <p class="mb-2">This is every nursery we track, side by side. We update it daily from each nursery's website.</p>
+    <p class="mb-2"><strong>In Stock / Total:</strong> How many products are in stock right now, out of everything we track at that nursery. The bar shows it as a percentage.</p>
+    <p class="mb-2"><strong>Species:</strong> How many different fruit species (mango, avocado, lychee and so on) the nursery has, however many varieties of each.</p>
+    <p><strong>States:</strong> Where each nursery ships. WA, NT and TAS have strict quarantine rules, so plenty of interstate nurseries can't send plants there.</p>
   </div>
 
   <div class="mt-4 text-xs text-gray-400">
@@ -213,10 +207,8 @@ function filterNurseries(filter, btn) {
   btn.classList.add('active');
   const rows = document.querySelectorAll('#nursery-tbody tr');
   rows.forEach(row => {
-    const wa = row.querySelector('td:nth-child(4)')?.textContent.trim().toLowerCase() === 'yes';
     const instock = parseInt(row.querySelector('td:nth-child(2) .font-semibold')?.textContent || '0');
     if (filter === 'all') row.classList.remove('hidden-row');
-    else if (filter === 'wa') row.classList.toggle('hidden-row', !wa);
     else if (filter === 'instock') row.classList.toggle('hidden-row', instock < 50);
   });
 }
@@ -243,8 +235,8 @@ function filterNurseries(filter, btn) {
     <a href="/compare/" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare</a> &middot;
     <a href="/rare.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Rare Finds</a>
     <p class="mt-2"><a href="/buy-fruit-trees-wa.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in WA</a> &middot; <a href="/buy-fruit-trees-qld.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in QLD</a> &middot; <a href="/buy-fruit-trees-nsw.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in NSW</a> &middot; <a href="/buy-fruit-trees-vic.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Buy in VIC</a> &middot; <a href="/compare/nurseries.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Compare Nurseries</a> &middot; <a href="/treesmith.html" class="inline-block py-1.5 px-1 hover:text-gray-900">Treesmith app</a></p>
-    <p class="mt-2">Data updated daily. Prices and availability may change.</p>
-    <p class="mt-1">Some nursery links earn us a commission. It never affects search results or ordering. <a href="/affiliate-disclosure.html" class="underline">How this works</a></p>
+    <p class="mt-2">Updated daily, but prices and stock can change between updates.</p>
+    <p class="mt-1">Some nursery links earn us a small commission. It doesn't change the search results or the order they're in. <a href="/affiliate-disclosure.html" class="underline">How this works</a></p>
     <p class="mt-1">A project by <a href="https://bjnoel.com" class="underline">Benedict Noel</a>, Perth WA</p>
   </div>
 </footer>

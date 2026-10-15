@@ -37,14 +37,18 @@ def load_species():
     return enabled_species()
 
 
+_DATE_STEM = re.compile(r"\d{4}-\d{2}-\d{2}")
+
+
 def get_all_dates(data_dir: Path) -> list[str]:
     """Return all unique dates across all nursery snapshots, sorted."""
     dates = set()
     for nursery_dir in data_dir.iterdir():
         if not nursery_dir.is_dir():
             continue
-        for jf in nursery_dir.glob("2026-*.json"):
-            dates.add(jf.stem)
+        for jf in nursery_dir.glob("*.json"):
+            if _DATE_STEM.fullmatch(jf.stem):
+                dates.add(jf.stem)
     return sorted(dates)
 
 
@@ -254,9 +258,9 @@ def build_page(all_dates: list[str], species_data: dict, output_dir: Path):
         <div class="text-xs text-gray-500">{s['in_stock_now']} in stock &middot; {price_str}</div>
       </a>"""
 
-    buy_now_html = "".join(signal_card(s) for s in buy_now) if buy_now else "<p class='text-sm text-gray-400'>No clear signals yet. Check back as more data accumulates.</p>"
-    act_fast_html = "".join(signal_card(s) for s in act_fast) if act_fast else "<p class='text-sm text-gray-400'>No rare in-stock species right now.</p>"
-    trending_html = "".join(signal_card(s) for s in trending_up) if trending_up else "<p class='text-sm text-gray-400'>No species with notably rising stock right now.</p>"
+    buy_now_html = "".join(signal_card(s) for s in buy_now) if buy_now else "<p class='text-sm text-gray-400'>Nothing stands out right now.</p>"
+    act_fast_html = "".join(signal_card(s) for s in act_fast) if act_fast else "<p class='text-sm text-gray-400'>No hard-to-find species in stock right now.</p>"
+    trending_html = "".join(signal_card(s) for s in trending_up) if trending_up else "<p class='text-sm text-gray-400'>Nothing's trending up right now.</p>"
 
     # Table row view-data. The template autoescapes the species name; the
     # sparklines are prebuilt SVG (|safe) and the rest are computed classes,

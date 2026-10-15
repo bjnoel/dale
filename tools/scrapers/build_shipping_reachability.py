@@ -268,18 +268,18 @@ def render_headline(result: dict) -> str:
     never_tas = len(tas["species_never_reachable"])
     return f"""
 <div class="bg-green-50 border border-green-200 rounded-lg p-5 mb-8">
-  <p class="text-gray-800 mb-3">Across <strong>{window['days']} consecutive days</strong>
-  ({window['first_day']} to {window['last_day']}), treestock recorded whether each of
-  <strong>{result['species_with_any_stock']} fruit and bush tucker species</strong> was in stock at each of up to
-  <strong>{result['nurseries_tracked']} Australian nurseries</strong> (the panel grew from
-  {result['panel']['nurseries_first_day']} on the first day to {result['panel']['nurseries_last_day']} now),
-  then joined that to each nursery's published shipping policy.</p>
-  <p class="text-gray-800 mb-0">The finding: national rarity is mostly resolved, and the real constraint is
-  <strong>which state you live in</strong>. Over the last {window['recent_days']} days a Victorian buyer could
-  reach an average of <strong>{vic['avg_species_in_stock_per_day']} species on any given day</strong>. A
-  Tasmanian buyer could reach <strong>{tas['avg_species_in_stock_per_day']}</strong>, and
-  <strong>{never_tas} of the {result['species_with_any_stock']} species were never once buyable in Tasmania</strong>
-  on any day in the window.</p>
+  <p class="text-gray-800 mb-3">Over <strong>{window['days']} days</strong>
+  ({window['first_day']} to {window['last_day']}), we recorded whether each of
+  <strong>{result['species_with_any_stock']} fruit and bush tucker species</strong> was in stock at up to
+  <strong>{result['nurseries_tracked']} Australian nurseries</strong> (we started with
+  {result['panel']['nurseries_first_day']} and now read {result['panel']['nurseries_last_day']}),
+  and matched that against each nursery's published shipping policy.</p>
+  <p class="text-gray-800 mb-0">Most of these species are in stock somewhere in Australia on most days. What
+  limits you is <strong>which state you live in</strong>. Over the last {window['recent_days']} days, someone in
+  Victoria could buy an average of <strong>{vic['avg_species_in_stock_per_day']} species on any given day</strong>.
+  In Tasmania it was <strong>{tas['avg_species_in_stock_per_day']}</strong>, and
+  <strong>{never_tas} of the {result['species_with_any_stock']} species couldn't be bought in Tasmania</strong>
+  on a single day in the window.</p>
 </div>
 """
 
@@ -313,11 +313,11 @@ def render_state_table(result: dict) -> str:
     return f"""
 <section id="by-state" class="mb-10">
   <h2 class="text-xl font-bold text-green-900 mb-2">Reachability by state</h2>
-  <p class="text-gray-700 text-sm mb-4">"Species ever reachable" counts a species once if it was in stock at
-  least once, on any day, at any nursery that ships to that state. "Average in stock per day" is the honest
-  day-to-day figure: how many species a buyer in that state could actually have bought on a typical day. It is
-  shown over the last {result['window']['recent_days']} days and over the whole window; the whole-window figure
-  is lower everywhere because we were tracking fewer nurseries in March.</p>
+  <p class="text-gray-700 text-sm mb-4">"Species ever reachable" counts a species if it was in stock on at
+  least one day at a nursery that ships to that state. "Average in stock per day" is how many species someone
+  in that state could have bought on a typical day. We show it for the last {result['window']['recent_days']}
+  days and for the whole window. The whole-window figure is lower everywhere because we tracked fewer nurseries
+  back in March.</p>
   <div class="overflow-x-auto">
   <table class="w-full text-sm">
     <thead>
@@ -352,24 +352,24 @@ def render_tasmania(result: dict) -> str:
     )
     return f"""
 <section id="tasmania" class="mb-10">
-  <h2 class="text-xl font-bold text-green-900 mb-3">Tasmania, not Western Australia, is the cut-off state</h2>
-  <p class="text-gray-700 mb-3">Quarantine rules on plant material into Western Australia, the Northern Territory
-  and Tasmania are what shape this, and they do not bite evenly. Only <strong>{tas['nurseries']} of the
+  <h2 class="text-xl font-bold text-green-900 mb-3">Tasmania misses out the most</h2>
+  <p class="text-gray-700 mb-3">Quarantine rules for plants going into Western Australia, the Northern Territory
+  and Tasmania drive this, and they don't hit all three equally. Only <strong>{tas['nurseries']} of the
   {result['nurseries_tracked']} nurseries we track will send a plant to Tasmania</strong>
-  ({_esc(tas_nurseries)}). The Northern Territory has {nt['nurseries']}. Western Australia, the state everyone
-  worries about, has {wa['nurseries']}.</p>
-  <p class="text-gray-700 mb-3">This is worth stating plainly because the rare fruit community in Western
-  Australia generally assumes WA is the state that misses out. It is not.
-  <strong>{wa['species_ever_reachable']} of {result['species_with_any_stock']} species reached a WA address</strong>
+  ({_esc(tas_nurseries)}). {nt['nurseries']} will send to the Northern Territory, and {wa['nurseries']} to
+  Western Australia.</p>
+  <p class="text-gray-700 mb-3">A lot of us in the WA rare fruit community assume WA is the state that misses
+  out. It isn't.
+  <strong>{wa['species_ever_reachable']} of {result['species_with_any_stock']} species could be sent to a WA address</strong>
   at some point in the window, and WA buyers averaged {wa['avg_species_in_stock_per_day']} species in stock per
-  day against Victoria's {result['states']['VIC']['avg_species_in_stock_per_day']}. Quarantine costs WA breadth,
-  but not much of it. Tasmania has the problem WA thinks it has.</p>
+  day, against {result['states']['VIC']['avg_species_in_stock_per_day']} in Victoria. Quarantine does cut WA's
+  range a bit, but Tasmania is much worse off.</p>
   <details class="bg-red-50 border border-red-200 rounded-lg p-4">
-    <summary class="cursor-pointer font-medium text-red-900">The {len(never)} species never once buyable in Tasmania in {result['window']['days']} days</summary>
+    <summary class="cursor-pointer font-medium text-red-900">The {len(never)} species you couldn't buy in Tasmania on any of the {result['window']['days']} days</summary>
     <div class="mt-3">{chips}</div>
-    <p class="text-xs text-red-800 mt-3 mb-0">Never once in stock at any of the {tas['nurseries']} nurseries
-    that ship to Tasmania, on any of the {result['window']['days']} days measured. Some of these are
-    genuinely prohibited entry; most are simply not carried by a nursery that ships there.</p>
+    <p class="text-xs text-red-800 mt-3 mb-0">None of the {tas['nurseries']} nurseries that ship to Tasmania
+    had these in stock on any of the {result['window']['days']} days. Some can't legally enter Tasmania at all.
+    Most just aren't sold by a nursery that ships there.</p>
   </details>
 </section>
 """
@@ -390,12 +390,12 @@ def render_national_scarcity(result: dict, top: int = 15) -> str:
     </tr>""" for v in scarce)
     return f"""
 <section id="national" class="mb-10">
-  <h2 class="text-xl font-bold text-green-900 mb-2">What is actually rare nationally</h2>
+  <h2 class="text-xl font-bold text-green-900 mb-2">Species that are hard to buy anywhere in Australia</h2>
   <p class="text-gray-700 text-sm mb-4"><strong>{saturated} of {result['species_with_any_stock']} species were in
-  stock somewhere in Australia on every single one of the {result['window']['days']} days.</strong> "Rare fruit"
-  is, for the most part, a description of how few people grow something rather than how hard it is to buy.
-  These are the exceptions: species that were unbuyable anywhere in the country for a meaningful share of the
-  window. Bare-root seasonality is not scarcity, so read a winter-deciduous species here with that in mind.</p>
+  stock somewhere in Australia on every one of the {result['window']['days']} days.</strong> So most "rare fruit"
+  isn't hard to buy. It just isn't widely grown. The species below are the exceptions, the ones that were out
+  of stock everywhere on at least some days. Some deciduous species are only sold bare-root in winter, so they
+  drop out for months at a time. That's seasonal, not rare.</p>
   <div class="overflow-x-auto">
   <table class="w-full text-sm">
     <thead>
@@ -437,10 +437,10 @@ def render_matrix(result: dict) -> str:
     </tr>""")
     return f"""
 <section id="matrix" class="mb-10">
-  <h2 class="text-xl font-bold text-green-900 mb-2">Every species, every state</h2>
-  <p class="text-gray-700 text-sm mb-4">A tick means the species was in stock at least once, on at least one day
-  in the window, at a nursery that ships to that state. It does not mean it is in stock now. The percentage is
-  the share of days it was in stock somewhere in Australia.</p>
+  <h2 class="text-xl font-bold text-green-900 mb-2">All species by state</h2>
+  <p class="text-gray-700 text-sm mb-4">A tick means the species was in stock on at least one day in the window
+  at a nursery that ships to that state. It doesn't mean it's in stock now. The percentage is the share of days
+  it was in stock somewhere in Australia.</p>
   <div class="overflow-x-auto border border-gray-200 rounded-lg">
   <table class="w-full text-sm">
     <thead class="bg-gray-50">
@@ -462,37 +462,38 @@ def render_method(result: dict) -> str:
     window = result["window"]
     return f"""
 <section id="method" class="mb-10">
-  <h2 class="text-xl font-bold text-green-900 mb-3">Method, and what this does not say</h2>
-  <p class="text-gray-700 mb-3">Every day since {window['first_day']}, treestock reads the public catalogue of
-  each tracked nursery and records, per listing, whether it is in stock. Listings are matched to a species and
-  then <strong>rolled up to nursery-day</strong>: a nursery stocking twenty named varieties of one species
-  counts once, the same as a nursery stocking one. Shipping is taken from each nursery's published policy.</p>
+  <h2 class="text-xl font-bold text-green-900 mb-3">How we measured this, and its limits</h2>
+  <p class="text-gray-700 mb-3">Every day since {window['first_day']}, we've read each tracked nursery's online
+  catalogue and recorded whether each listing is in stock. Each listing is matched to a species, then
+  <strong>counted once per nursery per day</strong>. A nursery with twenty named varieties of one species
+  counts once, the same as a nursery with one. Shipping comes from each nursery's published policy.</p>
   <ul class="list-disc pl-5 text-gray-700 space-y-2 mb-3">
-    <li><strong>Stated policy, not a test order.</strong> We have not attempted to send a plant to every state.
-    A nursery that says it ships to Tasmania is counted as shipping to Tasmania.</li>
-    <li><strong>The panel grew during the window.</strong> On {window['first_day']} we were reading
-    {result['panel']['nurseries_first_day']} nurseries; on {window['last_day']} we were reading
-    {result['panel']['nurseries_last_day']}. Early days therefore understate reachability everywhere, which is
-    why the state table also shows a last-{result['window']['recent_days']}-day average, and why the
-    "ever reachable" columns are the conservative reading rather than the generous one.</li>
-    <li><strong>Seasonality is not scarcity.</strong> Bare-root deciduous stock (apple, pear, walnut, currant)
-    is legitimately absent for months and then plentiful. Read the national scarcity table with that in mind.</li>
-    <li><strong>A missing day is "not listed", not "out of stock".</strong> Days are only counted where the
-    history has an entry for that listing, so a delisted product does not silently score as unavailable.</li>
-    <li><strong>Days when our own collection failed are thrown away, not averaged in.</strong>
-    {result['window']['days_excluded_incomplete']} days are excluded on that basis: on those days fewer than
-    {int(result['panel']['completeness_threshold'] * 100)}% of the nurseries we were then tracking returned any
-    data at all, and "nothing was in stock anywhere in Australia" would have been a fact about our scrapers
-    rather than about Australian nurseries. The excluded dates are listed in the JSON so you can check the
-    decision rather than take our word for it.</li>
-    <li><strong>Some listings are seed, not trees.</strong> A handful of species are reachable only as seed at
-    some nurseries, which is a different purchase from a grafted tree.</li>
-    <li><strong>This is the nurseries we track, not every nursery in Australia.</strong> A species absent here
-    may be available from a small grower, a club sale or a private seller.</li>
-    <li><strong>How fresh this copy is.</strong> This page was built on {result['generated']} from nursery data
-    collected up to {window['last_day']}. Those are two different dates on purpose: the first says when the
-    numbers were computed, the second says how recent the stock behind them is. If they drift apart, or fall
-    behind today, something in our collection has stopped and the page is telling you so.</li>
+    <li><strong>We go by what nurseries say.</strong> We haven't test-ordered a plant to every state. If a
+    nursery says it ships to Tasmania, we count it.</li>
+    <li><strong>We added nurseries along the way.</strong> On {window['first_day']} we were reading
+    {result['panel']['nurseries_first_day']} nurseries, and on {window['last_day']} it was
+    {result['panel']['nurseries_last_day']}. So the early days understate what was available everywhere, which
+    is why the state table also shows a last-{result['window']['recent_days']}-day average, and why the
+    "ever reachable" columns are the conservative reading.</li>
+    <li><strong>Seasonal isn't the same as scarce.</strong> Bare-root deciduous stock (apple, pear, walnut,
+    currant) disappears for months and then turns up everywhere. Keep that in mind when you read the national
+    table.</li>
+    <li><strong>A missing day means "not listed", not "out of stock".</strong> We only count days where we have
+    a record for that listing, so a product that's been taken off a nursery's site doesn't count as
+    unavailable.</li>
+    <li><strong>We drop days when our own data collection failed.</strong>
+    {result['window']['days_excluded_incomplete']} days are left out because fewer than
+    {int(result['panel']['completeness_threshold'] * 100)}% of the nurseries we were tracking at the time
+    returned any data. Counting them would have made it look like nothing was in stock anywhere, when really
+    our scrapers had broken. The excluded dates are listed in the JSON.</li>
+    <li><strong>Some listings are seed.</strong> A few species are only available as seed at some nurseries,
+    which isn't the same as buying a grafted tree.</li>
+    <li><strong>We only cover the nurseries we track.</strong> A species missing here might still be available
+    from a small grower, a club sale or a private seller.</li>
+    <li><strong>How up to date this is.</strong> This page was built on {result['generated']} from nursery data
+    collected up to {window['last_day']}. The first date is when we ran the numbers, and the second is how
+    recent the stock data is. If they drift apart or fall behind today's date, our data collection has
+    stopped.</li>
   </ul>
 </section>
 """
@@ -502,11 +503,11 @@ def render_citation(result: dict) -> str:
     window = result["window"]
     return f"""
 <section id="cite" class="mb-10">
-  <h2 class="text-xl font-bold text-green-900 mb-3">Use it, cite it, download it</h2>
-  <p class="text-gray-700 mb-4">This dataset is published under
+  <h2 class="text-xl font-bold text-green-900 mb-3">Using and citing this data</h2>
+  <p class="text-gray-700 mb-4">This data is published under
   <a href="https://creativecommons.org/licenses/by/4.0/" class="text-green-700 hover:underline" rel="license">CC BY 4.0</a>.
-  Reuse it anywhere, including commercially, as long as you credit treestock.com.au and link back. Journalists,
-  clubs, nurseries and researchers are all welcome to it; if you want a cut we do not publish, ask.</p>
+  You can reuse it anywhere, including commercially, as long as you credit treestock.com.au and link back. If
+  you want a breakdown we don't publish, just ask.</p>
   <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
     <p class="text-xs uppercase tracking-wide text-gray-500 mb-2">Suggested citation</p>
     <p class="text-sm text-gray-800 font-mono mb-0">treestock.com.au, <em>Fruit tree shipping reachability by
@@ -514,13 +515,12 @@ def render_citation(result: dict) -> str:
     ({window['days']} days, {result['nurseries_tracked']} nurseries). Retrieved {result['generated']}.
     <a href="{PAGE_URL}" class="text-green-700 hover:underline">{PAGE_URL}</a></p>
   </div>
-  <p class="text-gray-700 mb-0">The full dataset behind this page, including the per-species and per-state
-  breakdowns, is available as machine-readable JSON:
-  <a href="/{DATA_SLUG}" class="text-green-700 hover:underline font-medium">{DATA_URL}</a>. It carries its own
-  <code>generated</code> date and the first and last day of the window it covers, so you can check how fresh a
-  copy is instead of taking our word for it. <strong>This build ran on {result['generated']}, over data
-  collected up to {window['last_day']}.</strong> We rebuild nightly, and when a build does not run the dates
-  above stop moving rather than the page pretending otherwise.
+  <p class="text-gray-700 mb-0">The full dataset, including the per-species and per-state breakdowns, is
+  available as JSON:
+  <a href="/{DATA_SLUG}" class="text-green-700 hover:underline font-medium">{DATA_URL}</a>. It includes its own
+  <code>generated</code> date and the first and last day it covers. <strong>This build ran on
+  {result['generated']}, using data collected up to {window['last_day']}.</strong> We rebuild it every night,
+  so if those dates stop moving, a build hasn't run.
   Questions or corrections: <a href="mailto:ben@treestock.com.au" class="text-green-700 hover:underline">ben@treestock.com.au</a>.</p>
 </section>
 """
@@ -531,7 +531,7 @@ def render_related() -> str:
 <section class="mb-10">
   <h2 class="text-xl font-bold text-green-900 mb-3">Related</h2>
   <ul class="list-disc pl-5 text-gray-700 space-y-1">
-    <li><a href="/wa-rare-fruit-guide.html" class="text-green-700 hover:underline">Buying rare fruit trees in Western Australia</a>, the nine nurseries that will actually send you one</li>
+    <li><a href="/wa-rare-fruit-guide.html" class="text-green-700 hover:underline">Buying rare fruit trees in Western Australia</a>, and which nurseries will send you one</li>
     <li><a href="/species/" class="text-green-700 hover:underline">Live stock by species</a> across every tracked nursery</li>
     <li><a href="/nursery/" class="text-green-700 hover:underline">Every nursery we track</a>, with its shipping restrictions</li>
     <li><a href="/bare-root.html" class="text-green-700 hover:underline">Bare-root season</a>, why deciduous stock disappears for half the year</li>
@@ -594,7 +594,7 @@ def build_page(result: dict) -> str:
     body = "\n".join([
         breadcrumb,
         '<h1 class="text-2xl font-bold text-green-900 mb-2">Which fruit trees can actually be shipped to your state?</h1>',
-        f'<p class="text-gray-600 text-sm mb-6">A free, citable dataset measured daily across '
+        f'<p class="text-gray-600 text-sm mb-6">A free dataset you\'re welcome to cite, collected daily from '
         f'{result["nurseries_tracked"]} Australian nurseries since {window["first_day"]}. '
         f'Built {result["generated"]}, from nursery data collected up to {window["last_day"]}.</p>',
         render_headline(result),

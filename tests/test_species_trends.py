@@ -11,6 +11,7 @@ Run from repo root with:
 """
 import importlib.util
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -44,6 +45,19 @@ class TrendsUsesSharedGuardTests(unittest.TestCase):
         coverage = {d: (1 if d in bad else 22) for d in dates}
         kept = trends.usable_dates(dates, coverage)
         self.assertEqual(sorted(kept), sorted(good))
+
+
+class DateDiscoveryTests(unittest.TestCase):
+    def test_dates_carry_across_the_new_year(self):
+        """The loader globbed "2026-*.json", so on 1 January 2027 every new
+        snapshot would have been invisible and the page frozen on 31 December."""
+        with tempfile.TemporaryDirectory() as tmp:
+            nursery = Path(tmp) / "daleys"
+            nursery.mkdir()
+            for name in ("2026-12-31.json", "2027-01-01.json", "latest.json"):
+                (nursery / name).write_text("{}")
+            self.assertEqual(trends.get_all_dates(Path(tmp)),
+                             ["2026-12-31", "2027-01-01"])
 
 
 if __name__ == "__main__":

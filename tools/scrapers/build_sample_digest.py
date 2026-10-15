@@ -34,8 +34,8 @@ from stocklib.templates import render as render_template
 def make_subscribe_form(form_id="subscribeForm", email_id="subEmail", btn_id="subBtn", msg_id="subMsg", state_id="subState", nursery_count=15):
     return f"""
 <div class="subscribe-box">
-  <p class="box-heading">Get this in your inbox every day — free</p>
-  <p class="box-sub">Daily stock alerts: price drops, restocks, and new arrivals across {nursery_count} Australian nurseries. Unsubscribe any time.</p>
+  <p class="box-heading">Get this in your inbox every day (it's free)</p>
+  <p class="box-sub">Price drops, restocks and new arrivals across {nursery_count} Australian nurseries, every day. Unsubscribe any time.</p>
   <form id="{form_id}" class="sub-form">
     <input type="email" id="{email_id}" placeholder="your@email.com" required class="sub-input">
     <select id="{state_id}" class="sub-input" style="flex:0 0 auto;width:auto;min-width:0">
@@ -177,7 +177,7 @@ def build_highlights_section(highlights: dict, max_each: int = 4) -> str:
   <div class="hl-groups">
     {''.join(parts)}
   </div>
-  <p class="hl-more">Plus restocks, new arrivals, and price tracking across {NURSERY_COUNT} nurseries — full digest below.</p>
+  <p class="hl-more">The full email is below, with everything from all {NURSERY_COUNT} nurseries.</p>
 </div>
 """
 

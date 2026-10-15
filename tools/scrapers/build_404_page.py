@@ -18,8 +18,8 @@ from treestock_layout import render_page, CONTENT_MAX_WIDTH
 # --- Copy (swap these two lines to change the message) ------------------------
 HEADLINE = "This branch didn't take"
 MESSAGE = (
-    "The page you were after has been pruned, moved, or never took root. "
-    "Let's get you back to something fruitful."
+    "That page has moved or doesn't exist anymore. "
+    "Try a search, or start from one of these."
 )
 # -----------------------------------------------------------------------------
 
