@@ -60,7 +60,7 @@ class BuildTests(unittest.TestCase):
             self.assertNotIn('id="alerts"', HTML)
         for anchor in anchors:
             self.assertIn(anchor, HTML, f"missing section {anchor}")
-        self.assertIn("Bare-root season: June to August", HTML)
+        self.assertIn("Bare-root season: June to September", HTML)
 
     def test_canonical_and_og(self):
         self.assertIn('<link rel="canonical" href="https://treestock.com.au/when-to-plant.html">', HTML)

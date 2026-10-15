@@ -24,6 +24,7 @@ from cultivar_parsing import product_variety_slug
 from shipping import SHIPPING_MAP, NURSERY_NAMES, nursery_note_for_state
 from stocklib.registry import BUY_PAGE_STATE_SLUGS
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer
 
@@ -68,7 +69,7 @@ STATE_INTROS = {
     ),
     "VIC": (
         "Victoria's cold winters give stone fruit and apples the chill hours they need. "
-        "Bare-root season (June to August) is when most people here stock up. "
+        "Bare-root season (June to September) is when most people here stock up. "
         "These nurseries all ship to VIC."
     ),
     "SA": (
@@ -114,7 +115,7 @@ STATE_GROWING_GUIDE = {
     <h2 class="text-lg font-semibold mb-3">Growing fruit trees in Queensland</h2>
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
       <p>Queensland's climate divides into three fruit-growing zones. The far north (Cairns, Townsville) is true tropical territory: mangoes, bananas, carambola, durian and rambutan thrive here with little fuss. The southeast (Brisbane, Gold Coast, Sunshine Coast) is subtropical, supporting avocados, lychees, custard apples, macadamias and most citrus. The Darling Downs and granite belt at elevation can grow stone fruit and even apples with adequate chill hours.</p>
-      <p>In QLD you don't need to wait for a planting window. Pot-grown trees can go in the ground any time of year, as long as you water them through the first summer. Bare-root stone fruit is still best planted in winter while it's dormant (June to August).</p>
+      <p>In QLD you don't need to wait for a planting window. Pot-grown trees can go in the ground any time of year, as long as you water them through the first summer. Bare-root stone fruit is still best planted in winter while it's dormant (June to September).</p>
       <p>Good choices for Brisbane and southeast QLD are avocado, lychee, mango (dwarf varieties do well in suburban yards), macadamia, dragon fruit, mulberry, fig and feijoa. Cherries, apples and pears struggle because they don't get enough chill, except up on the Granite Belt.</p>
     </div>
   </section>""",
@@ -123,14 +124,14 @@ STATE_GROWING_GUIDE = {
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
       <p>NSW has a huge range of growing conditions. The north coast (Byron Bay, Coffs Harbour) is subtropical and suits avocados, macadamias, lychees and citrus. Sydney and the Central Coast are warm temperate, good for figs, citrus, stone fruit and subtropical exotics like feijoa and guava. The Southern Highlands and tablelands are cool enough for apples, pears, cherries and plums, the same varieties that thrive in Victoria.</p>
       <p>In the Riverina and Murray basin, hot dry summers and cold winters are great for stone fruit, almonds and table grapes. It's commercial orchard country. Wherever you are in NSW, match the variety to your chill: low-chill stone fruit on the coast, high-chill varieties up in the ranges.</p>
-      <p>Most NSW growers can plant pot-grown trees year-round. Bare-root stock (available June to August) is cheaper and transplants well for deciduous species. As a rough guide, if your winter temperatures regularly drop below 7°C you can grow temperate stone fruit. If they rarely do, stick to subtropical varieties.</p>
+      <p>Most NSW growers can plant pot-grown trees year-round. Bare-root stock (available June to September) is cheaper and transplants well for deciduous species. As a rough guide, if your winter temperatures regularly drop below 7°C you can grow temperate stone fruit. If they rarely do, stick to subtropical varieties.</p>
     </div>
   </section>""",
     "VIC": """<section class="mb-8">
     <h2 class="text-lg font-semibold mb-3">Growing fruit trees in Victoria</h2>
     <div class="prose prose-sm max-w-none text-gray-700 space-y-3">
       <p>Victoria is great for cool-climate fruit. Its reliably cold winters give apples, pears, cherries, plums, peaches, nectarines and quinces the chill hours they need to fruit well. Heritage apples that would struggle in Queensland or WA do really well in the Yarra Ranges, the Mornington Peninsula and the central highlands.</p>
-      <p>Bare-root season (June to August) is the main time to buy in Victoria. Bare-root trees are cheaper, they settle in quickly, and that's when you get the widest choice of varieties. Heritage Fruit Trees (in VIC) and Aus Nurseries both have big bare-root ranges then, so set an alert and you won't miss it.</p>
+      <p>Bare-root season (June to September) is the main time to buy in Victoria. Bare-root trees are cheaper, they settle in quickly, and that's when you get the widest choice of varieties. Heritage Fruit Trees (in VIC) and Aus Nurseries both have big bare-root ranges then, so set an alert and you won't miss it.</p>
       <p>Melbourne and coastal Victoria can also support subtropical species in sheltered spots: figs, feijoas, persimmons and mulberries all do well. Avocados are marginal in Melbourne but succeed in frost-free microclimates on the Mornington Peninsula. Frost is the main limit. If your site regularly gets frost below -3°C, stick to fully cold-hardy deciduous fruit.</p>
     </div>
   </section>""",
@@ -487,7 +488,7 @@ def build_page(state: str, products: list[dict], species_lookup: dict, today_str
         nursery_stats=nursery_stats, products=shown_view, shown_count=shown_count,
         local_nurseries=local_nurseries, combo_links=combo_view,
         state_slug_str=state_slug_str, growing_guide_html=growing_guide_html,
-        cross_html=cross_html,
+        cross_html=cross_html, digest_signup=DIGEST_SIGNUP_ENABLED,
     )
 
 

@@ -104,7 +104,7 @@ CATEGORY_GUIDANCE = [
             "persimmons, pomegranates and jujubes drop their leaves and go dormant in winter. That's when "
             "nurseries lift and sell them bare-root, with no soil around the roots. Bare-root stock is cheaper "
             "than potted trees and establishes quickly, because the roots start growing into your soil before "
-            "the tree wakes up in spring. The bare-root season runs from about June to August, peaking in July. "
+            "the tree wakes up in spring. The bare-root season runs from about June to September, peaking in July. "
             "Order early, because the best varieties sell out fast."
         ),
         "key_fact": "Match the variety's chill-hour needs to your zone. High-chill cherries and many apples won't fruit in warm areas. Low-chill peach, apple and plum varieties are bred for the subtropics.",
@@ -195,36 +195,36 @@ SPECIES = [
     {"name": "Mandarin", "slug": "mandarin", "zones": ["subtropical", "temperate"], "best": [9, 10, 11], "ok": [3, 4, 12], "bareRoot": [], "notes": "Spring and autumn planting. Easy to grow."},
     {"name": "Grapefruit", "slug": "grapefruit", "zones": ["subtropical", "temperate"], "best": [9, 10, 11], "ok": [3, 4, 12], "bareRoot": [], "notes": "Spring planting. Needs heat to sweeten the fruit."},
     {"name": "Finger Lime", "slug": "finger-lime", "zones": ["subtropical", "temperate", "cool"], "best": [9, 10, 11], "ok": [3, 4, 5, 12], "bareRoot": [], "notes": "Australian native. More cold-tolerant than most citrus."},
-    {"name": "Fig", "slug": "fig", "zones": ["temperate", "subtropical", "cool", "arid"], "best": [9, 10], "ok": [3, 4], "bareRoot": [6, 7, 8], "notes": "Deciduous. Bare-root in June to August, container in spring."},
-    {"name": "Pomegranate", "slug": "pomegranate", "zones": ["temperate", "subtropical", "arid"], "best": [9, 10, 11], "ok": [3, 4], "bareRoot": [6, 7, 8], "notes": "Deciduous. Drought-tolerant once established. Suits hot dry areas."},
+    {"name": "Fig", "slug": "fig", "zones": ["temperate", "subtropical", "cool", "arid"], "best": [9, 10], "ok": [3, 4], "bareRoot": [6, 7, 8, 9], "notes": "Deciduous. Bare-root in June to September, container in spring."},
+    {"name": "Pomegranate", "slug": "pomegranate", "zones": ["temperate", "subtropical", "arid"], "best": [9, 10, 11], "ok": [3, 4], "bareRoot": [6, 7, 8, 9], "notes": "Deciduous. Drought-tolerant once established. Suits hot dry areas."},
     {"name": "Olive", "slug": "olive", "zones": ["temperate", "subtropical", "cool", "arid"], "best": [3, 4, 5, 9, 10], "ok": [11, 2], "bareRoot": [], "notes": "Autumn and spring planting. Extremely drought-tolerant."},
     {"name": "Loquat", "slug": "loquat", "zones": ["temperate", "subtropical", "cool", "arid"], "best": [9, 10, 11], "ok": [3, 4], "bareRoot": [], "notes": "Spring and autumn planting. Hardy and drought-tolerant. One of the first fruits of the year."},
-    {"name": "Mulberry", "slug": "mulberry", "zones": ["temperate", "subtropical", "cool"], "best": [9, 10], "ok": [3, 4], "bareRoot": [6, 7, 8], "notes": "Deciduous. Bare-root widely available in winter."},
-    {"name": "Jujube", "slug": "jujube", "zones": ["temperate", "subtropical", "arid"], "best": [9, 10, 11], "ok": [3, 4], "bareRoot": [6, 7, 8], "notes": "Deciduous. Extremely drought-tolerant. Bare-root in winter."},
+    {"name": "Mulberry", "slug": "mulberry", "zones": ["temperate", "subtropical", "cool"], "best": [9, 10], "ok": [3, 4], "bareRoot": [6, 7, 8, 9], "notes": "Deciduous. Bare-root widely available in winter."},
+    {"name": "Jujube", "slug": "jujube", "zones": ["temperate", "subtropical", "arid"], "best": [9, 10, 11], "ok": [3, 4], "bareRoot": [6, 7, 8, 9], "notes": "Deciduous. Extremely drought-tolerant. Bare-root in winter."},
     {"name": "Macadamia", "slug": "macadamia", "zones": ["subtropical", "temperate"], "best": [9, 10, 11], "ok": [3, 4, 12], "bareRoot": [], "notes": "Spring planting. Slow growing, grafted trees fruit in 5-7 years."},
     {"name": "Feijoa", "slug": "feijoa", "zones": ["temperate", "subtropical", "cool"], "best": [3, 4, 5, 9, 10], "ok": [11], "bareRoot": [], "notes": "Very adaptable. Autumn and spring planting, hardy once established."},
     {"name": "Lilly Pilly", "slug": "lilly-pilly", "zones": ["tropical", "subtropical", "temperate", "cool"], "best": [9, 10, 11], "ok": [3, 4, 5, 12, 8], "bareRoot": [], "notes": "Australian native. Highly adaptable, plant most of the year."},
-    {"name": "Pecan", "slug": "pecan", "zones": ["temperate", "subtropical"], "best": [9, 10, 11], "ok": [3, 4], "bareRoot": [6, 7, 8], "notes": "Large deciduous tree. Bare-root in winter, long-lived."},
-    {"name": "Apple", "slug": "apple", "zones": ["temperate", "cool", "subtropical"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8], "notes": "Needs winter chill. Bare-root is the cheapest option. Low-chill varieties (Anna, Dorsett Golden) suit warm subtropical areas."},
-    {"name": "Pear", "slug": "pear", "zones": ["temperate", "cool"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8], "notes": "Needs winter chill. Asian pears need less chill than European."},
-    {"name": "Plum", "slug": "plum", "zones": ["temperate", "cool"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8], "notes": "Deciduous. Check chill hours for your area."},
-    {"name": "Peach", "slug": "peach", "zones": ["temperate", "cool", "subtropical"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8], "notes": "Low-chill varieties available for warm areas (Brisbane, Perth)."},
-    {"name": "Nectarine", "slug": "nectarine", "zones": ["temperate", "cool", "subtropical"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8], "notes": "A smooth-skinned peach. Low-chill varieties exist for warm areas."},
-    {"name": "Apricot", "slug": "apricot", "zones": ["temperate", "cool", "arid"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8], "notes": "Needs cold winters. Thrives in dry inland districts (Riverland, Mildura). Not suited to subtropical or tropical climates."},
-    {"name": "Cherry", "slug": "cherry", "zones": ["cool", "temperate"], "best": [9, 10], "ok": [3, 4], "bareRoot": [6, 7, 8], "notes": "High chill requirement. Best in VIC/TAS/NSW highlands and cold WA zones."},
-    {"name": "Blueberry", "slug": "blueberry", "zones": ["temperate", "cool", "subtropical"], "best": [3, 4, 5], "ok": [9, 10, 11], "bareRoot": [6, 7, 8], "notes": "Likes acidic soil (pH 4.5-5.5). Cool-zone northern highbush types sell bare-root in winter; warm-zone southern highbush and rabbiteye types are evergreen and sold potted."},
+    {"name": "Pecan", "slug": "pecan", "zones": ["temperate", "subtropical"], "best": [9, 10, 11], "ok": [3, 4], "bareRoot": [6, 7, 8, 9], "notes": "Large deciduous tree. Bare-root in winter, long-lived."},
+    {"name": "Apple", "slug": "apple", "zones": ["temperate", "cool", "subtropical"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8, 9], "notes": "Needs winter chill. Bare-root is the cheapest option. Low-chill varieties (Anna, Dorsett Golden) suit warm subtropical areas."},
+    {"name": "Pear", "slug": "pear", "zones": ["temperate", "cool"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8, 9], "notes": "Needs winter chill. Asian pears need less chill than European."},
+    {"name": "Plum", "slug": "plum", "zones": ["temperate", "cool"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8, 9], "notes": "Deciduous. Check chill hours for your area."},
+    {"name": "Peach", "slug": "peach", "zones": ["temperate", "cool", "subtropical"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8, 9], "notes": "Low-chill varieties available for warm areas (Brisbane, Perth)."},
+    {"name": "Nectarine", "slug": "nectarine", "zones": ["temperate", "cool", "subtropical"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8, 9], "notes": "A smooth-skinned peach. Low-chill varieties exist for warm areas."},
+    {"name": "Apricot", "slug": "apricot", "zones": ["temperate", "cool", "arid"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8, 9], "notes": "Needs cold winters. Thrives in dry inland districts (Riverland, Mildura). Not suited to subtropical or tropical climates."},
+    {"name": "Cherry", "slug": "cherry", "zones": ["cool", "temperate"], "best": [9, 10], "ok": [3, 4], "bareRoot": [6, 7, 8, 9], "notes": "High chill requirement. Best in VIC/TAS/NSW highlands and cold WA zones."},
+    {"name": "Blueberry", "slug": "blueberry", "zones": ["temperate", "cool", "subtropical"], "best": [3, 4, 5], "ok": [9, 10, 11], "bareRoot": [6, 7, 8, 9], "notes": "Likes acidic soil (pH 4.5-5.5). Cool-zone northern highbush types sell bare-root in winter; warm-zone southern highbush and rabbiteye types are evergreen and sold potted."},
     {"name": "Raspberry", "slug": "raspberry", "zones": ["cool", "temperate"], "best": [3, 4, 5], "ok": [6, 7], "bareRoot": [6, 7], "notes": "Autumn or winter planting. Needs cool winters to fruit well."},
-    {"name": "Grape", "slug": "grape", "zones": ["temperate", "subtropical", "cool", "arid"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8], "notes": "Deciduous. Bare-root widely available in July, very easy to establish."},
+    {"name": "Grape", "slug": "grape", "zones": ["temperate", "subtropical", "cool", "arid"], "best": [9, 10], "ok": [3, 4, 11], "bareRoot": [6, 7, 8, 9], "notes": "Deciduous. Bare-root widely available in July, very easy to establish."},
 ]
 
 FAQS = [
     (
         "What is the best month to plant fruit trees in Australia?",
-        "It depends on your climate zone and the type of tree. For deciduous fruit (apples, pears, plums, peaches) the bare-root season from June to August is ideal and the cheapest time to buy. For citrus, subtropical and tropical fruit, spring (September to November) is best, once the soil has warmed and frost has passed. In hot dry inland areas, autumn (March to May) often works better so roots establish before summer.",
+        "It depends on your climate zone and the type of tree. For deciduous fruit (apples, pears, plums, peaches) the bare-root season from June to September is ideal and the cheapest time to buy. For citrus, subtropical and tropical fruit, spring (September to November) is best, once the soil has warmed and frost has passed. In hot dry inland areas, autumn (March to May) often works better so roots establish before summer.",
     ),
     (
         "What is the bare-root season in Australia?",
-        "Bare-root season runs roughly from June to early August, peaking in July. Deciduous trees (apples, pears, cherries, plums, peaches, grapes and others) go fully dormant in winter and can be sold without soil around the roots. Bare-root trees are usually cheaper than potted stock and establish quickly. Order early, because popular varieties sell out within days of release.",
+        "Bare-root season runs roughly from June to September, peaking in July. Deciduous trees (apples, pears, cherries, plums, peaches, grapes and others) go fully dormant in winter and can be sold without soil around the roots. Bare-root trees are usually cheaper than potted stock and establish quickly. Order early, because popular varieties sell out within days of release.",
     ),
     (
         "Can I plant fruit trees in summer?",
@@ -645,7 +645,7 @@ def build_page() -> str:
         related_guides=build_related_guides(),
         treesmith_promo=render_treesmith_promo("species"),
         filter_script=FILTER_SCRIPT,
-        subscribe_script=SUBSCRIBE_SCRIPT,
+        subscribe_script=SUBSCRIBE_SCRIPT if DIGEST_SIGNUP_ENABLED else "",
     )
 
 

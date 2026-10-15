@@ -40,6 +40,7 @@ from stocklib.taxonomy import enabled_species
 
 from cultivar_parsing import _RE_BARE_ROOTED, _RE_BEAR_ROOTED
 from build_when_to_plant import SPECIES, build_cta, SUBSCRIBE_SCRIPT
+from stocklib.flags import DIGEST_SIGNUP_ENABLED
 
 SEASON_START_MONTH = 6   # June 1
 SEASON_END_MONTH = 9     # through September 30
@@ -439,7 +440,7 @@ def build_page(data_dir, today: date) -> str:
         references=build_references(),
         related_guides=build_related_guides(),
         treesmith_promo=render_treesmith_promo("species"),
-        subscribe_script=SUBSCRIBE_SCRIPT,
+        subscribe_script=SUBSCRIBE_SCRIPT if DIGEST_SIGNUP_ENABLED else "",
     )
 
 

@@ -60,6 +60,7 @@
   </div>
 {% endfor %}
 
+  {% if digest_signup %}
   <div class="subscribe-box mt-8">
     <p class="font-semibold text-green-900 mb-1">Want alerts when rare species restock?</p>
     <p class="text-sm text-gray-600 mb-3">It's free. You'll get a daily email with price drops, new arrivals and rare restocks from {{ nursery_total }} Australian nurseries.</p>
@@ -80,11 +81,13 @@
     </form>
     <p id="subscribeMsg2" class="text-sm mt-2 text-gray-600"></p>
   </div>
+  {% endif %}
 
 </main>
 
 {{ footer|safe }}
 
+{% if digest_signup %}
 <script>
 async function handleSubscribe(formId, inputId, stateId, btnId, msgId) {
   const form = document.getElementById(formId);
@@ -120,6 +123,7 @@ async function handleSubscribe(formId, inputId, stateId, btnId, msgId) {
 handleSubscribe('subscribeForm', 'emailInput', 'stateInput', 'subscribeBtn', 'subscribeMsg');
 handleSubscribe('subscribeForm2', 'emailInput2', 'stateInput2', 'subscribeBtn2', 'subscribeMsg2');
 </script>
+{% endif %}
 
 </body>
 </html>

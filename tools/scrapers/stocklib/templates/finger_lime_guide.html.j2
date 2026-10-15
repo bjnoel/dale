@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ og_description }}">
+  <meta property="og:image" content="https://treestock.com.au/og-image.png">
+  <meta property="og:url" content="https://treestock.com.au/finger-lime-guide.html">
+  <meta property="og:type" content="article">
+  <link rel="canonical" href="https://treestock.com.au/finger-lime-guide.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <script defer data-domain="treestock.com.au" src="https://data.bjnoel.com/js/script.outbound-links.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f9fafb; color: #111827; line-height: 1.6; }
+    a { color: #059669; }
+    a:hover { color: #047857; }
+
+    .header { background: white; border-bottom: 1px solid #e5e7eb; padding: 12px 16px; position: sticky; top: 0; z-index: 10; }
+    .header-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .site-name { font-size: 1.1rem; font-weight: 700; color: #065f46; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .back-link { font-size: 0.85rem; color: #6b7280; text-decoration: none; white-space: nowrap; }
+    .back-link:hover { color: #059669; }
+
+    .hero { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-bottom: 1px solid #bbf7d0; padding: 40px 16px 32px; }
+    .hero-inner { max-width: 720px; margin: 0 auto; }
+    .guide-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #16a34a; margin-bottom: 10px; }
+    .hero h1 { font-size: 2rem; font-weight: 800; color: #064e3b; margin: 0 0 12px; line-height: 1.2; }
+    .hero .intro { font-size: 1.05rem; color: #374151; max-width: 600px; margin: 0 0 20px; }
+    .hero-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+    .hero-stat { font-size: 0.9rem; color: #065f46; font-weight: 500; }
+    .hero-stat strong { font-size: 1.4rem; font-weight: 800; display: block; color: #064e3b; line-height: 1; margin-bottom: 2px; }
+
+    .main { max-width: 720px; margin: 0 auto; padding: 32px 16px; }
+
+    .section { margin-bottom: 40px; }
+    .section h2 { font-size: 1.4rem; font-weight: 700; color: #064e3b; margin: 0 0 12px; border-bottom: 2px solid #d1fae5; padding-bottom: 8px; }
+    .section h3 { font-size: 1.05rem; font-weight: 700; color: #1f2937; margin: 20px 0 6px; }
+    .section p { color: #374151; margin: 0 0 12px; }
+    .section ul, .section ol { color: #374151; padding-left: 20px; margin: 0 0 12px; }
+    .section li { margin-bottom: 6px; }
+
+    .callout { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 16px 18px; margin: 20px 0; }
+    .callout-icon { font-size: 1.1rem; margin-bottom: 4px; }
+    .callout p { margin: 0; color: #374151; font-size: 0.95rem; }
+    .callout strong { color: #92400e; }
+
+    .callout-green { background: #f0fdf4; border: 1px solid #86efac; }
+    .callout-green p { color: #374151; }
+    .callout-green strong { color: #065f46; }
+
+    .callout-red { background: #fef2f2; border: 1px solid #fca5a5; }
+    .callout-red p { color: #374151; }
+    .callout-red strong { color: #991b1b; }
+
+    .variety-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 16px; }
+    .variety-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; }
+    .variety-card .v-name { font-weight: 700; color: #065f46; font-size: 0.95rem; margin-bottom: 4px; }
+    .variety-card .v-desc { font-size: 0.82rem; color: #6b7280; line-height: 1.4; }
+    .variety-card .v-badge { display: inline-block; margin-top: 6px; font-size: 0.7rem; padding: 2px 8px; border-radius: 9999px; background: #d1fae5; color: #065f46; font-weight: 600; }
+    .variety-card .v-badge-red { background: #fee2e2; color: #991b1b; }
+
+    .price-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.9rem; }
+    .price-table th { text-align: left; padding: 8px 10px; background: #f3f4f6; color: #374151; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid #e5e7eb; }
+    .price-table td { padding: 10px 10px; border-bottom: 1px solid #f3f4f6; color: #374151; vertical-align: top; }
+    .price-table tr:last-child td { border-bottom: none; }
+    .price-table .nursery-name { font-weight: 600; color: #065f46; }
+    .price-table .price-range { font-weight: 700; color: #064e3b; }
+    .price-table .restriction { font-size: 0.75rem; color: #dc2626; font-weight: 500; }
+    .price-table .note { font-size: 0.8rem; color: #6b7280; }
+
+    .price-tier { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 10px; display: flex; gap: 16px; align-items: flex-start; }
+    .tier-price { font-size: 1.5rem; font-weight: 800; color: #064e3b; white-space: nowrap; min-width: 100px; }
+    .tier-body strong { display: block; color: #1f2937; margin-bottom: 4px; }
+    .tier-body p { font-size: 0.88rem; color: #6b7280; margin: 0; }
+
+    .state-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-top: 12px; }
+    .state-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; text-align: center; }
+    .state-card.ok { border-color: #86efac; background: #f0fdf4; }
+    .state-card.restricted { border-color: #fca5a5; background: #fef2f2; }
+    .state-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+    .ok .state-name { color: #065f46; }
+    .restricted .state-name { color: #991b1b; }
+    .state-info { font-size: 0.8rem; color: #6b7280; }
+
+    .cta-strip { background: #064e3b; color: white; border-radius: 12px; padding: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 8px; }
+    .cta-strip .cta-text h3 { font-size: 1.15rem; font-weight: 700; margin: 0 0 4px; }
+    .cta-strip .cta-text p { font-size: 0.9rem; margin: 0; opacity: 0.85; }
+    .cta-btn { background: #16a34a; color: white; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
+    .cta-btn:hover { background: #15803d; color: white; }
+
+    .subscribe-box { background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1px solid #86efac; border-radius: 12px; padding: 28px; margin-top: 8px; }
+    .subscribe-box h3 { font-size: 1.2rem; font-weight: 700; color: #064e3b; margin: 0 0 6px; }
+    .subscribe-box p { color: #374151; font-size: 0.95rem; margin: 0 0 16px; }
+    .sub-form { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sub-input { flex: 1; min-width: 200px; padding: 11px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem; outline: none; }
+    .sub-input:focus { border-color: #059669; box-shadow: 0 0 0 2px #d1fae5; }
+    .sub-btn { background: #16a34a; color: white; border: none; padding: 11px 22px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .sub-btn:hover { background: #15803d; }
+    .sub-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .sub-msg { font-size: 0.85rem; margin-top: 8px; min-height: 1.2em; color: #374151; }
+    .sub-features { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; font-size: 0.85rem; color: #374151; }
+    .sub-features span::before { content: "✓ "; color: #16a34a; font-weight: 700; }
+
+    .faq { display: grid; gap: 12px; margin-top: 12px; }
+    .faq-item { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; }
+    .faq-q { font-weight: 700; color: #064e3b; margin-bottom: 6px; }
+    .faq-a { color: #374151; font-size: 0.9rem; }
+
+    .breadcrumb { font-size: 0.82rem; color: #9ca3af; margin-bottom: 16px; }
+    .breadcrumb a { color: #9ca3af; text-decoration: none; }
+    .breadcrumb a:hover { color: #059669; }
+
+    .footer { background: white; border-top: 1px solid #e5e7eb; padding: 24px 16px; margin-top: 48px; text-align: center; font-size: 0.85rem; color: #9ca3af; }
+    .footer a { color: #9ca3af; }
+    .footer a:hover { color: #059669; }
+    .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.5rem; }
+      .price-tier { flex-direction: column; gap: 8px; }
+      .tier-price { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="site-name">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="28" height="28" style="flex-shrink:0"><rect width="64" height="64" rx="12" fill="#065f46"/><path d="M32,12 C18,16 12,28 14,42 C16,38 20,34 26,32 C22,38 20,44 20,50 C28,44 38,34 40,20 C38,14 34,12 32,12Z" fill="#22c55e" opacity="0.9"/><path d="M32,14 C28,24 24,34 20,48" fill="none" stroke="#065f46" stroke-width="1.5" opacity="0.4"/><circle cx="44" cy="44" r="8" fill="#f59e0b"/><text x="44" y="48" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#065f46">$</text></svg>
+      treestock.com.au
+    </a>
+    <a href="/species/finger-lime.html" class="back-link">Live stock tracker &rarr;</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="guide-label">Buying Guide</div>
+    <h1>Finger Lime Trees for Sale in Australia</h1>
+    <p class="intro">
+      Australia's native caviar lime is one of the most popular fruit trees around. Here's where to buy one, what you'll pay, which varieties suit your climate, and how to keep an eye on stock.
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>{{ listing_count }}</strong>in stock today</div>
+{% if min_price %}      <div class="hero-stat"><strong>{{ min_price }}</strong>cheapest right now</div>
+{% endif %}      <div class="hero-stat"><strong>{{ nursery_count }}</strong>nurseries with stock</div>
+      <div class="hero-stat"><strong>Daily</strong>stock updates</div>
+    </div>
+  </div>
+</div>
+
+<main class="main">
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo;
+    <a href="/species/finger-lime.html">Finger Lime</a> &rsaquo;
+    Buying Guide
+  </div>
+
+  <!-- What is a finger lime -->
+  <section class="section">
+    <h2>What Is a Finger Lime?</h2>
+    <p>
+      The finger lime (<em>Microcitrus australasica</em>) is a native Australian rainforest citrus from the subtropical ranges
+      of southeast Queensland and northern New South Wales. Its juice sacs are little round pearls that pop when you bite them, which is why chefs call it "citrus caviar".
+    </p>
+    <p>
+      The fruit ranges from 4 to 12 cm long with skin colours spanning green, yellow, red, black, and pink depending on variety.
+      The flesh inside comes in matching colour variations: green, yellow, pink, or red. All that colour is a big part of why collectors go after named varieties instead of seedlings.
+    </p>
+    <p>
+      In the garden it's a dense, thorny shrub or small tree (3 to 6 metres, but easy to keep smaller with pruning). It'll handle shade but crops better in full sun. It suits subtropical, tropical and warm temperate climates, and more people are growing it in WA.
+    </p>
+
+    <div class="callout callout-green">
+      <div class="callout-icon">🌿</div>
+      <p><strong>Native plant:</strong> Finger lime is one of six native Australian citrus species and the most important one commercially. It's farmed for export and used in high-end restaurants around the world.</p>
+    </div>
+  </section>
+
+  <!-- Varieties -->
+  <section class="section">
+    <h2>Finger Lime Varieties Available in Australia</h2>
+    <p>
+      With finger limes it's worth buying a named variety. Seedlings vary a lot in fruit quality, colour and yield, while a grafted or cutting-grown named variety gives you fruit that matches the parent. These are varieties that nurseries we track have had in stock.
+    </p>
+
+    <div class="variety-grid">
+{% for v in varieties %}      <div class="variety-card">
+        <div class="v-name">{{ v.name }}</div>
+        <div class="v-desc">{{ v.desc }}</div>
+        <span class="v-badge{% if not v.in_stock %} v-badge-red{% endif %}">{{ v.badge }}</span>
+      </div>
+{% endfor %}    </div>
+
+    <p style="margin-top: 16px; font-size: 0.88rem; color: #6b7280;">
+      Other varieties we've tracked: Emma, Gold Finger, Rainforest Pearl, Purple, Pink Ice, D'Emerald (Fat Black), Jali Red, Giant Jali Red,
+      Gold Pearl, Jasper Jade, Little Ruby, BXL, Rosebank Red, Mt White, Russell River.
+      See the <a href="/species/finger-lime.html">live tracker</a> for current availability.
+    </p>
+  </section>
+
+  <!-- Price guide -->
+  <section class="section">
+    <h2>Finger Lime Tree Price Guide</h2>
+    <p>
+      {% if min_price %}Right now finger limes go from {{ min_price }} to {{ max_price }} at the nurseries we track. {% endif %}The price mostly comes down to how it was propagated (cutting, grafted or seedling), the pot size and the variety.
+    </p>
+
+    <div class="price-tier">
+      <div class="tier-price">Under $25</div>
+      <div class="tier-body">
+        <strong>Small cutting-grown plants (50mm to 90mm pots)</strong>
+        <p>The cheapest way to get a named variety. They're young plants grown from cuttings, so they're true to name, but they'll take longer to get going and fruit than grafted trees. <em>{{ tiers[0] }}.</em></p>
+      </div>
+    </div>
+    <div class="price-tier">
+      <div class="tier-price">$25 to $65</div>
+      <div class="tier-body">
+        <strong>Mid-size grafted or cutting-grown (140mm to 2L pots)</strong>
+        <p>The most common price range. Grafted trees fruit faster than seedlings (2 to 3 years vs 5 to 7 from seed). <em>{{ tiers[1] }}.</em></p>
+      </div>
+    </div>
+    <div class="price-tier">
+      <div class="tier-price">$65 to $100</div>
+      <div class="tier-body">
+        <strong>Larger grafted specimens (5L pots, advanced trees)</strong>
+        <p>Well-established trees that may fruit in their first or second season. <em>{{ tiers[2] }}.</em></p>
+      </div>
+    </div>
+    <div class="price-tier">
+      <div class="tier-price">$100+</div>
+      <div class="tier-body">
+        <strong>Large potted specimens and multi-grafted trees</strong>
+        <p>Mature trees, so they should fruit quickly. Multi-grafted trees (finger lime plus another citrus on one tree) usually sit here too. <em>{{ tiers[3] }}.</em></p>
+      </div>
+    </div>
+
+    <h3>Current Prices by Nursery</h3>
+{% if rows %}    <table class="price-table">
+      <thead>
+        <tr>
+          <th>Nursery</th>
+          <th>Price range</th>
+          <th>In stock</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+{% for r in rows %}        <tr>
+          <td><a href="/nursery/{{ r.key }}.html" class="nursery-name">{{ r.name }}</a></td>
+          <td><span class="price-range">{{ r.range }}</span></td>
+          <td>{{ r.count }}</td>
+          <td><span class="note{% if r.restricted %} restriction{% endif %}">{{ r.note }}</span></td>
+        </tr>
+{% endfor %}      </tbody>
+    </table>
+    <p style="font-size: 0.82rem; color: #9ca3af; margin-top: 8px;">In-stock finger limes only, from our check of each nursery's website on {{ today }}. Prices change, so check the nursery before you order. Every listing is on the <a href="/species/finger-lime.html">finger lime page</a>.</p>
+{% else %}    <p>None of the nurseries we track have finger limes in stock right now. The <a href="/species/finger-lime.html">finger lime page</a> lists every variety, and you can set an alert on any of them.</p>
+{% endif %}
+  </section>
+
+  <!-- Where to buy by state -->
+  <section class="section">
+    <h2>Where to Buy Finger Lime Trees in Australia (by State)</h2>
+    <p>
+      Finger lime counts as citrus, so citrus biosecurity rules apply in some states, mainly WA, NT and TAS. A lot of QLD nurseries only ship to QLD, NSW, VIC and ACT. Here's what you can get in each state.
+    </p>
+
+    <div class="state-grid">
+{% for c in state_cards %}      <div class="state-card {{ 'ok' if c.ok else 'restricted' }}">
+        <div class="state-name">{{ c.label }}</div>
+        <div class="state-info">{{ c.info }}</div>
+      </div>
+{% endfor %}    </div>
+
+    <h3>Buying Finger Limes in Western Australia</h3>
+{% if wa %}    <p>
+      WA has the most restrictions, but you've still got some options. These nurseries have finger limes in stock that they can get to you:
+    </p>
+    <ul>
+{% for w in wa %}      <li><strong>{{ w.name }}</strong>: {{ w.line }}</li>
+{% endfor %}    </ul>
+{% else %}    <p>
+      None of the nurseries with finger limes in stock right now can get one to WA. Set an alert on a variety from the <a href="/species/finger-lime.html">finger lime page</a>, choose WA as your state, and we'll email you when one you can buy turns up.
+    </p>
+{% endif %}
+    <div class="callout callout-red">
+      <div class="callout-icon">&#9888;</div>
+      <p><strong>WA quarantine:</strong> Citrus plants coming into WA have to come from nurseries registered with DPIRD (WA's Department of Primary Industries and Regional Development). Only buy from a nursery that says it can ship citrus to WA.</p>
+    </div>
+  </section>
+
+  <!-- Growing guide -->
+  <section class="section">
+    <h2>Growing Finger Limes in Australia</h2>
+
+    <h3>Climate</h3>
+    <p>
+      Finger limes come from subtropical and warm temperate rainforest. They do best with warm to hot summers and mild winters. Once established they'll handle a light frost, but a heavy one will damage them. How they go around the country:
+    </p>
+    <ul>
+      <li>Subtropical Queensland, NSW north coast: ideal</li>
+      <li>Sydney and coastal NSW: excellent, minimal frost protection needed</li>
+      <li>Melbourne and VIC: grows well in sheltered positions, protect from heavy frost</li>
+      <li>Perth (WA): well-suited, Mediterranean climate with warm dry summers</li>
+      <li>Adelaide and SA: suitable in most areas</li>
+      <li>Tropical QLD and NT: can grow but may struggle with waterlogging in wet season</li>
+    </ul>
+
+    <h3>Soil and Position</h3>
+    <p>
+      Plant in free-draining soil, because finger lime really doesn't like wet feet. Raised beds, mounds, or sandy loam with some organic matter dug in are ideal. You'll get more fruit in full sun, though it copes with part shade. In pots, use a good citrus potting mix and make sure it drains well.
+    </p>
+
+    <h3>Grafted vs Cutting-Grown vs Seedling</h3>
+    <p>
+      Most nurseries sell either grafted or cutting-grown plants (and occasionally seeds or seedlings):
+    </p>
+    <ul>
+      <li><strong>Grafted trees</strong>: Fruit in 2 to 3 years. True-to-variety. Usually the best choice if you want fruit quickly. Slightly more expensive.</li>
+      <li><strong>Cutting-grown plants</strong>: True-to-variety but slower to establish than grafted. Cheaper. Fruit Tree Lane specialises in cutting-grown plants.</li>
+      <li><strong>Seedlings</strong>: May take 5 to 7 years to fruit. Fruit may not match the parent variety. Only worth it if you're experimenting or on a tight budget.</li>
+    </ul>
+
+    <h3>Pests and Disease</h3>
+    <p>
+      The main pests are scale (armoured and soft) and bronze orange bug, and you treat them the same way as on other citrus. In WA, citrus gall wasp is a biosecurity concern, so check any tree from interstate carefully and follow DPIRD's advice on getting rid of anything affected.
+    </p>
+
+    <h3>Harvesting</h3>
+    <p>
+      Finger limes typically fruit autumn through winter (March to August in most Australian climates). On most varieties the fruit doesn't change colour when it's ripe. Harvest when the fruit detaches easily with a gentle twist. Store in the fridge for
+      up to two weeks, or freeze the juice vesicles for up to six months.
+    </p>
+
+    <div class="callout">
+      <div class="callout-icon">&#9201;</div>
+      <p><strong>Be patient:</strong> finger lime is slow. Even grafted plants usually take 2 to 3 years to give you a decent crop. After that it's a long-lived, productive tree that's pretty tough once it's established.</p>
+    </div>
+  </section>
+
+  <!-- Live tracker CTA -->
+  <div class="cta-strip">
+    <div class="cta-text">
+      <h3>Check live finger lime stock</h3>
+      <p>Prices and stock updated daily, with every variety in one place.</p>
+    </div>
+    <a href="/species/finger-lime.html" class="cta-btn">See live stock &rarr;</a>
+  </div>
+
+  <!-- FAQ -->
+  <section class="section" style="margin-top: 40px;">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <div class="faq-q">What is the cheapest way to buy a finger lime tree in Australia?</div>
+        <div class="faq-a">Small cutting-grown plants are usually the cheapest way to get a named variety. They're true to name, just small, so they need growing on.{% if cheapest %} Right now the cheapest we can see is {{ cheapest.title }} from {{ cheapest.nursery }} at {{ cheapest.price }}{% if cheapest.qld_only %} (QLD only){% endif %}.{% endif %}{% if cheapest_wa %} The cheapest that can get to WA is {{ cheapest_wa.title }} from {{ cheapest_wa.nursery }} at {{ cheapest_wa.price }}.{% endif %}</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How long does a finger lime take to fruit?</div>
+        <div class="faq-a">Grafted trees typically produce their first crop in 2 to 3 years. Cutting-grown plants are slower, usually 3 to 4 years. Seedling-grown trees can take 5 to 7 years or more. If you want fruit sooner, buy a grafted tree.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I grow finger limes in a pot?</div>
+        <div class="faq-a">Yes. It does well in a big pot (50L or more). Use a good citrus potting mix, make sure it drains well, and feed it a slow-release citrus fertiliser. Dwarf varieties like Tom Thumb are especially good in pots.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I get finger limes delivered to Western Australia?</div>
+        <div class="faq-a">Yes, but you've got fewer options than in the eastern states.{% if wa_names %} Right now {{ wa_names }} {{ 'has' if wa|length == 1 else 'have' }} finger limes in stock that can get to WA.{% else %} Right now none of the nurseries with stock can send one to WA.{% endif %} Citrus from interstate has to come from a nursery registered with DPIRD.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is the difference between grafted and cutting-grown finger limes?</div>
+        <div class="faq-a">Both are true-to-variety (meaning the fruit will match the named variety). Grafted trees grow on a separate rootstock which can improve vigour and disease resistance. Cutting-grown trees grow on their own roots. In practice both do well, though grafted trees tend to fruit a bit sooner.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Why are some finger lime varieties restricted to QLD?</div>
+        <div class="faq-a">In most cases it's the nursery's own rule, not state law. Some QLD nurseries have biosecurity accreditation that only covers certain states, and others may have quarantine concerns about particular citrus varieties. Check the nursery's current shipping policy before ordering.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Which finger lime variety is best for eating fresh?</div>
+        <div class="faq-a">Green Sapphire and Alstonville are popular for fresh eating and cooking, because the fruit is bigger and has a clean citrus flavour. People grow Red Champagne and Byron Sunrise for the colour. Judy's Everbearing is popular because it fruits over a longer season.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How do I get alerted when a specific variety comes back in stock?</div>
+        <div class="faq-a">Set an alert on that variety from the finger lime species page and we'll email you when it's back.{% if digest_signup %} Or sign up below for an email with new arrivals and restocks across everything we track.{% endif %}</div>
+      </div>
+    </div>
+  </section>
+
+{% if digest_signup %}  <!-- Subscribe -->
+  <div class="subscribe-box">
+    <h3>Get finger lime stock alerts</h3>
+    <p>We check finger lime stock every day. Sign up for an email with new arrivals, price drops and restocks across every species we track, finger lime included.</p>
+    <div class="sub-features">
+      <span>Free, weekly digest</span>
+      <span>Every nursery we track</span>
+      <span>Unsubscribe any time</span>
+    </div>
+    <div class="sub-form">
+      <input type="email" class="sub-input" id="emailInput" placeholder="your@email.com" autocomplete="email">
+      <button class="sub-btn" id="subBtn" onclick="subscribe()">Get alerts</button>
+    </div>
+    <div class="sub-msg" id="subMsg"></div>
+  </div>
+{% endif %}
+</main>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="/">Stock Tracker</a>
+    <a href="/species/">Species</a>
+    <a href="/nursery/">Nurseries</a>
+    <a href="/guide.html">Beginners Guide</a>
+    <a href="/species/finger-lime.html">Finger Lime Stock</a>
+    <a href="/compare/finger-lime-prices.html">Compare Finger Lime Prices</a>
+  </div>
+  <div>treestock.com.au &middot; daily nursery stock tracking across Australia</div>
+</footer>
+
+{% if digest_signup %}<script>
+async function subscribe() {
+  const emailInput = document.getElementById('emailInput');
+  const subBtn = document.getElementById('subBtn');
+  const subMsg = document.getElementById('subMsg');
+  const email = emailInput.value.trim();
+  if (!email || !email.includes('@')) {
+    subMsg.textContent = 'Please enter a valid email address.';
+    subMsg.style.color = '#dc2626';
+    return;
+  }
+  subBtn.disabled = true;
+  subBtn.textContent = 'Subscribing...';
+  subMsg.textContent = '';
+  try {
+    const res = await fetch('https://treestock.com.au/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      subMsg.textContent = 'Subscribed. Check your inbox for a welcome email.';
+      subMsg.style.color = '#065f46';
+      emailInput.value = '';
+    } else {
+      subMsg.textContent = data.error || 'Something went wrong. Please try again.';
+      subMsg.style.color = '#dc2626';
+    }
+  } catch (e) {
+    subMsg.textContent = 'Could not connect. Please try again.';
+    subMsg.style.color = '#dc2626';
+  }
+  subBtn.disabled = false;
+  subBtn.textContent = 'Get alerts';
+}
+document.getElementById('emailInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') subscribe();
+});
+</script>{% endif %}
+
+</body>
+</html>

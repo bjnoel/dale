@@ -318,6 +318,11 @@ echo "$(ts) Building rootstock guide..."
 python3 "$SCRIPT_DIR/build_rootstock_page.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Rootstock guide build failed (non-fatal)"
 echo "$(ts) Rootstock guide complete."
 
+# Finger lime buying guide. Was a hand-written one-off whose prices and counts
+# went stale; the prose is a template now and the stock figures are computed.
+echo "$(ts) Building finger lime guide..."
+python3 "$SCRIPT_DIR/build_finger_lime_guide.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Finger lime guide build failed (non-fatal)"
+
 # Build sample digest preview page (subscriber conversion)
 echo "$(ts) Building sample digest page..."
 python3 "$SCRIPT_DIR/build_sample_digest.py" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Sample digest page build failed (non-fatal)"
