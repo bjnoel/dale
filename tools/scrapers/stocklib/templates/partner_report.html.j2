@@ -397,6 +397,18 @@ a{color:var(--accent)}
     <h3>3. What people are waiting for</h3>
     <p>{{ n_watchers }} people have asked treestock to email them when a particular variety comes back in stock. <strong>{{ n_watching_yours }} of them are watching at least one of {{ n_varieties_yours }} varieties you list.</strong> The most-watched variety on the whole site is {{ top_watched.title }}, with {{ top_watched.n }}{% if top_watched.yours %}, and you list it{% endif %}.</p>
 
+    <div class="chart">
+      <div class="ct">New stock alerts set each month, whole site</div>
+      <div class="bars">
+{% for m in growth.rows %}
+        <div class="bar"><span class="lbl">{{ m.label }}</span><span class="track"><span class="fill" style="width:{{ "%.1f"|format(m.n / growth.max * 100) }}%"></span></span><span class="num">{{ m.n }}</span></div>
+{% endfor %}
+      </div>
+{% if growth.after.days %}
+      <p class="cap" style="margin:14px 0 0">{{ growth.after.label }} so far: {{ growth.after.n }} in the first {{ growth.after.days }} days.</p>
+{% endif %}
+    </div>
+
 {% if only_you %}
     <h3 style="font-size:16px;margin-top:22px">You're the only one with it in stock</h3>
     <p class="cap">Varieties people are watching where your listing is the only one in stock across the {{ n_nurseries }} nurseries we track.</p>

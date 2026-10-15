@@ -118,6 +118,31 @@ class ClassifyVariety(unittest.TestCase):
         self.assertEqual(bpr.classify_variety([no], [yes]), "others_only")
 
 
+class WatchGrowth(unittest.TestCase):
+    STAMPS = (["2026-06-03T01:00"] * 17 + ["2026-07-09T01:00"] * 30
+              + ["2026-08-20T01:00"] * 45 + ["2026-09-04T00:32"] * 98
+              + ["2026-10-14T09:27"] * 47)
+
+    def test_bars_stop_at_the_report_month(self):
+        from datetime import date
+        g = bpr.watch_growth(self.STAMPS, "2026-09", today=date(2026, 10, 15))
+        self.assertEqual([(r["label"], r["n"]) for r in g["rows"]],
+                         [("June", 17), ("July", 30), ("August", 45), ("September", 98)])
+        self.assertEqual(g["max"], 98)
+        # October is a count with its day span, never a bar: 47 next to 98
+        # would draw as a drop when it is on pace to match.
+        self.assertEqual(g["after"], {"label": "October", "n": 47, "days": 15})
+
+    def test_partial_month_line_dropped_once_it_is_over(self):
+        from datetime import date
+        g = bpr.watch_growth(self.STAMPS, "2026-09", today=date(2026, 11, 2))
+        self.assertEqual(g["after"]["days"], 0)
+
+    def test_december_rolls_into_january(self):
+        g = bpr.watch_growth(["2027-01-05T00:00"], "2026-12")
+        self.assertEqual((g["after"]["label"], g["after"]["n"]), ("January", 1))
+
+
 class TemplateRenders(unittest.TestCase):
     def test_renders_and_escapes(self):
         row = {"title": "Fig & Olive <b>", "url": "https://x", "price": 49.9,
@@ -139,7 +164,9 @@ class TemplateRenders(unittest.TestCase):
             top_clicked=[row], lost=[row], restricted=[row],
             n_watchers=208, n_watching_yours=93, n_varieties_yours=74,
             top_watched={"title": "Blueberry - OB1", "n": 6, "yours": True},
-            only_you=[w], nobody=[w], n_state_known=13, n_dropped=1)
+            only_you=[w], nobody=[w], n_state_known=13, n_dropped=1,
+            growth={"rows": [{"label": "August", "n": 45}, {"label": "September", "n": 98}],
+                    "max": 98, "after": {"label": "October", "n": 47, "days": 15}})
         self.assertIn("Fig &amp; Olive &lt;b&gt;", html)
         self.assertIn("+114%", html)
         self.assertIn('content="noindex, nofollow"', html)
@@ -153,6 +180,8 @@ class TemplateRenders(unittest.TestCase):
         # every bar draws as an empty track (shipped that way 2026-10-12).
         self.assertIn(".bar .fill{display:block;", html)
         self.assertNotIn("Sources:", html)
+        self.assertIn("width:45.9%", html, "alert bars scale to the busiest month")
+        self.assertIn("October so far: 47 in the first 15 days.", html)
 
 
 if __name__ == "__main__":

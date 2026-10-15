@@ -200,6 +200,27 @@ def classify_variety(mine: list[dict], others: list[dict]) -> str:
     return "you_and_others" if you else "others_only"
 
 
+def watch_growth(added_ats: list[str], month: str, n: int = 4,
+                 today: date | None = None) -> dict:
+    """New alerts set per month for the n months ending at `month`, plus the
+    partial month after it so far. The partial month is reported as a count and
+    a day span, never drawn as a bar: half a month next to whole ones reads as
+    a drop. Counts are alerts still live (a cancelled alert leaves the table);
+    on 2026-10-15 the id gaps showed deletions spread 1-18 a month, so they do
+    not bend the curve."""
+    per = collections.Counter(a[:7] for a in added_ats)
+    months = prev_months(month, n)
+    rows = [{"label": date(*map(int, m.split("-")), 1).strftime("%B"), "n": per.get(m, 0)}
+            for m in months]
+    y, m = map(int, month.split("-"))
+    nxt = f"{y + (m == 12):04d}-{m % 12 + 1:02d}"
+    after = {"label": date(*map(int, nxt.split("-")), 1).strftime("%B"),
+             "n": per.get(nxt, 0), "days": 0}
+    if today and today.strftime("%Y-%m") == nxt:
+        after["days"] = today.day
+    return {"rows": rows, "max": max(r["n"] for r in rows) or 1, "after": after}
+
+
 # ---------------------------------------------------------------------------
 # I/O
 # ---------------------------------------------------------------------------
@@ -340,7 +361,6 @@ def build(key: str, month: str) -> dict:
         vtitle[slug] = vt
     all_watchers = {e for _, _, e, _, _ in watch_rows}
     state_known = {e for _, _, e, st, _ in watch_rows if st not in (None, "ALL")}
-    per_month = collections.Counter(a[:7] for *_, a in watch_rows)
 
     listings = collections.defaultdict(list)
     for k, s in snaps.items():
@@ -400,7 +420,8 @@ def build(key: str, month: str) -> dict:
         "n_watchers": len(all_watchers), "n_state_known": len(state_known),
         "n_dropped": len(dropped_unshippable), "n_watching_yours": len(rc_watchers),
         "n_varieties_yours": len(watched),
-        "watch_months": sorted(per_month.items())[-4:],
+        "growth": watch_growth([a for *_, a in watch_rows], month,
+                               today=datetime.now(timezone.utc).date()),
         "top_watched": {"title": vtitle[top_watched[0]], "n": top_watched[1],
                         "yours": any(w["slug"] == top_watched[0] for w in watched)},
         "ships_to": ships_to, "regions": regions,
@@ -431,6 +452,7 @@ def main(argv=None):
                                    "n_watching_yours", "n_varieties_yours", "top_watched",
                                    "listed", "sold_out_now")}
     summary["regions"] = {k: v for k, v in ctx["regions"].items() if k != "restricted_per_line"}
+    summary["growth"] = ctx["growth"]
     summary["monthly"] = [(m["label"], m["clicks"]) for m in ctx["monthly"]]
     summary["only_you"] = [(w["title"], w["waiting"]) for w in ctx["only_you"]]
     summary["nobody"] = [(w["title"], w["waiting"], w["others_n"]) for w in ctx["nobody"]][:12]
