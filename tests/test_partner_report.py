@@ -153,9 +153,11 @@ class TemplateRenders(unittest.TestCase):
             "partner_report.html.j2",
             name="Ross Creek Tropicals", contact="Tom", domain="rosscreektropicals.com.au",
             month_label="September 2026", month_name="September", generated="12 October 2026",
-            this={"clicks": 460, "label": "September"}, prev={"clicks": 215, "label": "August"},
-            monthly=[{"label": "August", "clicks": 215}, {"label": "September", "clicks": 460}],
-            max_monthly=460, share=0.118, rank=2, n_nurseries=27, tagged_share=1.0,
+            this={"clicks": 460, "people": 321, "label": "September"},
+            prev={"clicks": 215, "people": 168, "label": "August"},
+            monthly=[{"label": "August", "clicks": 215, "people": 168},
+                     {"label": "September", "clicks": 460, "people": 321}],
+            max_monthly=321, share=0.118, rank=2, n_nurseries=27, tagged_share=1.0,
             regions={"rows": [{"state": "WA", "clicks": 10, "ships": False}],
                      "elsewhere": 0, "unshippable": 10, "restricted_home": 1, "restricted_away": 2},
             no_ship=["WA", "TAS", "NT"],
@@ -168,7 +170,14 @@ class TemplateRenders(unittest.TestCase):
             growth={"rows": [{"label": "August", "n": 45}, {"label": "September", "n": 98}],
                     "max": 98, "after": {"label": "October", "n": 47, "days": 15}})
         self.assertIn("Fig &amp; Olive &lt;b&gt;", html)
-        self.assertIn("+114%", html)
+        # Headline and month-on-month are PEOPLE, which is what Shopify shows as
+        # sessions. Ross Creek read 316 against a headline of 460 clicks and
+        # took it as our data being wrong (2026-10-17).
+        self.assertIn('<div class="v">321</div>', html)
+        self.assertIn("460 clicks to rosscreektropicals.com.au", html)
+        self.assertIn("+91%", html)
+        self.assertIn("should show close to 321.", html)
+        self.assertNotIn("close to the same 460", html)
         self.assertIn('content="noindex, nofollow"', html)
         self.assertNotIn("outbound-links", html,
                          "the report's own links must not count as referral clicks")

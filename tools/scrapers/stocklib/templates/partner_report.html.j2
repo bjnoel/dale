@@ -306,22 +306,22 @@ a{color:var(--accent)}
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="k">{{ month_name }} clicks</div><div class="v">{{ this.clicks }}</div><div class="sub">to {{ domain }}</div></div>
-    <div class="stat"><div class="k">Month on month</div><div class="v up">{% if prev.clicks %}{{ "%+.0f"|format((this.clicks - prev.clicks) / prev.clicks * 100) }}%{% else %}new{% endif %}</div><div class="sub">{{ prev.clicks }} in {{ prev.label }}</div></div>
-    <div class="stat"><div class="k">Share of all outbound</div><div class="v">{{ "%.1f"|format(share * 100) }}%</div><div class="sub">{{ rank }}{{ {1:"st",2:"nd",3:"rd"}.get(rank, "th") }} of {{ n_nurseries }} nurseries</div></div>
+    <div class="stat"><div class="k">People sent in {{ month_name }}</div><div class="v">{{ this.people }}</div><div class="sub">{{ this.clicks }} clicks to {{ domain }}</div></div>
+    <div class="stat"><div class="k">Month on month</div><div class="v up">{% if prev.people %}{{ "%+.0f"|format((this.people - prev.people) / prev.people * 100) }}%{% else %}new{% endif %}</div><div class="sub">{{ prev.people }} people in {{ prev.label }}</div></div>
+    <div class="stat"><div class="k">Share of all clicks out</div><div class="v">{{ "%.1f"|format(share * 100) }}%</div><div class="sub">{{ rank }}{{ {1:"st",2:"nd",3:"rd"}.get(rank, "th") }} of {{ n_nurseries }} nurseries</div></div>
     <div class="stat"><div class="k">Tagged for you</div><div class="v">{{ pct(tagged_share) }}</div><div class="sub">carry utm_source=treestock</div></div>
   </div>
 
   <div class="chart">
-    <div class="ct">Clicks to your store, by month</div>
+    <div class="ct">People sent to your store, by month</div>
     <div class="bars">
 {% for m in monthly %}
-      <div class="bar"><span class="lbl">{{ m.label }}</span><span class="track"><span class="fill" style="width:{{ "%.1f"|format(m.clicks / max_monthly * 100) }}%"></span></span><span class="num">{{ m.clicks }}</span></div>
+      <div class="bar"><span class="lbl">{{ m.label }}</span><span class="track"><span class="fill" style="width:{{ "%.1f"|format(m.people / max_monthly * 100) }}%"></span></span><span class="num">{{ m.people }}</span></div>
 {% endfor %}
     </div>
   </div>
 
-  <div class="callout"><strong>You can check this yourself.</strong> Every link we send you carries <code>utm_source=treestock</code>, so filtering your Shopify sessions on it should show close to the same {{ this.clicks }}. In August only about half our links carried the tag, which is why your 90-day report then came in lower than our count. Since late August all of them do.</div>
+  <div class="callout"><strong>You can check this yourself.</strong> Every link we send you carries <code>utm_source=treestock</code>, so filtering your Shopify sessions on it should show close to {{ this.people }}. That's people, not clicks. Some people click more than once (comparing two plants, or coming back to one), which is why the {{ this.clicks }} clicks run higher, and Shopify counts each of those as one visit. The click counts further down are about which pages people looked at. In August only about half our links carried the tag, which is why your 90-day report then came in lower than our count. Since late August all of them do.</div>
 
   <div class="mod">
     <h3>Where the clicks came from</h3>

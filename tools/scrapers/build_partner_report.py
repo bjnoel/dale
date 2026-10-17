@@ -244,7 +244,8 @@ def prev_months(month: str, n: int) -> list[str]:
 def _plausible():
     from plausible_stats import api_get, load_plausible_config
     token, base = load_plausible_config()
-    return lambda params: api_get(base, token, "/api/v1/stats/breakdown", params)
+    return lambda params, endpoint="breakdown": api_get(
+        base, token, f"/api/v1/stats/{endpoint}", params)
 
 
 def outbound_by_url(get, date_param: str, period: str = "custom",
@@ -265,6 +266,21 @@ def outbound_by_url(get, date_param: str, period: str = "custom",
         if len(rows) < 1000:
             return agg
     raise RuntimeError(f"Plausible pagination cap hit for {date_param}")
+
+
+def outbound_people(get, date_param: str, domain: str) -> int:
+    """Unique people who clicked through to `domain`. This, not the click
+    count, is what a nursery's Shopify shows as sessions: someone comparing two
+    plants clicks twice but arrives once. Ross Creek's Shopify read 316 for
+    September 2026 against our 460 clicks from 321 people, and the 460 alone
+    looked like a 31% discrepancy to them."""
+    res = get({"site_id": SITE_ID, "period": "custom", "date": date_param,
+               "metrics": "visitors",
+               "filters": f"event:goal=={OUTBOUND_GOAL};event:props:url==*{domain}*"},
+              "aggregate")
+    if res is None:
+        raise RuntimeError(f"Plausible error for people {date_param}")
+    return res["results"]["visitors"]["value"]
 
 
 def domain_of(url: str) -> str:
@@ -292,7 +308,8 @@ def build(key: str, month: str) -> dict:
         tagged = sum(n for u, n in by_url.items()
                      if domain_of(u) == domain and "utm_source=treestock" in u)
         monthly.append({"month": m, "label": a.strftime("%B"), "clicks": mine,
-                        "tagged": tagged})
+                        "tagged": tagged,
+                        "people": outbound_people(get, f"{a},{b}", domain)})
         if m == month:
             per_nursery = collections.Counter()
             for u, n in by_url.items():
@@ -407,7 +424,7 @@ def build(key: str, month: str) -> dict:
         "generated": datetime.now(timezone.utc).strftime("%-d %B %Y"),
         "scraped_at": mine_snap.get("scraped_at", ""),
         "monthly": monthly, "this": this, "prev": prev,
-        "max_monthly": max(m["clicks"] for m in monthly) or 1,
+        "max_monthly": max(m["people"] for m in monthly) or 1,
         "rank": rank, "n_nurseries": n_nurseries,
         "share": this["clicks"] / total_nursery if total_nursery else 0,
         "tagged_share": this["tagged"] / this["clicks"] if this["clicks"] else 0,
@@ -453,7 +470,7 @@ def main(argv=None):
                                    "listed", "sold_out_now")}
     summary["regions"] = {k: v for k, v in ctx["regions"].items() if k != "restricted_per_line"}
     summary["growth"] = ctx["growth"]
-    summary["monthly"] = [(m["label"], m["clicks"]) for m in ctx["monthly"]]
+    summary["monthly"] = [(m["label"], m["people"], m["clicks"]) for m in ctx["monthly"]]
     summary["only_you"] = [(w["title"], w["waiting"]) for w in ctx["only_you"]]
     summary["nobody"] = [(w["title"], w["waiting"], w["others_n"]) for w in ctx["nobody"]][:12]
     summary["lost_top"] = [(r["title"], r["clicks"], r["now"]) for r in ctx["lost"][:12]]
