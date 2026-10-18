@@ -103,6 +103,35 @@
       </table>
     </div>
   </section>
+{% if multigraft_view %}
+
+  <!-- Multi-graft trees filed under another fruit (not counted above) -->
+  <section class="mb-8" id="multigraft">
+    <h3 class="text-lg font-semibold text-gray-800 mb-1">Also on multi-graft trees ({{ multigraft_view|length }})</h3>
+    <p class="text-sm text-gray-500 mb-3">These trees carry {{ name }} grafted alongside other fruit. They are listed under the first fruit named and are not counted in the figures above.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b border-gray-200 text-xs text-gray-500 uppercase">
+            <th class="pb-2 pr-3">Tree</th>
+            <th class="pb-2 pr-3">Nursery</th>
+            <th class="pb-2 pr-3">Price</th>
+            <th class="pb-2">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+{% for p in multigraft_view %}
+      <tr class="border-b border-gray-100 hover:bg-gray-50">
+        <td class="py-2 pr-3 text-sm">{% if p.has_url %}<a href="{{ p.nursery_url }}" target="_blank" rel="noopener" class="hover:text-green-700 hover:underline">{{ p.title }}</a>{% else %}{{ p.title }}{% endif %}</td>
+        <td class="py-2 pr-3 text-xs text-gray-500">{{ p.nursery_name }}</td>
+        <td class="py-2 pr-3 text-sm font-medium">{% if p.price %}${{ '%.2f'|format(p.price) }}{% else %}-{% endif %}</td>
+        <td class="py-2">{% if p.available %}<span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">In stock</span>{% else %}<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">Out of stock</span>{% endif %}</td>
+      </tr>
+{% endfor %}        </tbody>
+      </table>
+    </div>
+  </section>
+{% endif %}
 
   {{ variety_cta|safe }}
 

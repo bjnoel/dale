@@ -83,7 +83,7 @@ RELATED_LOOKUP = build_related_lookup()
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
 from stocklib.classify import is_real_product
 from stocklib.snapshots import iter_nursery_snapshots
-from stocklib.species_match import build_species_lookup, match_title
+from stocklib.species_match import build_species_lookup, match_title, multigraft_species
 from stocklib.taxonomy import enabled_species
 from stocklib.category_ui import category_badges_html, CATEGORY_FILTER_CSS
 from stocklib.utm import outbound
@@ -245,6 +245,23 @@ def group_by_species(products: list[dict], lookup: dict) -> dict:
         if slug not in by_species:
             by_species[slug] = {"species": species, "products": []}
         by_species[slug]["products"].append(p)
+    return by_species
+
+
+def group_multigrafts(products: list[dict], lookup: dict) -> dict[str, list[dict]]:
+    """{species slug: multi-graft products filed under ANOTHER species}.
+    "Peach + Nectarine + Plum" counts as a peach (the first name); the plum
+    and nectarine pages list it in their own lower section (Benedict,
+    2026-10-18). Hybrids are not multi-grafts and never appear here."""
+    by_species: dict[str, list[dict]] = defaultdict(list)
+    for p in products:
+        slugs = multigraft_species(p["title"], lookup)
+        primary = match_title(p["title"], lookup) if slugs else None
+        if not primary:
+            continue
+        for slug in slugs:
+            if slug != primary["slug"]:
+                by_species[slug].append(p)
     return by_species
 
 
@@ -462,8 +479,10 @@ def compute_state_links(species_slug: str, products: list[dict]) -> dict[str, st
 
 def build_species_page(species: dict, products: list[dict], slug_to_name: dict[str, str] | None = None,
                        rarity: dict | None = None, trend_summary: dict | None = None,
-                       varieties: list[dict] | None = None, has_compare_page: bool = False) -> str:
-    """Generate HTML for a single species page."""
+                       varieties: list[dict] | None = None, has_compare_page: bool = False,
+                       multigraft_products: list[dict] | None = None) -> str:
+    """Generate HTML for a single species page. multigraft_products render in
+    their own section below the listings and count in none of its figures."""
     name = species["common_name"]
     latin = species["latin_name"]
     slug = species["slug"]
@@ -770,6 +789,20 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         for v in notable_candidates
     ][:NOTABLE_VARIETIES_MAX]
 
+    multigraft_view = [
+        {
+            "has_url": bool(outbound(p["url"], "referral")),
+            "nursery_url": outbound(p["url"], "referral"),
+            "nursery_key": p["nursery_key"],
+            "title": _no_dash(p["title"]),
+            "nursery_name": _no_dash(p["nursery_name"]),
+            "price": p["price"],
+            "available": p["available"],
+        }
+        for p in sorted(multigraft_products or [],
+                        key=lambda x: (not x["available"], x["price"] or 9999))
+    ]
+
     return render_template(
         "species_page.html.j2",
         head=head, header=header, breadcrumb=breadcrumb, footer=footer,
@@ -783,6 +816,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         compare_link_html=compare_link_html,
         watch_script=watch_script, nursery_view=nursery_view, product_view=product_view,
         variety_view=variety_view, notable_view=notable_view,
+        multigraft_view=multigraft_view,
     )
 
 
@@ -878,6 +912,8 @@ def main():
     print("Grouping by species...")
     by_species = group_by_species(products, lookup)
     print(f"  {len(by_species)} species matched")
+    multigrafts = group_multigrafts(products, lookup)
+    print(f"  {sum(len(v) for v in multigrafts.values())} multi-graft listings across {len(multigrafts)} species")
 
     # Variety chip clouds: the SAME grouping build_variety_pages.py writes
     # /variety/<slug>.html pages from, so a chip can never link to a page that
@@ -989,7 +1025,8 @@ def main():
         html = build_species_page(species, prods, slug_to_name, rarity=rarity,
                                   trend_summary=trend_summaries.get(slug),
                                   varieties=varieties_by_species.get(slug, []),
-                                  has_compare_page=len(nurseries) >= COMPARE_MIN_NURSERIES)
+                                  has_compare_page=len(nurseries) >= COMPARE_MIN_NURSERIES,
+                                  multigraft_products=multigrafts.get(slug, []))
         out_file = species_dir / f"{slug}.html"
         out_file.write_text(html)
         generated += 1

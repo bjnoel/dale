@@ -600,6 +600,48 @@ def match_title(title: str, lookup: dict):
     return lookup[found[0]] if found else None
 
 
+# --- Multi-graft trees (2026-10-18) -------------------------------------
+#
+# A product files under ONE species, the first named: "Peach + Nectarine +
+# Plum + Peachcot" is a peach, so the plum page never showed it. Benedict's
+# call: list multi-grafts on the other species' pages too, in a separate,
+# lower section, and leave hybrids alone ("Nectarine x Plum - Spicezee" is
+# one fruit, not two trees). Only the leading name is read: after a spaced
+# dash come cultivar names, and "Plum Multi Graft - Satsuma/Santa Rosa" is
+# two plums, not a plum and a mandarin. Quoted text is a cultivar for the
+# same reason ("Guava 'Red Cherry/Strawberry'").
+_QUOTED_RE = re.compile(r"(?:^|(?<=\s))['‘\"“][^'’\"”]*['’\"”]")
+_GRAFT_SPLIT_RE = re.compile(r"\s*(?:\+|&|/)\s*|\s+and\s+")
+_HYBRID_RE = re.compile(r"(?<![a-z])(?:x|×|hybrid)(?![a-z])")
+
+
+def multigraft_species(title: str, lookup: dict) -> list[str]:
+    """Slugs of every species a multi-graft title names, in title order, or
+    [] when the title is not a multi-graft of 2+ species."""
+    t = _strip_invisible(title)
+    t = _QUOTED_RE.sub(" ", t)
+    t = re.sub(r"\([^)]*\)", " ", t)
+    t = re.split(r"\s[-–—]\s", t)[0]
+    if _HYBRID_RE.search(t.lower()):
+        return []
+    found = []
+    for part in _GRAFT_SPLIT_RE.split(t):
+        value = match_title(part, lookup) if part.strip() else None
+        slug = value and (value.get("slug") or value.get("sl"))
+        if slug and slug not in [s for s, _ in found]:
+            found.append((slug, _record_genus(value)))
+    # The slash also writes a second name: "DAVIDSON PLUM / MULLUMBIMBI PLUM
+    # (Davidsonia Jerseyana)" is one tree. When the bracketed genus is one of
+    # the named species', a species of another genus is a fall-through, not a
+    # graft. Case-insensitive on purpose: title_binomial wants a lowercase
+    # epithet, and this nursery capitalises it.
+    bracket = re.search(r"\(\s*([A-Za-z]{3,})\s+[A-Za-z]{3,}", title)
+    if bracket and any(g and _same_genus(bracket.group(1), g) for _, g in found):
+        found = [(s, g) for s, g in found if g and _same_genus(bracket.group(1), g)]
+    slugs = [s for s, _ in found]
+    return slugs if len(slugs) > 1 else []
+
+
 def _match_span(t_orig: str, name: str) -> tuple[int, int]:
     """(index, length) of name in the original title, or (-1, 0)."""
     idx = t_orig.lower().find(name)
