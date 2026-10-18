@@ -110,13 +110,17 @@
           "by": "correy",
           "summary": "Answered the qty question: OutOfStock is correct. When plants are potted up to selling size a few go onto the pre-purchase list automatically, but some plants are blocked from that because of past problems, and the qty sat behind the block. Removed the quantities for sku 1045 and 3939.",
           "evidence": "Email pasted by Benedict 2026-10-18; arrived to his inbox so not BCC-captured"
+        },
+        {
+          "date": "2026-10-18",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Replied in the existing thread. Sent the September report (https://treestock.com.au/reports/daleys-2026-09-3c775b3f12.html): 529 people, nearly double August, 37% of clicks from WA, plus what people are waiting on alerts for. Offered it monthly or other data on request. Raised something ongoing in place of the August voucher, cited Primal Fruits at 5%, acknowledged their custom site, and asked what Correy thinks is fair. Said ranking is price and stock only either way. Did not thank him for the 2026-08-31 qty fix.",
+          "evidence": "Sent by Benedict 2026-10-18 without BCC; text pasted 2026-10-18, hand-logged"
         }
       ],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Send the report + 'what do you think is fair' email (drafted 2026-10-18, links https://treestock.com.au/reports/daleys-2026-09-3c775b3f12.html). Reply in the existing thread. Reply to Correy's 2026-08-31 email (the qty question is closed). BCC nursery@veliamsal.resend.app.",
-        "since": "2026-10-18"
-      },
+      "open_action": null,
       "notes": "Meta feed URL is obscured (feeds/meta-products-<token>.php), treat as semi-private: fetch it, never publish it. Verified 2026-08-15: feed 'out of stock' includes PreSale items (SKU 5642 almond is PreSale on-page, in-stock 18 on Plant-List, out of stock in feed), so the binary feed alone would drop the winter catalogue pre-orders; the custom 4-state feed is the one to take. Custom feed live as our source from 2026-08-20 (DEC-304): treat the URL as semi-private, it lives in /opt/dale/secrets/feeds.env and is never committed. Correy re-sent the same URL on 2026-08-27, unchanged. Feed now HAS a category column (added 2026-08-27, last column, 1998/1998 groups), so the frozen daleys_category_map.json is demoted to a fallback rather than load-bearing. Its vocabulary is breadcrumb paths ('Fruit Trees/Tropical Fruit Trees/Sapodilla'), not the Plant-List headings, and fruit_filters had to learn a third spelling ('Plant List/Fruit and Nut Trees'). PreSale and PreOrder are DIFFERENT waits, not synonyms: 1-2 months from a seasonal catalogue vs 1-6 months once a graft or cutting has struck. Two rows carry a healthy qty while saying OutOfStock (sku 1045 qty 40, sku 3939 qty 36); availability is the authority, qty is advisory. QTY vs OutOfStock EXPLAINED (Correy, 2026-08-31): plants blocked from automatic pre-purchase keep a qty while showing OutOfStock online; OutOfStock is correct. Verified 2026-10-18: sku 3939 now qty 0, sku 1045 has since become a real presale (qty 37). Nine other skus (5075, 5073, 1106, 4350, 2122, 4990, 810, 4949, 2160) show the same pattern today: expected, do not raise with Correy again."
     },
     {
@@ -209,13 +213,17 @@
           "by": "ross-creek",
           "summary": "Replied to the GoAffPro ask. Says site visits rose ~4000% Aug to Sep (spring seasonality). Shopify shows 316 clicks from treestock, '0.08% conversion', 28 sales; asked why our data doesn't align and is apprehensive about how misaligned data would affect a commission. Asked if there is 'another way around this'. Read as a soft no to percentage commission, open to an alternative.",
           "evidence": "Pasted by Benedict 2026-10-17; arrived to his inbox so not BCC-captured. Date is when pasted, not necessarily when sent"
+        },
+        {
+          "date": "2026-10-18",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Replied to Tom's 2026-10-17 email. 460 was clicks; counted as people it is 321, so his 316 is spot on. Suggested the conversion is 8.9% not 0.08% (28 of 316). Explained GoAffPro counts orders inside their own Shopify, not our clicks. Listing stays as it is, nobody pays to show up. Asked what he had in mind. Treesmith promotion not mentioned (held for the next exchange).",
+          "evidence": "Sent by Benedict 2026-10-18 without BCC; text pasted 2026-10-18, hand-logged"
         }
       ],
-      "open_action": {
-        "owner": "benedict",
-        "what": "Reply to Ross Creek's 2026-10-17 email: September is 460 clicks from 321 people, so their 316 matches; commission would be counted by their own Shopify (GoAffPro); check 8.9% vs 0.08%; ask what alternative they have in mind. Treesmith promotion held back as the next-exchange fallback. BCC nursery@veliamsal.resend.app to self-log.",
-        "since": "2026-10-17"
-      },
+      "open_action": null,
       "notes": "Our warmest relationship and the best-connected contact we have (Tom helps admin the Oz Rare Fruit Australia FB group). Seasonality live on /nursery/ross-creek.html. Email corrected 2026-08-10 to admin@rosscreektropicals.com.au: the register had rosscreektropicals@gmail.com, whose gmail.com domain would NOT have matched the register on a BCC'd touch. Stocks grafted sapodilla Krasuey, Ponderosa and Sawo Manilla at $99, all out of stock 2026-08-10. WA only via concierge resellers; no bulk because pallets by road freight carry extreme risk vs cartons by express post, and in-house needs a separate treatment area. MEASURED CONVERSION (2026-08-10, Tom via Shopify): 166 clicks in 90 days at 3.61%, about 6 orders. Our Plausible count for the same window is 336 clicks, of which only 214 carry utm_source=treestock. Shopify's 166 sits just under our tagged count, so Tom is reading a UTM-filtered report and the 122 untagged clicks are invisible to him. The gap is historical, not a live bug: shared UTM tagging landed 2026-07-23, so only 18 of Tom's 90 days were tagged. Tagged share was 53% before that commit and 88% after (88% site-wide too). His next report should show more clicks even at flat traffic. Re-ask in ~3 months to test that. RECONCILED 2026-10-17: our Sept 2026 '460 clicks' (as told in the 2026-10-15 email and report) came from 321 unique people (Plausible visitors, Outbound Link: Click, url==*rosscreektropicals*); Shopify read 316, so the two agree within 2%. The gap was clicks vs sessions, not tracking. Aug was 215 clicks / 168 people. Their 28 sales from 316 is 8.9%, not 0.08% (0.08% of 316 is a quarter of a sale), about 2.5x their stated 3-4% store norm, if the 28 are treestock-referred. Partner report now leads with people."
     },
     {
