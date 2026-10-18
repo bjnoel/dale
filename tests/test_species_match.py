@@ -512,6 +512,30 @@ class RegistryBatchTest(unittest.TestCase):
             with self.subTest(title=title):
                 self.assertEqual(self._cn(title), want)
 
+    def test_citrus_sold_under_a_parent_name(self):
+        """13 nurseries' yuzu sat in three buckets (Lemon, Citron, none)
+        because the leading word was the parent fruit (2026-10-18)."""
+        for title, want in (("Yuzu - Grafted", "Yuzu"),
+                            ("Lemon 'Yuzu' Dwarf 17cm", "Yuzu"),
+                            ("Lemon – Yuzu – Japanese Citron", "Yuzu"),
+                            ("Citron | Yuzu", "Yuzu"),
+                            ("Japanese Lemon 'Yuzu' (QLD Only)", "Yuzu"),
+                            ("Lime – Sudachi", "Sudachi"),
+                            ("Japanese Sudachi Lime (QLD only)", "Sudachi"),
+                            ("Chinotto - Grafted", "Orange"),
+                            ("Kumquat 'Chinotto' (QLD Only)", "Orange"),
+                            ("Lemonade Tree", "Lemon"),
+                            # the parent word alone is still the parent
+                            ("Lemon - Eureka", "Lemon"),
+                            ("Citron Lemon Citrus Fruit Tree", "Citron"),
+                            ("Dragon Fruit - Lemonade", "Dragon Fruit")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), want)
+
+    def test_parent_name_is_not_read_as_a_cultivar(self):
+        lookup = load_species_lookup()
+        self.assertNotIn("cv", match_species("Lemon 'Yuzu' Dwarf 17cm", lookup))
+
     def test_both_breadfruits_added_together_on_purpose(self):
         """"African Breadfruit" is Treculia africana, a different genus from
         Artocarpus altilis. Adding only "Breadfruit" would have swept the
@@ -802,7 +826,13 @@ class VarietySlugsUnchangedTest(unittest.TestCase):
         from cultivar_parsing import product_variety_slug
         for title, slug in (("Cherry Guava Red  50mm pots", "cherry-guava-red"),
                             ("Rollinia - Brazilian Custard Apple", "rollinia-brazilian-custard-apple"),
-                            ("Jambolan Plum", "plum-jambolan")):
+                            ("Jambolan Plum", "plum-jambolan"),
+                            # match_synonyms on purpose (2026-10-18)
+                            ("Lemon – Lemonade", "lemon-lemonade"),
+                            ("Orange – Chinotto", "orange-chinotto"),
+                            # a fruit sold under its parent's name is no cultivar
+                            ("Lemon 'Yuzu' Dwarf 17cm", None),
+                            ("Lime – Sudachi", None)):
             with self.subTest(title=title):
                 self.assertEqual(product_variety_slug(title), slug)
 

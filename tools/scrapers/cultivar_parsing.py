@@ -19,6 +19,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from stocklib import taxonomy
+from stocklib.species_match import SOLD_UNDER_PARENT
 
 
 SIZE_WORDS = frozenset({
@@ -1137,6 +1138,11 @@ def canonical_cultivar(species: str, variety: str, title: str = "") -> tuple[str
     if not var:
         return None
     vl, cl = var.lower(), canonical.lower()
+    # "Lemon - Yuzu" is a yuzu sold under the lemon's name, not a lemon
+    # cultivar; species_match files it as Yuzu from the same list.
+    for fruit, parents in SOLD_UNDER_PARENT.items():
+        if slugify(canonical) in parents and re.search(r"(?<![a-z])" + fruit + r"(?![a-z])", vl):
+            return None
     # A "variety" that just restates the species is not a cultivar
     if vl == cl or _load_species_lookup().get(vl) == canonical:
         return None

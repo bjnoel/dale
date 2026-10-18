@@ -524,6 +524,35 @@ def load_species_lookup() -> dict:
     return lookup
 
 
+# --- Fruit sold under a parent fruit's name (2026-10-18) -----------------
+#
+# Nurseries file some citrus under the fruit a buyer already knows: yuzu
+# (Citrus junos) as "Lemon 'Yuzu'", "Lemon - Yuzu" and "Citron | Yuzu",
+# sudachi as "Lime - Sudachi". The leading-word rule reads the parent, so 13
+# nurseries' yuzu landed in three different buckets. When the matched record
+# is one of the listed parents and the title also names the fruit as a whole
+# word, the fruit wins. A closed list, like _NOT_THE_FRUIT: the parent word is
+# usually right ("Lemon - Eureka" is a lemon), so this is per-fruit evidence,
+# not a rule. cultivar_parsing reads it too, so these titles stop building
+# /variety/lemon-yuzu as if Yuzu were a lemon cultivar.
+SOLD_UNDER_PARENT = {
+    "yuzu": ("lemon", "citron", "lime"),
+    "sudachi": ("lime", "lemon"),
+    "chinotto": ("kumquat",),
+}
+
+
+def _sold_under(title_lower: str, candidate: str, lookup: dict) -> str | None:
+    """The lookup key of a fruit the title names while its leading word
+    matched a parent fruit, or None."""
+    parent = lookup[candidate].get("slug") or lookup[candidate].get("sl")
+    for name, parents in SOLD_UNDER_PARENT.items():
+        if (parent in parents and name in lookup
+                and re.search(r"(?<![a-z])" + name + r"(?![a-z])", title_lower)):
+            return name
+    return None
+
+
 def _find(title: str, lookup: dict):
     """(candidate, t_lower, t_orig, leading) for the species named in a title,
     or None. A candidate that is found but rejected is None too: the title
@@ -548,6 +577,11 @@ def _find(title: str, lookup: dict):
         _, candidate, t_lower, t_orig = best
         if _rejected(title, t_lower, candidate, lookup[candidate]):
             return None
+        fruit = _sold_under(t_lower, candidate, lookup)
+        if fruit:
+            # leading=None: the words around the fruit are its parent's name,
+            # not a cultivar, so match_species extracts none.
+            return fruit, t_lower, t_orig, None
         return candidate, t_lower, t_orig, True
 
     for t_lower, t_orig in pairs:
@@ -555,6 +589,9 @@ def _find(title: str, lookup: dict):
         if candidate:
             if _rejected(title, t_lower, candidate, lookup[candidate]):
                 return None
+            fruit = _sold_under(t_lower, candidate, lookup)
+            if fruit:
+                return fruit, t_lower, t_orig, None
             return candidate, t_lower, t_orig, False
     return None
 
@@ -580,6 +617,8 @@ def match_species(title: str, lookup: dict) -> dict | None:
     result = dict(lookup[candidate])
     cn = result["cn"].lower()
 
+    if leading is None:
+        return result
     if leading:
         # Whichever of the matched name and the common name ENDS later. A
         # synonym match ("Cherimoya - Sofia" on the Custard Apple record) has

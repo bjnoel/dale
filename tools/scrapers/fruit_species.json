@@ -82,7 +82,13 @@
       "Valencia Orange",
       "Pineapple Orange"
     ],
-    "description": "Orange (Citrus sinensis) is Australia's most commercially important citrus. Home growers have access to a wide range of varieties from early to late season, making it possible to harvest oranges from May through to October in temperate climates.\n\nOranges require full sun, well-drained soil, and regular feeding. They are frost-sensitive when young. Most trees are grafted onto rootstock suited to local conditions. Grafted trees fruit within 2-4 years. Regular deep watering during fruit development reduces fruit drop.\n\nVarieties available include Washington Navel (seedless, ideal for eating, peaks July-August), Valencia (juicing orange, late season), Blood Orange including Tarocco and Cara Cara types (distinctive flavour, cold-dependent colouring), and Cara Cara (pink-fleshed navel). Dwarf varieties are available for pot growing.\n\nOranges are widely available from nurseries across Australia. Blood oranges are in higher demand than supply and can sell out quickly at nurseries."
+    "description": "Orange (Citrus sinensis) is Australia's most commercially important citrus. Home growers have access to a wide range of varieties from early to late season, making it possible to harvest oranges from May through to October in temperate climates.\n\nOranges require full sun, well-drained soil, and regular feeding. They are frost-sensitive when young. Most trees are grafted onto rootstock suited to local conditions. Grafted trees fruit within 2-4 years. Regular deep watering during fruit development reduces fruit drop.\n\nVarieties available include Washington Navel (seedless, ideal for eating, peaks July-August), Valencia (juicing orange, late season), Blood Orange including Tarocco and Cara Cara types (distinctive flavour, cold-dependent colouring), and Cara Cara (pink-fleshed navel). Dwarf varieties are available for pot growing.\n\nOranges are widely available from nurseries across Australia. Blood oranges are in higher demand than supply and can sell out quickly at nurseries.",
+    "match_synonyms": [
+      "Chinotto"
+    ],
+    "synonym_latin": {
+      "Chinotto": "Citrus myrtifolia"
+    }
   },
   {
     "common_name": "Lemon",
@@ -95,8 +101,12 @@
     ],
     "description": "Lemon is the most versatile and widely grown citrus in Australian home gardens. Both Lisbon and Eureka lemons are reliably productive across most of Australia, producing fruit year-round in subtropical climates and mainly in winter in temperate regions. Meyer lemon, a hybrid with a sweeter, thinner skin, is popular for smaller gardens and pot growing.\n\nLemons need full sun and well-drained soil. Regular fertilising with citrus food and consistent watering during fruit development gives the best results. Most lemons are grafted onto rootstock for disease resistance and improved performance. Grafted trees typically fruit within 2-3 years of planting.\n\nCommon varieties available include Eureka (seedless, thin-skinned, year-round fruiter), Lisbon (hardier, slightly more acidic), and Meyer (compact, sweet, tolerates cooler conditions). Dwarf and semi-dwarf versions are available for pots or small gardens.\n\nLemons are among the most widely stocked fruit trees in Australia, available from the majority of nurseries year-round.",
     "synonym_latin": {
-      "Meyer Lemon": "Citrus × meyeri"
-    }
+      "Meyer Lemon": "Citrus × meyeri",
+      "Lemonade": "Citrus limon × reticulata"
+    },
+    "match_synonyms": [
+      "Lemonade"
+    ]
   },
   {
     "common_name": "Lime",
@@ -1385,5 +1395,19 @@
       "Brown Pine"
     ],
     "description": "Illawarra plum (Podocarpus elatus), also called plum pine or brown pine, is a native conifer of the east coast rainforests from southern NSW to north Queensland, and it is not related to the true plums. The edible part is the swollen, dark purple stalk under the seed, a grape-sized fleshy fruit with a sweet, plum-like and slightly resinous flavour. It is eaten fresh or cooked into jam, sauces and chutney, and the hard seed attached to the outside is discarded. Trees are either male or female, so a female tree needs a male nearby to fruit. Illawarra plum is a hardy, adaptable tree that grows in full sun or part shade and in a wide range of soils, and it is widely planted as a street tree and clipped hedge. It is slow to moderate in growth and stays far smaller in a garden than in the forest. Fruit ripens in autumn and early winter."
+  },
+  {
+    "common_name": "Yuzu",
+    "latin_name": "Citrus junos",
+    "slug": "yuzu",
+    "region": "East Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Sudachi",
+    "latin_name": "Citrus sudachi",
+    "slug": "sudachi",
+    "region": "Japan",
+    "synonyms": []
   }
 ]
