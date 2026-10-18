@@ -154,9 +154,11 @@ class LandingSpeciesTest(unittest.TestCase):
                 f"{r.get('common_name')} on the bush_tucker landing without "
                 "the category or tag",
             )
-        # the 8 cross-listed fruits keep category fruit (their URLs never move)
+        # the cross-listed fruits keep category fruit (their URLs never move):
+        # 8 from DAL-195, plus Fraser Island Apple and Native Mulberry
+        # (2026-10-18 registry batch)
         tagged = [r for r in land if r.get("category") == "fruit"]
-        self.assertEqual(len(tagged), 8)
+        self.assertEqual(len(tagged), 10)
 
 
 if __name__ == "__main__":

@@ -214,7 +214,10 @@
       "Grafted Peach",
       "Peachcot"
     ],
-    "description": "Peaches are Australia's most popular stone fruit for the home garden, producing generous crops of fragrant, juicy fruit across temperate and cool subtropical regions. Tracked varieties include Anzac (early-mid season, large, sweet yellow flesh), Blackboy (a heritage variety with distinctive red-stained flesh, intensely flavoured, very popular in WA), Elberta (dwarf form, classic American variety in a compact plant), Tatura 204 (commercial-standard, large fruit, reliable), Briggs Red May (an early-ripening heritage type with red skin and flesh), and Angel (a flat, doughnut-shaped peach in dwarf form). Most peaches are self-fertile. Chill requirements range from 400 hours (low-chill types) to 900 hours for heritage varieties. Plant in full sun in deep, free-draining soil with a pH of 6.0-6.5. Peaches have medium water needs during fruit development but resent waterlogged roots. Leaf curl is the most common disease in cool, wet springs; apply copper sprays before buds swell in late winter. Fruit fly is the critical pest across most of Australia. In WA, Blackboy peach has particular cultural significance and is widely grown. Stone fruit movement into WA is restricted; always source trees from WA-accredited nurseries or hold the appropriate quarantine permits."
+    "description": "Peaches are Australia's most popular stone fruit for the home garden, producing generous crops of fragrant, juicy fruit across temperate and cool subtropical regions. Tracked varieties include Anzac (early-mid season, large, sweet yellow flesh), Blackboy (a heritage variety with distinctive red-stained flesh, intensely flavoured, very popular in WA), Elberta (dwarf form, classic American variety in a compact plant), Tatura 204 (commercial-standard, large fruit, reliable), Briggs Red May (an early-ripening heritage type with red skin and flesh), and Angel (a flat, doughnut-shaped peach in dwarf form). Most peaches are self-fertile. Chill requirements range from 400 hours (low-chill types) to 900 hours for heritage varieties. Plant in full sun in deep, free-draining soil with a pH of 6.0-6.5. Peaches have medium water needs during fruit development but resent waterlogged roots. Leaf curl is the most common disease in cool, wet springs; apply copper sprays before buds swell in late winter. Fruit fly is the critical pest across most of Australia. In WA, Blackboy peach has particular cultural significance and is widely grown. Stone fruit movement into WA is restricted; always source trees from WA-accredited nurseries or hold the appropriate quarantine permits.",
+    "match_synonyms": [
+      "Peacharine"
+    ]
   },
   {
     "common_name": "Nectarine",
@@ -1408,6 +1411,183 @@
     "latin_name": "Citrus sudachi",
     "slug": "sudachi",
     "region": "Japan",
+    "synonyms": []
+  },
+  {
+    "common_name": "Carob",
+    "latin_name": "Ceratonia siliqua",
+    "slug": "carob",
+    "region": "Mediterranean",
+    "synonyms": []
+  },
+  {
+    "common_name": "Star Gooseberry",
+    "latin_name": "Phyllanthus acidus",
+    "slug": "star-gooseberry",
+    "region": "South/Southeast Asia",
+    "synonyms": [
+      "Otaheite Gooseberry",
+      "Tahitian Gooseberry"
+    ]
+  },
+  {
+    "common_name": "Fraser Island Apple",
+    "latin_name": "Acronychia imperforata",
+    "slug": "fraser-island-apple",
+    "region": "Australia (QLD/NSW coastal)",
+    "synonyms": [],
+    "tags": [
+      "bush_tucker"
+    ]
+  },
+  {
+    "common_name": "Ice Cream Bean",
+    "latin_name": "Inga edulis",
+    "slug": "ice-cream-bean",
+    "region": "South America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Pine Nut",
+    "latin_name": "Pinus pinea",
+    "slug": "pine-nut",
+    "region": "Mediterranean",
+    "synonyms": []
+  },
+  {
+    "common_name": "Jostaberry",
+    "latin_name": "Ribes × nidigrolaria",
+    "slug": "jostaberry",
+    "region": "Cultivated hybrid",
+    "synonyms": []
+  },
+  {
+    "common_name": "Native Mulberry",
+    "latin_name": "Pipturus argenteus",
+    "slug": "native-mulberry",
+    "region": "Australia (QLD/NSW rainforest)",
+    "synonyms": [],
+    "tags": [
+      "bush_tucker"
+    ]
+  },
+  {
+    "common_name": "Sea Grape",
+    "latin_name": "Coccoloba uvifera",
+    "slug": "sea-grape",
+    "region": "Tropical Americas",
+    "synonyms": []
+  },
+  {
+    "common_name": "Imbe",
+    "latin_name": "Garcinia livingstonei",
+    "slug": "imbe",
+    "region": "Southern/East Africa",
+    "synonyms": []
+  },
+  {
+    "common_name": "Santol",
+    "latin_name": "Sandoricum koetjape",
+    "slug": "santol",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Amla",
+    "latin_name": "Phyllanthus emblica",
+    "slug": "amla",
+    "region": "South Asia",
+    "synonyms": [
+      "Indian Gooseberry"
+    ]
+  },
+  {
+    "common_name": "Cashew",
+    "latin_name": "Anacardium occidentale",
+    "slug": "cashew",
+    "region": "South America (Brazil)",
+    "synonyms": [
+      "Cashew Nut"
+    ]
+  },
+  {
+    "common_name": "Chempedak",
+    "latin_name": "Artocarpus integer",
+    "slug": "chempedak",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Cranberry",
+    "latin_name": "Vaccinium macrocarpon",
+    "slug": "cranberry",
+    "region": "North America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Japanese Raisin",
+    "latin_name": "Hovenia dulcis",
+    "slug": "japanese-raisin",
+    "region": "East Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Kei Apple",
+    "latin_name": "Dovyalis caffra",
+    "slug": "kei-apple",
+    "region": "Southern Africa",
+    "synonyms": []
+  },
+  {
+    "common_name": "Malay Apple",
+    "latin_name": "Syzygium malaccense",
+    "slug": "malay-apple",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Marang",
+    "latin_name": "Artocarpus odoratissimus",
+    "slug": "marang",
+    "region": "Borneo/Philippines",
+    "synonyms": []
+  },
+  {
+    "common_name": "Matisia",
+    "latin_name": "Matisia cordata",
+    "slug": "matisia",
+    "region": "South America",
+    "synonyms": [
+      "Chupa Chupa",
+      "South American Sapote"
+    ]
+  },
+  {
+    "common_name": "Natal Plum",
+    "latin_name": "Carissa macrocarpa",
+    "slug": "natal-plum",
+    "region": "Southern Africa",
+    "synonyms": []
+  },
+  {
+    "common_name": "Pitomba",
+    "latin_name": "Eugenia luschnathiana",
+    "slug": "pitomba",
+    "region": "South America (Brazil)",
+    "synonyms": []
+  },
+  {
+    "common_name": "Yellow Mangosteen",
+    "latin_name": "Garcinia xanthochymus",
+    "slug": "yellow-mangosteen",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Alupag",
+    "latin_name": "Dimocarpus didyma",
+    "slug": "alupag",
+    "region": "Philippines",
     "synonyms": []
   }
 ]

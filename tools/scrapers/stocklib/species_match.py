@@ -199,19 +199,18 @@ def _is_ornamental_relative(t_lower: str, candidate: str) -> bool:
 # without a species, which beats being counted as the wrong one.
 _NOT_THE_FRUIT = (
     # plum
-    "hog plum", "jambolan plum", "java plum", "natal plum", "governors plum",
+    "hog plum", "jambolan plum", "java plum", "governors plum",
     "governor's plum", "governor’s plum", "kaffir plum", "plum mango", "wild plum",
     "purple leaf plum",
     # apple
-    "fraser island apple", "black apple", "malay apple", "kei apple",
-    "elephant apple", "velvet apple", "apple cactus", "smooth-barked apple",
+    "black apple", "elephant apple", "velvet apple", "apple cactus", "smooth-barked apple",
     "apple gum", "apple blossom",
     # fig
     "fiddle leaf fig", "fiddle-leaf fig", "sacred fig", "weeping fig",
     "climbing fig", "creeping fig", "strangler fig", "moreton bay fig",
     "port jackson fig", "rubber fig",
     # grape
-    "sea grape", "oregon grape", "burmese grape", "grape ivy", "tree grape",
+    "oregon grape", "burmese grape", "grape ivy", "tree grape",
     # orange
     "mock orange", "mexican orange", "wild orange", "orange jasmin",
     "orange jasmine", "orange jessamine", "osage orange", "orange trumpet",
@@ -224,8 +223,7 @@ _NOT_THE_FRUIT = (
     "cedar bay cherry", "beach cherry", "brush cherry", "bush cherry",
     "capulin cherry", "nanking cherry", "native cherry", "cornelian cherry",
     # gooseberry
-    "star gooseberry", "cape gooseberry", "indian gooseberry",
-    "ceylon gooseberry", "hill gooseberry", "otaheite gooseberry",
+    "cape gooseberry", "ceylon gooseberry", "hill gooseberry",
     # chestnut
     "malabar chestnut", "guiana chestnut", "cape chestnut", "water chestnut",
     "horse chestnut", "moreton bay chestnut",
@@ -236,12 +234,12 @@ _NOT_THE_FRUIT = (
     "fern-leaved tamarind", "spanish tamarind", "manila tamarind",
     # olive, mulberry, currant, guava, pawpaw, almond, peach
     "native olive", "sweet olive", "red olive", "indian olive", "russian olive",
-    "native mulberry", "native currant", "wild currant", "native guava",
+    "native currant", "wild currant", "native guava",
     "chilean guava", "american paw paw", "american pawpaw", "american papaw",
     "indian almond", "beach almond", "atherton almond", "tropical almond",
     "african peach", "peach palm",
     # mangosteen (Garcinia relatives sold under the name)
-    "yellow mangosteen", "african mangosteen", "native mangosteen",
+    "african mangosteen", "native mangosteen",
     "mundu mangosteen", "button mangosteen", "seashore mangosteen",
     # everything else
     "pineapple lily", "pineapple sage", "blueberry ash", "blueberry lily",

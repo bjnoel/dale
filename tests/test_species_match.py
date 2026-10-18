@@ -636,11 +636,10 @@ class NotTheFruitTest(unittest.TestCase):
         return m["cn"] if m else None
 
     def test_other_plants_match_nothing(self):
-        for title in ("Illawarra Plum", "Jambolan Plum", "Natal Plum - Desert Star",
+        for title in ("Illawarra Plum", "Jambolan Plum",
                       "Governors Plum - Select", "Tropical - Hog Plum aka Ambarella",
                       "Fiddle Leaf Fig", "Sacred Fig", "Mock Orange",
                       "Tropical - Lemon Drop Mangosteen", "Lemon Aspen Plant",
-                      "Sea Grape", "Fraser Island Apple", "Star Gooseberry (Large)",
                       "Malabar Chestnut", "Cape Gooseberry", "Native Tamarind",
                       "Canary Island Strawberry Tree", "American Paw Paw Plant",
                       "Blueberry Ash - Prima Donna", "Cedar Bay Cherry"):
@@ -649,6 +648,22 @@ class NotTheFruitTest(unittest.TestCase):
                 self.assertIn(self._cn(title), (None, "Illawarra Plum"))
         self.assertEqual(self._cn("Illawarra Plum"), "Illawarra Plum")
         self.assertIsNone(self._cn("Jambolan Plum"))
+
+    def test_masked_names_that_became_records_match_themselves(self):
+        """Left the mask for their own records (2026-10-18): still never the
+        fruit word inside them."""
+        for title, want in (("Natal Plum - Desert Star", "Natal Plum"),
+                            ("Sea Grape", "Sea Grape"),
+                            ("Fraser Island Apple", "Fraser Island Apple"),
+                            ("Star Gooseberry (Large)", "Star Gooseberry"),
+                            ("Kei Apple", "Kei Apple"),
+                            ("Malay Apple", "Malay Apple"),
+                            ("Native Mulberry", "Native Mulberry"),
+                            ("Yellow Mangosteen (Garcinia tinctori)", "Yellow Mangosteen"),
+                            ("Amla / Indian Gooseberry", "Amla"),
+                            ("Star Gooseberry Tree Organic (Tahitian Gooseberry)", "Star Gooseberry")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), want)
 
     def test_fruit_word_as_a_colour_on_another_plant(self):
         for title in ("Grevillea - Orange Marmalade", "Sage - Pineapple",
