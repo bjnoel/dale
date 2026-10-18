@@ -162,7 +162,10 @@
       "Grafted Apple",
       "Cider Apple"
     ],
-    "description": "Apples are one of Australia's most widely grown temperate fruits, thriving in regions with sufficient winter chill: the Adelaide Hills, Granite Belt, Yarra Valley, Orange NSW, and the Perth Hills. Most varieties need 500-1000 chill hours (below 7°C) to break dormancy and set fruit reliably. Low-chill varieties like Anna and Sundowner suit milder coastal climates, while Akane, McIntosh, Jonathan, Mutsu, and Snow (Yalca) perform best in genuinely cold winters. Heritage growers can access over 100 named varieties through specialist heritage fruit tree suppliers. Most apples require cross-pollination, so plant at least two compatible varieties. Apples prefer deep, well-drained loam with a pH of 6.0-6.5. Water consistently during fruit development to prevent bitter pit and cracking. Prune during winter dormancy to maintain an open vase or central leader shape. Expect fruit from January to May depending on variety and region. In WA, all apple plant material is subject to biosecurity controls; purchase only from certified interstate nurseries or local licensed propagators. Codling moth is the primary pest; use exclusion bags or approved sprays."
+    "description": "Apples are one of Australia's most widely grown temperate fruits, thriving in regions with sufficient winter chill: the Adelaide Hills, Granite Belt, Yarra Valley, Orange NSW, and the Perth Hills. Most varieties need 500-1000 chill hours (below 7°C) to break dormancy and set fruit reliably. Low-chill varieties like Anna and Sundowner suit milder coastal climates, while Akane, McIntosh, Jonathan, Mutsu, and Snow (Yalca) perform best in genuinely cold winters. Heritage growers can access over 100 named varieties through specialist heritage fruit tree suppliers. Most apples require cross-pollination, so plant at least two compatible varieties. Apples prefer deep, well-drained loam with a pH of 6.0-6.5. Water consistently during fruit development to prevent bitter pit and cracking. Prune during winter dormancy to maintain an open vase or central leader shape. Expect fruit from January to May depending on variety and region. In WA, all apple plant material is subject to biosecurity controls; purchase only from certified interstate nurseries or local licensed propagators. Codling moth is the primary pest; use exclusion bags or approved sprays.",
+    "match_synonyms": [
+      "Kingston Black Apple"
+    ]
   },
   {
     "common_name": "Pear",
@@ -202,7 +205,10 @@
       "Plumcot": "Prunus salicina × armeniaca",
       "Pluot": "Prunus salicina × armeniaca",
       "European Plum": "Prunus domestica"
-    }
+    },
+    "match_synonyms": [
+      "Plumscrumptious"
+    ]
   },
   {
     "common_name": "Peach",
@@ -227,7 +233,10 @@
     "synonyms": [
       "Dwarf Nectarine"
     ],
-    "description": "Nectarines are smooth-skinned peaches, sharing the same cultural requirements and climatic preferences. They need winter chill (500-800 hours for most varieties), good summer heat, and low humidity during fruit ripening. Tracked varieties include Crimson Baby (dwarf form, suitable for containers and small spaces), Early Rivers (early-ripening, reliable flavour), Tuscany (mid-season, rich and aromatic), Sundowner (late-season, firm flesh, excellent keeper), and Goldmine (white-fleshed, highly sweet). Most nectarines are self-fertile. Plant in full sun in deep, well-drained loam with a pH of 6.0-6.5. Apply a balanced stone fruit fertiliser in late winter and again in spring. Water consistently during fruit development to prevent pit hardening and cracking. Brown rot is the primary disease concern; apply copper sprays at petal fall and again as fruit ripens in wet years. Leaf curl is best managed with a single dormant spray of copper hydroxide in late winter before bud swell. In WA, nectarines grow well in the Perth Hills and southern inland regions. Fruit fly is the critical pest in WA and eastern Australia; exclusion bags or protein bait traps are essential from shuck fall. In WA, movement of stone fruit plant material is restricted; source only from state-accredited suppliers."
+    "description": "Nectarines are smooth-skinned peaches, sharing the same cultural requirements and climatic preferences. They need winter chill (500-800 hours for most varieties), good summer heat, and low humidity during fruit ripening. Tracked varieties include Crimson Baby (dwarf form, suitable for containers and small spaces), Early Rivers (early-ripening, reliable flavour), Tuscany (mid-season, rich and aromatic), Sundowner (late-season, firm flesh, excellent keeper), and Goldmine (white-fleshed, highly sweet). Most nectarines are self-fertile. Plant in full sun in deep, well-drained loam with a pH of 6.0-6.5. Apply a balanced stone fruit fertiliser in late winter and again in spring. Water consistently during fruit development to prevent pit hardening and cracking. Brown rot is the primary disease concern; apply copper sprays at petal fall and again as fruit ripens in wet years. Leaf curl is best managed with a single dormant spray of copper hydroxide in late winter before bud swell. In WA, nectarines grow well in the Perth Hills and southern inland regions. Fruit fly is the critical pest in WA and eastern Australia; exclusion bags or protein bait traps are essential from shuck fall. In WA, movement of stone fruit plant material is restricted; source only from state-accredited suppliers.",
+    "match_synonyms": [
+      "Spicezee"
+    ]
   },
   {
     "common_name": "Apricot",
@@ -1452,7 +1461,9 @@
     "latin_name": "Pinus pinea",
     "slug": "pine-nut",
     "region": "Mediterranean",
-    "synonyms": []
+    "synonyms": [
+      "Stone Pine"
+    ]
   },
   {
     "common_name": "Jostaberry",
@@ -1589,5 +1600,211 @@
     "slug": "alupag",
     "region": "Philippines",
     "synonyms": []
+  },
+  {
+    "common_name": "Durian",
+    "latin_name": "Durio zibethinus",
+    "slug": "durian",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Langsat",
+    "latin_name": "Lansium parasiticum",
+    "slug": "langsat",
+    "region": "Southeast Asia",
+    "synonyms": [
+      "Lanzones",
+      "Longkong Lanzones",
+      "Duku"
+    ]
+  },
+  {
+    "common_name": "Pulasan",
+    "latin_name": "Nephelium ramboutan-ake",
+    "slug": "pulasan",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Akee",
+    "latin_name": "Blighia sapida",
+    "slug": "akee",
+    "region": "West Africa",
+    "synonyms": [
+      "Ackee"
+    ]
+  },
+  {
+    "common_name": "Bilimbi",
+    "latin_name": "Averrhoa bilimbi",
+    "slug": "bilimbi",
+    "region": "Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Borojo",
+    "latin_name": "Borojoa patinoi",
+    "slug": "borojo",
+    "region": "South America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Green Sapote",
+    "latin_name": "Pouteria viridis",
+    "slug": "green-sapote",
+    "region": "Central America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Poshte",
+    "latin_name": "Annona scleroderma",
+    "slug": "poshte",
+    "region": "Central America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Mountain Soursop",
+    "latin_name": "Annona montana",
+    "slug": "mountain-soursop",
+    "region": "Caribbean/South America",
+    "synonyms": [
+      "Mountain Sop"
+    ]
+  },
+  {
+    "common_name": "Pitangatuba",
+    "latin_name": "Eugenia selloi",
+    "slug": "pitangatuba",
+    "region": "South America (Brazil)",
+    "synonyms": []
+  },
+  {
+    "common_name": "Nangapire",
+    "latin_name": "Eugenia repanda",
+    "slug": "nangapire",
+    "region": "South America (Brazil)",
+    "synonyms": []
+  },
+  {
+    "common_name": "Panama Berry",
+    "latin_name": "Muntingia calabura",
+    "slug": "panama-berry",
+    "region": "Tropical Americas",
+    "synonyms": []
+  },
+  {
+    "common_name": "Noni",
+    "latin_name": "Morinda citrifolia",
+    "slug": "noni",
+    "region": "Southeast Asia/Pacific",
+    "synonyms": [
+      "Noni Fruit"
+    ]
+  },
+  {
+    "common_name": "Elephant Apple",
+    "latin_name": "Dillenia indica",
+    "slug": "elephant-apple",
+    "region": "South/Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Governors Plum",
+    "latin_name": "Flacourtia indica",
+    "slug": "governors-plum",
+    "region": "Africa/Asia",
+    "synonyms": [
+      "Governor's Plum",
+      "Governor’s Plum"
+    ]
+  },
+  {
+    "common_name": "Ceylon Hill Gooseberry",
+    "latin_name": "Rhodomyrtus tomentosa",
+    "slug": "ceylon-hill-gooseberry",
+    "region": "South/Southeast Asia",
+    "synonyms": [
+      "Hill Gooseberry"
+    ]
+  },
+  {
+    "common_name": "Cape Gooseberry",
+    "latin_name": "Physalis peruviana",
+    "slug": "cape-gooseberry",
+    "region": "South America (Andes)",
+    "synonyms": [
+      "Incaberry"
+    ]
+  },
+  {
+    "common_name": "Lemon Drop Mangosteen",
+    "latin_name": "Garcinia intermedia",
+    "slug": "lemon-drop-mangosteen",
+    "region": "Central America",
+    "synonyms": [],
+    "match_synonyms": [
+      "Lemon Drop"
+    ]
+  },
+  {
+    "common_name": "Chilean Guava",
+    "latin_name": "Ugni molinae",
+    "slug": "chilean-guava",
+    "region": "South America (Chile)",
+    "synonyms": [
+      "Ugni",
+      "Tazziberry"
+    ]
+  },
+  {
+    "common_name": "American Paw Paw",
+    "latin_name": "Asimina triloba",
+    "slug": "american-paw-paw",
+    "region": "North America",
+    "synonyms": [
+      "American Pawpaw",
+      "American Papaw"
+    ],
+    "match_synonyms": [
+      "North American Paw Paw"
+    ]
+  },
+  {
+    "common_name": "Silvanberry",
+    "latin_name": "Rubus spp.",
+    "slug": "silvanberry",
+    "region": "Cultivated hybrid",
+    "synonyms": []
+  },
+  {
+    "common_name": "Black Apple",
+    "latin_name": "Planchonella australis",
+    "slug": "black-apple",
+    "region": "Australia (QLD/NSW rainforest)",
+    "synonyms": [],
+    "tags": [
+      "bush_tucker"
+    ]
+  },
+  {
+    "common_name": "Cedar Bay Cherry",
+    "latin_name": "Eugenia reinwardtiana",
+    "slug": "cedar-bay-cherry",
+    "region": "Australia (QLD)",
+    "synonyms": [],
+    "tags": [
+      "bush_tucker"
+    ]
+  },
+  {
+    "common_name": "Millaa Millaa",
+    "latin_name": "Elaeagnus triflora",
+    "slug": "millaa-millaa",
+    "region": "Australia (QLD rainforest)",
+    "synonyms": [],
+    "tags": [
+      "bush_tucker"
+    ]
   }
 ]

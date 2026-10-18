@@ -78,10 +78,11 @@ class SapoteDisambiguationTest(unittest.TestCase):
             self.assertEqual(self._slug(title), "black-sapote", title)
 
     def test_unidentified_sapotes_match_nothing_rather_than_the_wrong_thing(self):
-        # Green sapote (Pouteria viridis) and Bruno sapote are not tracked species.
-        # Showing nothing beats filing them under a species they are not.
-        for title in ("Green Sapote", "Bruno Sapote"):
-            self.assertIsNone(self._slug(title), title)
+        # Bruno sapote is not a tracked species. Showing nothing beats filing
+        # it under one it is not. Green sapote (Pouteria viridis) got its own
+        # record on 2026-10-18.
+        self.assertIsNone(self._slug("Bruno Sapote"))
+        self.assertEqual(self._slug("Green Sapote"), "green-sapote")
 
     def test_pineapple_guava_is_feijoa_not_guava(self):
         # Acca sellowiana, genuinely sold under both names. This one is correct
@@ -637,12 +638,11 @@ class NotTheFruitTest(unittest.TestCase):
 
     def test_other_plants_match_nothing(self):
         for title in ("Illawarra Plum", "Jambolan Plum",
-                      "Governors Plum - Select", "Tropical - Hog Plum aka Ambarella",
+                      "Tropical - Hog Plum aka Ambarella",
                       "Fiddle Leaf Fig", "Sacred Fig", "Mock Orange",
-                      "Tropical - Lemon Drop Mangosteen", "Lemon Aspen Plant",
-                      "Malabar Chestnut", "Cape Gooseberry", "Native Tamarind",
-                      "Canary Island Strawberry Tree", "American Paw Paw Plant",
-                      "Blueberry Ash - Prima Donna", "Cedar Bay Cherry"):
+                      "Lemon Aspen Plant", "Malabar Chestnut", "Native Tamarind",
+                      "Canary Island Strawberry Tree", "Blueberry Ash - Prima Donna",
+                      "Ceylon Gooseberry"):
             with self.subTest(title=title):
                 # "Illawarra Plum" now has its own record; the rest have none.
                 self.assertIn(self._cn(title), (None, "Illawarra Plum"))
@@ -661,7 +661,23 @@ class NotTheFruitTest(unittest.TestCase):
                             ("Native Mulberry", "Native Mulberry"),
                             ("Yellow Mangosteen (Garcinia tinctori)", "Yellow Mangosteen"),
                             ("Amla / Indian Gooseberry", "Amla"),
-                            ("Star Gooseberry Tree Organic (Tahitian Gooseberry)", "Star Gooseberry")):
+                            ("Star Gooseberry Tree Organic (Tahitian Gooseberry)", "Star Gooseberry"),
+                            # batch 2 (2026-10-18)
+                            ("Governors Plum - Select", "Governors Plum"),
+                            ("Cape Gooseberry (Incaberry)", "Cape Gooseberry"),
+                            ("Ceylon Hill Gooseberry", "Ceylon Hill Gooseberry"),
+                            ("American Paw Paw Plant", "American Paw Paw"),
+                            ("Asimina Triloba - American Paw Paw 5l", "American Paw Paw"),
+                            ("Cedar Bay Cherry, Beach Cherry", "Cedar Bay Cherry"),
+                            ("Black Apple (Planchonella australis)", "Black Apple"),
+                            ("Mountain Soursop (Mountain Sop)", "Mountain Soursop"),
+                            ("Ugni ( Tazziberry )", "Chilean Guava"),
+                            ("Longkong Lanzones", "Langsat"),
+                            ("Stone Pine (Pinus pinea)", "Pine Nut"),
+                            # the cider apple, not the native Black Apple
+                            ("Kingston Black Apple (medium)", "Apple"),
+                            # papaya keeps its own paw paws
+                            ("Paw Paw 'Red Lady'", "Papaya")):
             with self.subTest(title=title):
                 self.assertEqual(self._cn(title), want)
 
@@ -673,8 +689,13 @@ class NotTheFruitTest(unittest.TestCase):
                 self.assertIsNone(self._cn(title))
 
     def test_lemon_drop_is_never_a_lemon(self):
-        self.assertNotEqual(self._cn("Lemon drop - Mangosteen"), "Lemon")
-        self.assertIsNone(self._cn("Tropical - Lemon Drop Mangosteen"))
+        # Garcinia intermedia: its own record since 2026-10-18, and never
+        # G. mangostana either, whichever way round the title is written.
+        for title in ("Lemon drop - Mangosteen", "Tropical - Lemon Drop Mangosteen",
+                      "Mangosteen ‘Lemon Drop’", "Mangosteen – Lemon Drop"):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), "Lemon Drop Mangosteen")
+        self.assertIsNone(self._cn("Chilli 'Lemon Drop' - Large"))
 
     def test_the_longer_leading_name_wins_over_a_dwarf_synonym(self):
         # "Dwarf Plum" is a Plum synonym; "Plum Pine" (after the prefix) is longer.
@@ -847,7 +868,16 @@ class VarietySlugsUnchangedTest(unittest.TestCase):
                             ("Orange – Chinotto", "orange-chinotto"),
                             # a fruit sold under its parent's name is no cultivar
                             ("Lemon 'Yuzu' Dwarf 17cm", None),
-                            ("Lime – Sudachi", None)):
+                            ("Lime – Sudachi", None),
+                            ("Mangosteen – Lemon Drop", None),
+                            # a native tree, not /variety/apple-black
+                            ("Black Apple (Planchonella australis)", None),
+                            # denied: the parser reads it as Black Apple 'Kingston'
+                            ("Kingston Black Apple (medium)", None),
+                            ("Dwarf Cider Apple - Kingston Black", "apple-cider-kingston-black"),
+                            # denied: "North" and "Packs" are not cultivars
+                            ("North American Paw Paw", None),
+                            ("American Paw Paw Bare-Root Packs", None)):
             with self.subTest(title=title):
                 self.assertEqual(product_variety_slug(title), slug)
 

@@ -16452,3 +16452,40 @@ behaviour (1,442 of 2,673 slugs are single-product) and belong to /admin/varieti
 Found in passing, not fixed: the variety parser builds /variety/apple-black from "Black
 Apple (Planchonella australis)", a native tree. Next batch candidates (3 nurseries):
 Durian, Pulasan, Langsat, Akee, Borojo, Green Sapote.
+
+## DEC-357 (2026-10-18): species registry batch 2, 24 records
+
+**Trigger:** Benedict asked for the next batch after DEC-356. Re-grouped the unmatched live
+titles by name against the post-DEC-356 registry; took real fruit at 3+ nurseries, plus
+Chilean Guava and American Paw Paw whose spellings add up to 4.
+
+**Decision.** Records for Durian, Langsat (+Lanzones, Longkong, Duku), Pulasan, Akee,
+Bilimbi, Borojo, Green Sapote, Poshte, Mountain Soursop, Pitangatuba, Nangapire, Panama
+Berry, Noni, Elephant Apple, Governors Plum, Ceylon Hill Gooseberry, Cape Gooseberry,
+Lemon Drop Mangosteen, Chilean Guava (+Ugni, Tazziberry), American Paw Paw, Silvanberry,
+and three bush_tucker-tagged natives (Black Apple, Cedar Bay Cherry, Millaa Millaa).
+Stone Pine is a Pine Nut synonym; Plumscrumptious (plum) and Spicezee (nectarine) are
+match_synonyms. Their names leave `_NOT_THE_FRUIT`. Lemon Drop Mangosteen joins
+`SOLD_UNDER_PARENT` under mangosteen, because three nurseries title it "Mangosteen 'Lemon
+Drop'" and it is *Garcinia intermedia*, not *G. mangostana*.
+
+**Edge cases the impact diff caught before merge.**
+- Every word of a record's latin name becomes variety-parser noise. "Rubus hybrid" for
+  Silvanberry stripped "hybrid" from jaboticaba-red-hybrid and three papaya slugs, so it is
+  "Rubus spp.". "Annona montana" still turns lemon-savory-satureja-montana into
+  lemon-savory-satureja (a herb listing, unwatched); accepted.
+- A Black Apple record made the parser read Heritage's "Kingston Black Apple (medium)" as
+  Black Apple 'Kingston'. Kingston Black Apple is an Apple match_synonym (species right)
+  and black-apple-kingston is denied in variety_overrides.json (no wrong page).
+- The record is "American Paw Paw", not "American Pawpaw": Papaya's one-word synonym
+  "Pawpaw" would be the tail of the latter (the bug class SapoteDisambiguationTest
+  guards). american-paw-paw-north and -packs are denied: not cultivars.
+- Primal's "Ceylon Gooseberry" (*Dovyalis hebecarpa*) is a different plant from Ceylon
+  Hill Gooseberry and stays masked. Wild Currant skipped: Ladybird's is *Antidesma*,
+  Diggers' is unstated.
+
+**Measured:** matched 8,218 -> 8,334 (+116), 3 reclassified (true mangosteen -> Lemon
+Drop Mangosteen), 0 lost; no watched slug orphaned. Retired slugs are wrong-species ones
+(apple-black, gooseberry-cape, plum-governors, mangosteen-lemon-drop...).
+Still open: Jambolan needs the plum-jambolan watch handled first; Ambarella/Hog Plum
+naming is ambiguous (Spondias dulcis vs mombin).

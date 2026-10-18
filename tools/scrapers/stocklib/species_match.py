@@ -199,11 +199,11 @@ def _is_ornamental_relative(t_lower: str, candidate: str) -> bool:
 # without a species, which beats being counted as the wrong one.
 _NOT_THE_FRUIT = (
     # plum
-    "hog plum", "jambolan plum", "java plum", "governors plum",
-    "governor's plum", "governor’s plum", "kaffir plum", "plum mango", "wild plum",
+    "hog plum", "jambolan plum", "java plum",
+    "kaffir plum", "plum mango", "wild plum",
     "purple leaf plum",
     # apple
-    "black apple", "elephant apple", "velvet apple", "apple cactus", "smooth-barked apple",
+    "velvet apple", "apple cactus", "smooth-barked apple",
     "apple gum", "apple blossom",
     # fig
     "fiddle leaf fig", "fiddle-leaf fig", "sacred fig", "weeping fig",
@@ -217,13 +217,13 @@ _NOT_THE_FRUIT = (
     # lemon / lime
     "lemon scented", "lemon-scented", "lemon aspen", "lemon grass", "lemongrass",
     "lemon balm", "lemon verbena", "lemon thyme", "lemon savory",
-    "lemon bergamot", "lemon drop mangosteen", "lemon drop", "lemon ball", "lemon button",
+    "lemon bergamot", "lemon ball", "lemon button",
     "native lemon", "small leaf lime", "large leaf lime", "spanish lime",
     # cherry
-    "cedar bay cherry", "beach cherry", "brush cherry", "bush cherry",
+    "beach cherry", "brush cherry", "bush cherry",
     "capulin cherry", "nanking cherry", "native cherry", "cornelian cherry",
     # gooseberry
-    "cape gooseberry", "ceylon gooseberry", "hill gooseberry",
+    "ceylon gooseberry",
     # chestnut
     "malabar chestnut", "guiana chestnut", "cape chestnut", "water chestnut",
     "horse chestnut", "moreton bay chestnut",
@@ -235,7 +235,6 @@ _NOT_THE_FRUIT = (
     # olive, mulberry, currant, guava, pawpaw, almond, peach
     "native olive", "sweet olive", "red olive", "indian olive", "russian olive",
     "native currant", "wild currant", "native guava",
-    "chilean guava", "american paw paw", "american pawpaw", "american papaw",
     "indian almond", "beach almond", "atherton almond", "tropical almond",
     "african peach", "peach palm",
     # mangosteen (Garcinia relatives sold under the name)
@@ -243,7 +242,7 @@ _NOT_THE_FRUIT = (
     "mundu mangosteen", "button mangosteen", "seashore mangosteen",
     # everything else
     "pineapple lily", "pineapple sage", "blueberry ash", "blueberry lily",
-    "strawberry tree", "mountain soursop", "hairy walnut", "eumundi quandong",
+    "strawberry tree", "hairy walnut", "eumundi quandong",
     "hard quandong", "box elder", "weeping pear", "string of bananas",
 )
 
@@ -537,6 +536,8 @@ SOLD_UNDER_PARENT = {
     "yuzu": ("lemon", "citron", "lime"),
     "sudachi": ("lime", "lemon"),
     "chinotto": ("kumquat",),
+    # Garcinia intermedia, sold as "Mangosteen 'Lemon Drop'" (2026-10-18)
+    "lemon drop": ("mangosteen",),
 }
 
 
