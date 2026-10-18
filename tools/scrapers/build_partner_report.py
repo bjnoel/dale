@@ -68,6 +68,14 @@ OUTBOUND_GOAL = "Outbound Link: Click"
 RESTRICTED_RE = re.compile(r"\b(?:qld|queensland)\s+only\b", re.I)
 RESTRICTED_STATE = "QLD"
 
+
+def strip_restriction(title: str) -> str:
+    """'Mandarin - Emperor: QLD ONLY' -> 'Mandarin - Emperor'. For the
+    Queensland-only table, whose heading already says it on every row."""
+    t = re.sub(r"\(\s*\)", "", RESTRICTED_RE.sub("", title))
+    return re.sub(r"\s{2,}", " ", t).strip(" :-\u2013")
+
+
 AU_REGIONS = ("NSW", "VIC", "QLD", "WA", "SA", "ACT", "TAS", "NT")
 
 
@@ -404,6 +412,8 @@ def build(key: str, month: str, offer: str | None = None) -> dict:
     lost = [product_row(u, n) for u, n in cls["lost_by_url"].most_common()]
     restricted = [dict(product_row(u, n), **regions["restricted_per_line"].get(u, {"home": 0, "away": 0}))
                   for u, n in cls["restricted_by_url"].most_common()]
+    for r in restricted:
+        r["short_title"] = strip_restriction(r["title"])
 
     # 3. Watched varieties.
     con = sqlite3.connect(f"file:{WATCH_DB}?mode=ro", uri=True)

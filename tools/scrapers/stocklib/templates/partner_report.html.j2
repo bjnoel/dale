@@ -275,9 +275,28 @@ td.item{font-weight:500;color:var(--ink)}
   font-family:"IBM Plex Mono",monospace;font-size:11.5px;
   color:var(--muted);letter-spacing:.03em;
 }
+td .u{display:none}
 @media (max-width:560px){
   .bar{grid-template-columns:62px 1fr 44px}
   .offer,.notes{padding:22px 20px}
+  /* Phones: every table row becomes a small card. The name takes the full
+     width, the numbers sit on one line under it with their units spelled out
+     (the column headers are hidden), and the stock pill goes to the right.
+     A 520px table in a ~340px card used to hide the columns that mattered. */
+  table{min-width:0}
+  thead{display:none}
+  tbody tr{
+    display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;
+    padding:12px 16px;border-bottom:1px solid var(--line);
+  }
+  tbody tr:last-child{border-bottom:0}
+  tbody td{padding:0;border:0}
+  td.item{flex-basis:100%}
+  td.num{font-size:13.5px;color:var(--ink-2)}
+  td .u{display:inline}
+  td.pillcell{margin-left:auto}
+  td.pillcell:empty{display:none}
+  td.others{flex-basis:100%;font-size:13px;color:var(--muted)}
 }
 code{font-family:"IBM Plex Mono",monospace;font-size:.92em;background:var(--card);padding:1px 5px;border-radius:3px}
 a{color:var(--accent)}
@@ -286,6 +305,7 @@ a{color:var(--accent)}
 <body>
 {% macro money(p) %}{% if p %}${{ "%.2f"|format(p) }}{% else %}POA{% endif %}{% endmacro %}
 {% macro nowpill(now) %}{% if now is none %}<span class="pill only">Delisted</span>{% elif now %}<span class="pill instock">In stock</span>{% else %}<span class="pill out">Sold out</span>{% endif %}{% endmacro %}
+{% macro unit(n, word) %}<span class="u"> {{ word }}{% if n != 1 %}s{% endif %}</span>{% endmacro %}
 {% macro pct(x) %}{{ "%.0f"|format(x * 100) }}%{% endmacro %}
 <div class="wrap">
 
@@ -330,10 +350,10 @@ a{color:var(--accent)}
       <thead><tr><th>State</th><th class="num">Clicks</th><th class="num">Share</th><th>You ship there</th></tr></thead>
       <tbody>
 {% for r in regions.rows %}
-        <tr><td class="item">{{ r.state }}</td><td class="num">{{ r.clicks }}</td><td class="num">{{ pct(r.clicks / this.clicks) }}</td><td>{% if r.seasonal %}<span class="pill only">In windows</span>{% elif r.ships %}<span class="pill instock">Yes</span>{% else %}<span class="pill out">No</span>{% endif %}</td></tr>
+        <tr><td class="item">{{ r.state }}</td><td class="num">{{ r.clicks }}{{ unit(r.clicks, "click") }}</td><td class="num">{{ pct(r.clicks / this.clicks) }}</td><td class="pillcell">{% if r.seasonal %}<span class="pill only">In windows</span>{% elif r.ships %}<span class="pill instock">Yes</span>{% else %}<span class="pill out">No</span>{% endif %}</td></tr>
 {% endfor %}
 {% if regions.elsewhere %}
-        <tr><td class="item">Overseas or unknown</td><td class="num">{{ regions.elsewhere }}</td><td class="num">{{ pct(regions.elsewhere / this.clicks) }}</td><td></td></tr>
+        <tr><td class="item">Overseas or unknown</td><td class="num">{{ regions.elsewhere }}{{ unit(regions.elsewhere, "click") }}</td><td class="num">{{ pct(regions.elsewhere / this.clicks) }}</td><td class="pillcell"></td></tr>
 {% endif %}
       </tbody>
     </table></div>
@@ -346,7 +366,7 @@ a{color:var(--accent)}
       <thead><tr><th>Product</th><th class="num">Price</th><th class="num">Clicks</th><th>Now</th></tr></thead>
       <tbody>
 {% for r in top_clicked %}
-        <tr><td class="item">{{ r.title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.clicks }}</td><td>{{ nowpill(r.now) }}</td></tr>
+        <tr><td class="item">{{ r.title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.clicks }}{{ unit(r.clicks, "click") }}</td><td class="pillcell">{{ nowpill(r.now) }}</td></tr>
 {% endfor %}
       </tbody>
     </table></div>
@@ -370,7 +390,7 @@ a{color:var(--accent)}
       <thead><tr><th>Product</th><th class="num">Price</th><th class="num">Clicks</th><th class="num">Days sold out in {{ month_name }}</th><th>Now</th></tr></thead>
       <tbody>
 {% for r in lost[:12] %}
-        <tr><td class="item">{{ r.title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.clicks }}</td><td class="num">{{ r.days_out }} of {{ n_days }}</td><td>{{ nowpill(r.now) }}</td></tr>
+        <tr><td class="item">{{ r.title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.clicks }}{{ unit(r.clicks, "click") }}</td><td class="num"><span class="u">sold out </span>{{ r.days_out }} of {{ n_days }}<span class="u"> days</span></td><td class="pillcell">{{ nowpill(r.now) }}</td></tr>
 {% endfor %}
       </tbody>
     </table></div>
@@ -385,7 +405,7 @@ a{color:var(--accent)}
       <thead><tr><th>Product</th><th class="num">Price</th><th class="num">From QLD</th><th class="num">Elsewhere</th></tr></thead>
       <tbody>
 {% for r in restricted[:10] %}
-        <tr><td class="item">{{ r.title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.home }}</td><td class="num">{{ r.away }}</td></tr>
+        <tr><td class="item">{{ r.short_title }}</td><td class="num">{{ money(r.price) }}</td><td class="num">{{ r.home }}<span class="u"> from QLD</span></td><td class="num">{{ r.away }}<span class="u"> elsewhere</span></td></tr>
 {% endfor %}
       </tbody>
     </table></div>
@@ -416,7 +436,7 @@ a{color:var(--accent)}
       <thead><tr><th>Variety</th><th class="num">Waiting</th><th class="num">Your price, in stock</th><th>Also listed by (sold out)</th></tr></thead>
       <tbody>
 {% for w in only_you %}
-        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}</td><td class="num">{% for p in w.mine_in_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td>{% if w.other_names %}{{ w.other_names|join(", ") }}{% else %}Nobody else lists it{% endif %}</td></tr>
+        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}<span class="u"> waiting</span></td><td class="num">{% for p in w.mine_in_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td class="others">{% if w.other_names %}<span class="u">Also listed by </span>{{ w.other_names|join(", ") }}<span class="u">, all sold out</span>{% else %}Nobody else lists it{% endif %}</td></tr>
 {% endfor %}
       </tbody>
     </table></div>
@@ -429,11 +449,12 @@ a{color:var(--accent)}
     <div class="tablewrap"><table>
       <thead><tr><th>Variety</th><th class="num">Waiting</th><th class="num">Your price</th><th>Who else lists it</th></tr></thead>
       <tbody>
-{% for w in nob %}
-        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}</td><td class="num">{% for p in w.mine_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td>{% if w.other_names %}{{ w.other_names|join(", ") }}, all sold out{% else %}Nobody else lists it{% endif %}</td></tr>
+{% for w in nob[:10] %}
+        <tr><td class="item">{{ w.title }}{% if w.mine_restricted %} <span class="pill only">QLD only</span>{% endif %}</td><td class="num">{{ w.waiting }}<span class="u"> waiting</span></td><td class="num">{% for p in w.mine_prices %}{{ money(p) }}{% if not loop.last %} / {% endif %}{% endfor %}</td><td class="others">{% if w.other_names %}<span class="u">Also listed by </span>{{ w.other_names|join(", ") }}, all sold out{% else %}Nobody else lists it{% endif %}</td></tr>
 {% endfor %}
       </tbody>
     </table></div>
+{% if nob|length > 10 %}<p class="cap">Top 10 of {{ nob|length }}, by people waiting.</p>{% endif %}
 {% endif %}
     <p class="cap">These counts are national. Most people haven't told us which state they're in, so some of them will be in {{ no_ship[:-1]|join(", ") }} or {{ no_ship[-1] }}, where you don't ship. Most varieties only have one or two people waiting, so the useful part is that nobody can buy them right now, not the size of the number.</p>
   </div>

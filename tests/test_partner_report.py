@@ -174,9 +174,9 @@ class WatchGrowth(unittest.TestCase):
 
 
 class TemplateRenders(unittest.TestCase):
-    def _render(self, recipient, regions=None):
-        row = {"title": "Fig & Olive <b>", "url": "https://x", "price": 49.9,
-               "clicks": 3, "now": False, "days_out": 30, "home": 1, "away": 2}
+    def _render(self, recipient, regions=None, nobody=None):
+        row = {"title": "Fig & Olive <b>", "short_title": "Fig & Olive <b>", "url": "https://x",
+               "price": 49.9, "clicks": 3, "now": False, "days_out": 30, "home": 1, "away": 2}
         w = {"title": "Blueberry - OB1", "waiting": 6, "mine_prices": [49.9], "mine_in_prices": [49.9],
              "mine_restricted": False, "other_names": ["Ladybird Nursery"]}
         return render(
@@ -198,7 +198,7 @@ class TemplateRenders(unittest.TestCase):
             top_clicked=[row], lost=[row], restricted=[row],
             n_watchers=208, n_watching_yours=93, n_varieties_yours=74,
             top_watched={"title": "Blueberry - OB1", "n": 6, "yours": True},
-            only_you=[w], nobody=[w], n_state_known=13, n_dropped=1,
+            only_you=[w], nobody=nobody or [w], n_state_known=13, n_dropped=1,
             growth={"rows": [{"label": "August", "n": 45}, {"label": "September", "n": 98}],
                     "max": 98, "after": {"label": "October", "n": 47, "days": 15}})
 
@@ -254,6 +254,39 @@ class TemplateRenders(unittest.TestCase):
         html = self._render(bpr.recipient("primal-fruits", "ecwid"))
         self.assertIn("You're a referral partner", html)
         self.assertNotIn("Install GoAffPro", html)
+
+    def test_phone_rows_spell_out_units(self):
+        # On a phone the table is a ~340px card and used to be forced to 520px,
+        # so the clicks, stock and "you ship there" columns sat off-screen
+        # behind a sideways scroll nobody knew was there (2026-10-18). Rows now
+        # stack and every number carries its own unit, since headers are hidden.
+        one = {"rows": [{"state": "NSW", "clicks": 1, "ships": True, "seasonal": False}],
+               "elsewhere": 0, "unshippable": 0, "seasonal": 0,
+               "restricted_home": 1, "restricted_away": 2}
+        html = self._render(bpr.recipient("ross-creek", "shopify"), one)
+        self.assertIn("table{min-width:0}", html)
+        self.assertIn("thead{display:none}", html)
+        self.assertIn('1<span class="u"> click</span>', html, "singular")
+        self.assertIn('3<span class="u"> clicks</span>', html)
+        self.assertIn('<span class="u">sold out </span>30 of 30<span class="u"> days</span>', html)
+        self.assertIn('6<span class="u"> waiting</span>', html)
+        self.assertIn('1<span class="u"> from QLD</span>', html)
+        self.assertIn('<td class="pillcell"><span class="pill instock">Yes</span>', html)
+
+    def test_sold_out_everywhere_is_capped(self):
+        many = [{"title": f"Feijoa - {i}", "waiting": 2, "mine_prices": [44.0], "mine_in_prices": [],
+                 "mine_restricted": False, "other_names": ["Ladybird Nursery"]} for i in range(14)]
+        html = self._render(bpr.recipient("daleys", "feed"), nobody=many)
+        self.assertIn("Feijoa - 9<", html)
+        self.assertNotIn("Feijoa - 10<", html)
+        self.assertIn("Top 10 of 14, by people waiting.", html)
+
+
+class StripRestriction(unittest.TestCase):
+    def test_table_heading_already_says_it(self):
+        self.assertEqual(bpr.strip_restriction("Mandarin - Emperor: QLD ONLY"), "Mandarin - Emperor")
+        self.assertEqual(bpr.strip_restriction("Dwarf Mandarin - Fremont QLD ONLY"), "Dwarf Mandarin - Fremont")
+        self.assertEqual(bpr.strip_restriction("Lime - Tahitian (Queensland only) 2L"), "Lime - Tahitian 2L")
 
 
 if __name__ == "__main__":
