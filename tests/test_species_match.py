@@ -494,6 +494,24 @@ class RegistryBatchTest(unittest.TestCase):
             with self.subTest(title=title):
                 self.assertEqual(self._cn(title), want)
 
+    def test_head_noun_beats_a_leading_fruit_word(self):
+        """The first fruit word won: "Satsuma plum" filed as Mandarin (and
+        built /variety/mandarin-plum), "Banana Passionfruit" as Banana.
+        Each fix is a longer name, so the matcher's longest-leading rule
+        picks the real fruit (2026-10-18)."""
+        for title, want in (("Satsuma plum", "Plum"),
+                            ("Dwarf Satsuma Plum", "Plum"),
+                            ("Satsuma Japanese Blood Plum (dwarf)", "Plum"),
+                            ("Pineapple Orange Tree", "Orange"),
+                            ("Banana Passionfruit", "Passionfruit"),
+                            ("Banana Ken Mango Tree Dwarf", "Mango"),
+                            # unchanged: Satsuma alone is still a mandarin
+                            ("Okitsu Satsuma Tree", "Mandarin"),
+                            ("Mandarin Satsuma 'Miho Wase' (QLD Only)", "Mandarin"),
+                            ("Plum Satsuma", "Plum")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), want)
+
     def test_both_breadfruits_added_together_on_purpose(self):
         """"African Breadfruit" is Treculia africana, a different genus from
         Artocarpus altilis. Adding only "Breadfruit" would have swept the
