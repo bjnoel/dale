@@ -640,7 +640,7 @@ class NotTheFruitTest(unittest.TestCase):
         for title in ("Illawarra Plum", "Jambolan Plum",
                       "Tropical - Hog Plum aka Ambarella",
                       "Fiddle Leaf Fig", "Sacred Fig", "Mock Orange",
-                      "Lemon Aspen Plant", "Malabar Chestnut", "Native Tamarind",
+                      "Malabar Chestnut", "Native Tamarind",
                       "Canary Island Strawberry Tree", "Blueberry Ash - Prima Donna",
                       "Ceylon Gooseberry"):
             with self.subTest(title=title):
@@ -677,7 +677,27 @@ class NotTheFruitTest(unittest.TestCase):
                             # the cider apple, not the native Black Apple
                             ("Kingston Black Apple (medium)", "Apple"),
                             # papaya keeps its own paw paws
-                            ("Paw Paw 'Red Lady'", "Papaya")):
+                            ("Paw Paw 'Red Lady'", "Papaya"),
+                            # batch 3 (2026-10-18)
+                            ("Maprang, Mango Plum", "Maprang"),
+                            ("Marian/Maprang Plum Mango", "Maprang"),
+                            ("Velvet Apple Diospyros blancoi - Mabolo", "Velvet Apple"),
+                            ("Lemon Aspen (Acronychia acidula)", "Lemon Aspen"),
+                            ("Lemon Aspen Plant", "Lemon Aspen"),
+                            ("Aspen - Lemon", "Lemon Aspen"),
+                            ("Atherton Almond/Oak", "Atherton Oak"),
+                            ("Monkey Jack, Lakoocha", "Lakoocha"),
+                            ("Mangifera Odorata", "Kuini"),
+                            ("Clementine (citrus)", "Mandarin"),
+                            ("Marionberry Cane", "Blackberry"),
+                            # not a blackberry: Randia formosa
+                            ("Blackberry Jam Fruit", "Blackberry Jam Fruit"),
+                            # Rubus probus however it is written
+                            ("Raspberry - Atherton", "Native Raspberry"),
+                            ("Raspberry (Atherton)", "Native Raspberry"),
+                            ("Atherton Raspberry", "Native Raspberry"),
+                            ("Native Ginger - Atherton Red Back", "Native Ginger"),
+                            ("Raspberry - Heritage", "Raspberry")):
             with self.subTest(title=title):
                 self.assertEqual(self._cn(title), want)
 
@@ -877,7 +897,14 @@ class VarietySlugsUnchangedTest(unittest.TestCase):
                             ("Dwarf Cider Apple - Kingston Black", "apple-cider-kingston-black"),
                             # denied: "North" and "Packs" are not cultivars
                             ("North American Paw Paw", None),
-                            ("American Paw Paw Bare-Root Packs", None)):
+                            ("American Paw Paw Bare-Root Packs", None),
+                            ("Phalsa Berry", None),
+                            ("Lakoocha or Monkey Jack", None),
+                            # held back: these four slugs carry live watches
+                            ("Nanking Cherry", "cherry-nanking"),
+                            ("Capulin Cherry", "cherry-capulin"),
+                            ("Indian Almond Tree", "almond-indian"),
+                            ("Mountain Papaya - Papayuelo", "babaco-papayuelo")):
             with self.subTest(title=title):
                 self.assertEqual(product_variety_slug(title), slug)
 

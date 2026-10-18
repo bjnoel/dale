@@ -200,10 +200,10 @@ def _is_ornamental_relative(t_lower: str, candidate: str) -> bool:
 _NOT_THE_FRUIT = (
     # plum
     "hog plum", "jambolan plum", "java plum",
-    "kaffir plum", "plum mango", "wild plum",
+    "kaffir plum", "wild plum",
     "purple leaf plum",
     # apple
-    "velvet apple", "apple cactus", "smooth-barked apple",
+    "apple cactus", "smooth-barked apple",
     "apple gum", "apple blossom",
     # fig
     "fiddle leaf fig", "fiddle-leaf fig", "sacred fig", "weeping fig",
@@ -215,7 +215,7 @@ _NOT_THE_FRUIT = (
     "mock orange", "mexican orange", "wild orange", "orange jasmin",
     "orange jasmine", "orange jessamine", "osage orange", "orange trumpet",
     # lemon / lime
-    "lemon scented", "lemon-scented", "lemon aspen", "lemon grass", "lemongrass",
+    "lemon scented", "lemon-scented", "lemon grass", "lemongrass",
     "lemon balm", "lemon verbena", "lemon thyme", "lemon savory",
     "lemon bergamot", "lemon ball", "lemon button",
     "native lemon", "small leaf lime", "large leaf lime", "spanish lime",
@@ -235,7 +235,7 @@ _NOT_THE_FRUIT = (
     # olive, mulberry, currant, guava, pawpaw, almond, peach
     "native olive", "sweet olive", "red olive", "indian olive", "russian olive",
     "native currant", "wild currant", "native guava",
-    "indian almond", "beach almond", "atherton almond", "tropical almond",
+    "indian almond", "beach almond", "tropical almond",
     "african peach", "peach palm",
     # mangosteen (Garcinia relatives sold under the name)
     "african mangosteen", "native mangosteen",
@@ -261,7 +261,7 @@ _NOT_THE_FRUIT_RE = re.compile(
 # cultivar_parsing._ORNAMENTAL_WORDS (see the 1.6a note): that list carries
 # "myrtle" and "fern", which would cost Lemon Myrtle and Cinnamon Myrtle here.
 _NOT_FRUIT_WORDS = frozenset({
-    "agapanthus", "allamanda", "aspen", "azalea", "begonia", "bougainvillea",
+    "agapanthus", "allamanda", "azalea", "begonia", "bougainvillea",
     "cactus", "camellia", "canna", "chlorophytum", "clivia", "eucomis", "frangipani",
     "ginkgo", "grevillea", "heuchera", "hibiscus", "leucadendron", "mangave",
     "murraya", "nephrolepis", "oleander", "osmanthus", "philodendron",
@@ -538,6 +538,8 @@ SOLD_UNDER_PARENT = {
     "chinotto": ("kumquat",),
     # Garcinia intermedia, sold as "Mangosteen 'Lemon Drop'" (2026-10-18)
     "lemon drop": ("mangosteen",),
+    # Rubus probus, the native raspberry: "Raspberry - Atherton" (2026-10-18)
+    "atherton": ("raspberry",),
 }
 
 

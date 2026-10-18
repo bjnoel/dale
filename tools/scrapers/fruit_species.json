@@ -68,7 +68,10 @@
     "synonym_latin": {
       "Satsuma": "Citrus unshiu",
       "Mandarin Satsuma": "Citrus unshiu"
-    }
+    },
+    "match_synonyms": [
+      "Clementine"
+    ]
   },
   {
     "common_name": "Orange",
@@ -799,6 +802,9 @@
     "region": "Europe",
     "synonyms": [
       "Thornless Blackberry"
+    ],
+    "match_synonyms": [
+      "Marionberry"
     ]
   },
   {
@@ -1174,7 +1180,10 @@
       "Pink-flowered Raspberry"
     ],
     "category": "bush_tucker",
-    "description": "Native raspberry (Rubus parvifolius and related species) is a scrambling bramble that produces small, sweet, red raspberries on arching canes. Several native Rubus species are sold under this name, including the tropical Atherton raspberry, all bearing edible fruit similar to a cultivated raspberry but smaller. It grows across a wide range of climates, tolerating frost in the south and humidity in the north, and prefers moist, well-drained soil in full sun to part shade. Like other brambles the canes are prickly and benefit from a support or being grown as an informal thicket. Fruit ripens through summer."
+    "description": "Native raspberry (Rubus parvifolius and related species) is a scrambling bramble that produces small, sweet, red raspberries on arching canes. Several native Rubus species are sold under this name, including the tropical Atherton raspberry, all bearing edible fruit similar to a cultivated raspberry but smaller. It grows across a wide range of climates, tolerating frost in the south and humidity in the north, and prefers moist, well-drained soil in full sun to part shade. Like other brambles the canes are prickly and benefit from a support or being grown as an informal thicket. Fruit ripens through summer.",
+    "match_synonyms": [
+      "Atherton"
+    ]
   },
   {
     "common_name": "Native Thyme",
@@ -1805,6 +1814,182 @@
     "synonyms": [],
     "tags": [
       "bush_tucker"
+    ]
+  },
+  {
+    "common_name": "Bael",
+    "latin_name": "Aegle marmelos",
+    "slug": "bael",
+    "region": "South Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Lucuma",
+    "latin_name": "Pouteria lucuma",
+    "slug": "lucuma",
+    "region": "South America (Andes)",
+    "synonyms": []
+  },
+  {
+    "common_name": "Maprang",
+    "latin_name": "Bouea macrophylla",
+    "slug": "maprang",
+    "region": "Southeast Asia",
+    "synonyms": [
+      "Plum Mango",
+      "Mango Plum",
+      "Marian Plum"
+    ]
+  },
+  {
+    "common_name": "Safou",
+    "latin_name": "Dacryodes edulis",
+    "slug": "safou",
+    "region": "Central/West Africa",
+    "synonyms": []
+  },
+  {
+    "common_name": "Phalsa",
+    "latin_name": "Grewia asiatica",
+    "slug": "phalsa",
+    "region": "South Asia",
+    "synonyms": [],
+    "match_synonyms": [
+      "Phalsa Berry"
+    ]
+  },
+  {
+    "common_name": "Saskatoon Berry",
+    "latin_name": "Amelanchier alnifolia",
+    "slug": "saskatoon-berry",
+    "region": "North America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Araza Boi",
+    "latin_name": "Eugenia stipitata",
+    "slug": "araza-boi",
+    "region": "South America (Amazon)",
+    "synonyms": [
+      "Araza"
+    ]
+  },
+  {
+    "common_name": "Peanut Butter Fruit",
+    "latin_name": "Bunchosia argentea",
+    "slug": "peanut-butter-fruit",
+    "region": "South America",
+    "synonyms": [
+      "Peanut Butter Tree",
+      "Peanut Butter Berry"
+    ]
+  },
+  {
+    "common_name": "Lakoocha",
+    "latin_name": "Artocarpus lacucha",
+    "slug": "lakoocha",
+    "region": "South/Southeast Asia",
+    "synonyms": [
+      "Monkey Jack"
+    ]
+  },
+  {
+    "common_name": "Red Mombin",
+    "latin_name": "Spondias purpurea",
+    "slug": "red-mombin",
+    "region": "Tropical Americas",
+    "synonyms": []
+  },
+  {
+    "common_name": "Cassabanana",
+    "latin_name": "Sicana odorifera",
+    "slug": "cassabanana",
+    "region": "South America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Blackberry Jam Fruit",
+    "latin_name": "Randia formosa",
+    "slug": "blackberry-jam-fruit",
+    "region": "South America",
+    "synonyms": [
+      "Black Berry Jam Fruit"
+    ]
+  },
+  {
+    "common_name": "Limequat",
+    "latin_name": "Citrus × floridana",
+    "slug": "limequat",
+    "region": "Cultivated hybrid",
+    "synonyms": []
+  },
+  {
+    "common_name": "Kuini",
+    "latin_name": "Mangifera odorata",
+    "slug": "kuini",
+    "region": "Southeast Asia",
+    "synonyms": [
+      "Mangifera Odorata"
+    ]
+  },
+  {
+    "common_name": "Bambangan",
+    "latin_name": "Mangifera pajang",
+    "slug": "bambangan",
+    "region": "Borneo",
+    "synonyms": [
+      "Mangifera Pajang"
+    ]
+  },
+  {
+    "common_name": "Bolwarra",
+    "latin_name": "Eupomatia laurina",
+    "slug": "bolwarra",
+    "region": "Australia (east coast)",
+    "synonyms": [],
+    "tags": [
+      "bush_tucker"
+    ]
+  },
+  {
+    "common_name": "Guabiyu",
+    "latin_name": "Myrcianthes pungens",
+    "slug": "guabiyu",
+    "region": "South America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Atherton Oak",
+    "latin_name": "Athertonia diversifolia",
+    "slug": "atherton-oak",
+    "region": "Australia (QLD rainforest)",
+    "synonyms": [
+      "Atherton Almond"
+    ],
+    "tags": [
+      "bush_tucker"
+    ]
+  },
+  {
+    "common_name": "Lemon Aspen",
+    "latin_name": "Acronychia acidula",
+    "slug": "lemon-aspen",
+    "region": "Australia (QLD rainforest)",
+    "synonyms": [],
+    "tags": [
+      "bush_tucker"
+    ],
+    "match_synonyms": [
+      "Aspen Lemon"
+    ]
+  },
+  {
+    "common_name": "Velvet Apple",
+    "latin_name": "Diospyros blancoi",
+    "slug": "velvet-apple",
+    "region": "Philippines",
+    "synonyms": [
+      "Mabolo"
     ]
   }
 ]

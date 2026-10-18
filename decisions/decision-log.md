@@ -16489,3 +16489,27 @@ Drop Mangosteen), 0 lost; no watched slug orphaned. Retired slugs are wrong-spec
 (apple-black, gooseberry-cape, plum-governors, mangosteen-lemon-drop...).
 Still open: Jambolan needs the plum-jambolan watch handled first; Ambarella/Hog Plum
 naming is ambiguous (Spondias dulcis vs mombin).
+
+## DEC-358 (2026-10-18): species registry batch 3, fruit at 2 nurseries; four held for their watches
+
+**Decision.** Records for Bael, Lucuma, Maprang (+Plum Mango, Mango Plum, Marian Plum),
+Safou, Phalsa, Saskatoon Berry, Araza Boi, Peanut Butter Fruit, Lakoocha (+Monkey Jack),
+Red Mombin, Cassabanana, Blackberry Jam Fruit, Limequat, Kuini (*Mangifera odorata*),
+Bambangan (*M. pajang*), Guabiyu, Velvet Apple (+Mabolo), and three bush_tucker natives
+(Bolwarra, Atherton Oak, Lemon Aspen). Clementine is a mandarin match_synonym, Marionberry
+a blackberry one. Two mis-filings fixed on the way:
+- **Blackberry Jam Fruit** (*Randia formosa*, an unrelated shrub) was a Blackberry at
+  Daleys, Fruitopia and Ladybird, with /variety/blackberry-jam.
+- **Atherton Raspberry** (*Rubus probus*) was split between Native Raspberry and the
+  European raspberry ("Raspberry - Atherton"). `SOLD_UNDER_PARENT` now files it under
+  native raspberry whichever way round it is written.
+"aspen" leaves `_NOT_FRUIT_WORDS`: it was there to stop "Lemon Aspen" reading as a lemon,
+which the record now does by itself ("Aspen - Lemon" is a match_synonym).
+
+**Held back, deliberately:** Indian Almond, Papayuelo, Capulin Cherry and Nanking Cherry.
+Each has a watched variety slug (almond-indian, babaco-papayuelo, cherry-capulin,
+cherry-nanking) that a record would orphan. Same as Jambolan (DEC-355): a watch migration
+first, then the record.
+
+**Measured:** matched 8,334 -> 8,393 (+59), 9 reclassified, 0 lost; no watched slug
+orphaned. phalsa-berry and lakoocha-or-monkey-jack denied (not cultivars).

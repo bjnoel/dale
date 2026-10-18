@@ -156,9 +156,10 @@ class LandingSpeciesTest(unittest.TestCase):
             )
         # the cross-listed fruits keep category fruit (their URLs never move):
         # 8 from DAL-195, plus Fraser Island Apple and Native Mulberry, then
-        # Black Apple, Cedar Bay Cherry and Millaa Millaa (2026-10-18 batches)
+        # Black Apple, Cedar Bay Cherry and Millaa Millaa, then Bolwarra,
+        # Atherton Oak and Lemon Aspen (2026-10-18 batches)
         tagged = [r for r in land if r.get("category") == "fruit"]
-        self.assertEqual(len(tagged), 13)
+        self.assertEqual(len(tagged), 16)
 
 
 if __name__ == "__main__":
