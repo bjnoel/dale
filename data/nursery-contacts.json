@@ -261,11 +261,11 @@
       "key": "perth-mobile-nursery",
       "name": "Perth Mobile Nursery",
       "domain": "perthmobilenursery.com.au",
-      "contact_name": null,
+      "contact_name": "VJ",
       "email": "sales@perthmobilenursery.com.au",
       "phone": "+61 431 095 777",
       "contact_form": null,
-      "preferred_channel": "email",
+      "preferred_channel": "whatsapp",
       "status": "contacted",
       "touches": [
         {
@@ -278,11 +278,11 @@
         }
       ],
       "open_action": {
-        "owner": "dale",
-        "what": "Touch 2 is overdue (touch 1 emailed 2026-03-26, no reply, 137d). Biggest WA referral destination at 99 clicks/30d. Email clearly is not their channel: draft a short WhatsApp message for +61 431 095 777 instead.",
-        "since": "2026-08-10"
+        "owner": "benedict",
+        "what": "WhatsApp VJ on +61 431 095 777 with the September report and the GoAffPro referral ask (drafted 2026-10-18). Tell Dale when sent and paste any reply, WhatsApp is not BCC-captured.",
+        "since": "2026-10-18"
       },
-      "notes": "WA, so Benedict can follow up in person. WhatsApp available on the same number. 4th largest referral destination and the largest WA one."
+      "notes": "WA, so Benedict can follow up in person. WhatsApp available on the same number. 4th largest referral destination and the largest WA one. CONTACT (Benedict, 2026-10-18): run by VJ, who also runs Tass1 Trees (walk-in nursery, Middle Swan; not tracked on treestock, being walk-in only) and has a Facebook presence. Benedict has met him in person and chatted for about 20 minutes (date not recorded, so not logged as a touch). The 2026-03 notes name the Tass1 contact as 'Joe'; unconfirmed whether that is the same person. Their site says the number is WhatsApp only, Mon-Sat 8-5. Sept 2026 report built: https://treestock.com.au/reports/perth-mobile-nursery-2026-09-74ed52098b.html (offer goaffpro, Shopify). 147 people (75 in Aug), 227 clicks, 67% of clicks from WA, 28% from states they cannot deliver to; only 3% of product clicks hit sold-out lines; their Irwin mango is the only one in stock across the 27 nurseries."
     },
     {
       "key": "yalca-fruit-trees",
