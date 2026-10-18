@@ -483,6 +483,17 @@ class RegistryBatchTest(unittest.TestCase):
         self.assertEqual(self._cn("Achachairu"), "Achacha")
         self.assertEqual(self._cn("\u200bAchachair\u00fa (Garcinia humilis)"), "Achacha")
 
+    def test_trademark_marks_do_not_hide_the_species(self):
+        """'peach\u2122' was no lookup key, so PlantNet's trademarked titles matched
+        nothing while cultivar_parsing gave them /variety/ pages (2026-10-18)."""
+        for title, want in (("Angel Peach\u2122", "Peach"),
+                            ("Gilbert Plum\u2122", "Plum"),
+                            ("Maestro Mandarin\u00ae", "Mandarin"),
+                            ("Super Dwarf Sunset Nectarine\u2122", "Nectarine"),
+                            ("The Gilbert  Apple\u2122 (dwarf)", "Apple")):
+            with self.subTest(title=title):
+                self.assertEqual(self._cn(title), want)
+
     def test_both_breadfruits_added_together_on_purpose(self):
         """"African Breadfruit" is Treculia africana, a different genus from
         Artocarpus altilis. Adding only "Breadfruit" would have swept the

@@ -54,9 +54,16 @@ _PREFIXES = ["dwarf ", "semi-dwarf ", "semi dwarf ", "miniature ", "standard ",
 # invisible and means nothing in a product title.
 _INVISIBLE_RE = re.compile(r"[\u200b\u200c\u200d\u2060\ufeff\xa0]")
 
+# Trademark marks glued to the last word. "Angel Peach\u2122" split into "peach\u2122",
+# which is no lookup key, so 11 PlantNet titles (and a few from Daleys and
+# Heritage) matched no species on 2026-10-18 while cultivar_parsing, which
+# already strips these, gave the same titles /variety/ pages. Removed rather
+# than spaced: "Trixzie\u00ae Pixzee" stays two words either way.
+_TRADEMARK_RE = re.compile(r"[\u2122\u00ae\u00a9]")
+
 
 def _strip_invisible(title: str) -> str:
-    return _INVISIBLE_RE.sub(" ", title).strip()
+    return _TRADEMARK_RE.sub("", _INVISIBLE_RE.sub(" ", title)).strip()
 
 
 def _cleaned(title: str) -> tuple[str, str]:
