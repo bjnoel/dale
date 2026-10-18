@@ -1245,7 +1245,11 @@ def group_by_cultivar(products: list[dict]) -> dict:
             # the page H1/meta read "Black Sapote - Mossman" rather than the
             # messy "Black Sapote Mossman 5l" that happened to land first.
             variety_disp = _display_variety(variety)
-            groups[key]["title"] = f"{species} - {variety_disp}"
+            # A carried-over species watch (DEC-359) covers the whole species,
+            # so its page is titled by the species alone: "Buy Nanking Cherry
+            # Trees", not "Buy Nanking Cherry - All Varieties Trees".
+            groups[key]["title"] = (species if variety == LEGACY_VARIETY_LABEL
+                                    else f"{species} - {variety_disp}")
             groups[key]["species"] = species
             groups[key]["variety"] = variety_disp
         groups[key]["products"].append(p)

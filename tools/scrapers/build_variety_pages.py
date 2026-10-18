@@ -61,7 +61,7 @@ from stocklib.classify import NON_PLANT_KEYWORDS, is_real_product
 
 from cultivar_parsing import (  # noqa: E402
     slugify, parse_cultivar, extract_type_label, canonical_cultivar,
-    group_by_cultivar, GRANDFATHERED_VARIETY_SLUGS,
+    group_by_cultivar, GRANDFATHERED_VARIETY_SLUGS, LEGACY_VARIETY_LABEL,
 )
 from stocklib.taxonomy import load_species
 from stocklib.category_ui import category_badges_html, is_bush_tucker, CATEGORY_FILTER_CSS
@@ -120,6 +120,29 @@ def load_all_products(data_dir: Path) -> list[dict]:
                 "ships_states": SHIPPING_MAP.get(nursery_key, []),
             })
     return products
+
+
+def _reading_name(variety: str, species: str) -> str:
+    """How copy names the plant: "Mossman Black Sapote". A carried-over
+    species watch (DEC-359) covers the whole species, so it reads "Nanking
+    Cherry", never "All Varieties Nanking Cherry"."""
+    if variety.lower() == LEGACY_VARIETY_LABEL.lower():
+        return species
+    return f"{variety} {species}".strip()
+
+
+def _other_varieties_html(variety: str, species: str, species_slug: str) -> str:
+    """The see-the-species link under the listings."""
+    if variety.lower() == LEGACY_VARIETY_LABEL.lower():
+        lead = f"More about {species}:"
+        link = f"See the {species} page &rarr;"
+    else:
+        lead = f"Looking for other {species} varieties?"
+        link = f"See all {species} options &rarr;"
+    return f'''<p class="mt-2">
+      {lead}
+      <a href="/species/{species_slug}.html" class="underline text-green-700">{link}</a>
+    </p>'''
 
 
 def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str],
@@ -222,10 +245,8 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str],
     ])
     footer = render_footer()
 
-    other_varieties_html = (f'''<p class="mt-2">
-      Looking for other {species} varieties?
-      <a href="/species/{species_slug}.html" class="underline text-green-700">See all {species} options &rarr;</a>
-    </p>''' if species_slug in valid_species_slugs else "")
+    other_varieties_html = (_other_varieties_html(variety, species, species_slug)
+                            if species_slug in valid_species_slugs else "")
 
     return render_template(
         "variety_page.html.j2",
@@ -239,12 +260,12 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str],
         # in-stock split. The old copy promised only a restock, which was the
         # wrong promise in the in-stock case (where a price drop is the alert
         # you actually want) and an incomplete one everywhere else.
-        watch_heading=(f"Alert me about {variety} {species}" if in_stock
-                       else f"Get notified when {variety} {species} comes back"),
-        watch_body=(f"{variety} {species} is in stock now. Set an alert and we'll email you "
+        watch_heading=(f"Alert me about {_reading_name(variety, species)}" if in_stock
+                       else f"Get notified when {_reading_name(variety, species)} comes back"),
+        watch_body=(f"{_reading_name(variety, species)} is in stock now. Set an alert and we'll email you "
                     f"if the price drops, or next time it sells out and returns."
                     if in_stock else
-                    f"{variety} {species} is currently out of stock. Enter your email and we'll "
+                    f"{_reading_name(variety, species)} is currently out of stock. Enter your email and we'll "
                     f"tell you the moment it's available again, or if it comes back cheaper."),
         other_varieties_html=other_varieties_html,
         slug_js=slug_js, species_slug_js=species_slug_js, variety_title_js=variety_title_js,
@@ -330,10 +351,8 @@ def build_tombstone_page(slug: str, entry: dict, valid_species_slugs: set[str],
         extra_head=page_state_meta(TOMBSTONE),
     )
     species_href = f"/species/{species_slug}.html" if species_slug in valid_species_slugs else ""
-    other_varieties_html = (f'''<p class="mt-2">
-      Looking for other {species} varieties?
-      <a href="/species/{species_slug}.html" class="underline text-green-700">See all {species} options &rarr;</a>
-    </p>''' if species_slug in valid_species_slugs else "")
+    other_varieties_html = (_other_varieties_html(variety, species, species_slug)
+                            if species_slug in valid_species_slugs else "")
 
     return render_template(
         "variety_page.html.j2",
@@ -352,7 +371,7 @@ def build_tombstone_page(slug: str, entry: dict, valid_species_slugs: set[str],
         # "Mahan (B) Pecan", not the canonical "Pecan - Mahan (B)": the callout
         # is a sentence, and the same reading the watch copy below already uses.
         tombstone_html=render_tombstone(
-            f"{variety} {species}".strip() or title, entry, cta_html=cta_html),
+            _reading_name(variety, species) or title, entry, cta_html=cta_html),
         product_view=product_view,
         watch_enabled=not curation_retired,
         no_watch_html=(
@@ -361,9 +380,9 @@ def build_tombstone_page(slug: str, entry: dict, valid_species_slugs: set[str],
     <p class="text-sm text-gray-600">We track {species} by cultivar. '''
             f'''<a href="{species_href}" class="underline text-green-700">See every {species} variety we list &rarr;</a></p>
   </div>''' if curation_retired and species_href else ""),
-        watch_heading=f"Tell me when {variety} {species} is back",
+        watch_heading=f"Tell me when {_reading_name(variety, species)} is back",
         watch_body=(
-            f"No nursery we track is listing {variety} {species} at the moment. "
+            f"No nursery we track is listing {_reading_name(variety, species)} at the moment. "
             f"Enter your email and we'll tell you the moment one does."),
         other_varieties_html=other_varieties_html,
         slug_js=slug.replace("'", "\\'"),
