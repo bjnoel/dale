@@ -1991,5 +1991,60 @@
     "synonyms": [
       "Mabolo"
     ]
+  },
+  {
+    "common_name": "Indian Almond",
+    "latin_name": "Terminalia catappa",
+    "slug": "indian-almond",
+    "region": "Tropical Asia/Pacific",
+    "synonyms": [
+      "Beach Almond",
+      "Tropical Almond"
+    ]
+  },
+  {
+    "common_name": "Papayuelo",
+    "latin_name": "Vasconcellea pubescens",
+    "slug": "papayuelo",
+    "region": "South America (Andes)",
+    "synonyms": []
+  },
+  {
+    "common_name": "Capulin Cherry",
+    "latin_name": "Prunus salicifolia",
+    "slug": "capulin-cherry",
+    "region": "Central/South America",
+    "synonyms": []
+  },
+  {
+    "common_name": "Nanking Cherry",
+    "latin_name": "Prunus tomentosa",
+    "slug": "nanking-cherry",
+    "region": "East Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Jambolan",
+    "latin_name": "Syzygium cumini",
+    "slug": "jambolan",
+    "region": "South/Southeast Asia",
+    "synonyms": [
+      "Jambolan Plum",
+      "Java Plum"
+    ]
+  },
+  {
+    "common_name": "Keriberry",
+    "latin_name": "Rubus rugosus var. thwaitesii",
+    "slug": "keriberry",
+    "region": "South/Southeast Asia",
+    "synonyms": []
+  },
+  {
+    "common_name": "Kaffir Plum",
+    "latin_name": "Harpephyllum caffrum",
+    "slug": "kaffir-plum",
+    "region": "Southern Africa",
+    "synonyms": []
   }
 ]

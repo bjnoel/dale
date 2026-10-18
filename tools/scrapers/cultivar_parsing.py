@@ -19,7 +19,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from stocklib import taxonomy
-from stocklib.species_match import SOLD_UNDER_PARENT
+from stocklib.species_match import SOLD_UNDER_PARENT, build_species_lookup, match_title
 
 
 SIZE_WORDS = frozenset({
@@ -48,7 +48,8 @@ def _clear_species_caches() -> None:
     """Reset the memoised species-derived state. For tests that patch
     _species_records; production never needs it."""
     global _SPECIES_LOOKUP_CACHE, _CANONICAL_SPECIES_CACHE
-    global _RECORD_VOCAB_CACHE, _LATIN_NOISE_CACHE
+    global _RECORD_VOCAB_CACHE, _LATIN_NOISE_CACHE, _RECORD_LOOKUP_CACHE
+    _RECORD_LOOKUP_CACHE = None
     _SPECIES_LOOKUP_CACHE = None
     _CANONICAL_SPECIES_CACHE = None
     _RECORD_VOCAB_CACHE = None
@@ -1157,14 +1158,49 @@ def canonical_cultivar(species: str, variety: str, title: str = "") -> tuple[str
     return _apply_overrides(canonical, var, slug)
 
 
+# --- Watches carried over to a species of their own (2026-10-18) -------
+#
+# Five subscribers watched a "variety" that was really a species filed under
+# another one: /variety/cherry-nanking is Nanking Cherry (Prunus tomentosa),
+# not a cherry cultivar. Giving each its own species record turns its titles
+# into plain species names, which have no cultivar and so no variety slug,
+# and the watch would have gone silent. Benedict's call (DEC-359): keep the
+# watches. Any listing of the species that has no cultivar of its own keeps
+# the old slug, so the page, its watch form and the restock alerts carry on
+# untouched. Closed list: these five pages keep their watch form, but no
+# other species gets one, because species-level watches stay removed.
+LEGACY_SPECIES_WATCH_SLUGS = {
+    "nanking-cherry": "cherry-nanking",
+    "capulin-cherry": "cherry-capulin",
+    "indian-almond": "almond-indian",
+    "papayuelo": "babaco-papayuelo",
+    "jambolan": "plum-jambolan",
+}
+LEGACY_VARIETY_LABEL = "All varieties"
+_RECORD_LOOKUP_CACHE: dict | None = None
+
+
+def legacy_species_cultivar(title: str) -> tuple[str, str, str] | None:
+    """(species, "All varieties", legacy slug) for a listing of a species in
+    LEGACY_SPECIES_WATCH_SLUGS, else None. Callers try it only when the title
+    has no cultivar of its own."""
+    global _RECORD_LOOKUP_CACHE
+    if _RECORD_LOOKUP_CACHE is None:
+        _RECORD_LOOKUP_CACHE = build_species_lookup(_species_records())
+    record = match_title(title, _RECORD_LOOKUP_CACHE)
+    if not record or record["slug"] not in LEGACY_SPECIES_WATCH_SLUGS:
+        return None
+    return (record["common_name"], LEGACY_VARIETY_LABEL,
+            LEGACY_SPECIES_WATCH_SLUGS[record["slug"]])
+
+
 def product_variety_slug(title: str) -> str | None:
     """Parse + canonicalise + slugify in one step. Returns None when the title
     isn't a cultivar or is outside the fruit taxonomy (DEC-195)."""
     parsed = parse_cultivar(title)
-    if not parsed:
-        return None
-    species, variety = parsed
-    c = canonical_cultivar(species, variety, title)
+    c = canonical_cultivar(*parsed, title) if parsed else None
+    if c is None:
+        c = legacy_species_cultivar(title)
     return c[2] if c else None
 
 
@@ -1194,13 +1230,13 @@ def group_by_cultivar(products: list[dict]) -> dict:
 
     for p in products:
         parsed = parse_cultivar(p["title"])
-        if not parsed:
-            continue
         # Taxonomy gate + canonicalisation (DEC-195/196): out-of-scope products
         # get no page; respellings and synonym spellings of one species
         # ("Jakfruit", "Cumquat", "Davidson Plum") converge on one canonical
         # name and one slug.
-        canon = canonical_cultivar(*parsed, p["title"])
+        canon = canonical_cultivar(*parsed, p["title"]) if parsed else None
+        if canon is None:
+            canon = legacy_species_cultivar(p["title"])
         if canon is None:
             continue
         species, variety, key = canon

@@ -16513,3 +16513,27 @@ first, then the record.
 
 **Measured:** matched 8,334 -> 8,393 (+59), 9 reclassified, 0 lost; no watched slug
 orphaned. phalsa-berry and lakoocha-or-monkey-jack denied (not cultivars).
+
+## DEC-359 (2026-10-18): five watched "varieties" become species, and keep their watches
+
+**Trigger:** DEC-355 and DEC-358 held Jambolan, Indian Almond, Papayuelo, Capulin Cherry
+and Nanking Cherry back: each was filed as a cultivar of another fruit
+(/variety/plum-jambolan, almond-indian, babaco-papayuelo, cherry-capulin, cherry-nanking),
+five different subscribers watch those pages, and a species record turns the titles into
+plain species names with no variety slug, which would silence the alert. Benedict: migrate
+them.
+
+**Decision.** The records go in, and `cultivar_parsing.LEGACY_SPECIES_WATCH_SLUGS` maps
+each new species to its old slug: any listing of the species with no cultivar of its own
+keeps that slug, in both `product_variety_slug` and `group_by_cultivar`, so the page, its
+watch form and the restock alerts carry on. The page now reads "<Species> - All varieties"
+and links to the new species page. No watch row was edited and no migration script ran
+(`migrate_variety_watch_slugs.py` stays retired). Also added: Keriberry (*Rubus rugosus*
+var. *thwaitesii*, as Daleys labels it) and Kaffir Plum (*Harpephyllum caffrum*, Benedict:
+the name is fine).
+
+**Measured:** matched 8,393 -> 8,413 (+20); no watched slug orphaned. Two legacy pages
+gained listings they never had: plain "Papayuelo" (Daleys, Ladybird) now feeds
+babaco-papayuelo, and "Java Plum, Jamun" (Primal) and "Jambolan Plum - Advanced" (Ross
+Creek) feed plum-jambolan. plum-kaffir (unwatched) retires; indian-almond-beach denied so
+"Beach Almond - Indian Almond" lands on the almond-indian watch.

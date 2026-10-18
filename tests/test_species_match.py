@@ -637,7 +637,7 @@ class NotTheFruitTest(unittest.TestCase):
         return m["cn"] if m else None
 
     def test_other_plants_match_nothing(self):
-        for title in ("Illawarra Plum", "Jambolan Plum",
+        for title in ("Illawarra Plum",
                       "Tropical - Hog Plum aka Ambarella",
                       "Fiddle Leaf Fig", "Sacred Fig", "Mock Orange",
                       "Malabar Chestnut", "Native Tamarind",
@@ -647,7 +647,8 @@ class NotTheFruitTest(unittest.TestCase):
                 # "Illawarra Plum" now has its own record; the rest have none.
                 self.assertIn(self._cn(title), (None, "Illawarra Plum"))
         self.assertEqual(self._cn("Illawarra Plum"), "Illawarra Plum")
-        self.assertIsNone(self._cn("Jambolan Plum"))
+        # Its own record since DEC-359 (Syzygium cumini), never a plum.
+        self.assertEqual(self._cn("Jambolan Plum"), "Jambolan")
 
     def test_masked_names_that_became_records_match_themselves(self):
         """Left the mask for their own records (2026-10-18): still never the
@@ -697,7 +698,16 @@ class NotTheFruitTest(unittest.TestCase):
                             ("Raspberry (Atherton)", "Native Raspberry"),
                             ("Atherton Raspberry", "Native Raspberry"),
                             ("Native Ginger - Atherton Red Back", "Native Ginger"),
-                            ("Raspberry - Heritage", "Raspberry")):
+                            ("Raspberry - Heritage", "Raspberry"),
+                            # DEC-359
+                            ("Nanking Cherry", "Nanking Cherry"),
+                            ("Capulin Cherry", "Capulin Cherry"),
+                            ("Beach Almond - Indian Almond", "Indian Almond"),
+                            ("Mountain Papaya - Papayuelo", "Papayuelo"),
+                            ("Java Plum (Jambolan Plum)", "Jambolan"),
+                            ("Keriberry", "Keriberry"),
+                            ("Kaffir Plum", "Kaffir Plum"),
+                            ("Kaffir Lime", "Lime")):
             with self.subTest(title=title):
                 self.assertEqual(self._cn(title), want)
 
@@ -900,11 +910,17 @@ class VarietySlugsUnchangedTest(unittest.TestCase):
                             ("American Paw Paw Bare-Root Packs", None),
                             ("Phalsa Berry", None),
                             ("Lakoocha or Monkey Jack", None),
-                            # held back: these four slugs carry live watches
+                            # LEGACY_SPECIES_WATCH_SLUGS (DEC-359): own species
+                            # records now, and every plain listing keeps the
+                            # watched slug, including spellings that had none
                             ("Nanking Cherry", "cherry-nanking"),
                             ("Capulin Cherry", "cherry-capulin"),
                             ("Indian Almond Tree", "almond-indian"),
-                            ("Mountain Papaya - Papayuelo", "babaco-papayuelo")):
+                            ("Beach Almond - Indian Almond", "almond-indian"),
+                            ("Mountain Papaya - Papayuelo", "babaco-papayuelo"),
+                            ("Papayuelo", "babaco-papayuelo"),
+                            ("Java Plum, Jamun", "plum-jambolan"),
+                            ("Jambolan Plum - Advanced", "plum-jambolan")):
             with self.subTest(title=title):
                 self.assertEqual(product_variety_slug(title), slug)
 

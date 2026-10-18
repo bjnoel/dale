@@ -199,8 +199,8 @@ def _is_ornamental_relative(t_lower: str, candidate: str) -> bool:
 # without a species, which beats being counted as the wrong one.
 _NOT_THE_FRUIT = (
     # plum
-    "hog plum", "jambolan plum", "java plum",
-    "kaffir plum", "wild plum",
+    "hog plum",
+    "wild plum",
     "purple leaf plum",
     # apple
     "apple cactus", "smooth-barked apple",
@@ -221,7 +221,7 @@ _NOT_THE_FRUIT = (
     "native lemon", "small leaf lime", "large leaf lime", "spanish lime",
     # cherry
     "beach cherry", "brush cherry", "bush cherry",
-    "capulin cherry", "nanking cherry", "native cherry", "cornelian cherry",
+    "native cherry", "cornelian cherry",
     # gooseberry
     "ceylon gooseberry",
     # chestnut
@@ -235,7 +235,7 @@ _NOT_THE_FRUIT = (
     # olive, mulberry, currant, guava, pawpaw, almond, peach
     "native olive", "sweet olive", "red olive", "indian olive", "russian olive",
     "native currant", "wild currant", "native guava",
-    "indian almond", "beach almond", "tropical almond",
+
     "african peach", "peach palm",
     # mangosteen (Garcinia relatives sold under the name)
     "african mangosteen", "native mangosteen",
@@ -540,6 +540,8 @@ SOLD_UNDER_PARENT = {
     "lemon drop": ("mangosteen",),
     # Rubus probus, the native raspberry: "Raspberry - Atherton" (2026-10-18)
     "atherton": ("raspberry",),
+    # Vasconcellea pubescens: "Mountain Papaya - Papayuelo"
+    "papayuelo": ("babaco",),
 }
 
 
