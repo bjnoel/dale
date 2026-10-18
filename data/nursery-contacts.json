@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-10-17",
+  "updated": "2026-10-18",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -195,7 +195,11 @@
           "evidence": "Pasted by Benedict 2026-10-17; arrived to his inbox so not BCC-captured. Date is when pasted, not necessarily when sent"
         }
       ],
-      "open_action": "Benedict to reply: explain clicks vs people (data matches), commission is counted by their own Shopify, check 8.9% vs 0.08%, ask what alternative they have in mind (Treesmith promotion is Benedict's preferred counter).",
+      "open_action": {
+        "owner": "benedict",
+        "what": "Reply to Ross Creek's 2026-10-17 email: September is 460 clicks from 321 people, so their 316 matches; commission would be counted by their own Shopify (GoAffPro); check 8.9% vs 0.08%; ask what alternative they have in mind. Treesmith promotion held back as the next-exchange fallback. BCC nursery@veliamsal.resend.app to self-log.",
+        "since": "2026-10-17"
+      },
       "notes": "Our warmest relationship and the best-connected contact we have (Tom helps admin the Oz Rare Fruit Australia FB group). Seasonality live on /nursery/ross-creek.html. Email corrected 2026-08-10 to admin@rosscreektropicals.com.au: the register had rosscreektropicals@gmail.com, whose gmail.com domain would NOT have matched the register on a BCC'd touch. Stocks grafted sapodilla Krasuey, Ponderosa and Sawo Manilla at $99, all out of stock 2026-08-10. WA only via concierge resellers; no bulk because pallets by road freight carry extreme risk vs cartons by express post, and in-house needs a separate treatment area. MEASURED CONVERSION (2026-08-10, Tom via Shopify): 166 clicks in 90 days at 3.61%, about 6 orders. Our Plausible count for the same window is 336 clicks, of which only 214 carry utm_source=treestock. Shopify's 166 sits just under our tagged count, so Tom is reading a UTM-filtered report and the 122 untagged clicks are invisible to him. The gap is historical, not a live bug: shared UTM tagging landed 2026-07-23, so only 18 of Tom's 90 days were tagged. Tagged share was 53% before that commit and 88% after (88% site-wide too). His next report should show more clicks even at flat traffic. Re-ask in ~3 months to test that. RECONCILED 2026-10-17: our Sept 2026 '460 clicks' (as told in the 2026-10-15 email and report) came from 321 unique people (Plausible visitors, Outbound Link: Click, url==*rosscreektropicals*); Shopify read 316, so the two agree within 2%. The gap was clicks vs sessions, not tracking. Aug was 215 clicks / 168 people. Their 28 sales from 316 is 8.9%, not 0.08% (0.08% of 316 is a quarter of a sale), about 2.5x their stated 3-4% store norm, if the 28 are treestock-referred. Partner report now leads with people."
     },
     {

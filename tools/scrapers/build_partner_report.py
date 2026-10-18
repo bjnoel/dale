@@ -23,9 +23,16 @@ Three joins, each something the nursery cannot build from its own analytics:
 No price-positioning section. Title-token matching produced junk in the
 August sample and the variety-slug matcher has not been wired to it.
 
+The report is tailored to its recipient (see recipient()): the nursery's
+platform decides where it can check our numbers and whether GoAffPro is even
+possible, and --offer decides what the last section asks for. Ross Creek is
+on Shopify and was asked for GoAffPro; Daleys runs its own site and is asked
+in the email what it thinks is fair, so its report states no terms.
+
 Usage (on the server, needs Plausible secrets and the watch DB):
     python3 build_partner_report.py ross-creek --month 2026-09 \\
         --out /opt/dale/dashboard/reports/<unguessable-name>.html
+    python3 build_partner_report.py daleys --month 2026-09 --offer ask ...
 """
 import argparse
 import calendar
@@ -44,9 +51,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "autonomous"))
 
 from build_variety_pages import slug_for_title  # noqa: E402
-from stocklib.registry import NURSERY_NAMES, SHIPPING_MAP  # noqa: E402
+from stocklib.registry import NURSERY_NAMES, SEASONAL_STATES, SHIPPING_MAP  # noqa: E402
 from stocklib.snapshots import iter_nursery_snapshots  # noqa: E402
 from stocklib.templates import render as render_template  # noqa: E402
+from stocklib.utm import AFFILIATES  # noqa: E402
 
 DATA_DIR = Path("/opt/dale/data/nursery-stock")
 WATCH_DB = Path("/opt/dale/data/variety_watches.db")
@@ -158,8 +166,36 @@ def servable_watchers(watchers: list[tuple[str, str | None]], ships_to) -> list[
     return [e for e, st in watchers if st in (None, "ALL") or st in ok]
 
 
+# What the closing section asks for.
+#   goaffpro  Shopify only: install GoAffPro, add treestock at 5%.
+#   ask       no terms in the report; the covering email asks what is fair.
+#   partner   already pays us (stocklib.utm.AFFILIATES); nothing to ask.
+OFFERS = ("goaffpro", "ask", "partner")
+
+# Where a nursery can see our utm_source=treestock visits for itself. Only
+# Shopify is named: on any other platform we don't know which tool they read.
+PLATFORM_ANALYTICS = {"shopify": ("your Shopify sessions", "Shopify")}
+DEFAULT_ANALYTICS = ("your analytics", "your analytics")
+
+
+def recipient(key: str, platform: str, offer: str | None = None) -> dict:
+    """Who the report is for. `platform` is the snapshot's own `source`
+    (shopify, woocommerce, feed, ...), so it cannot drift from the scraper
+    that actually reads the store. Daleys is `feed`: a custom-built site."""
+    is_partner = any(a.nursery_key == key for a in AFFILIATES.values())
+    if offer is None:
+        offer = "partner" if is_partner else "goaffpro" if platform == "shopify" else "ask"
+    if offer not in OFFERS:
+        raise ValueError(f"unknown offer {offer!r}")
+    if offer == "goaffpro" and platform != "shopify":
+        raise ValueError(f"GoAffPro is a Shopify app; {key} is on {platform}")
+    check_in, counter = PLATFORM_ANALYTICS.get(platform, DEFAULT_ANALYTICS)
+    return {"platform": platform, "offer": offer,
+            "check_in": check_in, "counter": counter}
+
+
 def region_summary(region_clicks: dict, total: int, ships_to,
-                   restricted: set) -> dict:
+                   restricted: set, seasonal=()) -> dict:
     """Where this month's clicks came from, against where the nursery ships.
 
     region_clicks: {"NSW": {norm_url: n}, ...} for Australian states only.
@@ -171,7 +207,8 @@ def region_summary(region_clicks: dict, total: int, ships_to,
     for st in AU_REGIONS:
         n = sum((region_clicks.get(st) or {}).values())
         if n:
-            rows.append({"state": st, "clicks": n, "ships": st in ok})
+            rows.append({"state": st, "clicks": n, "ships": st in ok,
+                         "seasonal": st in ok and st in set(seasonal)})
     rows.sort(key=lambda r: -r["clicks"])
     located = sum(r["clicks"] for r in rows)
     r_home = sum(n for u, n in (region_clicks.get(RESTRICTED_STATE) or {}).items()
@@ -185,6 +222,7 @@ def region_summary(region_clicks: dict, total: int, ships_to,
                 per_line[u]["home" if st == RESTRICTED_STATE else "away"] += n
     return {"rows": rows, "elsewhere": max(total - located, 0),
             "unshippable": sum(r["clicks"] for r in rows if not r["ships"]),
+            "seasonal": sum(r["clicks"] for r in rows if r["seasonal"]),
             "restricted_home": r_home, "restricted_away": r_away,
             "restricted_per_line": dict(per_line)}
 
@@ -287,12 +325,13 @@ def domain_of(url: str) -> str:
     return norm_url(url).split("/", 1)[0]
 
 
-def build(key: str, month: str) -> dict:
+def build(key: str, month: str, offer: str | None = None) -> dict:
     get = _plausible()
     start, end = month_bounds(month)
 
     snaps = dict(iter_nursery_snapshots(DATA_DIR))
     mine_snap = snaps[key]
+    who = recipient(key, mine_snap.get("source", ""), offer)
     domain = domain_of(mine_snap["products"][0]["url"])
     nursery_domains = {}
     for k, s in snaps.items():
@@ -351,7 +390,7 @@ def build(key: str, month: str) -> dict:
             if domain_of(u) == domain:
                 region_clicks[st][norm_url(u)] += n
     regions = region_summary(region_clicks, this["clicks"], SHIPPING_MAP.get(key, []),
-                             restricted_urls)
+                             restricted_urls, SEASONAL_STATES.get(key, []))
 
     def product_row(u, n):
         p = current.get(u)
@@ -419,6 +458,7 @@ def build(key: str, month: str) -> dict:
 
     return {
         "key": key, "name": NURSERY_NAMES.get(key, key), "domain": domain,
+        "recipient": who,
         "month": month, "month_label": start.strftime("%B %Y"),
         "month_name": start.strftime("%B"),
         "generated": datetime.now(timezone.utc).strftime("%-d %B %Y"),
@@ -455,15 +495,18 @@ def main(argv=None):
     ap.add_argument("--month", required=True, help="YYYY-MM, a complete month")
     ap.add_argument("--out", required=True)
     ap.add_argument("--contact", default="", help="first name for the dek line")
+    ap.add_argument("--offer", choices=OFFERS, default=None,
+                    help="what the closing section asks for (default: partner if they "
+                         "already pay us, goaffpro on Shopify, else ask)")
     args = ap.parse_args(argv)
 
-    ctx = build(args.nursery, args.month)
+    ctx = build(args.nursery, args.month, args.offer)
     ctx["contact"] = args.contact
     html = render_template("partner_report.html.j2", **ctx)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html)
-    summary = {k: ctx[k] for k in ("this", "prev", "rank", "n_nurseries", "share",
+    summary = {k: ctx[k] for k in ("recipient", "this", "prev", "rank", "n_nurseries", "share",
                                    "tagged_share", "cls", "lost_products", "baseline",
                                    "n_watchers", "n_state_known", "n_dropped",
                                    "n_watching_yours", "n_varieties_yours", "top_watched",

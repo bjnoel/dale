@@ -321,16 +321,16 @@ a{color:var(--accent)}
     </div>
   </div>
 
-  <div class="callout"><strong>You can check this yourself.</strong> Every link we send you carries <code>utm_source=treestock</code>, so filtering your Shopify sessions on it should show close to {{ this.people }}. That's people, not clicks. Some people click more than once (comparing two plants, or coming back to one), which is why the {{ this.clicks }} clicks run higher, and Shopify counts each of those as one visit. The click counts further down are about which pages people looked at. In August only about half our links carried the tag, which is why your 90-day report then came in lower than our count. Since late August all of them do.</div>
+  <div class="callout"><strong>You can check this yourself.</strong> Every link we send you carries <code>utm_source=treestock</code>, so filtering {{ recipient.check_in }} on it should show close to {{ this.people }}. That's people, not clicks. Some people click more than once (comparing two plants, or coming back to one), which is why the {{ this.clicks }} clicks run higher, and {{ recipient.counter }} counts each of those as one visit. The click counts further down are about which pages people looked at.</div>
 
   <div class="mod">
     <h3>Where the clicks came from</h3>
-    <p>By the visitor's state. {% if regions.unshippable %}<strong>{{ regions.unshippable }} clicks ({{ pct(regions.unshippable / this.clicks) }}) came from {{ regions.rows|rejectattr("ships")|map(attribute="state")|join(" and ") }}</strong>, where you don't ship, so they can't turn into orders today.{% endif %}</p>
+    <p>By the visitor's state. {% if regions.unshippable %}<strong>{{ regions.unshippable }} clicks ({{ pct(regions.unshippable / this.clicks) }}) came from {{ regions.rows|rejectattr("ships")|map(attribute="state")|join(" and ") }}</strong>, where you don't ship, so they can't turn into orders today.{% endif %}{% if regions.seasonal %} <strong>{{ regions.seasonal }} clicks ({{ pct(regions.seasonal / this.clicks) }}) came from {{ regions.rows|selectattr("seasonal")|map(attribute="state")|join(" and ") }}</strong>, where you ship in windows, so most of them can only buy when one is open.{% endif %}</p>
     <div class="tablewrap"><table>
       <thead><tr><th>State</th><th class="num">Clicks</th><th class="num">Share</th><th>You ship there</th></tr></thead>
       <tbody>
 {% for r in regions.rows %}
-        <tr><td class="item">{{ r.state }}</td><td class="num">{{ r.clicks }}</td><td class="num">{{ pct(r.clicks / this.clicks) }}</td><td>{% if r.ships %}<span class="pill instock">Yes</span>{% else %}<span class="pill out">No</span>{% endif %}</td></tr>
+        <tr><td class="item">{{ r.state }}</td><td class="num">{{ r.clicks }}</td><td class="num">{{ pct(r.clicks / this.clicks) }}</td><td>{% if r.seasonal %}<span class="pill only">In windows</span>{% elif r.ships %}<span class="pill instock">Yes</span>{% else %}<span class="pill out">No</span>{% endif %}</td></tr>
 {% endfor %}
 {% if regions.elsewhere %}
         <tr><td class="item">Overseas or unknown</td><td class="num">{{ regions.elsewhere }}</td><td class="num">{{ pct(regions.elsewhere / this.clicks) }}</td><td></td></tr>
@@ -355,7 +355,7 @@ a{color:var(--accent)}
 
 <section class="band">
   <div class="bandhead">
-    <span class="tier paid">Partnership</span>
+    <span class="tier paid">{% if recipient.offer == "ask" %}From our data{% else %}Partnership{% endif %}</span>
     <h2>What our dataset says</h2>
     <span class="bandnote">{{ n_nurseries }} nurseries, daily stock history since March</span>
   </div>
@@ -440,12 +440,25 @@ a{color:var(--accent)}
 </section>
 
 <section class="offer">
+{% if recipient.offer == "goaffpro" %}
   <h2>What it costs</h2>
   <ul>
     <li><strong>The traffic section is free every month</strong>, whatever else happens. It's your traffic and your data.</li>
     <li><strong>The rest comes with a referral arrangement.</strong> Install GoAffPro on Shopify (its free plan has no monthly fee) and add treestock as an affiliate at 5%. You only pay when a click turns into a completed order.</li>
     <li><strong>Nothing else changes.</strong> No feed to maintain, no listing fee, no contract. Uninstall the app to stop.</li>
   </ul>
+{% elif recipient.offer == "partner" %}
+  <h2>How this works</h2>
+  <ul>
+    <li><strong>You're a referral partner</strong>, so the whole report comes every month. Thanks for that.</li>
+  </ul>
+{% else %}
+  <h2>How this works</h2>
+  <ul>
+    <li><strong>The traffic section is free every month</strong>, whatever else happens. It's your traffic and your data.</li>
+    <li><strong>The rest is a sample of what the dataset can show.</strong> If there's something else you'd find more useful, ask.</li>
+  </ul>
+{% endif %}
   <div class="guarantee">
     <span class="g">The part that matters</span>
     Search results and ordering on treestock never take commission into account. Results are ordered by search match, stock and price, and no nursery can pay to rank higher, to be listed or to stay listed. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.

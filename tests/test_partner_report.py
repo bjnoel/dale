@@ -106,6 +106,36 @@ class RegionSummary(unittest.TestCase):
         self.assertEqual(s["elsewhere"], 6)
         self.assertEqual((s["restricted_home"], s["restricted_away"]), (2, 4))
         self.assertEqual(s["rows"][0]["state"], "NSW")
+        self.assertEqual(s["seasonal"], 0)
+
+    def test_seasonal_state_ships_but_is_flagged(self):
+        # Daleys ships to WA only in windows. Still shippable (not counted
+        # as lost), but the report must not say "Yes" as if any day will do.
+        clicks = {"WA": {"d/x": 298}, "NSW": {"d/x": 203}}
+        s = bpr.region_summary(clicks, 501, ["NSW", "WA"], set(), ["WA"])
+        self.assertEqual(s["unshippable"], 0)
+        self.assertEqual(s["seasonal"], 298)
+        self.assertEqual([(r["state"], r["seasonal"]) for r in s["rows"]],
+                         [("WA", True), ("NSW", False)])
+
+
+class Recipient(unittest.TestCase):
+    def test_defaults_follow_platform_and_partnership(self):
+        self.assertEqual(bpr.recipient("ross-creek", "shopify")["offer"], "goaffpro")
+        # Daleys' snapshot source is "feed": a custom site, so no GoAffPro.
+        self.assertEqual(bpr.recipient("daleys", "feed")["offer"], "ask")
+        # Already in AFFILIATES: nothing to ask for.
+        self.assertEqual(bpr.recipient("primal-fruits", "ecwid")["offer"], "partner")
+
+    def test_only_shopify_is_named_as_the_place_to_check(self):
+        self.assertEqual(bpr.recipient("ross-creek", "shopify")["check_in"],
+                         "your Shopify sessions")
+        self.assertEqual(bpr.recipient("daleys", "feed")["check_in"], "your analytics")
+
+    def test_goaffpro_is_refused_off_shopify(self):
+        with self.assertRaises(ValueError):
+            bpr.recipient("daleys", "feed", "goaffpro")
+        self.assertEqual(bpr.recipient("ross-creek", "shopify", "ask")["offer"], "ask")
 
 
 class ClassifyVariety(unittest.TestCase):
@@ -144,13 +174,14 @@ class WatchGrowth(unittest.TestCase):
 
 
 class TemplateRenders(unittest.TestCase):
-    def test_renders_and_escapes(self):
+    def _render(self, recipient, regions=None):
         row = {"title": "Fig & Olive <b>", "url": "https://x", "price": 49.9,
                "clicks": 3, "now": False, "days_out": 30, "home": 1, "away": 2}
         w = {"title": "Blueberry - OB1", "waiting": 6, "mine_prices": [49.9], "mine_in_prices": [49.9],
              "mine_restricted": False, "other_names": ["Ladybird Nursery"]}
-        html = render(
+        return render(
             "partner_report.html.j2",
+            recipient=recipient,
             name="Ross Creek Tropicals", contact="Tom", domain="rosscreektropicals.com.au",
             month_label="September 2026", month_name="September", generated="12 October 2026",
             this={"clicks": 460, "people": 321, "label": "September"},
@@ -158,8 +189,9 @@ class TemplateRenders(unittest.TestCase):
             monthly=[{"label": "August", "clicks": 215, "people": 168},
                      {"label": "September", "clicks": 460, "people": 321}],
             max_monthly=321, share=0.118, rank=2, n_nurseries=27, tagged_share=1.0,
-            regions={"rows": [{"state": "WA", "clicks": 10, "ships": False}],
-                     "elsewhere": 0, "unshippable": 10, "restricted_home": 1, "restricted_away": 2},
+            regions=regions or {"rows": [{"state": "WA", "clicks": 10, "ships": False, "seasonal": False}],
+                     "elsewhere": 0, "unshippable": 10, "seasonal": 0,
+                     "restricted_home": 1, "restricted_away": 2},
             no_ship=["WA", "TAS", "NT"],
             cls={"product": 431, "sold_out": 41, "restricted": 3},
             lost_products=1, baseline=0.65, n_days=30,
@@ -169,6 +201,9 @@ class TemplateRenders(unittest.TestCase):
             only_you=[w], nobody=[w], n_state_known=13, n_dropped=1,
             growth={"rows": [{"label": "August", "n": 45}, {"label": "September", "n": 98}],
                     "max": 98, "after": {"label": "October", "n": 47, "days": 15}})
+
+    def test_renders_and_escapes(self):
+        html = self._render(bpr.recipient("ross-creek", "shopify"))
         self.assertIn("Fig &amp; Olive &lt;b&gt;", html)
         # Headline and month-on-month are PEOPLE, which is what Shopify shows as
         # sessions. Ross Creek read 316 against a headline of 460 clicks and
@@ -191,6 +226,34 @@ class TemplateRenders(unittest.TestCase):
         self.assertNotIn("Sources:", html)
         self.assertIn("width:45.9%", html, "alert bars scale to the busiest month")
         self.assertIn("October so far: 47 in the first 15 days.", html)
+        self.assertIn("filtering your Shopify sessions on it", html)
+        self.assertIn("Install GoAffPro on Shopify", html)
+        # Withdrawn 2026-10-18: browsers pass the treestock referrer, so an
+        # untagged click was never invisible to a nursery's analytics.
+        self.assertNotIn("only about half our links carried the tag", html)
+
+    def test_custom_site_states_no_terms(self):
+        # Daleys: custom site, asked in the email what it thinks is fair. The
+        # report must not name Shopify or GoAffPro, or set the terms first.
+        wa = {"rows": [{"state": "WA", "clicks": 298, "ships": True, "seasonal": True},
+                       {"state": "NSW", "clicks": 162, "ships": True, "seasonal": False}],
+              "elsewhere": 0, "unshippable": 0, "seasonal": 298,
+              "restricted_home": 0, "restricted_away": 0}
+        html = self._render(bpr.recipient("daleys", "feed"), wa)
+        self.assertNotIn("Shopify", html)
+        self.assertNotIn("GoAffPro", html)
+        self.assertNotIn("referral arrangement", html)
+        self.assertIn("filtering your analytics on it", html)
+        self.assertIn("From our data", html)
+        self.assertIn("In windows", html)
+        self.assertIn("298 clicks (65%) came from WA</strong>, where you ship in windows", html)
+        self.assertIn("never take commission into account", html)
+        self.assertNotIn("—", html)
+
+    def test_partner_is_not_asked_for_anything(self):
+        html = self._render(bpr.recipient("primal-fruits", "ecwid"))
+        self.assertIn("You're a referral partner", html)
+        self.assertNotIn("Install GoAffPro", html)
 
 
 if __name__ == "__main__":

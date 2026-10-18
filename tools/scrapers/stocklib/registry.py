@@ -37,6 +37,11 @@ class Nursery:
     # the generic "we have not been able to reach them" banner on the nursery
     # page. Stops mattering the day a scrape succeeds again (stocklib.snapshots).
     dormant_note: str = ""
+    # States in ships_to that are only served in occasional windows (Daleys
+    # opens WA "a few times each year"). Still counted as shippable for
+    # filtering; this only stops a report telling a nursery it ships there
+    # any day of the year.
+    seasonal_states: tuple[str, ...] = ()
 
 
 # Verified via nursery websites March 2026. Quarantine states (WA, TAS, NT)
@@ -45,7 +50,8 @@ NURSERIES: list[Nursery] = [
     Nursery("daleys", "Daleys Fruit Trees",
             ("NSW", "VIC", "QLD", "SA", "WA", "ACT"),
             location="Kyogle, NSW",
-            note="WA: seasonal window + extra fee"),
+            note="WA: seasonal window + extra fee",
+            seasonal_states=("WA",)),
     Nursery("ross-creek", "Ross Creek Tropicals",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Gympie, QLD",
@@ -225,6 +231,8 @@ _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}
 SHIPPING_MAP: dict[str, list[str]] = {n.key: list(n.ships_to) for n in NURSERIES}
 NURSERY_NAMES: dict[str, str] = {n.key: n.name for n in NURSERIES}
 LOCAL_DELIVERY: dict[str, dict] = {n.key: n.local_delivery for n in NURSERIES if n.local_delivery}
+SEASONAL_STATES: dict[str, list[str]] = {n.key: list(n.seasonal_states) for n in NURSERIES
+                                         if n.seasonal_states}
 
 # Quarantine states that are hard to ship to.
 QUARANTINE_STATES = ["WA", "NT", "TAS"]
