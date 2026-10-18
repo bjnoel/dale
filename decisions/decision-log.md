@@ -16410,3 +16410,45 @@ rather than Plum. Names that fix the species bucket but must not move a variety 
 ("Cherry Guava") live in `match_synonyms`, which the variety parser does not read. The
 measured result: 452 products change species (mostly to none), 804 change only their latin
 name, 4 variety slugs change, all Illawarra Plum (no watches).
+
+## DEC-356 (2026-10-18): 25 new species records, citrus sold under a parent name, multi-grafts on every named fruit's page
+
+**Trigger:** a local embedding-classifier test (BGE + logistic regression, Jeffy-style) over
+all 14,926 live titles. As a replacement for the rule matcher it failed: its most confident
+suggestions were false friends (Kei Apple -> apple, Natal Plum -> plum, a rose called
+'DRIFT Peach' -> peach). As an auditor it worked: its confident disagreements with the
+rules were rule bugs, and grouping the 6,904 unmatched titles by name showed real fruit
+stocked by 4-8 nurseries with no record.
+
+**Decision (Benedict, in chat).**
+1. `™`/`®` are stripped before matching. "Angel Peach™" split into "peach™" and matched
+   nothing, while cultivar_parsing (which already strips them) built /variety/peach-angel.
+   13 titles.
+2. Head-noun synonyms beat a leading fruit word: "Satsuma plum" was Mandarin (and built
+   /variety/mandarin-plum), "Banana Passionfruit" Banana, "Pineapple Orange Tree"
+   Pineapple. 9 titles corrected, 5 wrong variety slugs retired.
+3. Citrus: Yuzu (*C. junos*) and Sudachi (*C. sudachi*) get records; Chinotto and Lemonade
+   are `match_synonyms` under orange and lemon so orange-chinotto and lemon-lemonade keep
+   their slugs. `SOLD_UNDER_PARENT` is a closed list (yuzu under lemon/citron/lime, sudachi
+   under lime/lemon, chinotto under kumquat): when the leading word is the parent and the
+   title names the fruit, the fruit wins, and the variety parser stops building
+   /variety/lemon-yuzu. 13 nurseries' yuzu had sat in three buckets.
+4. 23 records for fruit and nuts stocked by 4+ nurseries (Ice Cream Bean, Star Gooseberry,
+   Jostaberry, Santol, Chempedak, Natal Plum, Kei Apple...) plus Carob. Nine names leave
+   `_NOT_THE_FRUIT` because they now have records. Peacharine is a peach match_synonym.
+   Herbs and spices stay out (DEC-195).
+5. Multi-grafts (not hybrids) list on every named species' page, in a separate section
+   below the listings that counts in none of the page's figures. Primary species, variety
+   slugs, watches and alerts are unchanged.
+
+**Measured (all live titles, before vs after):** matched 8,022 -> 8,218 (+196); 0 products
+lost a species; every changed variety slug checked against the 206 watched slugs, none
+orphaned. 92 multi-graft products add 120 secondary listings across 10 species pages.
+
+**Not done, deliberately.** "Kingston Black Apple (medium)" stays unmatched: "black apple"
+is masked as *Planchonella*, and a positional rule for one title is not worth the risk.
+Single-product noise slugs from new records (`carob-plant-sexed-female`) follow existing
+behaviour (1,442 of 2,673 slugs are single-product) and belong to /admin/varieties review.
+Found in passing, not fixed: the variety parser builds /variety/apple-black from "Black
+Apple (Planchonella australis)", a native tree. Next batch candidates (3 nurseries):
+Durian, Pulasan, Langsat, Akee, Borojo, Green Sapote.
