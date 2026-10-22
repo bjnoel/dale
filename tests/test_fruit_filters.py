@@ -68,6 +68,18 @@ class FruitFiltersTest(unittest.TestCase):
             {"title": "Apple Pink Lady", "product_type": "Fruit and Nut Trees"},
             "daleys"))
 
+    def test_digest_filter_drops_herbs_in_fruit_categories(self):
+        """Daleys files Comfrey under a fruit category, so it reached the
+        digest as "Back in stock!" (2026-10-21). A herb word on real fruit
+        must not take the fruit with it."""
+        import daily_digest
+        self.assertFalse(daily_digest._digest_product_filter(
+            {"title": "Comfrey", "product_type": "Fruit Trees/Herbs and Spice Plants"},
+            "daleys"))
+        self.assertTrue(daily_digest._digest_product_filter(
+            {"title": "Apple 'Rosemary Russet'", "product_type": "Fruit and Nut Trees"},
+            "daleys"))
+
     def test_ladybird_nut_trees_are_fruit(self):
         """Ladybird files nuts under its own top-level 'Nut Trees' tag, which
         the include list left out, so 14 real trees were dropped nightly. Live

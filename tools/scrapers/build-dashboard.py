@@ -18,7 +18,7 @@ from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_header, render_footer, render_treesmith_promo, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
-from stocklib.classify import (CATEGORY_KEYWORDS, TRUE_JUNK, is_seed_packet,
+from stocklib.classify import (CATEGORY_KEYWORDS, TRUE_JUNK, is_herb, is_seed_packet,
                                 matches_keyword)
 from stocklib.taxonomy import enabled_species, load_species
 from stocklib.species_match import load_species_lookup, match_species
@@ -565,6 +565,10 @@ def load_nursery_data(data_dir: Path, today: str | None = None) -> list[dict]:
 
             # Match against species taxonomy
             species = match_species(title, species_lookup)
+            # Herbs pass the nurseries' own fruit categories; needs the
+            # species match to spare fruit that share a herb word.
+            if is_herb(title, lambda _t: species):
+                continue
 
             product_data = {
                 "t": title,

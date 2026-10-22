@@ -16,6 +16,7 @@ which is what the dashboard pipeline does for every mode.
 
 If a nursery has useful categorization, only include products matching these.
 """
+from functools import lru_cache
 
 FRUIT_FILTERS = {
     "ladybird": {
@@ -173,6 +174,19 @@ def digest_product_filter(product: dict, nursery_key: str) -> bool:
     needs exactly the same rule to run stocklib.changes over the snapshots, and
     a second copy would drift the way FRUIT_FILTERS itself once did.
     """
-    from stocklib.classify import is_real_product
-    return (is_real_product(product.get("title", ""))
-            and is_fruit_product(product, nursery_key))
+    from stocklib.classify import is_herb, is_real_product
+    title = product.get("title", "")
+    return (is_real_product(title)
+            and is_fruit_product(product, nursery_key)
+            and not is_herb(title, _match_species))
+
+
+@lru_cache(maxsize=1)
+def _species_lookup() -> dict:
+    from stocklib.species_match import load_species_lookup
+    return load_species_lookup()
+
+
+def _match_species(title: str):
+    from stocklib.species_match import match_species
+    return match_species(title, _species_lookup())

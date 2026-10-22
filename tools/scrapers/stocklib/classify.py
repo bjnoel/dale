@@ -275,3 +275,68 @@ def is_real_product(title: str) -> bool:
     seed packet. Bundles the keyword filter + seed exclusion used by the
     variety/compare builders."""
     return not is_junk_keyword(title) and not is_seed_packet(title)
+
+
+# Culinary and medicinal herbs. Daleys files them under "Fruit Trees/Herbs and
+# Spice Plants" and Ladybird tags them "Fruit Trees & Edibles", so the
+# per-nursery fruit filters let them through, and the homepage and digest
+# carried Comfrey, Coriander, Parsley and ~390 others as if they were fruit
+# stock (2026-10-22).
+#
+# NOT in CATEGORY_KEYWORDS, because a bare keyword cannot tell a herb from a
+# fruit that shares its words. Swept against every title in every snapshot on
+# 2026-10-22, the matcher already resolves "Mint - Apple" to APPLE, "Mint -
+# Grapefruit" to GRAPEFRUIT and "Thyme 'Creeping Orange Peel'" to ORANGE, while
+# "Rosemary Russet" is a real heritage apple. So is_herb needs the species
+# match as well as the title; see there for the rule.
+#
+# "lavender" is deliberately absent: it is not culinary, and in 121 of its
+# matches it is a colour word on an ornamental (Hebe 'Lavender Lace').
+HERB_KEYWORDS = frozenset({
+    "basil", "borage", "brahmi", "catnip", "chamomile", "chive", "comfrey",
+    "coriander", "dill", "echinacea", "fennel", "feverfew", "gotu kola",
+    "hyssop", "lemon balm", "lemon grass", "lemon verbena", "lemongrass",
+    "lovage", "marjoram", "mint", "nasturtium", "oregano", "parsley",
+    "patchouli", "pennyroyal", "peppermint", "perilla", "rosemary", "sage",
+    "savory", "shiso", "sorrel", "spearmint", "stevia", "tarragon", "thyme",
+    "valerian", "wild rocket", "yarrow", "zaatar",
+})
+
+# Native bush foods share these names (Native Oregano, Bush Basil, Wild
+# Rosemary - Tucker Bush, Mint Bush). Bush tucker stays live by decision
+# (DEC-227), so a title carrying one of these markers is never a herb here,
+# the same exemption the dashboard gives native keywords (DEC-200 P1.5).
+_BUSH_FOOD_MARKER_RE = re.compile(r"\b(?:native|bush|tucker)\b")
+
+
+def is_herb(title: str, species_of) -> bool:
+    """True if the title is a culinary or medicinal herb, not fruit stock.
+
+    `species_of(title)` returns the species_match result or None. It is only
+    called when the title names a herb, so the digest filter can pass a real
+    matcher without paying for it on every product.
+
+    A title naming a herb is a herb unless it resolves to a species AND the
+    herb word does not lead the title. Leading is what tells the two cases
+    apart, using the live titles from the 2026-10-22 sweep:
+
+        "Comfrey"                         no species            -> herb
+        "Mint - Apple"                    APPLE, mint leads     -> herb
+        "Thyme 'Creeping Orange Peel'"    ORANGE, thyme leads   -> herb
+        "Apple 'Rosemary Russet'"         APPLE, apple leads    -> fruit
+        "River Mint (Mentha Australia)"   native-river-mint     -> kept
+
+    The last one also passes because the herb word is in the matched
+    record's own common name, which covers a record named after a herb.
+    """
+    tl = title.lower()
+    m = _keyword_pattern(HERB_KEYWORDS).search(tl)
+    if not m or _BUSH_FOOD_MARKER_RE.search(tl):
+        return False
+    species = species_of(title)
+    if not species:
+        return True
+    word = m.group(0) if m.group(0) in HERB_KEYWORDS else m.group(0)[:-1]  # "chives"
+    if word in species.get("cn", "").lower():
+        return False
+    return tl[:m.start()].strip(" -–—'\"(") == ""

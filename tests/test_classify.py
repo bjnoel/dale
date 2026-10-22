@@ -19,7 +19,8 @@ sys.path.insert(0, str(SCRAPERS))
 
 from stocklib.classify import (
     CATEGORY_KEYWORDS, NON_PLANT_KEYWORDS, TRUE_JUNK,
-    derived_non_plant_keywords, is_real_product, is_seed_packet,
+    HERB_KEYWORDS, derived_non_plant_keywords, is_herb, is_real_product,
+    is_seed_packet,
 )
 from stocklib.taxonomy import KNOWN_CATEGORIES
 
@@ -404,6 +405,63 @@ class OrnamentalGuardTests(unittest.TestCase):
                 self.assertIn(kw, NON_PLANT_KEYWORDS)
                 self.assertNotIn(
                     kw, derived_non_plant_keywords(("fruit", "ornamental")))
+
+
+class HerbFilterTest(unittest.TestCase):
+    """Herbs pass Daleys' and Ladybird's own fruit categories, so is_herb is
+    what keeps them off the homepage and out of the digest. Every title here
+    is live, from the 2026-10-22 sweep of all snapshots. The hard half is the
+    fruit that shares a herb's words, which is why it uses the real matcher.
+    """
+    @classmethod
+    def setUpClass(cls):
+        from stocklib.species_match import load_species_lookup, match_species
+        lookup = load_species_lookup()
+        cls.species_of = staticmethod(lambda t: match_species(t, lookup))
+
+    HERBS = (
+        "Comfrey",                                   # daleys, the report
+        "Russian Comfrey (Symphytum \u00d7 uplandicum)",
+        "Coriander (PICKUP ONLY)",
+        "Parsley Italian",
+        "Garlic Chives",                             # plural keyword
+        "Lemon Balm",                                # not a lemon
+        "Lemon Grass (Cymbopogon citratus)",
+        "Thyme 'Lemon' (Thymus x citriodorus)",
+        "Sage - Pineapple",                          # not a pineapple
+        # The matcher resolves these to a fruit; the herb word leads.
+        "Mint - Apple Variegated",                   # -> apple
+        "Mint \u2013 Grapefruit",                   # -> grapefruit
+        "Thyme 'Creeping Orange Peel'",              # -> orange
+    )
+    KEPT = (
+        "Apple 'Rosemary Russet'",                   # a real heritage apple
+        "Apple Pink Lady",
+        # Bush tucker stays live (DEC-227).
+        "Native Oregano (Prostanthera rotundifolia)",
+        "Bush Basil (Plectranthus graveolens) \u2013 Tucker Bush",
+        "Singleton Mint Bush",
+        # A species record named after a herb.
+        "River Mint (Mentha Australia)",
+    )
+
+    def test_herbs_are_herbs(self):
+        for title in self.HERBS:
+            with self.subTest(title=title):
+                self.assertTrue(is_herb(title, self.species_of))
+
+    def test_fruit_and_bush_food_sharing_herb_words_are_kept(self):
+        for title in self.KEPT:
+            with self.subTest(title=title):
+                self.assertFalse(is_herb(title, self.species_of))
+
+    def test_lavender_is_a_colour_word_not_a_herb(self):
+        self.assertNotIn("lavender", HERB_KEYWORDS)
+
+    def test_matcher_only_called_for_herb_titles(self):
+        def boom(_t):
+            raise AssertionError("species_of called for a non-herb title")
+        self.assertFalse(is_herb("Mango 'R2E2'", boom))
 
 
 if __name__ == "__main__":
