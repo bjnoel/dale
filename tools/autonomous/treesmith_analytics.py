@@ -77,6 +77,10 @@ EVENTS = {
     "reminder_sweep": "reminder_sweep",
     # Content and structure.
     "graft_added": "graft_added",
+    # Added 2026-10-22, the first way to change a graft's status: before it a
+    # dead graft could only be deleted. Benedict's device test sent 3 that day,
+    # below MIN_HISTORY, so it cannot read as silent before the release ships.
+    "graft_status_changed": "graft_status_changed",
     "zone_added": "zone_added",
     # photo_added has fired since 2026-06-08 but was never read: photos are
     # the second thing people do after adding a plant (566 vs 518 all time on
@@ -1559,8 +1563,9 @@ def m_feature_usage(host, key):
     in six months looks identical to one never shipped if the only window is
     seven days long.
     """
-    names = ("graft_added", "zone_added", "photo_added", "photo_deleted",
-             "plants_bulk_edited", "activity_logged")
+    names = ("graft_added", "graft_status_changed", "zone_added",
+             "photo_added", "photo_deleted", "plants_bulk_edited",
+             "activity_logged")
     totals = hogql(host, key, f"""
         SELECT event,
                count() AS all_time,
@@ -1586,6 +1591,17 @@ def m_feature_usage(host, key):
           AND timestamp >= now() - INTERVAL 7 DAY
         GROUP BY type_family, source
         ORDER BY n DESC
+    """)
+    # All time as well as weekly: a status change is rarer than an add, and
+    # whether `failed` is being chosen at all is the question.
+    graft_statuses = hogql(host, key, """
+        SELECT coalesce(toString(properties.to_status), '(unset)') AS to_status,
+               countIf(timestamp >= now() - INTERVAL 7 DAY) AS n_7d,
+               count() AS all_time
+        FROM events
+        WHERE event = 'graft_status_changed'
+        GROUP BY to_status
+        ORDER BY all_time DESC
     """)
     activities = hogql(host, key, f"""
         SELECT coalesce(toString(properties.activity_type), '(unset)') AS activity_type,
@@ -1624,6 +1640,8 @@ def m_feature_usage(host, key):
         "by_event": by_event,
         "grafts": [{"type_family": r[0], "source": r[1],
                     "with_type": r[2], "n": r[3]} for r in grafts],
+        "graft_statuses": [{"to_status": r[0], "n_7d": r[1],
+                            "all_time": r[2]} for r in graft_statuses],
         "activities": [{"activity_type": r[0], "n": r[1],
                         "created_reminder": r[2], "with_notes": r[3]}
                        for r in activities],
@@ -2995,6 +3013,10 @@ def render(metrics):
             for g in d["grafts"][:FEATURE_LIST_LIMIT]:
                 kv(f"  graft {g['type_family']} / {g['source']}",
                    f"{g['n']} ({g['with_type']} with a specific type)")
+            # .get: a payload from before this event existed has no key.
+            for g in d.get("graft_statuses", [])[:FEATURE_LIST_LIMIT]:
+                kv(f"  graft -> {g['to_status']}",
+                   f"{g['n_7d']} this week  ·  {g['all_time']} all time")
             for a in d["activities"][:FEATURE_LIST_LIMIT]:
                 kv(f"  activity {a['activity_type']}",
                    f"{a['n']} ({a['created_reminder']} created a reminder, "
