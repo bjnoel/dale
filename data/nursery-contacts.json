@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-10-18",
+  "updated": "2026-10-22",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -118,6 +118,14 @@
           "by": "benedict",
           "summary": "Replied in the existing thread. Sent the September report (https://treestock.com.au/reports/daleys-2026-09-3c775b3f12.html): 529 people, nearly double August, 37% of clicks from WA, plus what people are waiting on alerts for. Offered it monthly or other data on request. Raised something ongoing in place of the August voucher, cited Primal Fruits at 5%, acknowledged their custom site, and asked what Correy thinks is fair. Said ranking is price and stock only either way. Did not thank him for the 2026-08-31 qty fix.",
           "evidence": "Sent by Benedict 2026-10-18 without BCC; text pasted 2026-10-18, hand-logged"
+        },
+        {
+          "date": "2026-10-22",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Re: Your nursery is on treestock.com.au",
+          "evidence": "resend:dacf9a97-4a9b-4129-99ea-1378717c04ff"
         }
       ],
       "open_action": null,
