@@ -31,7 +31,17 @@ class TestRegisterData(unittest.TestCase):
         """A nursery we track but cannot contact is the gap this file closes."""
         from stocklib.registry import NURSERIES
         self.assertEqual({n.key for n in NURSERIES},
-                         {n["key"] for n in self.reg["nurseries"]})
+                         {n["key"] for n in self.reg["nurseries"]
+                          if not n.get("prospect")})
+
+    def test_prospects_are_not_monitored_nurseries(self):
+        """A prospect is someone we wrote to but do not scrape. If we start
+        scraping one, the flag must come off or it drops out of the check above."""
+        from stocklib.registry import NURSERIES
+        monitored = {n.key for n in NURSERIES}
+        for n in self.reg["nurseries"]:
+            if n.get("prospect"):
+                self.assertNotIn(n["key"], monitored)
 
     def test_domains_are_unique(self):
         """Two nurseries sharing a domain would double-count referral clicks."""

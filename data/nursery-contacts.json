@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated": "2026-10-22",
-  "note": "Nursery relationship register (DAL-80). One record per monitored nursery. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
+  "note": "Nursery relationship register (DAL-80). One record per monitored nursery, plus prospects (`prospect: true`): nurseries we have written to but do not scrape, kept here so BCC'd mail and replies log against them. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
     "contacted": "Touch 1 sent, no reply recorded.",
@@ -790,6 +790,126 @@
       "touches": [],
       "open_action": null,
       "notes": "Added 2026-08-27, our first South Australian nursery (DAL-255). 139 McLaren Flat Road, McLaren Flat SA 5171; open Wed-Sun 10-4. Squarespace, 95 tracked products. No email address is published anywhere on the site, only a phone number and an enquiry form, so preferred_channel is the form and the BCC self-logging trick cannot capture a first touch here. Trading since 1978 (Chris and Diana Perry). Open question for touch 1: do they post trees interstate at all? The site never says, and we list them SA-only until they tell us otherwise."
+    },
+    {
+      "key": "australian-plants-online",
+      "name": "Australian Plants Online",
+      "domain": "australianplantsonline.com.au",
+      "prospect": true,
+      "contact_name": null,
+      "email": "admin@australianplantsonline.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-10-22",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "treestock.com.au and native plants (natives expansion, asked if they do or would consider affiliate referrals)",
+          "evidence": "Benedict told Dale in session 2026-10-22: sent to admin@ WITHOUT the BCC, so no Resend record exists"
+        }
+      ],
+      "open_action": null,
+      "notes": "NATIVES PROSPECT, not a monitored nursery: treestock does not scrape this store. Added 2026-10-22 from docs/native-retailers-2026-10.md (natives research), when Benedict emailed asking whether they do affiliate referrals (treestock growing, moving into natives, would fund it via referral commission; ranking never affected, disclosed). Natives as a category is formally cancelled (DAL-203/DEC-227); this outreach is Benedict reopening the question. No affiliate program found on their site 2026-10-22. Ships natives to ALL states (+$15 biosecurity fee WA/TAS/NT, weekly dispatch to those). ~409 native tubestock lines, Sunshine Coast QLD."
+    },
+    {
+      "key": "nursery-near-me",
+      "name": "Nursery Near Me",
+      "domain": "nurserynearme.com.au",
+      "prospect": true,
+      "contact_name": null,
+      "email": "sales@nurserynearme.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-10-22",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "treestock.com.au and native plants (natives expansion, asked if they do or would consider affiliate referrals)",
+          "evidence": "BCC rejected (no register record yet): subscribe-server journal 2026-10-22 06:51:59 UTC, from ben@treestock.com.au to sales@nurserynearme.com.au"
+        }
+      ],
+      "open_action": null,
+      "notes": "NATIVES PROSPECT, not a monitored nursery: treestock does not scrape this store. Added 2026-10-22 from docs/native-retailers-2026-10.md (natives research), when Benedict emailed asking whether they do affiliate referrals (treestock growing, moving into natives, would fund it via referral commission; ranking never affected, disclosed). Natives as a category is formally cancelled (DAL-203/DEC-227); this outreach is Benedict reopening the question. No affiliate program found on their site 2026-10-22. Ships ALL states: WA orders filled by WA partner nurseries, TAS/NT tubestock only. ~946 natives of ~3,300. Shopify. brisbaneplantnursery.com.au redirects here."
+    },
+    {
+      "key": "native-shop",
+      "name": "The Native Shop (Wimmera Native Nursery)",
+      "domain": "nativeshop.com.au",
+      "prospect": true,
+      "contact_name": null,
+      "email": "wnn@bigpond.net.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-10-22",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "treestock.com.au and native plants (natives expansion, asked if they do or would consider affiliate referrals)",
+          "evidence": "BCC rejected (no register record yet): subscribe-server journal 2026-10-22 06:52:50 UTC, from ben@treestock.com.au to wnn@bigpond.net.au"
+        }
+      ],
+      "open_action": null,
+      "notes": "NATIVES PROSPECT, not a monitored nursery: treestock does not scrape this store. Added 2026-10-22 from docs/native-retailers-2026-10.md (natives research), when Benedict emailed asking whether they do affiliate referrals (treestock growing, moving into natives, would fund it via referral commission; ranking never affected, disclosed). Natives as a category is formally cancelled (DAL-203/DEC-227); this outreach is Benedict reopening the question. No affiliate program found on their site 2026-10-22. Dimboola VIC. Ships QLD/NSW/ACT/VIC/SA, not WA/TAS/NT; no Myrtaceae to SA. ~1,000 listings, almost all natives. Shopify. Has a 'Sell With Us' program."
+    },
+    {
+      "key": "online-plants",
+      "name": "Online Plants",
+      "domain": "onlineplants.com.au",
+      "prospect": true,
+      "contact_name": null,
+      "email": "store@onlineplants.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-10-22",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "treestock.com.au and native plants (natives expansion, asked if they do or would consider affiliate referrals)",
+          "evidence": "BCC rejected (no register record yet): subscribe-server journal 2026-10-22 06:54:02 UTC, sent from b@bjnoel.com (not ben@treestock) to store@onlineplants.com.au, so their reply may land in the personal inbox"
+        }
+      ],
+      "open_action": null,
+      "notes": "NATIVES PROSPECT, not a monitored nursery: treestock does not scrape this store. Added 2026-10-22 from docs/native-retailers-2026-10.md (natives research), when Benedict emailed asking whether they do affiliate referrals (treestock growing, moving into natives, would fund it via referral commission; ranking never affected, disclosed). Natives as a category is formally cancelled (DAL-203/DEC-227); this outreach is Benedict reopening the question. No affiliate program found on their site 2026-10-22. Melbourne, online-only since 2003. Ships QLD/NSW/ACT/VIC/SA, not WA/TAS/NT. ~356 natives of ~1,440. Shopify."
+    },
+    {
+      "key": "wildtech",
+      "name": "Wildtech Plants (Collectors Online)",
+      "domain": "wildtechnursery.com.au",
+      "prospect": true,
+      "contact_name": null,
+      "email": "sales@wildtechnursery.com.au",
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": "email",
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-10-22",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "treestock.com.au and native plants (natives expansion, asked if they do or would consider affiliate referrals)",
+          "evidence": "BCC rejected (no register record yet): subscribe-server journal 2026-10-22 06:54:39 UTC, from ben@treestock.com.au to sales@wildtechnursery.com.au"
+        }
+      ],
+      "open_action": null,
+      "notes": "NATIVES PROSPECT, not a monitored nursery: treestock does not scrape this store. Added 2026-10-22 from docs/native-retailers-2026-10.md (natives research), when Benedict emailed asking whether they do affiliate referrals (treestock growing, moving into natives, would fund it via referral commission; ranking never affected, disclosed). Natives as a category is formally cancelled (DAL-203/DEC-227); this outreach is Benedict reopening the question. No affiliate program found on their site 2026-10-22. Glenmaggie/Heyfield, Gippsland VIC, propagating since 1985. ~986 native tubestock products. Ships SA/QLD/NSW/VIC; WA/TAS/NT by arrangement. WooCommerce. Alt address collectorsonline@wildtechnursery.com.au."
     }
   ]
 }
