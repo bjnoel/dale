@@ -12,7 +12,7 @@
     "did_not_convert": "Benedict checked Play Console 2026-10-22: no Italian installs 13-20 Oct. The Italian Play clicks did not become installs.",
     "homepage_baseline": "Store clicks on / 2026-09-21..10-20: 8 events / 8 visitors, against DEC-268's 21/17 per 30d. Mostly Benedict's own AU Direct test clicks in mid-September falling away.",
     "attribution_shipped_2026_10_22": "treesmith-web commit 5dc003a: /download/ fires plausible('Store Redirect', {store, ct}) before redirecting. ct comes from ?ct=, then utm_source, then the referring path, else 'download'. App Store links now use apps.apple.com/app/id6761506742?pt=128328374&ct=<page>&mt=8 (the /au/ storefront has been removed). Play links carry utm_campaign=<page>.",
-    "plausible_goal_pending": "The 'Store Redirect' goal is NOT yet created on data.bjnoel.com (Plausible CE v3.2.1, which has no Sites API; creating it via server RPC was blocked by this session's permissions). It must be added in Site settings > Goals. The events are stored either way and can be queried once the goal exists. allowed_event_props is NULL for treesmith.app, so every prop is accepted and no ct/store allowlist is needed. Setting an allowlist would start dropping the url prop on Outbound Link: Click.",
-    "ross_creek_qr": "QR on the Ross Creek cards: https://treesmith.app/download/?utm_source=rosscreek&utm_medium=qr (ct=rosscreek). Touch date 2026-11-10 unchanged."
+    "ross_creek_qr": "QR on the Ross Creek cards: https://treesmith.app/download/?utm_source=rosscreek&utm_medium=qr (ct=rosscreek). Touch date 2026-11-10 unchanged.",
+    "plausible_goal": "'Store Redirect' goal created 2026-10-22 (goal id 22 on data.bjnoel.com, Plausible CE v3.2.1, via Plausible.Goals.create over server RPC; CE has no Sites API). allowed_event_props is NULL for treesmith.app, so every prop is accepted and no ct/store allowlist is needed. Setting an allowlist would start dropping the url prop on Outbound Link: Click."
   }
 }
