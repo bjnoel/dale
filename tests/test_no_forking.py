@@ -105,6 +105,8 @@ GUARDS = [
     (re.compile(r"^FROM_EMAIL\s*="), "stocklib/mailer.py"),
     (re.compile(r"^FROM_NAME\s*="), "stocklib/mailer.py"),
     (re.compile(r"^REPLY_TO_EMAIL\s*="), "stocklib/mailer.py"),
+    # TreeSmith store attribution (pt/ct, Play referrer) for every treestock surface.
+    (re.compile(r"^def treesmith_store_links\b"), "stocklib/utm.py"),
 ]
 
 # Function names that must not be DEFINED anywhere in the scanned set: dead

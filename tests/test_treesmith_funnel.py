@@ -143,9 +143,13 @@ class TreesmithPageBadgeTest(unittest.TestCase):
                 self.assertIn("height=", tag)
                 self.assertIn("alt=", self.html[self.html.index(asset) - 200:])
 
-    def test_ios_link_uses_the_au_storefront(self):
-        self.assertIn("apps.apple.com/au/app/", self.html)
+    def test_store_links_carry_store_attribution(self):
+        # The stores ignore utm_*: Apple attributes by pt + ct, Play by an
+        # encoded referrer. No storefront, so each reader gets their own.
+        self.assertIn("apps.apple.com/app/id6761506742?pt=128328374&amp;ct=treestock&amp;mt=8", self.html)
+        self.assertNotIn("apps.apple.com/au/", self.html)
         self.assertNotIn("apps.apple.com/us/", self.html)
+        self.assertIn("id=app.treesmith&amp;referrer=utm_source%3Dtreestock%26utm_medium%3Dtreesmith_page%26utm_campaign%3Dtreestock", self.html)
 
     def test_trademark_attribution_present(self):
         """Required by both vendors once their badge artwork is used."""

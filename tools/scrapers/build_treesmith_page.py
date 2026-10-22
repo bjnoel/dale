@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 
 from stocklib.templates import render as render_template
+from stocklib.utm import treesmith_store_links
 from treestock_layout import render_page, CONTENT_MAX_WIDTH
 
 
@@ -32,18 +33,9 @@ APP_BASE = "https://treesmith.app/"
 UTM_PARAMS = "utm_source=treestock&utm_medium=treesmith_page&utm_campaign=treesmith_launch"
 APP_UTM = "?" + UTM_PARAMS
 APP_URL = APP_BASE + APP_UTM
-# /au/, not /us/: treestock's audience is Australian, and the US storefront path
-# makes an AU shopper's App Store detour through a "not available in your
-# country" style hand-off before it resolves. The slug is the listing's real one
-# (DAL-225 verified it against the live listing).
-IOS_URL = (
-    "https://apps.apple.com/au/app/treesmith-plant-graft-tracker/id6761506742?"
-    + UTM_PARAMS
-)
-# Android left beta on 2026-06-15. treesmith.app/beta/ now 301s to the app's
-# marketing homepage, so link the Play Store listing directly. Its URL already
-# carries a query string, hence the & rather than a ? before the UTM params.
-ANDROID_URL = "https://play.google.com/store/apps/details?id=app.treesmith&" + UTM_PARAMS
+# Store links carry the stores' own attribution (pt/ct for Apple, an encoded
+# referrer for Play), since both ignore the utm_* above. See stocklib.utm.
+IOS_URL, ANDROID_URL = treesmith_store_links("treestock", "treesmith_page")
 
 # Deep links for the grafting section. Readers arriving from the variety and
 # rootstock promo blocks came here for grafting, not for a feature list.

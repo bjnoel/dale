@@ -53,6 +53,7 @@ from stocklib.mailer import (get_resend_api_key, get_unsubscribe_secret,
                              load_sends_log, load_subscribers,
                              make_unsubscribe_token, save_sends_log)
 from stocklib.mailer import send_email as _send_email
+from stocklib.utm import treesmith_store_links
 
 send_email = functools.partial(_send_email, user_agent="treestock-treesmith-intro/1.0")
 
@@ -75,8 +76,9 @@ UTM = "utm_source=treestock&utm_medium=email&utm_campaign=treesmith_intro"
 # so do not route them via a marketing page first. The landing-page link below
 # carries a distinct utm_content instead, which is what makes this surface
 # attributable in Plausible (DEC-239 instrumentation rule).
-IOS_URL = "https://apps.apple.com/au/app/treesmith-plant-graft-tracker/id6761506742"
-ANDROID_URL = "https://play.google.com/store/apps/details?id=app.treesmith"
+# The store links carry the stores' own attribution under their own token, so
+# App Store Connect and Play Console can tell this email from /treesmith.html.
+IOS_URL, ANDROID_URL = treesmith_store_links("treestock-intro-email", "email")
 LANDING_URL = f"{SITE_URL}/treesmith.html?{UTM}&utm_content=intro_email"
 
 # Pricing per CLAUDE.md: Pro is a ONE-TIME purchase, not a subscription, and

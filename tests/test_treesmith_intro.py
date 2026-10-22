@@ -175,12 +175,16 @@ class CopyTest(unittest.TestCase):
         for body in (self.html, self.text):
             self.assertNotIn("cloud backup", body.lower())
 
-    def test_correct_app_store_listing_and_au_storefront(self):
+    def test_correct_app_store_listing_with_store_attribution(self):
         # The original DAL-173 draft carried id6743767587, which is not our app.
         for body in (self.html, self.text):
             self.assertIn("id6761506742", body)
             self.assertNotIn("id6743767587", body)
-            self.assertIn("apps.apple.com/au/", body)
+            # Its own campaign token, so the stores can tell it from /treesmith.html.
+            self.assertIn("pt=128328374", body)
+            self.assertIn("ct=treestock-intro-email", body)
+            self.assertIn("utm_campaign%3Dtreestock-intro-email", body)
+            self.assertNotIn("apps.apple.com/au/", body)
             self.assertNotIn("apps.apple.com/us/", body)
 
     def test_android_is_not_described_as_beta(self):

@@ -6,7 +6,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "scrapers"))
 
-from stocklib.utm import outbound, affiliate, AFFILIATE_REFS
+from stocklib.utm import outbound, affiliate, AFFILIATE_REFS, treesmith_store_links
 
 
 class AffiliateTest(unittest.TestCase):
@@ -84,6 +84,22 @@ class OutboundTest(unittest.TestCase):
         url = "https://daleys.com.au/plant/1"
         legacy = url + ("&" if "?" in url else "?") + "utm_source=treestock&utm_medium=referral"
         self.assertEqual(outbound(url, "referral"), legacy)
+
+
+
+class TreesmithStoreLinksTest(unittest.TestCase):
+    def test_format_matches_treesmith_app(self):
+        apple, play = treesmith_store_links("treestock", "treesmith_page")
+        self.assertEqual(
+            apple, "https://apps.apple.com/app/id6761506742?pt=128328374&ct=treestock&mt=8")
+        self.assertEqual(
+            play, "https://play.google.com/store/apps/details?id=app.treesmith&referrer="
+                  "utm_source%3Dtreestock%26utm_medium%3Dtreesmith_page%26utm_campaign%3Dtreestock")
+
+    def test_rejects_token_apple_would_drop(self):
+        for bad in ("TreeStock", "tree stock", "x" * 41, "", "a_b"):
+            with self.assertRaises(ValueError):
+                treesmith_store_links(bad, "email")
 
 
 if __name__ == "__main__":

@@ -191,7 +191,9 @@ class TestFindingsIndex(unittest.TestCase):
         for f in _findings():
             doc = json.loads(f.read_text())
             rel = f.relative_to(REPO_ROOT)
-            for key in ("claim", "date", "track", "was", "body"):
+            # `was` is only on findings the DEC-349 split moved; one written
+            # since has no business-state path to name.
+            for key in ("claim", "date", "track", "body"):
                 self.assertIn(key, doc, f"{rel} has no {key}")
             self.assertRegex(doc["date"], r"^20\d\d-\d\d-\d\d$", f"{rel} date")
             self.assertGreater(len(doc["claim"]), 40, f"{rel} claim is too thin to act on")
@@ -277,15 +279,19 @@ class TestTheSplitLostNothing(unittest.TestCase):
     that happened once (DEC-313)."""
 
     def test_every_finding_names_its_origin(self):
+        # Findings written after the split carry no `was`: they never lived in
+        # business-state.json. The ones that do must name a real path.
         for f in _findings():
             doc = json.loads(f.read_text())
+            if "was" not in doc:
+                continue
             self.assertTrue(
                 doc["was"].startswith("tracks."),
                 f"{f.relative_to(REPO_ROOT)} does not say where it came from",
             )
 
     def test_origins_are_unique(self):
-        origins = [json.loads(f.read_text())["was"] for f in _findings()]
+        origins = [o for o in (json.loads(f.read_text()).get("was") for f in _findings()) if o]
         dupes = {o for o in origins if origins.count(o) > 1}
         self.assertEqual(dupes, set(), "two findings claim the same origin path")
 
@@ -300,7 +306,7 @@ class TestTheSplitLostNothing(unittest.TestCase):
         spec.loader.exec_module(manifest)
 
         declared = {"tracks." + ".".join(p) for p, _, _, _ in manifest.MOVES}
-        on_disk = {json.loads(f.read_text())["was"] for f in _findings()}
+        on_disk = {o for o in (json.loads(f.read_text()).get("was") for f in _findings()) if o}
         self.assertEqual(
             declared, on_disk,
             "the manifest and state/findings/ disagree; re-run "

@@ -18,7 +18,9 @@ product/store links only.
 Affiliate refs are separate from UTM and are the only thing here that earns
 money: see AFFILIATES below.
 """
+import re
 from dataclasses import dataclass
+from urllib.parse import quote
 
 
 @dataclass(frozen=True)
@@ -97,3 +99,32 @@ def outbound(url: str, medium: str, campaign: str = "") -> str:
     if campaign:
         tagged += f"&utm_campaign={campaign}"
     return tagged
+
+
+# TreeSmith store links. The stores ignore utm_* on a listing URL: Apple
+# attributes App Store downloads only by provider token (pt) plus campaign
+# token (ct), and Play only by utm_* packed inside an encoded referrer= param.
+# Same format as treesmith.app's storeLinks() (src/lib/urls.ts), so both sites'
+# downloads land in the same App Store Connect / Play Console campaign reports.
+# No /au/ storefront: on an iPhone Apple hands off to the App Store app in the
+# reader's own storefront; a desktop browser lands on the /us/ web page.
+TREESMITH_APPLE_ID = "6761506742"
+TREESMITH_APPLE_PT = "128328374"
+TREESMITH_PLAY_ID = "app.treesmith"
+_CT_RE = re.compile(r"^[a-z0-9-]{1,40}$")
+
+
+def treesmith_store_links(ct: str, medium: str) -> tuple[str, str]:
+    """Return (apple_url, play_url) attributed to treestock under campaign `ct`.
+
+    `ct` is Apple's campaign token (max 40 chars, a-z0-9 and hyphens) and is
+    reused as Play's utm_campaign so one token names the surface in both
+    consoles. `medium` is the treestock surface (treesmith_page, email)."""
+    if not _CT_RE.match(ct):
+        raise ValueError(f"invalid App Store campaign token: {ct!r}")
+    apple = (f"https://apps.apple.com/app/id{TREESMITH_APPLE_ID}"
+             f"?pt={TREESMITH_APPLE_PT}&ct={ct}&mt=8")
+    referrer = f"utm_source=treestock&utm_medium={medium}&utm_campaign={ct}"
+    play = (f"https://play.google.com/store/apps/details?id={TREESMITH_PLAY_ID}"
+            f"&referrer={quote(referrer, safe='')}")
+    return apple, play
