@@ -39,6 +39,9 @@ const NURSERY_URLS = {
 
 let displayCount = 50;
 let currentResults = [];
+// True when "In stock only" matched nothing and the results are the sold-out
+// matches instead. See search().
+let soldOutFallback = false;
 
 // Build state→nursery shipping lookup
 const SHIPS_TO = {};
@@ -116,34 +119,24 @@ function search() {
   speciesShown = SPECIES_DEFAULT;
   document.querySelector('.species-strip').classList.remove('expanded');
   const q = searchInput.value.toLowerCase().trim();
-  const nursery = nurserySelect.value;
   const stockOnly = inStockOnly.checked;
-  const st = stateFilter.value;
   const sort = sortBy.value;
 
-  let results = P;
+  let results = filterProducts(q, stockOnly);
 
-  const cat = categoryFilter ? categoryFilter.value : '';
-
-  if (stockOnly) results = results.filter(p => p.a);
-  if (st) results = results.filter(p => (SHIPS_TO[p.nk] || []).includes(st));
-  if (changesOnly.checked) results = results.filter(p => p.ch);
-  if (nursery) results = results.filter(p => p.nk === nursery);
-  if (cat) results = results.filter(p => (SPECIES_CATS[p.sl] || []).includes(cat));
-  if (activeSpeciesSlug) results = results.filter(p => p.sl === activeSpeciesSlug);
-  if (rareOnly) results = results.filter(p => p.sl && HARD_TO_FIND.has(p.sl));
-
-  if (q && !activeSpeciesSlug) {
-    const terms = q.split(/\\s+/);
-    results = results.filter(p => {
-      const text = (p.t + ' ' + p.cat + ' ' + (p.ln || '') + ' ' + (p.cv || '')).toLowerCase();
-      return terms.every(t => text.includes(t));
-    });
-    // Score by how early the match appears
-    results = results.map(p => {
-      const idx = p.t.toLowerCase().indexOf(terms[0]);
-      return { ...p, _score: idx === -1 ? 999 : idx };
-    });
+  // Every in-stock count on a nursery page links here with stock=1, so a link
+  // followed after that species sells out (a day-old page, a bookmark, or
+  // Googlebot, which filed /?nursery=fruitopia&species=pomegranate&stock=1 as
+  // a soft 404 two days after it sold out) used to land on an empty page.
+  // Show the sold-out matches, labelled, rather than nothing. The checkbox and
+  // URL keep stock=1 so the view tightens again when stock returns.
+  soldOutFallback = false;
+  if (stockOnly && results.length === 0) {
+    const soldOut = filterProducts(q, false);
+    if (soldOut.length) {
+      results = soldOut;
+      soldOutFallback = true;
+    }
   }
 
   // Sort
@@ -186,6 +179,37 @@ function search() {
   updateActiveFilters();
   updatePillCounts();
   syncURL();
+}
+
+function filterProducts(q, stockOnly) {
+  const nursery = nurserySelect.value;
+  const st = stateFilter.value;
+  const cat = categoryFilter ? categoryFilter.value : '';
+
+  let results = P;
+
+  if (stockOnly) results = results.filter(p => p.a);
+  if (st) results = results.filter(p => (SHIPS_TO[p.nk] || []).includes(st));
+  if (changesOnly.checked) results = results.filter(p => p.ch);
+  if (nursery) results = results.filter(p => p.nk === nursery);
+  if (cat) results = results.filter(p => (SPECIES_CATS[p.sl] || []).includes(cat));
+  if (activeSpeciesSlug) results = results.filter(p => p.sl === activeSpeciesSlug);
+  if (rareOnly) results = results.filter(p => p.sl && HARD_TO_FIND.has(p.sl));
+
+  if (q && !activeSpeciesSlug) {
+    const terms = q.split(/\\s+/);
+    results = results.filter(p => {
+      const text = (p.t + ' ' + p.cat + ' ' + (p.ln || '') + ' ' + (p.cv || '')).toLowerCase();
+      return terms.every(t => text.includes(t));
+    });
+    // Score by how early the match appears
+    results = results.map(p => {
+      const idx = p.t.toLowerCase().indexOf(terms[0]);
+      return { ...p, _score: idx === -1 ? 999 : idx };
+    });
+  }
+
+  return results;
 }
 
 function updateSubCTA(q) {
@@ -360,7 +384,9 @@ function render() {
   const countEl = document.getElementById('resultCount');
   const loadMoreEl = document.getElementById('loadMore');
 
-  countEl.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
+  countEl.textContent = soldOutFallback
+    ? `0 in stock, ${results.length} sold out`
+    : `${results.length} result${results.length !== 1 ? 's' : ''}`;
 
   if (showing.length === 0) {
     const q = searchInput.value.trim();
@@ -373,7 +399,14 @@ function render() {
     return;
   }
 
-  container.innerHTML = showing.map(p => {
+  const soldOutNotice = soldOutFallback
+    ? '<div class="mb-2 px-3 py-3 rounded-lg border border-amber-200 bg-amber-50 text-sm text-amber-900">' +
+        '<span class="font-semibold">None in stock right now.</span> ' +
+        'Showing sold-out listings that match your other filters.' +
+      '</div>'
+    : '';
+
+  container.innerHTML = soldOutNotice + showing.map(p => {
     // A missing price is a fact about the nursery, not an empty cell. Some
     // stores publish no price online (PlantNet is the retail arm of a wholesale
     // breeder: 79 of its 110 fruit-tree SKUs are "find a stockist"), and the
