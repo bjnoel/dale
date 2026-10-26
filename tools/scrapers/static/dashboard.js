@@ -197,7 +197,7 @@ function filterProducts(q, stockOnly) {
   if (rareOnly) results = results.filter(p => p.sl && HARD_TO_FIND.has(p.sl));
 
   if (q && !activeSpeciesSlug) {
-    const terms = q.split(/\\s+/);
+    const terms = q.split(/\s+/);
     results = results.filter(p => {
       const text = (p.t + ' ' + p.cat + ' ' + (p.ln || '') + ' ' + (p.cv || '')).toLowerCase();
       return terms.every(t => text.includes(t));
@@ -645,7 +645,7 @@ function updatePillCounts() {
 
   const strip = document.querySelector('.species-strip');
   let html = shown.map(([sl, count]) => {
-    const name = SLUG_TO_NAME[sl] || sl.replace(/-/g, ' ').replace(/\\b\\w/g, c => c.toUpperCase());
+    const name = SLUG_TO_NAME[sl] || sl.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     const active = sl === activeSpeciesSlug ? ' active' : '';
     return `<a href="/species/${sl}.html" class="species-pill${active}" data-q="${name}" data-sl="${sl}">${name} <span class="count">${count}</span></a>`;
   }).join('');
