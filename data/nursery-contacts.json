@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-10-22",
+  "updated": "2026-10-26",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery, plus prospects (`prospect: true`): nurseries we have written to but do not scrape, kept here so BCC'd mail and replies log against them. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -726,8 +726,17 @@
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-10-26",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "St Clements Citrus",
+          "evidence": "resend:b4edf9d9-8f99-4f18-80a5-33037d8fdf7d"
+        }
+      ],
       "open_action": null,
       "notes": "Register held sales@stclementcitrus.com.au (missing the s in Clements), which is undeliverable: stclementcitrus.com.au has no MX and no A record. The real domain stclementscitrus.com.au has Google MX. Corrected 2026-08-27 before it was ever used.\n\nMoved store 2026-10-25 from Shopify (stclementscitrus.com.au, now empty) to Wix at www.stclementscitrus.com. The new shipping policy names info@stclementscitrus.com, so that is the email now; sales@ on the old domain is unverified since the move. Delivery is now Perth metro only (flat $30), not WA-wide post."
     },
