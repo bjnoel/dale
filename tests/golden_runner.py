@@ -42,6 +42,7 @@ _MONTHS = (r"January|February|March|April|May|June|July|August|"
            r"September|October|November|December")
 _NORMALISERS = [
     (re.compile(r"\?v=\d{8}"), "?v=DATE"),                            # CSS cache-buster
+    (re.compile(r"\?v=[0-9a-f]{10}\b"), "?v=HASH"),                   # script content hash (build-dashboard)
     (re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC"), "TIMESTAMP"),  # "now" UTC stamp
     (re.compile(r"\b\d{1,2} (?:" + _MONTHS + r") \d{4}"), "DATE"),    # "1 June 2026"
     (re.compile(r"\d{4}-\d{2}-\d{2}(?!T)"), "DATE"),                 # ISO "Updated YYYY-MM-DD" (not datetimes like scraped_at)

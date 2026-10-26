@@ -7,6 +7,7 @@ Usage:
     python3 build-dashboard.py /path/to/data/nursery-stock /path/to/output/
 """
 
+import hashlib
 import json
 import os
 import re
@@ -43,6 +44,14 @@ from stocklib.snapshots import is_dormant_nursery
 # - Ladybird: ships QLD/NSW/VIC/ACT only, NOT WA
 # - Fruitopia: unclear from policy, likely does NOT ship to WA (QLD-based, no WA mention)
 RARITY_SCORES_FILE = Path("/opt/dale/data/rarity_scores.json")
+# The source deploy.sh copies to the dashboard dir as /dashboard.js, so its hash
+# is the hash of the served file.
+DASHBOARD_JS = Path(__file__).resolve().parent / "static" / "dashboard.js"
+
+
+def _content_version(data: bytes) -> str:
+    """A ?v= cache-buster that changes exactly when the asset does."""
+    return hashlib.sha256(data).hexdigest()[:10]
 
 # Dashboard junk filter (DEC-200 P1.5): the shared true-junk list plus the
 # ornamental and vegetable plant keywords. Native keywords are deliberately
@@ -813,7 +822,12 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
         "wait": wait_table(),
     }, separators=(",", ":"))
     data_js = "window.__DATA=JSON.parse(" + json.dumps(dashboard_data_json) + ");"
-    cache_v = datetime.now(timezone.utc).strftime("%Y%m%d")
+    # Version each script by its content, not the build date. The date gave a
+    # same-day redeploy the same URL, so a browser that loaded the page earlier
+    # that day kept the old dashboard.js until tomorrow (2026-10-26: the search
+    # fix was live on the server and Cloudflare, and still not in Chrome).
+    data_v = _content_version(data_js.encode())
+    js_v = _content_version(DASHBOARD_JS.read_bytes())
 
     # Server-render the FULL in-stock species strip for SEO: every species page is linked
     # from the homepage as a crawlable <a>. data-q drives the JS filter; href is the
@@ -1066,8 +1080,8 @@ def build_html(products: list[dict], nurseries: list[dict], ranked_species: list
 
 {render_footer(max_width=CONTENT_MAX_WIDTH, extra_text='<span id="stats" class="block mb-1"></span>')}
 
-<script src="{data_url}?v={cache_v}" defer></script>
-<script src="/dashboard.js?v={cache_v}" defer></script>
+<script src="{data_url}?v={data_v}" defer></script>
+<script src="/dashboard.js?v={js_v}" defer></script>
 
 {float_bar}
 </body>
