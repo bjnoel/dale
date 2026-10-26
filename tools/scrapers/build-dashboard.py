@@ -7,10 +7,13 @@ Usage:
     python3 build-dashboard.py /path/to/data/nursery-stock /path/to/output/
 """
 
+import gzip
 import hashlib
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -52,6 +55,46 @@ DASHBOARD_JS = Path(__file__).resolve().parent / "static" / "dashboard.js"
 def _content_version(data: bytes) -> str:
     """A ?v= cache-buster that changes exactly when the asset does."""
     return hashlib.sha256(data).hexdigest()[:10]
+
+
+# Caddy's `file_server { precompressed br gzip }` serves these in place of the
+# file. Compressing once at maximum effort beats Caddy's on-the-fly gzip, which
+# was all a browser got: data.js measured 390 KB as served, 226 KB as brotli -q 11
+# and 358 KB as gzip -9 (2026-10-26). gzip is the fallback for clients without br.
+PRECOMPRESSED_SUFFIXES = (".br", ".gz")
+
+
+def _remove_precompressed(path: Path) -> None:
+    for suffix in PRECOMPRESSED_SUFFIXES:
+        path.with_name(path.name + suffix).unlink(missing_ok=True)
+
+
+def _write_precompressed(path: Path) -> None:
+    """Write path.br and path.gz from the file now at path.
+
+    Each goes through a temp file and a rename, so Caddy never serves half of
+    one. No brotli binary means no .br, never a failed build: the page is
+    still served, just larger.
+    """
+    raw = path.read_bytes()
+    gz_tmp = path.with_name(path.name + ".gz.tmp")
+    gz_tmp.write_bytes(gzip.compress(raw, compresslevel=9, mtime=0))
+    gz_tmp.rename(path.with_name(path.name + ".gz"))
+
+    brotli = shutil.which("brotli")
+    if not brotli:
+        print("WARNING: brotli not installed; serving data.js without a .br", file=sys.stderr)
+        return
+    br_tmp = path.with_name(path.name + ".br.tmp")
+    try:
+        subprocess.run([brotli, "-q", "11", "-f", "-o", str(br_tmp), str(path)],
+                       check=True, capture_output=True)
+    except subprocess.CalledProcessError as e:
+        br_tmp.unlink(missing_ok=True)
+        print(f"WARNING: brotli failed ({e.stderr.decode().strip()}); serving data.js without a .br",
+              file=sys.stderr)
+        return
+    br_tmp.rename(path.with_name(path.name + ".br"))
 
 # Dashboard junk filter (DEC-200 P1.5): the shared true-junk list plus the
 # ornamental and vegetable plant keywords. Native keywords are deliberately
@@ -633,12 +676,11 @@ def load_nursery_data(data_dir: Path, today: str | None = None) -> list[dict]:
                     (variety_latin(_vs, species.get("sl", ""), species.get("g", "")) if _vs else "")
                     or species.get("pln") or species.get("ln", ""))
                 product_data["sl"] = species.get("sl", "")  # slug (for species pages)
-                if "g" in species:
-                    product_data["g"] = species["g"]  # genus
                 if "cv" in species:
                     product_data["cv"] = species["cv"]  # cultivar
-                if "r" in species:
-                    product_data["r"] = species["r"]  # region
+                # Genus ("g") and native region ("r") used to ride along here
+                # on every product. dashboard.js never read either, and they
+                # were ~27 KB of every visitor's compressed data.js (2026-10-26).
 
             # Price/stock change detection vs previous snapshot (variant-level)
             if prev_products:
@@ -1159,8 +1201,12 @@ def main():
     data_file = output_dir / "data.js"
     data_tmp = output_dir / "data.js.tmp"
     data_tmp.write_text(data_js)
+    # Sidecars first: Caddy serves data.js.br in place of data.js whenever it
+    # exists, so one surviving a new data.js would serve yesterday's stock.
+    _remove_precompressed(data_file)
     data_tmp.rename(data_file)
     print(f"Data written to {data_file} ({len(data_js):,} bytes)")
+    _write_precompressed(data_file)
 
     # Post-build verification. data.js is now the big file; the HTML is small by
     # design, so guard each against its own floor (a corrupt build trips one of
