@@ -73,7 +73,11 @@ treestock.com.au {
 
     root * /opt/dale/dashboard
     encode zstd gzip
-    file_server
+    # build-dashboard.py writes data.js.br (brotli -q 11) and data.js.gz (gzip -9)
+    # beside data.js; serve those rather than compressing on the fly.
+    file_server {
+        precompressed br gzip
+    }
 
     handle_errors {
         @404 expression {err.status_code} == 404
@@ -81,11 +85,11 @@ treestock.com.au {
         file_server
     }
 
-    # Versioned static assets (?v=YYYYMMDD cache-busted) can cache forever.
-    @versioned path /styles.css /dashboard.js /data.js
+    # Versioned static assets (?v= content hash, or date for styles.css) can cache forever.
+    @versioned path /styles.css /dashboard.js /data.js /bush-tucker/data.js
     header @versioned Cache-Control "public, max-age=31536000, immutable"
     # Everything else (HTML) stays short-lived so daily rebuilds show up.
-    @unversioned not path /styles.css /dashboard.js /data.js
+    @unversioned not path /styles.css /dashboard.js /data.js /bush-tucker/data.js
     header @unversioned Cache-Control "public, max-age=3600"
 
     # DAL-294: access log. Plausible is a client-side tag, so every crawler,
