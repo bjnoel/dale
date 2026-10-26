@@ -161,6 +161,47 @@ class ExtractProductSemanticsTest(unittest.TestCase):
         self.assertEqual(p["price"], 45)
         self.assertEqual(p["min_price"], 45)
         self.assertEqual(p["max_price"], 95)
+        self.assertNotIn("variants", p)  # no options, so no variant rows
+
+    # St Clements' "Blood Orange Ipolioto" (2026-10-26), pruned: three sizes.
+    IPOLIOTO = {
+        "name": "Blood Orange Ipolioto", "price": 35, "isInStock": True,
+        "categories": [{"name": "Citrus"}, {"name": "Blood orange"}, {"name": "Oranges"}],
+        "options": [{"title": "Litre", "selections": [
+            {"id": 1, "value": "4 litre pot", "description": "4 litre pot"},
+            {"id": 2, "value": "15 litre bag", "description": "15 litre bag"},
+            {"id": 3, "value": "30 litre rubber pot", "description": "30 litre rubber pot"}]}],
+        "productItems": [
+            {"id": "cfb81e5b", "price": 35, "optionsSelections": [1], "isVisible": True,
+             "inventory": {"status": "in_stock"}},
+            {"id": "84d105a0", "price": 95, "optionsSelections": [2], "isVisible": True,
+             "inventory": {"status": "in_stock"}},
+            {"id": "e1f2a3b4", "price": 190, "optionsSelections": [3], "isVisible": True,
+             "inventory": {"status": "out_of_stock"}},
+        ],
+    }
+
+    def test_size_options_become_variants(self):
+        # Prices must compare per size (CLAUDE.md rule 3), so the sizes are
+        # variant rows keyed by Wix's item id, not just a min/max range.
+        p = ws.extract_product(self.IPOLIOTO, "u")
+        self.assertEqual([(v["title"], v["id"], v["price"]) for v in p["variants"]],
+                         [("4 litre pot", "cfb81e5b", 35), ("15 litre bag", "84d105a0", 95),
+                          ("30 litre rubber pot", "e1f2a3b4", 190)])
+        self.assertEqual((p["min_price"], p["max_price"]), (35, 190))
+
+    def test_item_status_is_believed_only_when_it_says_out_of_stock(self):
+        p = ws.extract_product(self.IPOLIOTO, "u")
+        self.assertEqual([v["available"] for v in p["variants"]], [True, True, False])
+        sold_out = dict(self.IPOLIOTO, isInStock=False)
+        p = ws.extract_product(sold_out, "u")
+        self.assertEqual([v["available"] for v in p["variants"]], [False, False, False])
+        self.assertFalse(p["any_available"])
+
+    def test_store_categories_are_kept_as_tags(self):
+        # The only record of the fruit for cultivar-only titles ("Bacon").
+        self.assertEqual(ws.extract_product(self.IPOLIOTO, "u")["tags"],
+                         ["Citrus", "Blood orange", "Oranges"])
 
     def test_effective_item_price_discount_semantics(self):
         # Wix names are backwards: comparePrice is the discounted price.

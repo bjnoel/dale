@@ -95,7 +95,8 @@ EXPECTED_LOCAL = {
     "rayners": {"area": "Victoria", "state": "VIC"},
     "garden-world": {"area": "Melbourne metro", "state": "VIC"},
     "diacos": {"area": "Melbourne metro", "state": "VIC"},
-    "st-clements-citrus": {"area": "WA", "state": "WA"},
+    # Perth metro only since the 2026-10-25 move to Wix (flat $30).
+    "st-clements-citrus": {"area": "Perth metro", "state": "WA"},
     "the-heritage-nursery": {"area": "ACT + Queanbeyan", "state": "ACT"},
     "perrys": {"area": "Adelaide (pickup)", "state": "SA"},
 }

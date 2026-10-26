@@ -178,11 +178,12 @@ NURSERIES: list[Nursery] = [
                  "~$300+). Free shipping over $170. Verified 2026-06-20."),
     Nursery("st-clements-citrus", "St Clements Citrus",
             ("WA",),
-            local_delivery={"area": "WA", "state": "WA"},
+            local_delivery={"area": "Perth metro", "state": "WA"},
             location="High Wycombe, WA",
-            note="High Wycombe, Perth WA (Shopify). Rare-citrus specialist (yuzu, "
-                 "Buddha's hand, blood lime, citron). Posts WA-wide only (citrus "
-                 "interstate quarantine); postage included in price. Verified 2026-06-20."),
+            note="High Wycombe, Perth WA (Wix since 2026-10-25, www.stclementscitrus.com). "
+                 "Citrus specialist (yuzu, Buddha's hand, blood lime, citron), now also "
+                 "mango, avocado, stone fruit and figs. Delivers to Perth, Rockingham, "
+                 "Midland, Yanchep and Kalamunda only, flat $30. Verified 2026-10-26."),
     Nursery("the-heritage-nursery", "The Heritage Nursery",
             ("ACT",),
             local_delivery={"area": "ACT + Queanbeyan", "state": "ACT"},

@@ -135,9 +135,9 @@ NURSERY_META = {
         "description": "Wild Garden Organics is a Queensland nursery specialising in rare grafted tropical fruit trees. Free shipping on orders over $170 to QLD, NSW, VIC, SA and ACT. Does not ship to WA, NT, or TAS via standard checkout (biosecurity).",
     },
     "st-clements-citrus": {
-        "url": "https://stclementscitrus.com.au",
+        "url": "https://www.stclementscitrus.com",
         "tags": ["rare citrus", "yuzu", "WA grown"],
-        "description": "St Clements Citrus is a rare-citrus specialist in High Wycombe, Perth WA, growing yuzu, Buddha's hand, blood lime, citron and other hard-to-find citrus. Posts WA-wide only (citrus cannot cross state quarantine borders), with postage included in the price. A rare WA-local source for collector citrus.",
+        "description": "St Clements Citrus is a citrus specialist in High Wycombe, Perth WA, growing yuzu, Buddha's hand, blood lime, citron and other hard-to-find citrus, plus mango, avocado, stone fruit and fig trees. Delivers to Perth, Rockingham, Midland, Yanchep and Kalamunda for a flat $30.",
     },
     "the-heritage-nursery": {
         "url": "https://heritagenursery.com.au",

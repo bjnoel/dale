@@ -720,16 +720,16 @@
     {
       "key": "st-clements-citrus",
       "name": "St Clements Citrus",
-      "domain": "stclementscitrus.com.au",
+      "domain": "stclementscitrus.com",
       "contact_name": null,
-      "email": "sales@stclementscitrus.com.au",
+      "email": "info@stclementscitrus.com",
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
       "status": "not_contacted",
       "touches": [],
       "open_action": null,
-      "notes": "Register held sales@stclementcitrus.com.au (missing the s in Clements), which is undeliverable: stclementcitrus.com.au has no MX and no A record. The real domain stclementscitrus.com.au has Google MX. Corrected 2026-08-27 before it was ever used."
+      "notes": "Register held sales@stclementcitrus.com.au (missing the s in Clements), which is undeliverable: stclementcitrus.com.au has no MX and no A record. The real domain stclementscitrus.com.au has Google MX. Corrected 2026-08-27 before it was ever used.\n\nMoved store 2026-10-25 from Shopify (stclementscitrus.com.au, now empty) to Wix at www.stclementscitrus.com. The new shipping policy names info@stclementscitrus.com, so that is the email now; sales@ on the old domain is unverified since the move. Delivery is now Perth metro only (flat $30), not WA-wide post."
     },
     {
       "key": "the-heritage-nursery",

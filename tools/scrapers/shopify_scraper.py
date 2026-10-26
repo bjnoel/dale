@@ -124,13 +124,7 @@ NURSERIES = {
         "product_types": ["FOOD PLANTS"],
         "fruit_tags": ["fruit online"],
     },
-    "st-clements-citrus": {
-        # Rare-citrus specialist; whole store is citrus (product_type "Citrus
-        # Tree"), so no filter is needed. WA-only mail order.
-        "name": "St Clements Citrus",
-        "domain": "stclementscitrus.com.au",
-        "location": "High Wycombe, WA",
-    },
+    # st-clements-citrus moved to Wix on 2026-10-25: see wix_scraper.py.
     "garden-express": {
         # Australia's largest online nursery (5,600+ products, mostly ornamental
         # bulbs/perennials). Migrated WooCommerce -> Shopify between the

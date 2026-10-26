@@ -41,13 +41,19 @@ from stocklib.model import validate_and_warn
 from stocklib.panel import run_panel
 from stocklib.scrape_health import count_priced
 
-# Empty on purpose. Heaven On Earth Fruit Trees was the only Wix nursery and
-# was REMOVED 2026-08-27 at their own request (see registry.py). DO NOT re-add
-# them or scrape heavenonearthfruittrees.com.au without their explicit written
-# permission. This scraper now runs as a clean no-op, kept for the next Wix
-# nursery, the same shape the Magento bee scraper was left in after Beewise
-# opted out (DEC-198).
-NURSERIES = {}
+# Heaven On Earth Fruit Trees was REMOVED 2026-08-27 at their own request (see
+# registry.py). DO NOT re-add them or scrape heavenonearthfruittrees.com.au
+# without their explicit written permission.
+NURSERIES = {
+    "st-clements-citrus": {
+        # Moved from Shopify (stclementscitrus.com.au, emptied 2026-10-25) to
+        # this Wix store. 167 products at the move, now beyond citrus (mango,
+        # avocado, stone fruit, figs), all trees, so no filter.
+        "name": "St Clements Citrus",
+        "domain": "www.stclementscitrus.com",
+        "location": "High Wycombe, WA",
+    },
+}
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
@@ -199,11 +205,15 @@ def extract_product(node, url):
     # subscribers with false restock/variety alerts (same rule as Ecwid).
     available = bool(node.get("isInStock"))
 
+    variants = _extract_variants(node, items, available)
+    if variants:
+        available = any(v["available"] for v in variants)
+
     # Emit BOTH dialects' availability/price fields (flat dialect + the
     # variant dialect's precomputed any_available/min_price/max_price) so all
     # builders render it correctly -- see ecwid_scraper.extract_product and
     # the DEC-210 "0 in stock / POA" bug.
-    return {
+    product = {
         "title": name,
         "url": url,
         "sku": (node.get("sku") or "").strip(),
@@ -215,7 +225,45 @@ def extract_product(node, url):
         "available": available,
         "any_available": available,
         "availability_raw": "InStock" if available else "OutOfStock",
+        # The store's own category names. St Clements titles many trees by
+        # cultivar alone ("Kensington Pride", "Bacon") and files the fruit
+        # here ("Mango", "Avocado"), so it is the only record of what they are.
+        "tags": [c["name"] for c in node.get("categories") or []
+                 if isinstance(c, dict) and c.get("name")],
     }
+    if variants:
+        product["variants"] = variants
+    return product
+
+
+def _extract_variants(node, items, product_in_stock):
+    """One variant per visible productItem of a product with options, titled
+    by its selections ("15 litre bag"), so price changes compare per size
+    (variant-level, never product-level min_price). [] for a product without
+    options, which keeps its single-price shape.
+
+    Keyed by the Wix item id, which survives a reprice. Stock: isInStock is
+    product-level, and an item's inventory.status is the field that lies in
+    the in-stock direction (see extract_product), so it is believed only when
+    it says out of stock."""
+    options = node.get("options") or []
+    if not options or not items:
+        return []
+    names = {}
+    for opt in options:
+        for sel in opt.get("selections") or []:
+            names[sel.get("id")] = sel.get("description") or sel.get("value")
+    variants = []
+    for item in items:
+        picked = [str(names.get(s, s)) for s in item.get("optionsSelections") or []]
+        status = (item.get("inventory") or {}).get("status")
+        variants.append({
+            "title": " / ".join(picked) or "Default",
+            "id": item.get("id"),
+            "price": _effective_item_price(item),
+            "available": product_in_stock and status != "out_of_stock",
+        })
+    return variants
 
 
 def scrape_wix(nursery_key, config, health=None):
