@@ -347,12 +347,12 @@ class InScopeTest(unittest.TestCase):
             with self.subTest(title=title):
                 self.assertFalse(self._in(title, "daleys", category=cat))
 
-    def test_known_cost_miracle_fruit_in_indoor_plants(self):
-        # A real fruit, filed under Indoor Plants with no botanical name. It
-        # was already off the homepage; now it is off the species page too.
-        # Pinned so that admitting it is a decision, not an accident.
-        self.assertFalse(self._in("Miracle Fruit", "daleys",
-                                  category="Trees and Plants/Daleys Indoor Plants"))
+    def test_miracle_fruit_is_a_named_exception_not_its_bucket(self):
+        # A real fruit filed under Indoor Plants with no botanical name, let in
+        # by exact title (Benedict, 2026-10-26). The rest of the bucket stays out.
+        indoor = "Trees and Plants/Daleys Indoor Plants"
+        self.assertTrue(self._in("Miracle Fruit", "daleys", category=indoor))
+        self.assertFalse(self._in("Fig - Strangler", "daleys", category=indoor))
 
     def test_fruit_category_never_consults_the_matcher(self):
         from stocklib.fruit_filters import nursery_admits

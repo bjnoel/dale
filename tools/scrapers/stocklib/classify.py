@@ -260,6 +260,28 @@ def is_junk_keyword(title: str) -> bool:
     return matches_keyword(title, NON_PLANT_KEYWORDS)
 
 
+# Propagation material: unrooted wood for grafting or striking, sold at a
+# fraction of a tree's price ("Scion Wood Apple - Gala" $9.75). It lists on
+# /scion-wood.html and nowhere else, because in a species price table it reads
+# as the cheapest tree (Benedict, 2026-10-26).
+#
+# Plural "cuttings" and "N x Cutting" are a bundle of sticks ("White Shahtoot
+# Mulberry (3xCuttings)", "Adam's Pride Fig (1 x Cutting)"). A bare singular
+# "Cutting" is NOT matched: across every snapshot to 2026-10-26 it is almost
+# always a rooted plant in a pot ("Finger lime Chartreuse Cutting 90mm"), as are
+# "Cutting Grown" and "Rooted Cutting".
+_PROPAGATION_RE = re.compile(
+    r"(?<![a-z])(?:scions?|budwood|bud wood)(?![a-z])"
+    r"|(?<![a-z])\d+\s*x\s*cuttings?(?![a-z])"
+    r"|(?<![a-z])(?<!rooted )cuttings(?![a-z])(?! grown)",
+    re.IGNORECASE)
+
+
+def is_propagation_material(title: str) -> bool:
+    """True for scion wood, budwood and bundles of unrooted cuttings."""
+    return bool(_PROPAGATION_RE.search(title or ""))
+
+
 def is_seed_packet(title: str) -> bool:
     """True if the title is a seed packet (not a nursery-grown tree).
 

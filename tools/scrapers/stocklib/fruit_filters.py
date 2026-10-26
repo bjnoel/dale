@@ -68,6 +68,13 @@ FRUIT_FILTERS = {
             # junk gate downstream rather than on this filter.
             "Specials",
         ],
+        # Single products admitted from a bucket that stays excluded. Exact
+        # title, case-insensitive. Miracle Fruit (Synsepalum dulcificum) is
+        # filed under "Trees and Plants/Daleys Indoor Plants" with no botanical
+        # name, so neither the category nor nursery_admits can see it is fruit.
+        # The bucket itself also holds "Fig - Strangler", so it stays out
+        # (Benedict, 2026-10-26).
+        "include_titles": ["Miracle Fruit"],
         # Deliberately NOT included, see tests/test_fruit_filters.py:
         #   "Trees and Plants/Rainforest Trees"
         #                       holds "Fig - Small Leaved" and "Fig - White",
@@ -154,6 +161,9 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
         return False
 
     if filt.get("mode") == "categories":
+        title = (product.get("title") or "").strip().lower()
+        if title in {t.lower() for t in filt.get("include_titles", [])}:
+            return True
         cat = product.get("product_type", product.get("category", ""))
         include_prefixes = filt.get("include_prefixes", [])
         return any(cat.startswith(prefix) for prefix in include_prefixes)
@@ -191,9 +201,8 @@ def nursery_admits(product: dict, nursery_key: str, species_of) -> bool:
     A plain "Fig - Small Leaved" in Rainforest Trees, a rose named 'Apricot
     Nectar' or "Scion Wood Apple - Gala" has neither, and stays out.
 
-    Known cost: Daleys' Miracle Fruit is filed under Indoor Plants with no
-    botanical name, so it stays off the species page as it was already off
-    the homepage."""
+    A real fruit with neither (Daleys' Miracle Fruit, in Indoor Plants) goes
+    in FRUIT_FILTERS[...]["include_titles"] instead."""
     if is_fruit_product(product, nursery_key):
         return True
     species = species_of(product.get("title", ""))
@@ -206,16 +215,18 @@ def nursery_admits(product: dict, nursery_key: str, species_of) -> bool:
 
 def in_scope(product: dict, nursery_key: str) -> bool:
     """The treestock inclusion rule, for every surface that lists products:
-    not junk, admitted by the nursery's categorisation (nursery_admits), and
-    not a culinary herb.
+    not junk, not scion wood or cuttings (those list on /scion-wood.html),
+    admitted by the nursery's categorisation (nursery_admits), and not a
+    culinary herb.
 
     One function because two drifted ones were the bug (DAL-312). The homepage
     still applies its own junk vocabulary on top (DASHBOARD_JUNK_KEYWORDS,
     which spares natives) and calls nursery_admits directly for the rest.
     """
-    from stocklib.classify import is_herb, is_real_product
+    from stocklib.classify import is_herb, is_propagation_material, is_real_product
     title = product.get("title", "")
     return (is_real_product(title)
+            and not is_propagation_material(title)
             and nursery_admits(product, nursery_key, _match_species)
             and not is_herb(title, _match_species))
 

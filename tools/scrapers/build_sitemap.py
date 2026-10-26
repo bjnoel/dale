@@ -70,6 +70,7 @@ STATIC_PAGES = [
     ("finger-lime-guide.html", "monthly", "0.8"),
     ("when-to-plant.html", "monthly", "0.8"),
     ("bare-root.html", "weekly", "0.8"),
+    ("scion-wood.html", "daily", "0.7"),
     ("companion-planting-guide.html", "monthly", "0.8"),
     ("fruit-tree-pollination-guide.html", "monthly", "0.8"),
     ("rootstock.html", "monthly", "0.8"),

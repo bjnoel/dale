@@ -82,6 +82,7 @@ RELATED_LOOKUP = build_related_lookup()
 
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
 from stocklib.fruit_filters import in_scope
+from build_scion_wood_page import collect_scion_wood, counts_by_species, species_link_html
 from stocklib.snapshots import iter_nursery_snapshots
 from stocklib.species_match import build_species_lookup, match_title, multigraft_species
 from stocklib.taxonomy import enabled_species
@@ -480,9 +481,11 @@ def compute_state_links(species_slug: str, products: list[dict]) -> dict[str, st
 def build_species_page(species: dict, products: list[dict], slug_to_name: dict[str, str] | None = None,
                        rarity: dict | None = None, trend_summary: dict | None = None,
                        varieties: list[dict] | None = None, has_compare_page: bool = False,
-                       multigraft_products: list[dict] | None = None) -> str:
+                       multigraft_products: list[dict] | None = None,
+                       scion_link_html: str = "") -> str:
     """Generate HTML for a single species page. multigraft_products render in
-    their own section below the listings and count in none of its figures."""
+    their own section below the listings and count in none of its figures.
+    scion_link_html points at this species on /scion-wood.html ("" for none)."""
     name = species["common_name"]
     latin = species["latin_name"]
     slug = species["slug"]
@@ -814,6 +817,7 @@ def build_species_page(species: dict, products: list[dict], slug_to_name: dict[s
         state_links_html=state_links_html, related_species_html=related_species_html,
         variety_cta=variety_cta, treesmith_promo=treesmith_promo,
         compare_link_html=compare_link_html,
+        scion_link_html=scion_link_html,
         watch_script=watch_script, nursery_view=nursery_view, product_view=product_view,
         variety_view=variety_view, notable_view=notable_view,
         multigraft_view=multigraft_view,
@@ -913,6 +917,9 @@ def main():
     by_species = group_by_species(products, lookup)
     print(f"  {len(by_species)} species matched")
     multigrafts = group_multigrafts(products, lookup)
+    # Scion wood is off every tree listing (in_scope); each species page links
+    # to its section of /scion-wood.html instead.
+    scion_counts = counts_by_species(collect_scion_wood(data_dir))
     print(f"  {sum(len(v) for v in multigrafts.values())} multi-graft listings across {len(multigrafts)} species")
 
     # Variety chip clouds: the SAME grouping build_variety_pages.py writes
@@ -1026,7 +1033,8 @@ def main():
                                   trend_summary=trend_summaries.get(slug),
                                   varieties=varieties_by_species.get(slug, []),
                                   has_compare_page=len(nurseries) >= COMPARE_MIN_NURSERIES,
-                                  multigraft_products=multigrafts.get(slug, []))
+                                  multigraft_products=multigrafts.get(slug, []),
+                                  scion_link_html=species_link_html(slug, scion_counts, species["common_name"]))
         out_file = species_dir / f"{slug}.html"
         out_file.write_text(html)
         generated += 1

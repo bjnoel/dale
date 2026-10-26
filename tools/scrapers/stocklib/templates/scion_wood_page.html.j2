@@ -1,0 +1,25 @@
+{{ head|safe }}
+{{ header|safe }}
+
+<main class="{{ content_max_width }} mx-auto px-4 py-8">
+  {{ breadcrumb|safe }}
+
+  <h1 class="text-2xl font-bold text-green-900 mb-2">Scion Wood and Cuttings for Sale in Australia</h1>
+  <p class="text-gray-600 text-sm mb-4">{{ total }} listings at {{ nurseries }} nurseries, {{ in_stock }} in stock. Updated {{ today }}.</p>
+
+  <section class="mb-6 text-sm text-gray-700 space-y-2">
+    <p>Scion wood is a length of dormant stem cut from a named variety, for grafting onto a rootstock. Figs and mulberries are usually grown from cuttings instead, so those are listed here too. Neither has roots, so they are kept off the tree listings and price comparisons elsewhere on the site.</p>
+    <p>Most scion wood is cut while trees are dormant in winter and sells out quickly, so sold-out listings stay on this page to show who sells it. For choosing what to graft onto, see the <a href="/rootstock.html" class="text-green-700 hover:underline">rootstock guide</a>.</p>
+  </section>
+
+  {% if total %}
+  <p class="text-sm mb-6">{{ jump_links|safe }}</p>
+  {{ groups_html|safe }}
+  {% else %}
+  <p class="text-sm text-gray-600 mb-6">No nursery we track has scion wood or cuttings listed right now.</p>
+  {% endif %}
+</main>
+
+{{ footer|safe }}
+</body>
+</html>

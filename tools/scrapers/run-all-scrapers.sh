@@ -304,6 +304,11 @@ echo "$(ts) Building bare-root season page..."
 python3 "$SCRIPT_DIR/build_bare_root_page.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Bare-root page build failed (non-fatal)"
 echo "$(ts) Bare-root season page complete."
 
+# Scion wood and cuttings, all species on one page. Every tree surface drops
+# them (in_scope), so this is where they list.
+echo "$(ts) Building scion wood page..."
+python3 "$SCRIPT_DIR/build_scion_wood_page.py" "$PROJECT_DIR/data/nursery-stock" "$DIGEST_DIR" 2>&1 || echo "$(ts) WARNING: Scion wood page build failed (non-fatal)"
+
 # Build the shipping-reachability dataset page (DAL-254). This is the one page
 # on the site built to be CITED rather than to convert: it publishes what every
 # tracked nursery x every day since March says about which species each state

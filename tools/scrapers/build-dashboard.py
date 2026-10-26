@@ -22,7 +22,7 @@ from daily_digest import _variant_key
 from shipping import SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY
 from treestock_layout import render_head, render_header, render_footer, render_treesmith_promo, CONTENT_MAX_WIDTH, organization_jsonld, website_jsonld
 from cultivar_parsing import product_variety_slug
-from stocklib.classify import (CATEGORY_KEYWORDS, TRUE_JUNK, is_herb, is_seed_packet,
+from stocklib.classify import (CATEGORY_KEYWORDS, TRUE_JUNK, is_herb, is_propagation_material, is_seed_packet,
                                 matches_keyword)
 from stocklib.taxonomy import enabled_species, load_species
 from stocklib.species_match import load_species_lookup, match_species
@@ -571,6 +571,10 @@ def load_nursery_data(data_dir: Path, today: str | None = None) -> list[dict]:
 
             # Skip seed packets (not nursery-grown trees/plants)
             if is_seed_packet(title_lower):
+                continue
+
+            # Scion wood and cuttings list on /scion-wood.html, not here
+            if is_propagation_material(title):
                 continue
 
             # Skip standalone pot/planter products (but not "potted" plants)
