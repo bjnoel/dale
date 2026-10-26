@@ -16597,3 +16597,29 @@ follow-up rather than done as a side effect.
 **Miracle Fruit:** Benedict chose the exception over the known cost in DEC-360.
 `FRUIT_FILTERS["daleys"]["include_titles"]` admits it by exact title; the Indoor Plants
 bucket (which also holds "Fig - Strangler") stays excluded.
+
+## DEC-362 (2026-10-26): scion wood alerts are a second kind of watch on the same variety
+
+**Benedict:** "scion wood always will attach to a variety, but it's a different type of watch
+to just watching that variety"; alerts set from /scion-wood.html only.
+
+**Model.** A watch is (email, variety_slug, watch_type), type `tree` or `scion`
+(`stocklib/watch_types.py`). Scion listings resolve to their tree's slug through the same
+parser (`cultivar_parsing.scion_variety_slug`: "Scion Wood Apple - Gala" -> apple-gala;
+every one of the 44 historical scion titles resolves except "Fig Cuttings", "Seeds and
+Cuttings" and a workshop). Each type sees only its own listings (`in_scope` vs
+`is_scion_listing`), with its own cooldown and stop link, so a $9.75 scion stick never tells a
+tree watcher the tree is back. Rejected: a `scion-wood-` slug prefix, which would have minted
+a fake second variety.
+
+**Migration.** SQLite cannot alter UNIQUE in place, so `watches` and `sends` were rebuilt
+once in a single transaction (UNIQUE now includes watch_type). Backed up first
+(/opt/dale/data/backups/variety_watches.20261026T040633.pre-watch-type.db), rehearsed on a
+copy, then run by the server's startup: 301 watches and 125 sends identical to the backup,
+all `tree`, integrity ok. Stop links now always carry &type; links sent earlier carry none and
+remove both kinds, which is what their clicker meant.
+
+**Validation.** The server accepts a scion watch only for a variety in scion-index.json
+(written by build_scion_wood_page.py, 35 varieties). Probed live: unknown slug 404, a real
+tree variety with no scion listing (mango-r2e2) 404, bad type 400, no rows written.
+/scion-wood.html is now linked from the Guides menu, the rootstock guide and species pages.
