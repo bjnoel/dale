@@ -53,6 +53,7 @@ NAV_ITEMS = [
         ("Planting Calendar", "/when-to-plant.html"),
         ("Fruit Tree Pollination", "/fruit-tree-pollination-guide.html"),
         ("Rootstock Guide", "/rootstock.html"),
+        ("Scion Wood", "/scion-wood.html"),
     ]),
     ("My alerts", "/manage.html"),
     ("Insights", [

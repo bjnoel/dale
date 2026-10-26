@@ -180,6 +180,7 @@ def build_related_guides() -> str:
 <section class="mb-10" id="related">
   <h2 class="text-xl font-bold text-green-900 mb-3">Related Guides</h2>
   <ul class="text-sm space-y-1 list-disc pl-5">
+    <li><a href="/scion-wood.html" class="text-green-700 hover:underline">Scion wood and cuttings for sale</a> (every nursery's scion wood in one place, with restock alerts)</li>
     <li><a href="/fruit-tree-pollination-guide.html" class="text-green-700 hover:underline">Fruit tree pollination guide</a> (which trees need a partner to fruit)</li>
     <li><a href="/bare-root.html" class="text-green-700 hover:underline">Bare root season</a> (when dormant, grafted trees go on sale)</li>
     <li><a href="/when-to-plant.html" class="text-green-700 hover:underline">When to plant fruit trees in Australia</a> (planting calendar by climate)</li>
