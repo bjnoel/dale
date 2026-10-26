@@ -78,6 +78,10 @@ FRUIT_FILTERS = {
         #                       Until 2026-08-27 the species fallback was
         #                       admitting 26 of them anyway, under a category
         #                       string of its own invention.
+        #                       nursery_admits is that guard for the bucket's
+        #                       bush tucker (Blue Quandong, Native Ginger,
+        #                       Midyim are admitted by species), and the figs
+        #                       still stay out, so the bucket stays excluded.
         #   "Gardening Tools - Accessories/Scion Wood"
         #                       32 groups of 15cm grafting sticks at $9.75,
         #                       named by cultivar ("Scion Wood Apple - Pink
@@ -89,19 +93,15 @@ FRUIT_FILTERS = {
         #                       precisely where it hurts (DEC-314: those pages
         #                       rank by price).
         #
-        #                       NOTE this rule only reaches the homepage.
-        #                       build_species_pages, build_variety_pages and
-        #                       build_species_state_pages apply
-        #                       stocklib.classify.is_real_product and NEVER
-        #                       is_fruit_product, so 459 Daleys products (109
-        #                       in stock) are live on those pages while absent
-        #                       from search, all 32 scion wood among them.
-        #                       "Scion Wood Apple - Red Delicious $9.75 In
-        #                       stock" is the second row of the cheapest table
-        #                       on /species/apple.html as of 2026-08-27. Fixing
-        #                       that is a separate change with its own blast
-        #                       radius; do not assume this filter covers a page
-        #                       without checking that the builder imports it.
+        #                       Until 2026-10-26 this rule only reached the
+        #                       homepage: the species, variety, buy and compare
+        #                       builders applied is_real_product alone, so all
+        #                       32 sat in their price tables ("Scion Wood Apple
+        #                       - Red Delicious $9.75 In stock" was the second
+        #                       row on /species/apple.html). Every listing
+        #                       surface now goes through in_scope (DAL-312),
+        #                       and tests/test_fruit_filters.py checks each
+        #                       builder binds it.
         #   ""                  Was 602 live rows before the feed carried a
         #                       category column. Now 0. The alarm if that ever
         #                       regresses is csv_feed_scraper's
@@ -166,19 +166,71 @@ def is_fruit_product(product: dict, nursery_key: str) -> bool:
     return True
 
 
-def digest_product_filter(product: dict, nursery_key: str) -> bool:
-    """The full treestock inclusion rule: the nursery's own fruit
-    categorisation plus the junk/seed-packet filter.
+def nursery_admits(product: dict, nursery_key: str, species_of) -> bool:
+    """Does the nursery's own categorisation, weighed against the title,
+    admit this product? `species_of(title)` returns the matched species (a
+    full record or a compressed lookup entry) or None, and is only called when
+    the nursery's category says "not fruit".
 
-    Lives here rather than in daily_digest.py because send_variety_alerts.py
-    needs exactly the same rule to run stocklib.changes over the snapshots, and
-    a second copy would drift the way FRUIT_FILTERS itself once did.
+    The nursery's category and our species match are two independent pieces
+    of evidence, and until 2026-10-26 each surface trusted only one of them.
+    The homepage, digest and nursery pages trusted the category, so Daleys'
+    Kakadu Plum ("Shade and Ornamental Trees") and Ladybird's Stone Pine
+    ("Pines & Conifers") never appeared. The species, buy, variety and compare
+    pages trusted the match, so "Cherry Laurel (Prunus laurocerasus)" sat on
+    /species/cherry, Hebe 'Kiwi' on kiwifruit and Waratah 'Sugar Plum' on plum
+    (DAL-312: 178 listings on which the two disagreed).
+
+    When they disagree, a common-name match alone does not overrule the
+    nursery. It takes one of:
+      - a species from a non-fruit category (bush tucker today; the category
+        list grows with ENABLED_CATEGORIES). Nurseries file those under
+        Natives or Rainforest Trees, so the disagreement is expected there.
+      - the title's own binomial naming exactly our species
+        (species_match.title_confirms).
+    A plain "Fig - Small Leaved" in Rainforest Trees, a rose named 'Apricot
+    Nectar' or "Scion Wood Apple - Gala" has neither, and stays out.
+
+    Known cost: Daleys' Miracle Fruit is filed under Indoor Plants with no
+    botanical name, so it stays off the species page as it was already off
+    the homepage."""
+    if is_fruit_product(product, nursery_key):
+        return True
+    species = species_of(product.get("title", ""))
+    if not species:
+        return False
+    from stocklib.species_match import title_confirms
+    slug = species.get("slug") or species.get("sl")
+    return slug in _non_fruit_landing_slugs() or title_confirms(product.get("title", ""), species)
+
+
+def in_scope(product: dict, nursery_key: str) -> bool:
+    """The treestock inclusion rule, for every surface that lists products:
+    not junk, admitted by the nursery's categorisation (nursery_admits), and
+    not a culinary herb.
+
+    One function because two drifted ones were the bug (DAL-312). The homepage
+    still applies its own junk vocabulary on top (DASHBOARD_JUNK_KEYWORDS,
+    which spares natives) and calls nursery_admits directly for the rest.
     """
     from stocklib.classify import is_herb, is_real_product
     title = product.get("title", "")
     return (is_real_product(title)
-            and is_fruit_product(product, nursery_key)
+            and nursery_admits(product, nursery_key, _match_species)
             and not is_herb(title, _match_species))
+
+
+# The digest's historical name for the same rule.
+digest_product_filter = in_scope
+
+
+@lru_cache(maxsize=1)
+def _non_fruit_landing_slugs() -> frozenset:
+    """Slugs of every species on an enabled non-fruit landing, including
+    fruit records cross-tagged into it (Finger Lime, Kakadu Plum)."""
+    from stocklib.taxonomy import ENABLED_CATEGORIES, landing_species
+    return frozenset(s["slug"] for cat in ENABLED_CATEGORIES if cat != "fruit"
+                     for s in landing_species(cat))
 
 
 @lru_cache(maxsize=1)
@@ -187,6 +239,7 @@ def _species_lookup() -> dict:
     return load_species_lookup()
 
 
+@lru_cache(maxsize=None)
 def _match_species(title: str):
     from stocklib.species_match import match_species
     return match_species(title, _species_lookup())

@@ -16,7 +16,7 @@ from shipping import (SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_labe
                       nursery_location, restriction_warning)
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
-from stocklib.fruit_filters import digest_product_filter
+from stocklib.fruit_filters import in_scope
 from stocklib.registry import NURSERIES as REGISTRY_NURSERIES
 from stocklib.snapshots import is_dormant_nursery
 from stocklib.species_match import load_species_lookup, match_species
@@ -273,7 +273,7 @@ def visible_products(data: dict) -> list:
     row is unrecoverable); rendering them is not (DEC-227).
     """
     return [p for p in data.get("products", [])
-            if digest_product_filter(p, data.get("nursery", ""))]
+            if in_scope(p, data.get("nursery", ""))]
 
 
 def visible_counts(data: dict) -> tuple:

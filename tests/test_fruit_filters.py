@@ -287,5 +287,97 @@ class FruitFiltersTest(unittest.TestCase):
         self.assertEqual(restrictive, ["daleys", "forever-seeds", "ladybird"])
 
 
+class InScopeTest(unittest.TestCase):
+    """DAL-312: the nursery's category and the species match disagreed about
+    178 live listings (2026-10-26), and each surface trusted only one of them.
+    Titles and categories below are verbatim from that day's snapshots."""
+
+    DALEYS_RAINFOREST = "Trees and Plants/Rainforest Trees/Secondary/Mature Phase"
+    DALEYS_SHADE = "Trees and Plants/Shade and Ornamental Trees/Native"
+
+    def _in(self, title, nursery, **fields):
+        from stocklib.fruit_filters import in_scope
+        return in_scope(dict(title=title, **fields), nursery)
+
+    def test_bush_tucker_filed_outside_fruit_is_admitted(self):
+        # Gone from the homepage, digest and Daleys' own nursery page while
+        # its species page listed it.
+        for title, cat in (("Kakadu Plum", self.DALEYS_SHADE),
+                           ("Blue Quandong", self.DALEYS_RAINFOREST),
+                           ("Native Ginger", self.DALEYS_RAINFOREST),
+                           ("Midyim Berry", self.DALEYS_RAINFOREST)):
+            with self.subTest(title=title):
+                self.assertTrue(self._in(title, "daleys", category=cat))
+        self.assertTrue(self._in("Riberry Little Denise (Syzygium luehmannii)",
+                                 "ladybird", tags=["Natives"]))
+
+    def test_the_titles_own_binomial_can_overrule_the_category(self):
+        self.assertTrue(self._in("Stone Pine (Pinus pinea)", "ladybird",
+                                 tags=["Needs Product Image", "Pines & Conifers"]))
+
+    def test_same_genus_is_not_enough_against_the_category(self):
+        # Each is a Prunus/Pyrus/Pistacia, so the genus agrees with our
+        # record; the epithet does not, and these are a hedge, a street tree
+        # and an ornamental.
+        for title, tags in (("Cherry Laurel (Prunus laurocerasus)", ["Hedge & Screening Plants"]),
+                            ("Manchurian Pear (Pyrus ussuriensis) 200mm pot (PICK UP ONLY)",
+                             ["Dormant", "Feature Trees", "pickuponly"]),
+                            ("Chinese Pistachio (Pistacia chinensis)", ["Dormant", "Natives"])):
+            with self.subTest(title=title):
+                self.assertFalse(self._in(title, "ladybird", tags=tags))
+
+    def test_a_fruit_word_in_an_ornamental_name_stays_out(self):
+        for title in ("Hebe Kiwi 'Akiri'",
+                      "Waratah Wild Brumby 'Sugar Plum (Telopea)",
+                      "Rose Apricot Nectar 2 ft Standards (Rosa)",
+                      "Plantain Lily Blue Angel (Hosta )",
+                      "Coneflower Magic Vintage Orange (Echinacea Sun)"):
+            with self.subTest(title=title):
+                self.assertFalse(self._in(title, "ladybird", tags=["Flowering Plants"]))
+
+    def test_daleys_non_fruit_buckets_still_hold_their_landmines(self):
+        # The rainforest figs (Ficus obliqua, virens) are why that bucket was
+        # never included; the bush tucker beside them now is, and they are not.
+        for title, cat in (("Fig - Small Leaved", self.DALEYS_RAINFOREST),
+                           ("Fig - White", self.DALEYS_RAINFOREST),
+                           ("Rough Barked Apple", self.DALEYS_SHADE),
+                           ("Scion Wood Apple - Gala", "Gardening Tools - Accessories/Scion Wood"),
+                           ("Macadamia Nuts in Shell (For Eating) 1kg",
+                            "Gardening Tools - Accessories/Ready to Eat Fruit")):
+            with self.subTest(title=title):
+                self.assertFalse(self._in(title, "daleys", category=cat))
+
+    def test_known_cost_miracle_fruit_in_indoor_plants(self):
+        # A real fruit, filed under Indoor Plants with no botanical name. It
+        # was already off the homepage; now it is off the species page too.
+        # Pinned so that admitting it is a decision, not an accident.
+        self.assertFalse(self._in("Miracle Fruit", "daleys",
+                                  category="Trees and Plants/Daleys Indoor Plants"))
+
+    def test_fruit_category_never_consults_the_matcher(self):
+        from stocklib.fruit_filters import nursery_admits
+
+        def boom(_title):
+            raise AssertionError("species_of called for a fruit-category product")
+        self.assertTrue(nursery_admits(
+            {"title": "Apple 'Rosemary Russet'", "product_type": "Fruit and Nut Trees"},
+            "daleys", boom))
+
+    def test_every_listing_surface_uses_the_one_rule(self):
+        """The bug was two rules. Builders listing products bind in_scope
+        (the homepage binds nursery_admits under its own junk vocabulary)."""
+        from stocklib import fruit_filters
+        for name in ("build_species_pages", "build_variety_pages", "build_compare_pages",
+                     "build_species_state_pages", "build_location_pages",
+                     "build_bare_root_page", "build_species_trends",
+                     "send_species_alerts", "send_variety_alerts", "build_nursery_pages"):
+            with self.subTest(module=name):
+                self.assertIs(importlib.import_module(name).in_scope, fruit_filters.in_scope)
+        import daily_digest
+        self.assertIs(daily_digest._digest_product_filter, fruit_filters.in_scope)
+        self.assertIs(importlib.import_module("build-dashboard").nursery_admits,
+                      fruit_filters.nursery_admits)
+
+
 if __name__ == "__main__":
     unittest.main()

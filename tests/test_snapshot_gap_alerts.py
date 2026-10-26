@@ -34,8 +34,11 @@ def write_snapshot(nursery_dir: Path, day: str, titles_in_stock):
     payload = {
         "nursery_name": nursery_dir.name,
         "products": [
+            # Real Ladybird rows carry their shop tags, and in_scope reads
+            # them: an untagged Ladybird row is not stock.
             {"title": t, "url": f"https://example.com/{i}",
-             "any_available": True, "min_price": 25.0}
+             "any_available": True, "min_price": 25.0,
+             "tags": ["Fruit Trees & Edibles"]}
             for i, t in enumerate(titles_in_stock)
         ],
     }

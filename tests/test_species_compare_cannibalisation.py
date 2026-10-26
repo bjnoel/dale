@@ -41,7 +41,7 @@ SCRAPERS = REPO_ROOT / "tools" / "scrapers"
 def product(title, price=29.95):
     return {
         "title": title, "url": f"https://example.test/{title.lower().replace(' ', '-')}",
-        "category": "Fruit Trees", "min_price": price, "any_available": True,
+        "category": "Fruit Trees/Tropical Fruit Trees", "min_price": price, "any_available": True,
         "variants": [{"title": "140mm", "price": price, "available": True}],
     }
 

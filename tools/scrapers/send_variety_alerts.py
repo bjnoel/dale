@@ -124,13 +124,12 @@ TREESMITH_PROMO = (
     '</div>'
 )
 
-from stocklib.classify import is_real_product
 from stocklib.snapshots import snapshot_path_for_date
 from stocklib.registry import delivery_label, nursery_caveat_for_state, nursery_ships_to
 from stocklib.scrape_health import HEALTH_DIRNAME, untrusted_nurseries
 from stocklib.utm import outbound
 from stocklib import changes as _changes
-from stocklib.fruit_filters import digest_product_filter
+from stocklib.fruit_filters import in_scope
 from stocklib.variety_index import DEFAULT_INDEX_PATH, get_variety_index
 from stocklib.availability import email_phrase, roll_up
 from stocklib.email_footer import watch_urls
@@ -192,7 +191,7 @@ def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
         for p in data.get("products", []):
             title = p.get("title", "")
             title_lower = title.lower()
-            if not is_real_product(title):
+            if not in_scope(p, nursery_key):
                 continue
             available = p.get("any_available", p.get("available", False))
             variants = p.get("variants", [])
@@ -477,7 +476,7 @@ def price_drops_by_variety(data_dir: Path, target_date: str,
     because the display title carries a size suffix that can change the slug.
     """
     all_changes, _ = _changes.load_all_changes(
-        data_dir, target_date, product_filter=digest_product_filter)
+        data_dir, target_date, product_filter=in_scope)
 
     nursery_names = {}
     by_variety: dict[str, list[dict]] = {}

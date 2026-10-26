@@ -16537,3 +16537,41 @@ gained listings they never had: plain "Papayuelo" (Daleys, Ladybird) now feeds
 babaco-papayuelo, and "Java Plum, Jamun" (Primal) and "Jambolan Plum - Advanced" (Ross
 Creek) feed plum-jambolan. plum-kaffir (unwatched) retires; indian-almond-beach denied so
 "Beach Almond - Indian Almond" lands on the almond-indian watch.
+
+## DEC-360 (2026-10-26): one inclusion rule for every listing surface (DAL-312)
+
+**Trigger:** Benedict asked for categorisation to be right before natives are added. The
+homepage, digest, nursery pages and variety alerts trusted the nursery's own category
+(`is_fruit_product`); the species, buy, variety, compare, location, bare-root and trends
+pages trusted the species match alone (`is_real_product`). On 2026-10-26 they disagreed
+about 178 species-matched listings: "Cherry Laurel (Prunus laurocerasus)" on
+/species/cherry, Hebe 'Kiwi' on kiwifruit, 32 scion wood sticks and bags of nuts at the top
+of price tables, while Daleys' Kakadu Plum, Midyim and Native Ginger and Ladybird's Stone
+Pine were missing from search, the digest and their nursery pages.
+
+**Decision.** `stocklib.fruit_filters.in_scope` is the rule everywhere (the homepage calls
+`nursery_admits` under its own junk vocabulary). When the nursery says fruit, nothing
+changes. When it says not fruit, a common-name match is admitted only if the species is
+on a non-fruit landing (bush tucker today; natives later) or the title's own binomial names
+exactly our species, genus AND epithet (`species_match.title_confirms`). DAL-312 warned
+against applying the homepage filter to the species pages, which would have deleted the
+bush tucker; this does not.
+
+Also: "(Genus spp.)" now counts as genus evidence (1 title changes species in 18,986
+historical titles: an ice plant off pigface); "for eating" and "coconut tool" are junk;
+Daleys' feed paths "Fruit Trees/Bush foods Australia" map to bush tucker (124 rows, the
+bare "Bush Food Plants" rule had matched none since 2026-08-27); the Shopify scraper only
+stops on an empty page (Garden Express's page 1 returned 249, and 3 of ~117 fruit were kept
+for five nights from 2026-10-22).
+
+**Measured on live snapshots:** species-type pages lose 100 listings and gain 0;
+homepage/digest/nursery pages gain 78 and lose 0. 23 variety pages lose every listing, all
+junk (cherry-laurel, fig-sabre, pecan-nuts-with-shell-10kg), none watched. Digest change
+counts identical for 10-25 and 10-26 (10-24 gains 3 genuine bush tucker restocks); variety
+alert dry run identical. State page headlines stop counting non-fruit: WA "1,467 varieties
+in stock" -> 1,181, VIC 3,400 -> 2,050.
+
+**Known cost:** Daleys' Miracle Fruit (Indoor Plants, no binomial) leaves its species
+page, as it was already off the homepage. **Open for Benedict:** 50 hedge Lilly Pilly
+cultivars and 7 ornamental Sambucus nigra now reach the homepage; both are the real
+species and fruit, so no special case was made.

@@ -65,7 +65,7 @@ TREESMITH_PROMO = (
     '</div>'
 )
 
-from stocklib.classify import is_real_product
+from stocklib.fruit_filters import in_scope
 from stocklib.species_match import build_species_lookup, match_title
 from stocklib.utm import outbound
 
@@ -95,7 +95,7 @@ def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
         nursery_name = data.get("nursery_name", nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
-            if not is_real_product(title):
+            if not in_scope(p, nursery_key):
                 continue
             available = p.get("any_available", p.get("available", False))
             variants = p.get("variants", [])

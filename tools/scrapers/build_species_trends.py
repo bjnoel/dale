@@ -28,7 +28,7 @@ from shipping import SHIPPING_MAP
 DATA_DIR = Path("/opt/dale/data/nursery-stock")
 OUTPUT_DIR = Path("/opt/dale/dashboard")
 
-from stocklib.classify import is_real_product
+from stocklib.fruit_filters import in_scope
 from stocklib.species_match import build_species_lookup as build_lookup, match_title
 from stocklib.taxonomy import enabled_species
 
@@ -102,7 +102,7 @@ def build_species_trends(data_dir: Path):
                 d = json.load(f)
             for p in d.get("products", []):
                 title = p.get("title", "")
-                if not is_real_product(title):
+                if not in_scope(p, nursery_dir.name):
                     continue
                 species = match_title(title, lookup)
                 if not species:

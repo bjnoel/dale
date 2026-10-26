@@ -165,7 +165,7 @@ def write_needs_review(products: list[dict], out_path: Path) -> None:
 
 # Per-nursery fruit-only filters: shared with daily_digest.py via stocklib
 # (the two copies drifted; see stocklib/fruit_filters.py).
-from stocklib.fruit_filters import FRUIT_FILTERS, is_fruit_product
+from stocklib.fruit_filters import FRUIT_FILTERS, is_fruit_product, nursery_admits
 
 
 def build_recent_highlights(data_dir: Path) -> str:
@@ -535,8 +535,9 @@ def load_nursery_data(data_dir: Path, today: str | None = None) -> list[dict]:
                     seen_urls[url] = p
 
         for p in raw_products:
-            # Apply nursery-specific fruit/edible filter
-            if not is_fruit_product(p, nursery_name):
+            # The nursery's own categorisation, weighed against the title (the
+            # rule every other surface applies through fruit_filters.in_scope).
+            if not nursery_admits(p, nursery_name, lambda t: match_species(t, species_lookup)):
                 continue
 
             # Skip non-plant items

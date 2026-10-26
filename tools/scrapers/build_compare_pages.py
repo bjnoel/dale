@@ -28,7 +28,7 @@ from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, SITE_URL
 
 
-from stocklib.classify import is_real_product
+from stocklib.fruit_filters import in_scope
 from stocklib.taxonomy import enabled_species
 from stocklib.utm import outbound
 from stocklib.category_ui import category_badges_html, is_bush_tucker, CATEGORY_FILTER_CSS
@@ -56,7 +56,7 @@ def load_all_products(data_dir: Path) -> list[dict]:
         nursery_name = data.get("nursery_name") or NURSERY_NAMES.get(nursery_key, nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
-            if not is_real_product(title):
+            if not in_scope(p, nursery_key):
                 continue
             min_price = p.get("min_price")
             if min_price is None:

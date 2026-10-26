@@ -395,6 +395,7 @@ SPECIES_CLIMATE_CATEGORY = {
 }
 
 from stocklib.classify import is_real_product
+from stocklib.fruit_filters import in_scope
 from stocklib.species_match import build_species_lookup, match_title
 from stocklib.taxonomy import enabled_species
 
@@ -408,6 +409,8 @@ def load_all_products(data_dir: Path) -> list[dict]:
     for nursery_key, data in iter_nursery_snapshots(data_dir):
         nursery_name = data.get("nursery_name") or NURSERY_NAMES.get(nursery_key, nursery_key)
         for p in data.get("products", []):
+            if not in_scope(p, nursery_key):
+                continue
             title = p.get("title", "")
             min_price = p.get("min_price")
             if min_price is None:

@@ -54,6 +54,12 @@ def _clear_species_caches() -> None:
     _CANONICAL_SPECIES_CACHE = None
     _RECORD_VOCAB_CACHE = None
     _LATIN_NOISE_CACHE = None
+    # stocklib.fruit_filters memoises the matcher for in_scope; a test that
+    # swaps the records must not read the old ones back through it.
+    from stocklib import fruit_filters
+    for cached in (fruit_filters._species_lookup, fruit_filters._match_species,
+                   fruit_filters._non_fruit_landing_slugs):
+        cached.cache_clear()
 
 
 def _canonical_species() -> set[str]:

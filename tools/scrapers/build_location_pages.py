@@ -31,6 +31,7 @@ from treestock_layout import render_head, render_header, render_breadcrumb, rend
 
 # Non-plant keywords to exclude regardless of species match
 from stocklib.classify import is_real_product
+from stocklib.fruit_filters import in_scope
 from stocklib.species_match import build_species_lookup, match_title
 from stocklib.taxonomy import enabled_species
 from stocklib.utm import outbound
@@ -205,6 +206,8 @@ def load_all_products(data_dir: Path) -> list[dict]:
         in_stock_count = sum(1 for p in data.get("products", []) if p.get("any_available"))
         total_count = len(data.get("products", []))
         for p in data.get("products", []):
+            if not in_scope(p, nursery_key):
+                continue
             title = p.get("title", "")
             min_price = p.get("min_price")
             if min_price is None:

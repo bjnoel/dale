@@ -133,6 +133,19 @@ class LoadRulesTest(unittest.TestCase):
             match_category_raw("Australian Native", rules["ross-creek"]),
             "bush_tucker")
 
+    def test_daleys_feed_bush_food_paths(self):
+        # The CSV feed (2026-08-27) writes breadcrumb paths, and the bare
+        # "Bush Food Plants" rule matched none of its 124 bush food rows:
+        # Bush Tomato, Curry Myrtle, Murnong and ~20 more were missing from
+        # /bush-tucker/ for two months.
+        rules = load_nursery_rules()["daleys"]
+        for raw in ("Fruit Trees/Bush foods Australia",
+                    "Fruit Trees/Bush foods Australia/Lilly Pilly",
+                    "Plant List/Bush Food Plants"):
+            with self.subTest(raw=raw):
+                self.assertEqual(match_category_raw(raw, rules), "bush_tucker")
+        self.assertIsNone(match_category_raw("Fruit Trees/Tropical Fruit Trees", rules))
+
 
 class KeywordHintTest(unittest.TestCase):
     def test_native_ornamental_vegetable_hints(self):

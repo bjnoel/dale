@@ -81,7 +81,7 @@ def build_related_lookup() -> dict[str, list[str]]:
 RELATED_LOOKUP = build_related_lookup()
 
 # Hardcoded non-plant keywords to skip (same as build-dashboard.py)
-from stocklib.classify import is_real_product
+from stocklib.fruit_filters import in_scope
 from stocklib.snapshots import iter_nursery_snapshots
 from stocklib.species_match import build_species_lookup, match_title, multigraft_species
 from stocklib.taxonomy import enabled_species
@@ -107,7 +107,7 @@ def load_nursery_products(data_dir: Path) -> list[dict]:
         nursery_name = data.get("nursery_name", nursery_key)
         for p in data.get("products", []):
             title = p.get("title", "")
-            if not is_real_product(title):
+            if not in_scope(p, nursery_key):
                 continue
             # Get best price
             variants = p.get("variants", [])

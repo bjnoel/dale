@@ -1,6 +1,8 @@
 {
   "daleys": [
-    {"match": "Bush Food Plants", "mode": "exact", "category": "bush_tucker"}
+    {"match": "Bush Food Plants", "mode": "exact", "category": "bush_tucker"},
+    {"match": "Plant List/Bush Food Plants", "mode": "exact", "category": "bush_tucker"},
+    {"match": "Fruit Trees/Bush foods Australia", "mode": "prefix", "category": "bush_tucker"}
   ],
   "guildford": [
     {"match": "Australian Native Food Plants", "mode": "contains", "category": "bush_tucker"}

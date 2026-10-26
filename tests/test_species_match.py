@@ -829,6 +829,37 @@ class TitleBinomialTest(unittest.TestCase):
         self.assertIsNone(latin_disagrees("Plum (Prunus domestica)", "Prunus salicina / domestica"))
         self.assertIsNone(latin_disagrees("Atemoya (Annona atemoya)", "Annona \u00d7 atemoya"))
         self.assertIsNone(latin_disagrees("Mango - R2E2", "Mangifera indica"))
+        # A "(Genus spp.)" title is vaguer than our name, not a disagreement.
+        self.assertIsNone(latin_disagrees("Pigface (Carpobrotus spp.)", "Carpobrotus rossii"))
+
+    def test_genus_spp_is_genus_evidence(self):
+        from stocklib.species_match import title_binomial
+        self.assertEqual(title_binomial("Ice Plant Assorted (Mesembryanthemum spp.)"),
+                         ("Mesembryanthemum", "spp."))
+        # An ice plant, matched to the Carpobrotus pigface on name alone. The
+        # only title in 18,986 (every snapshot to 2026-10-26) that changed.
+        self.assertIsNone(self._cn("Pigface 'Orange' (Mesembryanthemum spp.)"))
+        self.assertEqual(self._cn("Pigface (Carpobrotus glaucescens)"), "Pigface")
+
+    def test_title_confirms_needs_genus_and_epithet(self):
+        from stocklib.species_match import title_confirms
+        lookup = build_species_lookup()
+        cases = (
+            ("Stone Pine (Pinus pinea)", "pine nut", True),
+            # same genus, other species
+            ("Cherry Laurel (Prunus laurocerasus)", "cherry", False),
+            ("Manchurian Pear (Pyrus ussuriensis)", "pear", False),
+            # renamed genus, same epithet
+            ("Feijoa Mammoth (Feijoa sellowiana)", "feijoa", True),
+            # a "Genus spp." record takes any species of its genus
+            ("Lilly Pilly Slim Jim (Acmena smithii)", "lilly pilly", True),
+            # a title naming no species confirms nothing on a species record
+            ("Crab Apple Tree (Malus spp.)", "apple", False),
+            ("Kakadu Plum", "kakadu plum", False),
+        )
+        for title, key, expected in cases:
+            with self.subTest(title=title):
+                self.assertIs(title_confirms(title, lookup[key]), expected)
 
     def test_full_record_lookup_vetoes_too(self):
         """match_title over full records (the species-page builders) agrees."""

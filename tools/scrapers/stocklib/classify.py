@@ -46,10 +46,17 @@ from .taxonomy import ENABLED_CATEGORIES
 # category, forever. Keep sorted for reviewability.
 TRUE_JUNK = frozenset({
     "banana bunch cover", "biochar", "bonsai bag", "book", "budding tape",
-    "catalogue", "combo pack", "concentrate spray", "connector", "delivery",
+    "catalogue", "coconut tool", "combo pack", "concentrate spray", "connector", "delivery",
     "delivery charge", "dynamic lifter", "eco oil", "eco-oil", "ecofend",
     "end stop terminator", "exclusion net", "fertiliser", "fertilizer",
-    "fish emulsion", "freight",
+    "fish emulsion",
+    # Daleys' bags of nuts in shell, "(For Eating)" in every title. Not
+    # plants, and since 2026-10-26 a bush-tucker-tagged species (macadamia)
+    # is enough to admit a listing past a nursery's non-fruit category, so
+    # this word is now the only thing between a 1kg bag and the homepage.
+    # 3 matches across every snapshot since 2026-03-05, all three bags.
+    "for eating",
+    "freight",
     "fungicide", "garden gloves", "gift card", "gift certificate",
     "gift voucher", "glove", "gloves", "grafting knife", "grafting tape",
     "gropod", "grow bag", "guide", "herbicide", "insect control",

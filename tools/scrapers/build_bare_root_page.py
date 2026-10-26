@@ -32,7 +32,7 @@ from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
 from stocklib.citations import inline_cite
-from stocklib.classify import is_real_product
+from stocklib.fruit_filters import in_scope
 from stocklib.utm import outbound
 from stocklib.registry import NURSERY_NAMES, delivery_label, restriction_warning
 from stocklib.snapshots import iter_nursery_snapshots, variant_min_price, withdraw_if_dormant
@@ -163,7 +163,7 @@ def collect_bare_root(data_dir, today: str | None = None) -> list[dict]:
     for nursery_key, snap in iter_nursery_snapshots(data_dir, today, withdraw_dormant=False):
         snap = withdraw_if_dormant(nursery_key, snap)
         for p in snap.get("products", []):
-            if not is_real_product(p.get("title", "")):
+            if not in_scope(p, nursery_key):
                 continue
             if not _is_bare_root(p):
                 continue

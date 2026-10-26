@@ -61,8 +61,14 @@ PRODUCTS_DIGGERS = [
 ]
 
 
+def _as_daleys(products):
+    """Every real Daleys row carries a feed category, and in_scope drops one
+    that does not (an uncategorised row is how scion wood got in)."""
+    return [{"category": "Fruit Trees/Deciduous Fruit", **p} for p in products]
+
+
 def _write_data_dir(tmp: Path):
-    for key, products in (("daleys", PRODUCTS_DALEYS), ("diggers", PRODUCTS_DIGGERS)):
+    for key, products in (("daleys", _as_daleys(PRODUCTS_DALEYS)), ("diggers", PRODUCTS_DIGGERS)):
         d = tmp / key
         d.mkdir(parents=True)
         (d / "latest.json").write_text(json.dumps({"nursery_name": key, "products": products}))
@@ -76,7 +82,7 @@ def _build(today: str, products=None) -> str:
         else:
             d = data / "daleys"
             d.mkdir(parents=True)
-            (d / "latest.json").write_text(json.dumps({"nursery_name": "daleys", "products": products}))
+            (d / "latest.json").write_text(json.dumps({"nursery_name": "daleys", "products": _as_daleys(products)}))
         return br.build_page(str(data), date.fromisoformat(today))
 
 

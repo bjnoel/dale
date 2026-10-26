@@ -334,11 +334,18 @@ def _same_genus(a: str, b: str) -> bool:
 
 
 def title_binomial(title: str) -> tuple[str, str] | None:
-    """(genus, epithet) of a bracketed botanical name in the title, or None."""
+    """(genus, epithet) of a bracketed botanical name in the title, or None.
+
+    "(Genus spp.)" comes back as (genus, "spp."): the genus is still evidence
+    even though no species is named. Ladybird writes it on 100+ titles, and
+    "Pigface 'Orange' (Mesembryanthemum spp.)" is an ice plant, not the
+    Carpobrotus pigface it was matched to."""
     for m in _TITLE_BINOMIAL_RE.finditer(title):
         genus, epithet = m.group(1), m.group(2)
         if genus.lower() in _NOT_A_GENUS or epithet in _NOT_AN_EPITHET:
             continue
+        if epithet == "spp":
+            return genus, "spp."
         if not _LATIN_EPITHET_RE.search(epithet):
             continue
         return genus, epithet
@@ -359,12 +366,41 @@ def latin_disagrees(title: str, latin: str) -> str | None:
     The nightly /admin report lists them so the next one is found by a
     machine rather than by Benedict reading the homepage."""
     b = title_binomial(title)
-    if not b or not latin:
+    # "(Genus spp.)" is vaguer than our name, not a different species.
+    if not b or not latin or b[1] == "spp.":
         return None
     words = latin.lower().replace("×", " ").replace("/", " ").split()
     if "spp." in words or b[1].lower() in words:
         return None
     return f"{b[0]} {b[1]}"
+
+
+def title_confirms(title: str, value: dict) -> bool:
+    """True when the title's own binomial names exactly this record's species:
+    same genus (allowing renamed genera) AND an epithet the record carries.
+
+    Stricter than the veto below on purpose. That one only drops a match whose
+    genus disagrees; this one is positive evidence, used where the nursery's
+    own category already says "not fruit" (stocklib.fruit_filters.in_scope).
+    There the genus alone proves nothing: "Cherry Laurel (Prunus
+    laurocerasus)" is a Prunus and a hedge, "Manchurian Pear (Pyrus
+    ussuriensis)" a street tree, "Chinese Pistachio (Pistacia chinensis)" an
+    ornamental. "Stone Pine (Pinus pinea)" is the pine nut, whichever shelf
+    Ladybird files it on.
+
+    Accepts a full species record or a compressed lookup entry. A lumped
+    record's synonym_latin species count ("Prunus salicina" on Plum), and a
+    record named "Genus spp." accepts any epithet in its genus."""
+    b = title_binomial(title)
+    ours = _record_genus(value)
+    if not (b and ours and _same_genus(b[0], ours)):
+        return False
+    latins = [value.get("latin_name") or value.get("ln") or "", value.get("pln") or ""]
+    latins += list((value.get("synonym_latin") or {}).values())
+    words = set()
+    for latin in latins:
+        words.update(latin.lower().replace("×", " ").replace("/", " ").split())
+    return "spp." in words or b[1].lower() in words
 
 
 def _record_genus(value: dict) -> str:

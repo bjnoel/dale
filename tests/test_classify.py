@@ -62,6 +62,14 @@ class JunkStillFilteredTest(unittest.TestCase):
                   "Seasol 2L", "Garden Gloves", "Book Jaboticaba Revealed"):
             self.assertFalse(is_real_product(t), t)
 
+    def test_nuts_to_eat_and_the_coconut_tool(self):
+        # Rendered as the cheapest "macadamia"/"pecan"/"coconut" on species
+        # pages (Daleys, live to 2026-10-26).
+        for t in ("Macadamia Nuts in Shell (For Eating) 1kg",
+                  "Pecan Nuts with Shell (For Eating) 10kg Bag",
+                  "Cocotap (R) - Coconut tool"):
+            self.assertFalse(is_real_product(t), t)
+
 
 class RealFruitKeptTest(unittest.TestCase):
     def test_fruit_trees_pass(self):
