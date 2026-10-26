@@ -721,24 +721,36 @@
       "key": "st-clements-citrus",
       "name": "St Clements Citrus",
       "domain": "stclementscitrus.com",
-      "contact_name": null,
+      "contact_name": "Stuart",
       "email": "info@stclementscitrus.com",
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "contacted",
+      "status": "warm",
       "touches": [
         {
           "date": "2026-10-26",
           "direction": "out",
           "channel": "email",
           "by": "benedict",
-          "summary": "St Clements Citrus",
+          "summary": "Touch 1 by Benedict to info@stclementscitrus.com (subject 'Your contact page email, and the Wix move'). Introduced treestock, linked their updated nursery page, flagged the bouncing sales@stclementcitrus.com.au on the old .com.au contact page, advised keeping .com.au pointed at Wix with per-product redirects (slugs changed, e.g. nagami-kumquat-tree -> comquat-nagami-1), quoted ~25 people/month, mostly WA. No pitch.",
           "evidence": "resend:b4edf9d9-8f99-4f18-80a5-33037d8fdf7d"
+        },
+        {
+          "date": "2026-10-26",
+          "direction": "in",
+          "channel": "email",
+          "by": "stuart",
+          "summary": "Stuart replied same day. Thanked us, will look into the contact-email typo and the .com.au redirects. Not posting out small items at the moment (no time); reopening properly when they relocate in the new year. Asked us to touch base in the new year 'to see if we can work together'. His invitation, so a 2027 follow-up is welcome, not a chase.",
+          "evidence": "Stuart's reply pasted by Benedict 2026-10-26; arrived to his inbox so not BCC-captured"
         }
       ],
-      "open_action": null,
-      "notes": "Register held sales@stclementcitrus.com.au (missing the s in Clements), which is undeliverable: stclementcitrus.com.au has no MX and no A record. The real domain stclementscitrus.com.au has Google MX. Corrected 2026-08-27 before it was ever used.\n\nMoved store 2026-10-25 from Shopify (stclementscitrus.com.au, now empty) to Wix at www.stclementscitrus.com. The new shipping policy names info@stclementscitrus.com, so that is the email now; sales@ on the old domain is unverified since the move. Delivery is now Perth metro only (flat $30), not WA-wide post."
+      "open_action": {
+        "owner": "dale",
+        "what": "Not before mid-January 2027: draft one new-year email to Stuart, as he asked. Check first whether they have relocated and reopened (new address? delivery area? posting again?) and update the registry and nursery page to match. Lead with what treestock sent them over the summer, quote PEOPLE not clicks. Open with 'touching base like you said'; no pitch beyond asking what working together could look like to him.",
+        "since": "2026-10-26"
+      },
+      "notes": "Register held sales@stclementcitrus.com.au (missing the s in Clements), which is undeliverable: stclementcitrus.com.au has no MX and no A record. The real domain stclementscitrus.com.au has Google MX. Corrected 2026-08-27 before it was ever used.\n\nMoved store 2026-10-25 from Shopify (stclementscitrus.com.au, now empty) to Wix at www.stclementscitrus.com. The new shipping policy names info@stclementscitrus.com, so that is the email now; sales@ on the old domain is unverified since the move. Delivery is now Perth metro only (flat $30), not WA-wide post.\n\n2026-10-26: Stuart says they are not posting out small items for now and will reopen properly after relocating in the new year. The Wix site still lists 124 of 167 in stock, so whether treestock should treat them as open is an open question for Benedict."
     },
     {
       "key": "the-heritage-nursery",
