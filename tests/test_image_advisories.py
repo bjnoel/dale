@@ -43,13 +43,15 @@ CLICKHOUSE_1385 = {
 
 
 def fake_run(plausible_tag="v3.2.0", extra=(), built="2026-05-15T09:19:45Z",
-             clickhouse="24.12.6.70"):
+             clickhouse="24.12.6.70", postgres=False):
     # Shaped like the real commands: `docker ps` has no image-id field (that
     # assumption crashed the first live run), so ids come from `docker inspect`.
     rows = [f"plausible-plausible-1\tghcr.io/plausible/community-edition:{plausible_tag}",
             "plausible-plausible_events_db-1\tclickhouse/clickhouse-server:24.12-alpine",
+            *(["plausible-plausible_db-1\tpostgres:16-alpine"] if postgres else []),
             *extra]
-    ids = {"plausible-plausible-1": "sha256:p", "plausible-plausible_events_db-1": "sha256:c"}
+    ids = {"plausible-plausible-1": "sha256:p", "plausible-plausible_events_db-1": "sha256:c",
+           "plausible-plausible_db-1": "sha256:d"}
 
     def run(cmd):
         if cmd[:2] == ["docker", "ps"]:
@@ -59,8 +61,10 @@ def fake_run(plausible_tag="v3.2.0", extra=(), built="2026-05-15T09:19:45Z",
             return ids.get(cmd[-1], "sha256:other") + "\n"
         if cmd[:3] == ["docker", "image", "inspect"]:
             created = built if cmd[3] != "sha256:c" else "2025-03-11T12:17:16Z"
-            return f'{created}\t["repo@sha256:{cmd[3][-1]}-pulled"]\n'  # RepoDigests
+            return f'{created}\t["repo@sha256:{cmd[3][-1]}-pulled"]\tarm64\n'  # RepoDigests
         if cmd[:2] == ["docker", "exec"]:
+            if cmd[2] == "plausible-plausible_db-1":
+                return "postgres (PostgreSQL) 16.15\n"
             return clickhouse + "\n"
         raise AssertionError(cmd)
     return run
@@ -124,16 +128,22 @@ class SplitImage(unittest.TestCase):
 
 
 class Check(unittest.TestCase):
-    def run_check(self, newer_build_for=(), **kw):
+    def run_check(self, newer_build_for=(), registry_pg="16.15", **kw):
         fetch = kw.pop("fetch", fake_fetch({"plausible/analytics": [STORYBOOK],
                                             "ClickHouse/ClickHouse": []}))
 
         def digest(image):  # what the registry serves now
             if isinstance(newer_build_for, Exception):
                 raise newer_build_for
-            tag_id = "c" if "clickhouse" in image else "p"
+            tag_id = "c" if "clickhouse" in image else "d" if "postgres" in image else "p"
             return f"sha256:{tag_id}-{'rebuilt' if any(n in image for n in newer_build_for) else 'pulled'}"
-        return ia.check(now=NOW, _run=fake_run(**kw), _fetch=fetch, _digest=digest)
+
+        def env(image, name, arch):  # the registry's image config
+            self.assertEqual((name, arch), ("PG_VERSION", "arm64"))
+            if isinstance(registry_pg, Exception):
+                raise registry_pg
+            return registry_pg
+        return ia.check(now=NOW, _run=fake_run(**kw), _fetch=fetch, _digest=digest, _env=env)
 
     def test_the_version_we_were_running_is_flagged(self):
         affected = of(self.run_check(plausible_tag="v3.2.0"), "affected")
@@ -196,6 +206,40 @@ class Check(unittest.TestCase):
         withdrawn = dict(STORYBOOK, withdrawn_at="2026-07-01T00:00:00Z")
         status = self.run_check(fetch=fake_fetch({"plausible/analytics": [withdrawn]}))
         self.assertEqual(of(status, "affected"), [])
+
+    def test_a_rebuild_of_the_same_postgres_is_info_and_sends_nothing(self):
+        # 2026-10-26: postgres:16-alpine was rebuilt (f46107955874) with
+        # PG_VERSION still 16.15, and the check emailed "Docker images: 1 to look at".
+        status = self.run_check(plausible_tag="v3.2.1", postgres=True, newer_build_for=("postgres",))
+        self.assertEqual(ia.actionable(status), [])
+        self.assertEqual(len(of(status, "info")), 1)
+        self.assertIn("still 16.15", of(status, "info")[0]["detail"])
+        self.assertIn("Nothing to act on.", ia.render(status))
+
+    def test_a_new_postgres_minor_is_a_notice_naming_it(self):
+        status = self.run_check(plausible_tag="v3.2.1", postgres=True,
+                                newer_build_for=("postgres",), registry_pg="16.16")
+        notices = of(status, "notice")
+        self.assertEqual(len(notices), 1)
+        self.assertIn("16.16", notices[0]["detail"])
+        self.assertIn("running 16.15", notices[0]["detail"])
+
+    def test_an_unreadable_registry_version_is_still_a_notice(self):
+        # Cannot tell a rebuild from a release, so it does not go quiet.
+        status = self.run_check(plausible_tag="v3.2.1", postgres=True,
+                                newer_build_for=("postgres",), registry_pg=OSError("HTTP 401"))
+        notices = of(status, "notice")
+        self.assertEqual(len(notices), 1)
+        self.assertIn("could not read its version", notices[0]["detail"])
+
+    def test_render_says_what_the_advisory_count_means(self):
+        clean = ia.render(self.run_check(plausible_tag="v3.2.1", postgres=True))
+        self.assertIn("1 advisory checked, none affect 3.2.1", clean)
+        self.assertIn("0 advisories checked", clean)
+        self.assertIn("advisories not checked (not published on GitHub)", clean)
+        self.assertNotIn("advisories read", clean)
+        hit = ia.render(self.run_check(plausible_tag="v3.2.0"))
+        self.assertIn("1 advisory checked, 1 affects 3.2.0", hit)
 
     def test_subject_leads_with_the_worst_severity(self):
         self.assertTrue(ia.subject_for(self.run_check(plausible_tag="v3.2.0")).startswith("SECURITY"))

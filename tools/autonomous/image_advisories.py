@@ -11,7 +11,9 @@ upstream repo's GitHub security advisories, and flags any advisory whose
 vulnerable range contains that version. It also notes when the registry holds a
 newer build under the tag we run (a re-pull would change something), when an
 exact tag has a newer release, and lists running images that are not in
-WATCHED, so a new container cannot escape the check by being new.
+WATCHED, so a new container cannot escape the check by being new. A newer build
+that carries the same version (a base-image rebuild) is recorded as "info" and
+does not send an email on its own.
 
 A feed that cannot be read, or a range that cannot be parsed, is reported as
 such, never as "no advisories" (DEC-317: a reading that looks the same either
@@ -51,8 +53,13 @@ WATCHED = {
         "repo": "ClickHouse/ClickHouse",
         "version": ["clickhouse-client", "-q", "SELECT version()"]},
     # PostgreSQL publishes advisories at postgresql.org/support/security, not on
-    # GitHub, so only its version and image age are reported.
-    "postgres": {"repo": None, "version": ["postgres", "--version"]},
+    # GitHub, so only its version and image age are reported. Its security fixes
+    # ship as minor releases under the same floating tag, so a newer build is
+    # the only signal we get. version_env names the variable in the registry's
+    # image config that says which release a build is: 2026-10-26 emailed "1 to
+    # look at" for a rebuild of the same 16.15.
+    "postgres": {"repo": None, "version": ["postgres", "--version"],
+                 "version_env": "PG_VERSION"},
 }
 
 
@@ -118,9 +125,7 @@ def split_image(image):
     return "registry-1.docker.io", name if "/" in name else f"library/{name}", tag
 
 
-def registry_digest(image):
-    """The digest the registry currently serves for this image's tag."""
-    registry, repo, tag = split_image(image)
+def _registry_token(registry, repo):
     token_urls = {
         "registry-1.docker.io": "https://auth.docker.io/token?service=registry.docker.io"
                                 f"&scope=repository:{repo}:pull",
@@ -129,12 +134,44 @@ def registry_digest(image):
     if registry not in token_urls:
         raise ValueError(f"no anonymous token flow known for {registry}")
     with urllib.request.urlopen(token_urls[registry], timeout=30) as resp:
-        token = json.loads(resp.read())["token"]
+        return json.loads(resp.read())["token"]
+
+
+def registry_digest(image):
+    """The digest the registry currently serves for this image's tag."""
+    registry, repo, tag = split_image(image)
+    token = _registry_token(registry, repo)
     req = urllib.request.Request(
         f"https://{registry}/v2/{repo}/manifests/{tag}", method="HEAD",
         headers={"Authorization": f"Bearer {token}", "Accept": MANIFEST_ACCEPT})
     with urllib.request.urlopen(req, timeout=30) as resp:
         return resp.headers["Docker-Content-Digest"]
+
+
+def registry_env(image, name, arch):
+    """The value of env var `name` in the image config the registry serves for
+    this image's tag on `arch`, or None if the config does not set it."""
+    registry, repo, tag = split_image(image)
+    token = _registry_token(registry, repo)
+
+    def get(path, accept):
+        req = urllib.request.Request(f"https://{registry}/v2/{repo}/{path}",
+                                     headers={"Authorization": f"Bearer {token}", "Accept": accept})
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.loads(resp.read())
+
+    manifest = get(f"manifests/{tag}", MANIFEST_ACCEPT)
+    if "manifests" in manifest:  # a multi-arch index: pick ours
+        digest = next(m["digest"] for m in manifest["manifests"]
+                      if m.get("platform", {}).get("architecture") == arch
+                      and m.get("platform", {}).get("os") == "linux")
+        manifest = get(f"manifests/{digest}", MANIFEST_ACCEPT)
+    config = get(f"blobs/{manifest['config']['digest']}", "*/*")
+    for kv in config.get("config", {}).get("Env") or []:
+        key, _, value = kv.partition("=")
+        if key == name:
+            return value
+    return None
 
 
 def run(cmd):
@@ -152,17 +189,18 @@ def running_containers(_run=run):
 
 
 def image_info(image_id, _run=run):
-    """(build time, the registry digests this image was pulled as)."""
+    """(build time, the registry digests this image was pulled as, architecture)."""
     out = _run(["docker", "image", "inspect", image_id,
-                "--format", "{{.Created}}\t{{json .RepoDigests}}"]).strip()
-    created, digests = out.split("\t", 1)
+                "--format", "{{.Created}}\t{{json .RepoDigests}}\t{{.Architecture}}"]).strip()
+    created, digests, arch = out.split("\t", 2)
     return (datetime.fromisoformat(created[:19]).replace(tzinfo=timezone.utc),
-            {d.rsplit("@", 1)[-1] for d in json.loads(digests) or []})
+            {d.rsplit("@", 1)[-1] for d in json.loads(digests) or []}, arch)
 
 
-def check(now=None, _run=run, _fetch=fetch_json, _digest=registry_digest):
+def check(now=None, _run=run, _fetch=fetch_json, _digest=registry_digest, _env=registry_env):
     """Return the status dict. Findings carry a severity: "affected" (a known
-    advisory covers what is running), "error" (could not tell), "notice"."""
+    advisory covers what is running), "error" (could not tell), "notice", or
+    "info" (recorded, never emailed on its own)."""
     now = now or datetime.now(timezone.utc)
     findings, checked = [], []
     for c in running_containers(_run):
@@ -203,13 +241,11 @@ def check(now=None, _run=run, _fetch=fetch_json, _digest=registry_digest):
         # 24.12-alpine had simply had its last build; a re-pull (2026-10-01)
         # returned the same digest. Comparing digests answers the real question.
         try:
-            created, local = image_info(c["image_id"], _run)
+            created, local, arch = image_info(c["image_id"], _run)
             entry["image_age_days"] = (now - created).days
             remote = _digest(c["image"])
             if remote not in local:
-                findings.append({"severity": "notice", "container": c["name"],
-                                 "detail": f"the registry has a newer build of {c['image']} than the "
-                                           f"one running ({remote[7:19]}); a re-pull would update it"})
+                findings.append(newer_build(c, remote, version, vtext, watch, arch, _env))
         except Exception as e:  # noqa: BLE001
             findings.append({"severity": "error", "container": c["name"],
                              "detail": f"could not compare {c['image']} with its registry: {e}"})
@@ -246,18 +282,69 @@ def check(now=None, _run=run, _fetch=fetch_json, _digest=registry_digest):
             "findings": findings}
 
 
+def newer_build(c, remote, version, vtext, watch, arch, _env):
+    """The finding for a registry digest that differs from the one we pulled.
+
+    A different digest is not a different release: postgres:16-alpine is
+    rebuilt whenever Alpine patches a package, and on 2026-10-26 the checker
+    emailed "1 to look at" for a rebuild that was still 16.15. Where the image
+    config names its version, a same-version rebuild is "info" (recorded, not
+    emailed) and a new version says which. Where it cannot tell, it says so as
+    a notice rather than guessing either way."""
+    base = {"container": c["name"]}
+    short = remote[7:19]
+    name = watch.get("version_env")
+    if name and version:
+        try:
+            raw = _env(c["image"], name, arch)
+        except Exception as e:  # noqa: BLE001
+            raw, why = None, f"could not read its version: {e}"
+        else:
+            why = f"its config has no {name}"
+        remote_version = parse_version(raw)
+        if remote_version == version:
+            return {**base, "severity": "info",
+                    "detail": f"the registry rebuilt {c['image']} ({short}) without changing the "
+                              f"version (still {vtext}); a re-pull is optional"}
+        if remote_version:
+            return {**base, "severity": "notice",
+                    "detail": f"the registry now has {raw} under {c['image']} ({short}); running "
+                              f"{vtext}. A re-pull would update it"}
+        return {**base, "severity": "notice",
+                "detail": f"the registry has a newer build of {c['image']} than the one running "
+                          f"({short}), but {why}. A re-pull would update it"}
+    return {**base, "severity": "notice",
+            "detail": f"the registry has a newer build of {c['image']} than the "
+                      f"one running ({short}); a re-pull would update it"}
+
+
+def _advisory_summary(c, findings):
+    if "advisories_read" not in c:
+        return "advisories not checked (not published on GitHub)"
+    n = c["advisories_read"]
+    hits = sum(f["severity"] == "affected" and f["container"] == c["container"] for f in findings)
+    read = f"{n} {'advisory' if n == 1 else 'advisories'} checked"
+    if not n:
+        return read
+    return f"{read}, {hits or 'none'} affect{'s' if hits == 1 else ''} {c['version']}"
+
+
+def actionable(status):
+    return [f for f in status["findings"] if f["severity"] != "info"]
+
+
 def render(status):
-    rank = {"affected": 0, "error": 1, "notice": 2}
+    rank = {"affected": 0, "error": 1, "notice": 2, "info": 3}
     lines = [f"Docker image security check, {status['checked_at']}", ""]
     for c in status["containers"]:
         lines.append(f"  {c['container']}: {c['image']} running {c['version']}, "
                      f"image {c.get('image_age_days', '?')} days old, "
-                     f"{c.get('advisories_read', 'no')} advisories read")
+                     f"{_advisory_summary(c, status['findings'])}")
     lines.append("")
     for f in sorted(status["findings"], key=lambda f: rank[f["severity"]]):
         lines.append(f"[{f['severity'].upper()}] {f['container']}: {f['detail']}"
                      + (f"\n    {f['url']}" if f.get("url") else ""))
-    if not status["findings"]:
+    if not actionable(status):
         lines.append("Nothing to act on.")
     return "\n".join(lines)
 
@@ -276,7 +363,7 @@ def main():
         return
     STATUS_FILE.write_text(json.dumps(status, indent=2) + "\n")
 
-    if status["findings"]:
+    if actionable(status):
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         from notify import send_email
         send_email(subject_for(status), f"<pre>{text}</pre>", text)
