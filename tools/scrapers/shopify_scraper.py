@@ -289,10 +289,12 @@ def scrape_shopify(nursery_key, config, health=None):
 
         print(f"{len(products)} products")
         all_products.extend(products)
-        # A short page is the last page. Stopping here saves every store one
-        # request for an empty page plus a REQUEST_DELAY sleep after it.
-        if len(products) < PAGE_SIZE:
-            break
+        # Only an empty page ends the catalogue. A short page does NOT: Shopify
+        # can return fewer than `limit` mid-catalogue, presumably dropping
+        # unpublished products after paging. Garden Express's page 1 came back
+        # with 249 of 3,948 products from 2026-10-22, and stopping there kept 3
+        # of its ~117 fruit products for five nights. The empty-page request
+        # this costs is one call per store.
         page += 1
         time.sleep(REQUEST_DELAY)
 
