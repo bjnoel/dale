@@ -129,13 +129,15 @@ from stocklib.registry import delivery_label, nursery_caveat_for_state, nursery_
 from stocklib.scrape_health import HEALTH_DIRNAME, untrusted_nurseries
 from stocklib.utm import outbound
 from stocklib import changes as _changes
-from stocklib.fruit_filters import in_scope
+from stocklib.fruit_filters import in_scope, is_scion_listing
+from stocklib.watch_types import (SCION, TREE, WATCH_TYPES, ensure_watch_type_schema,
+                                  watch_label, watch_page_url)
 from stocklib.variety_index import DEFAULT_INDEX_PATH, get_variety_index
 from stocklib.availability import email_phrase, roll_up
 from stocklib.email_footer import watch_urls
 
 
-from cultivar_parsing import slugify, parse_cultivar, product_variety_slug  # noqa: E402
+from cultivar_parsing import slugify, parse_cultivar, product_variety_slug, scion_variety_slug  # noqa: E402
 
 
 def distrust_lookup(data_dir: Path):
@@ -162,8 +164,11 @@ def distrust_lookup(data_dir: Path):
     return untrusted_on
 
 
-def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
-    """Load products from a specific date's snapshots."""
+def load_nursery_data(data_dir: Path, target_date: str,
+                      watch_type: str = TREE) -> list[dict]:
+    """Load products from a specific date's snapshots: tree listings, or for
+    watch_type SCION the scion wood and cuttings, which in_scope excludes."""
+    keep = is_scion_listing if watch_type == SCION else in_scope
     products = []
     today = date.today().isoformat()
     untrusted_on = distrust_lookup(data_dir)
@@ -191,7 +196,7 @@ def load_nursery_data(data_dir: Path, target_date: str) -> list[dict]:
         for p in data.get("products", []):
             title = p.get("title", "")
             title_lower = title.lower()
-            if not in_scope(p, nursery_key):
+            if not keep(p, nursery_key):
                 continue
             available = p.get("any_available", p.get("available", False))
             variants = p.get("variants", [])
@@ -260,13 +265,22 @@ def watchers_by_state(watchers: list[dict]) -> dict[str, list[dict]]:
     return grouped
 
 
-def in_stock_by_variety_slug(products: list[dict]) -> dict[str, list[dict]]:
+def _slug_for(watch_type: str):
+    """Title -> variety slug for one watch type. Scion listings resolve to the
+    same slug their tree would ("Scion Wood Apple - Gala" -> apple-gala), so the
+    type, not the slug, keeps the two apart."""
+    return scion_variety_slug if watch_type == SCION else product_variety_slug
+
+
+def in_stock_by_variety_slug(products: list[dict],
+                             watch_type: str = TREE) -> dict[str, list[dict]]:
     """Return {variety_slug: [in-stock products]} for all cultivar-named products."""
     by_slug: dict[str, list[dict]] = {}
+    slug_of = _slug_for(watch_type)
     for p in products:
         if not p["available"]:
             continue
-        v_slug = product_variety_slug(p["title"])
+        v_slug = slug_of(p["title"])
         if not v_slug:
             continue
         by_slug.setdefault(v_slug, []).append(p)
@@ -311,7 +325,7 @@ def load_watches() -> list[dict]:
     # have never set one. A NULL reads as ALL, i.e. today's behaviour.
     rows = con.execute("""
         SELECT w.email, w.variety_slug, w.species_slug, w.variety_title,
-               COALESCE(p.state, ?) AS state
+               w.watch_type, COALESCE(p.state, ?) AS state
         FROM watches w
         LEFT JOIN watcher_prefs p ON p.email = w.email
     """, (ANY_STATE,)).fetchall()
@@ -331,7 +345,7 @@ def variety_index():
     return _VARIETY_INDEX
 
 
-def display_title(slug: str, watchers: dict) -> str:
+def display_title(slug: str, watchers: dict, watch_type: str = TREE) -> str:
     """The name to put in front of a watcher for `slug`.
 
     Canonical title from the index. This used to be
@@ -345,10 +359,10 @@ def display_title(slug: str, watchers: dict) -> str:
     fallback is exactly why every render site escapes.
     """
     stored = ""
-    rows = watchers.get(slug) or []
+    rows = watchers.get((slug, watch_type)) or watchers.get(slug) or []
     if rows:
         stored = rows[0].get("variety_title") or ""
-    return variety_index().display_title(slug, stored)
+    return watch_label(variety_index().display_title(slug, stored), watch_type)
 
 
 def subject_safe(title: str) -> str:
@@ -389,10 +403,11 @@ def ensure_schema(con: sqlite3.Connection) -> None:
         )
     """)
     con.commit()
+    ensure_watch_type_schema(con)
 
 
-def last_sent_map() -> dict[tuple[str, str, str], str]:
-    """Return {(email, variety_slug, alert_type): most recent sent_at}.
+def last_sent_map() -> dict[tuple[str, str, str, str], str]:
+    """Return {(email, variety_slug, alert_type, watch_type): most recent sent_at}.
 
     Replaces the old already-sent-today lookup, which only ever suppressed a
     duplicate within a single day and so let flickering stock re-alert forever.
@@ -402,17 +417,17 @@ def last_sent_map() -> dict[tuple[str, str, str], str]:
     con = sqlite3.connect(VARIETY_WATCHES_DB)
     ensure_schema(con)
     rows = con.execute(
-        "SELECT email, variety_slug, alert_type, MAX(sent_at) FROM sends "
-        "GROUP BY email, variety_slug, alert_type"
+        "SELECT email, variety_slug, alert_type, watch_type, MAX(sent_at) FROM sends "
+        "GROUP BY email, variety_slug, alert_type, watch_type"
     ).fetchall()
     con.close()
-    return {(r[0], r[1], r[2]): r[3] for r in rows}
+    return {(r[0], r[1], r[2], r[3]): r[4] for r in rows}
 
 
 def in_cooldown(last_sent: dict, email: str, variety_slug: str,
-                alert_type: str, target_date: str) -> bool:
+                alert_type: str, target_date: str, watch_type: str = TREE) -> bool:
     """True if this exact alert went out within COOLDOWN_DAYS of target_date."""
-    previous = last_sent.get((email, variety_slug, alert_type))
+    previous = last_sent.get((email, variety_slug, alert_type, watch_type))
     if not previous:
         return False
     try:
@@ -423,24 +438,25 @@ def in_cooldown(last_sent: dict, email: str, variety_slug: str,
 
 
 def sent_same_day(last_sent: dict, email: str, variety_slug: str,
-                  target_date: str) -> bool:
-    """True if this person already got ANY alert about this variety today.
-    One email per person per variety per day, whichever trigger won."""
+                  target_date: str, watch_type: str = TREE) -> bool:
+    """True if this person already got ANY alert about this watch today.
+    One email per person per watch per day, whichever trigger won; a tree and
+    a scion watch on the same variety are separate watches."""
     return any(
-        last_sent.get((email, variety_slug, t)) == target_date
+        last_sent.get((email, variety_slug, t, watch_type)) == target_date
         for t in (RESTOCK, PRICE_DROP)
     )
 
 
 def record_send(email: str, variety_slug: str, target_date: str,
-                alert_type: str = RESTOCK):
+                alert_type: str = RESTOCK, watch_type: str = TREE):
     """Record a send in the SQLite sends table."""
     con = sqlite3.connect(VARIETY_WATCHES_DB)
     ensure_schema(con)
     con.execute(
-        "INSERT OR IGNORE INTO sends (email, variety_slug, sent_at, alert_type) "
-        "VALUES (?, ?, ?, ?)",
-        (email, variety_slug, target_date, alert_type),
+        "INSERT OR IGNORE INTO sends (email, variety_slug, sent_at, alert_type, watch_type) "
+        "VALUES (?, ?, ?, ?, ?)",
+        (email, variety_slug, target_date, alert_type, watch_type),
     )
     con.commit()
     con.close()
@@ -464,7 +480,8 @@ def qualifying_drop(old_price, new_price) -> bool:
 
 
 def price_drops_by_variety(data_dir: Path, target_date: str,
-                           watched_slugs: set[str]) -> dict[str, list[dict]]:
+                           watched_slugs: set[str],
+                           watch_type: str = TREE) -> dict[str, list[dict]]:
     """Return {variety_slug: [dropped variant records]} for watched varieties.
 
     Runs the shared variant-level comparison engine (stocklib.changes) over
@@ -476,7 +493,9 @@ def price_drops_by_variety(data_dir: Path, target_date: str,
     because the display title carries a size suffix that can change the slug.
     """
     all_changes, _ = _changes.load_all_changes(
-        data_dir, target_date, product_filter=in_scope)
+        data_dir, target_date,
+        product_filter=is_scion_listing if watch_type == SCION else in_scope)
+    slug_of = _slug_for(watch_type)
 
     nursery_names = {}
     by_variety: dict[str, list[dict]] = {}
@@ -485,7 +504,7 @@ def price_drops_by_variety(data_dir: Path, target_date: str,
             if not qualifying_drop(item.get("old_price"), item.get("new_price")):
                 continue
             source_title = item.get("product_title") or item.get("title", "")
-            v_slug = product_variety_slug(source_title)
+            v_slug = slug_of(source_title)
             if not v_slug or v_slug not in watched_slugs:
                 continue
             if nursery_key not in nursery_names:
@@ -520,7 +539,8 @@ def _nursery_display_name(data_dir: Path, nursery_key: str) -> str:
 def build_variety_alert_email(variety_title: str, variety_slug: str,
                               products: list[dict],
                               alert_type: str = RESTOCK,
-                              state: str = ANY_STATE) -> str:
+                              state: str = ANY_STATE,
+                              watch_type: str = TREE) -> str:
     """Build HTML email body for a per-variety restock or price-drop alert.
 
     Everything interpolated into the HTML here is escaped. The variety title is
@@ -588,7 +608,7 @@ def build_variety_alert_email(variety_title: str, variety_slug: str,
         subhead = ("The variety you're watching has come back into stock. "
                    "Your alert covers both restocks and price drops.")
 
-    variety_url = f"{SITE_URL}/variety/{urllib.parse.quote(variety_slug)}.html"
+    variety_url = watch_page_url(SITE_URL, variety_slug, watch_type)
 
     return f"""<!DOCTYPE html>
 <html>
@@ -655,7 +675,8 @@ def inject_preview_banner(html: str, original_email: str) -> str:
 
 
 def inject_unsubscribe(html: str, email: str, token: str,
-                       variety_slug: str = "", variety_title: str = "") -> str:
+                       variety_slug: str = "", variety_title: str = "",
+                       watch_type: str = TREE) -> str:
     """Footer with a working opt-out.
 
     This used to point at /api/unsubscribe and /api/preferences, both of which
@@ -668,7 +689,8 @@ def inject_unsubscribe(html: str, email: str, token: str,
     scanner prefetching the URL cannot silently remove someone's alerts.
     """
     stop_one, stop_all, manage_url = watch_urls(
-        email, token, variety_slug, variety_title, site_url=SITE_URL)
+        email, token, variety_slug, variety_title, site_url=SITE_URL,
+        watch_type=watch_type)
     one_line = (
         f'<a href="{_html.escape(stop_one, quote=True)}" style="color:#6b7280">'
         f'Stop watching {_html.escape(variety_title)}</a> &middot;\n  '
@@ -731,78 +753,83 @@ def main():
         print("No variety watches found. Nothing to do.")
         return
 
-    # Build {variety_slug: [emails]} lookup
-    watchers: dict[str, list[dict]] = {}
+    # {(variety_slug, watch_type): [watches]}. A tree and a scion watch on the
+    # same variety are separate watches with separate listings (watch_types).
+    watchers: dict[tuple[str, str], list[dict]] = {}
     for w in watches:
-        watchers.setdefault(w["variety_slug"], []).append(w)
+        watchers.setdefault((w["variety_slug"], w.get("watch_type") or TREE), []).append(w)
 
-    watched_slugs = set(watchers.keys())
-    print(f"Watched varieties: {len(watched_slugs)} distinct slugs, {len(watches)} total watches")
+    print(f"Watched varieties: {len(watchers)} distinct watches "
+          f"({sum(1 for k in watchers if k[1] == SCION)} scion), {len(watches)} total watches")
 
-    # Load today's and yesterday's data
     yesterday = (date.fromisoformat(target_date) - timedelta(days=1)).isoformat()
-    print(f"Loading today's data ({target_date})...")
-    today_products = load_nursery_data(data_dir, target_date)
-    print(f"  {len(today_products)} products")
-    print(f"Loading yesterday's data ({yesterday})...")
-    yesterday_products = load_nursery_data(data_dir, yesterday)
-    print(f"  {len(yesterday_products)} products")
-
-    # Group in-stock products by variety slug
-    today_by_variety = in_stock_by_variety_slug(today_products)
-    yesterday_by_variety = in_stock_by_variety_slug(yesterday_products)
-
-    # Find restocks: variety going from 0 -> >0 among the nurseries a given
-    # watcher can buy from. Once per (slug, state), not once per person.
-    # An alert therefore carries a state, and its products are already the
-    # filtered set, so nothing downstream has to re-filter.
     alerts = []
-    restocked: set[tuple[str, str]] = set()
-    for slug in watched_slugs:
-        for state, state_watchers in watchers_by_state(watchers[slug]).items():
-            today_listings = listings_for_state(today_by_variety.get(slug, []), state)
-            yesterday_count = len(listings_for_state(yesterday_by_variety.get(slug, []), state))
-            if today_listings and yesterday_count == 0:
-                variety_title = display_title(slug, watchers)
-                restocked.add((slug, state))
+    for watch_type in WATCH_TYPES:
+        watched_slugs = {slug for slug, t in watchers if t == watch_type}
+        if not watched_slugs:
+            continue
+        print(f"[{watch_type}] Loading today's data ({target_date}) and yesterday's ({yesterday})...")
+        today_products = load_nursery_data(data_dir, target_date, watch_type)
+        yesterday_products = load_nursery_data(data_dir, yesterday, watch_type)
+        print(f"  {len(today_products)} / {len(yesterday_products)} products")
+
+        # Group in-stock products by variety slug
+        today_by_variety = in_stock_by_variety_slug(today_products, watch_type)
+        yesterday_by_variety = in_stock_by_variety_slug(yesterday_products, watch_type)
+
+        # Find restocks: variety going from 0 -> >0 among the nurseries a given
+        # watcher can buy from. Once per (slug, state), not once per person.
+        # An alert therefore carries a state, and its products are already the
+        # filtered set, so nothing downstream has to re-filter.
+        restocked: set[tuple[str, str]] = set()
+        for slug in watched_slugs:
+            for state, state_watchers in watchers_by_state(watchers[(slug, watch_type)]).items():
+                today_listings = listings_for_state(today_by_variety.get(slug, []), state)
+                yesterday_count = len(listings_for_state(yesterday_by_variety.get(slug, []), state))
+                if today_listings and yesterday_count == 0:
+                    variety_title = display_title(slug, watchers, watch_type)
+                    restocked.add((slug, state))
+                    alerts.append({
+                        "slug": slug,
+                        "watch_type": watch_type,
+                        "state": state,
+                        "alert_type": RESTOCK,
+                        "variety_title": variety_title,
+                        "products": today_listings,
+                        "watchers": state_watchers,
+                    })
+                    where = "" if state == ANY_STATE else f" [{state}]"
+                    print(f"  RESTOCK{where}: {variety_title} -- "
+                          f"{len(today_listings)} listing(s) now in stock (was 0)")
+
+        # Find price drops on watched varieties, variant level (treestock rule 3).
+        # A variety that just restocked is skipped: the restock email already
+        # carries the old price, so a second email would be the same news twice.
+        print(f"[{watch_type}] Checking watched varieties for price drops...")
+        for slug, dropped in price_drops_by_variety(data_dir, target_date, watched_slugs,
+                                                    watch_type).items():
+            for state, state_watchers in watchers_by_state(watchers[(slug, watch_type)]).items():
+                if (slug, state) in restocked:
+                    print(f"  (price drop on {slug} [{state}] folded into its restock alert)")
+                    continue
+                # A drop at a nursery this watcher cannot buy from is not news.
+                state_dropped = listings_for_state(dropped, state)
+                if not state_dropped:
+                    continue
+                variety_title = display_title(slug, watchers, watch_type)
                 alerts.append({
                     "slug": slug,
+                    "watch_type": watch_type,
                     "state": state,
-                    "alert_type": RESTOCK,
+                    "alert_type": PRICE_DROP,
                     "variety_title": variety_title,
-                    "products": today_listings,
+                    "products": state_dropped,
                     "watchers": state_watchers,
                 })
+                cheapest = min(state_dropped, key=lambda d: d["price"])
                 where = "" if state == ANY_STATE else f" [{state}]"
-                print(f"  RESTOCK{where}: {variety_title} -- "
-                      f"{len(today_listings)} listing(s) now in stock (was 0)")
-
-    # Find price drops on watched varieties, variant level (treestock rule 3).
-    # A variety that just restocked is skipped: the restock email already
-    # carries the old price, so a second email would be the same news twice.
-    print("Checking watched varieties for price drops...")
-    for slug, dropped in price_drops_by_variety(data_dir, target_date, watched_slugs).items():
-        for state, state_watchers in watchers_by_state(watchers[slug]).items():
-            if (slug, state) in restocked:
-                print(f"  (price drop on {slug} [{state}] folded into its restock alert)")
-                continue
-            # A drop at a nursery this watcher cannot buy from is not news.
-            state_dropped = listings_for_state(dropped, state)
-            if not state_dropped:
-                continue
-            variety_title = display_title(slug, watchers)
-            alerts.append({
-                "slug": slug,
-                "state": state,
-                "alert_type": PRICE_DROP,
-                "variety_title": variety_title,
-                "products": state_dropped,
-                "watchers": state_watchers,
-            })
-            cheapest = min(state_dropped, key=lambda d: d["price"])
-            where = "" if state == ANY_STATE else f" [{state}]"
-            print(f"  PRICE DROP{where}: {variety_title} -- ${cheapest['old_price']:.2f} "
-                  f"-> ${cheapest['price']:.2f} at {cheapest['nursery_name']}")
+                print(f"  PRICE DROP{where}: {variety_title} -- ${cheapest['old_price']:.2f} "
+                      f"-> ${cheapest['price']:.2f} at {cheapest['nursery_name']}")
 
     if not alerts:
         print("No variety restocks or price drops detected. No alerts to send.")
@@ -810,12 +837,13 @@ def main():
 
     last_sent = last_sent_map()
 
-    def eligible(watcher_email: str, slug: str, alert_type: str) -> tuple[bool, str]:
-        """(send?, why not). One email per person per variety per day, and no
+    def eligible(watcher_email: str, slug: str, alert_type: str,
+                 watch_type: str = TREE) -> tuple[bool, str]:
+        """(send?, why not). One email per person per watch per day, and no
         repeat of the same trigger inside the cooldown."""
-        if sent_same_day(last_sent, watcher_email, slug, target_date):
+        if sent_same_day(last_sent, watcher_email, slug, target_date, watch_type):
             return False, "already alerted on this variety today"
-        if in_cooldown(last_sent, watcher_email, slug, alert_type, target_date):
+        if in_cooldown(last_sent, watcher_email, slug, alert_type, target_date, watch_type):
             return False, f"same alert within {COOLDOWN_DAYS}d"
         return True, ""
 
@@ -823,7 +851,7 @@ def main():
         for a in alerts:
             print(f"\n  Would send '{a['variety_title']}' {a['alert_type']} alert to:")
             for w in a["watchers"]:
-                ok, why = eligible(w["email"], a["slug"], a["alert_type"])
+                ok, why = eligible(w["email"], a["slug"], a["alert_type"], a["watch_type"])
                 print(f"    {'' if ok else '[SKIP ' + why + '] '}{w['email']}")
         return
 
@@ -835,11 +863,12 @@ def main():
     for a in alerts:
         slug = a["slug"]
         alert_type = a["alert_type"]
+        watch_type = a["watch_type"]
         variety_title = a["variety_title"]
         products = a["products"]
 
         recipients = [w for w in a["watchers"]
-                      if eligible(w["email"], slug, alert_type)[0]]
+                      if eligible(w["email"], slug, alert_type, watch_type)[0]]
         if not recipients:
             print(f"  {variety_title} ({alert_type}): no eligible watchers")
             continue
@@ -853,7 +882,8 @@ def main():
         else:
             subject = f"{icon} {subject_title} is now available -- treestock.com.au"
         email_html = build_variety_alert_email(variety_title, slug, products,
-                                               alert_type, a.get("state", ANY_STATE))
+                                               alert_type, a.get("state", ANY_STATE),
+                                               watch_type)
 
         print(f"\n  Sending '{variety_title}' {alert_type} alert to {len(recipients)} watcher(s)...")
         for w in recipients:
@@ -861,7 +891,8 @@ def main():
             token = make_unsubscribe_token(email, secret)
             personalised = inject_unsubscribe(email_html, email, token,
                                               variety_slug=slug,
-                                              variety_title=variety_title)
+                                              variety_title=variety_title,
+                                              watch_type=watch_type)
             if redirect_to:
                 personalised = inject_preview_banner(personalised, email)
                 actual_to = redirect_to
@@ -872,10 +903,10 @@ def main():
             success = send_email(api_key, actual_to, actual_subject, personalised)
             if success:
                 if not redirect_to:
-                    record_send(email, slug, target_date, alert_type)
+                    record_send(email, slug, target_date, alert_type, watch_type)
                     # Keep the in-memory view current so a later alert in this
                     # same run cannot double up on the same person+variety.
-                    last_sent[(email, slug, alert_type)] = target_date
+                    last_sent[(email, slug, alert_type, watch_type)] = target_date
                 total_sent += 1
             else:
                 total_failed += 1

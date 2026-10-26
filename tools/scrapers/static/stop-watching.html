@@ -40,6 +40,8 @@
   var token = p.get('token') || '';
   var variety = p.get('variety') || '';
   var title = p.get('title') || '';
+  // Absent on links sent before 2026-10-26: the server then removes both kinds.
+  var watchType = p.get('type') || '';
 
   var heading = document.getElementById('heading');
   var lead = document.getElementById('lead');
@@ -73,7 +75,10 @@
   function send() {
     confirmBtn.disabled = true;
     var payload = {email: email, token: token};
-    if (dropAll) { payload.all = true; } else { payload.variety_slug = variety; }
+    if (dropAll) { payload.all = true; } else {
+      payload.variety_slug = variety;
+      if (watchType) payload.watch_type = watchType;
+    }
     fetch('/api/unwatch-variety', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},

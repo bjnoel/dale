@@ -49,7 +49,9 @@ class _StubHandler:
     """
 
     def __init__(self, watches):
-        self._watches = watches
+        # The real loader always returns the watch type; rows written here
+        # without one are tree watches, as every watch before 2026-10-26 was.
+        self._watches = [dict({"type": "tree"}, **w) for w in watches]
 
     def _get_variety_watches(self, email):
         return self._watches
@@ -104,6 +106,17 @@ class WatchRowRenderingTests(unittest.TestCase):
         self.assertNotIn("onclick", html)
         self.assertIn('class="remove-watch"', html)
         self.assertIn('data-slug="avocado-hass"', html)
+
+    def test_a_scion_watch_is_labelled_and_removes_only_itself(self):
+        # Same variety, two watches: the Remove button must say which.
+        html = render(
+            [{"slug": "apple-gala", "title": "Apple Gala", "species": "apple"},
+             {"slug": "apple-gala", "title": "Apple Gala", "species": "apple", "type": "scion"}],
+            {"apple-gala": "Apple Gala"},
+        )
+        self.assertIn("Apple Gala (scion wood)", html)
+        self.assertIn('data-type="scion"', html)
+        self.assertIn('data-type="tree"', html)
 
     def test_empty_list_renders_a_message_not_a_crash(self):
         html = render([], {"avocado-hass": "Avocado - Hass"})

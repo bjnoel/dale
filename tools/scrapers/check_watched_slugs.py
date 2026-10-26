@@ -70,7 +70,10 @@ def main() -> None:
     ).fetchall()
     con.close()
 
-    unresolved = unresolved_slugs(dict(rows), index)
+    # A scion watch resolves to its row on /scion-wood.html, which the scion
+    # builder lists in scion-index.json; it may have no tree page at all.
+    scion = get_variety_index(DEFAULT_INDEX_PATH.parent / "scion-index.json")
+    unresolved = unresolved_slugs(dict(rows), set(index.titles) | set(scion.titles))
 
     total_watches = sum(n for _, n in rows)
     print(f"{len(rows)} distinct watched slugs, {total_watches} watches; "

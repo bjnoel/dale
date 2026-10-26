@@ -39,6 +39,8 @@ import nursery_inbound
 
 from stocklib.mailer import (SUBSCRIBERS_FILE, get_unsubscribe_secret,
                              make_unsubscribe_token, load_subscribers)
+from stocklib.watch_types import (SCION, TREE, WATCH_TYPES, ensure_watch_type_schema,
+                                  watch_label)
 from stocklib.variety_index import (DEFAULT_INDEX_PATH, get_variety_index,
                                     is_valid_slug)
 
@@ -61,6 +63,9 @@ WATCH_NOTICE_LOG = DATA_DIR / "watch_notice_sends.json"
 # itself; it reads this map to decide whether a watched slug is real and to
 # take the title from us rather than from the caller.
 VARIETY_INDEX_FILE = DEFAULT_INDEX_PATH
+# Varieties that have scion wood listed, written by build_scion_wood_page.py.
+# A scion watch must name one of these, as a tree watch must be in the index.
+SCION_INDEX_FILE = DEFAULT_INDEX_PATH.parent / "scion-index.json"
 PORT = 8099
 CONFIRM_EXPIRY_HOURS = 48
 MANAGE_LINK_RATE_LIMIT_SECONDS = 3600  # one manage-link email per address per hour
@@ -137,14 +142,17 @@ def init_variety_watches_db():
             species_slug TEXT NOT NULL,
             variety_title TEXT NOT NULL,
             added_at TEXT NOT NULL,
-            UNIQUE(email, variety_slug)
+            watch_type TEXT NOT NULL DEFAULT 'tree',
+            UNIQUE(email, variety_slug, watch_type)
         );
         CREATE TABLE IF NOT EXISTS sends (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT NOT NULL,
             variety_slug TEXT NOT NULL,
             sent_at TEXT NOT NULL,
-            UNIQUE(email, variety_slug, sent_at)
+            alert_type TEXT NOT NULL DEFAULT 'restock',
+            watch_type TEXT NOT NULL DEFAULT 'tree',
+            UNIQUE(email, variety_slug, sent_at, watch_type)
         );
         CREATE TABLE IF NOT EXISTS wishlist (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -178,6 +186,8 @@ def init_variety_watches_db():
             ON watch_attempts(ip, ts);
     """)
     con.commit()
+    # A DB from before 2026-10-26: every existing watch becomes a tree watch.
+    ensure_watch_type_schema(con)
     con.close()
 
 
@@ -876,6 +886,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             email = data.get("email", "").strip().lower()
             variety_slug = data.get("variety_slug", "").strip()
             species_slug = data.get("species_slug", "").strip()
+            watch_type = (data.get("watch_type") or TREE).strip()
             # data["variety_title"] is read and discarded on purpose. It used
             # to be stored and then interpolated into the subject and body of
             # mail sent to every other watcher of this slug, which handed a
@@ -889,6 +900,9 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 return
             if not is_valid_slug(variety_slug) or (species_slug and not is_valid_slug(species_slug)):
                 self.send_json(400, {"error": "Invalid variety"})
+                return
+            if watch_type not in WATCH_TYPES:
+                self.send_json(400, {"error": "Invalid watch type"})
                 return
             # Honeypot. The field is hidden and off the tab order, so a person
             # never fills it and a bot that fills every input does. Answer as
@@ -906,7 +920,10 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 self.send_json(429, {"error": "Too many alerts set from here. "
                                               "Try again in an hour."})
                 return
-            index = get_variety_index(VARIETY_INDEX_FILE)
+            # A scion watch is checked against the varieties that actually have
+            # scion wood listed, not against the tree pages.
+            index = get_variety_index(SCION_INDEX_FILE if watch_type == SCION
+                                      else VARIETY_INDEX_FILE)
             variety_title = index.title(variety_slug)
             if variety_title is None:
                 # Only treat "absent from the index" as "not a real variety"
@@ -927,7 +944,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             # when the address already watches this one so hitting the cap can
             # never turn an idempotent re-watch into an error.
             if self._watch_count(email) >= MAX_WATCHES_PER_ADDRESS:
-                already = any(w["slug"] == variety_slug
+                already = any(w["slug"] == variety_slug and w["type"] == watch_type
                               for w in self._get_variety_watches(email))
                 if not already:
                     print(f"Watch cap reached for {email} "
@@ -959,9 +976,10 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                         (email, watch_state, added_at),
                     )
                 cur = con.execute(
-                    "INSERT OR IGNORE INTO watches (email, variety_slug, species_slug, variety_title, added_at) "
-                    "VALUES (?, ?, ?, ?, ?)",
-                    (email, variety_slug, species_slug, variety_title, added_at),
+                    "INSERT OR IGNORE INTO watches "
+                    "(email, variety_slug, species_slug, variety_title, added_at, watch_type) "
+                    "VALUES (?, ?, ?, ?, ?, ?)",
+                    (email, variety_slug, species_slug, variety_title, added_at, watch_type),
                 )
                 inserted = cur.rowcount > 0
                 if not inserted:
@@ -970,8 +988,9 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                     # it so re-watching heals the row.
                     con.execute(
                         "UPDATE watches SET variety_title = ? "
-                        "WHERE email = ? AND variety_slug = ? AND variety_title != ?",
-                        (variety_title, email, variety_slug, variety_title),
+                        "WHERE email = ? AND variety_slug = ? AND watch_type = ? "
+                        "AND variety_title != ?",
+                        (variety_title, email, variety_slug, watch_type, variety_title),
                     )
                 con.commit()
                 con.close()
@@ -979,7 +998,7 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 self.send_json(500, {"error": f"DB error: {e}"})
                 return
             if inserted:
-                print(f"Variety watch added: {email} -> {variety_slug}")
+                print(f"Variety watch added: {email} -> {variety_slug} ({watch_type})")
                 # Only on a real insert. Re-watching something you already
                 # watch is not news and must not cost an email.
                 self._maybe_send_watch_notice(email, variety_slug)
@@ -1041,6 +1060,9 @@ class SubscribeHandler(BaseHTTPRequestHandler):
             email = data.get("email", "").strip().lower()
             token = data.get("token", "").strip()
             variety_slug = data.get("variety_slug", "").strip()
+            # Absent on every Stop link sent before scion watches existed, and
+            # those people meant "this variety", so no type removes both.
+            watch_type = (data.get("watch_type") or "").strip()
             # `all: true` drops every watch this address holds. The alert email
             # offers it as "stop all my treestock alerts", so a recipient can
             # always get out in one step without knowing which watch is which.
@@ -1055,6 +1077,11 @@ class SubscribeHandler(BaseHTTPRequestHandler):
                 con = sqlite3.connect(VARIETY_WATCHES_DB)
                 if drop_all:
                     cur = con.execute("DELETE FROM watches WHERE email = ?", (email,))
+                elif watch_type in WATCH_TYPES:
+                    cur = con.execute(
+                        "DELETE FROM watches WHERE email = ? AND variety_slug = ? AND watch_type = ?",
+                        (email, variety_slug, watch_type),
+                    )
                 else:
                     cur = con.execute(
                         "DELETE FROM watches WHERE email = ? AND variety_slug = ?",
@@ -1491,11 +1518,12 @@ class SubscribeHandler(BaseHTTPRequestHandler):
         try:
             con = sqlite3.connect(VARIETY_WATCHES_DB)
             rows = con.execute(
-                "SELECT variety_slug, variety_title, species_slug FROM watches WHERE email = ? ORDER BY added_at",
+                "SELECT variety_slug, variety_title, species_slug, watch_type FROM watches "
+                "WHERE email = ? ORDER BY added_at",
                 (email.lower(),)
             ).fetchall()
             con.close()
-            return [{"slug": r[0], "title": r[1], "species": r[2]} for r in rows]
+            return [{"slug": r[0], "title": r[1], "species": r[2], "type": r[3]} for r in rows]
         except sqlite3.Error:
             return []
 
@@ -1673,12 +1701,13 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
         index = get_variety_index(VARIETY_INDEX_FILE)
         rows = ""
         for vw in watches:
-            safe_title = html.escape(index.display_title(vw["slug"], vw["title"]))
+            safe_title = html.escape(watch_label(index.display_title(vw["slug"], vw["title"]), vw["type"]))
             rows += (
                 f'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;'
                 f'border-bottom:1px solid #f3f4f6">'
                 f'<span>{safe_title}</span>'
                 f'<button type="button" class="remove-watch" data-slug="{html.escape(vw["slug"], quote=True)}" '
+                f'data-type="{html.escape(vw["type"], quote=True)}" '
                 f'style="background:none;border:1px solid #d1d5db;'
                 f'color:#6b7280;padding:4px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer">Remove</button>'
                 f'</div>'
@@ -1766,12 +1795,12 @@ document.getElementById('saveState').addEventListener('click', async function() 
   }}
   btn.disabled = false;
 }});
-async function removeVariety(slug) {{
+async function removeVariety(slug, type) {{
   try {{
     const resp = await fetch('/api/unwatch-variety', {{
       method: 'POST',
       headers: {{'Content-Type': 'application/json'}},
-      body: JSON.stringify({{email: {json.dumps(email)}, token: {json.dumps(token)}, variety_slug: slug}})
+      body: JSON.stringify({{email: {json.dumps(email)}, token: {json.dumps(token)}, variety_slug: slug, watch_type: type}})
     }});
     if (resp.ok) location.reload();
     else document.getElementById('stopMsg').textContent = 'Could not remove that alert.';
@@ -1779,7 +1808,7 @@ async function removeVariety(slug) {{
 }}
 document.getElementById('varietyWatches').addEventListener('click', function(e) {{
   const btn = e.target.closest('.remove-watch');
-  if (btn) removeVariety(btn.dataset.slug);
+  if (btn) removeVariety(btn.dataset.slug, btn.dataset.type);
 }});
 document.getElementById('stopAll').addEventListener('click', async function() {{
   const msg = document.getElementById('stopMsg');
@@ -2024,7 +2053,7 @@ document.getElementById('prefsForm').addEventListener('submit', async function(e
   btn.textContent = 'Save preferences';
 }});
 
-async function removeVariety(slug) {{
+async function removeVariety(slug, type) {{
   if (!confirm('Stop watching this variety?')) return;
   try {{
     const resp = await fetch('/api/unwatch-variety', {{
@@ -2033,7 +2062,8 @@ async function removeVariety(slug) {{
       body: JSON.stringify({{
         email: {json.dumps(email)},
         token: {json.dumps(token)},
-        variety_slug: slug
+        variety_slug: slug,
+        watch_type: type
       }})
     }});
     if (resp.ok) location.reload();
@@ -2042,7 +2072,7 @@ async function removeVariety(slug) {{
 }}
 document.getElementById('varietyWatches').addEventListener('click', function(e) {{
   const btn = e.target.closest('.remove-watch');
-  if (btn) removeVariety(btn.dataset.slug);
+  if (btn) removeVariety(btn.dataset.slug, btn.dataset.type);
 }});
 </script>"""
         self.send_html(200, body)

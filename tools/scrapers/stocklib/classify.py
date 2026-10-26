@@ -282,6 +282,21 @@ def is_propagation_material(title: str) -> bool:
     return bool(_PROPAGATION_RE.search(title or ""))
 
 
+_PROPAGATION_WORDS_RE = re.compile(
+    r"\(?\s*\d+\s*x\s*cuttings?\s*\)?|scion\s*wood|scions?|bud\s*wood|cuttings",
+    re.IGNORECASE)
+
+
+def strip_propagation_words(title: str) -> str:
+    """The tree name inside a scion listing: "Scion Wood Apple - Gala" ->
+    "Apple - Gala", "Adam's Pride Fig (1 x Cutting)" -> "Adam's Pride Fig".
+    Feeds the tree's own variety parser, so a scion watch and a tree watch on
+    the same variety share one slug (stocklib.watch_types)."""
+    rest = _PROPAGATION_WORDS_RE.sub(" ", title or "")
+    rest = re.sub(r"\s*-\s*(?:-\s*)+", " - ", rest)   # "Apple - - Gala"
+    return re.sub(r"\s+", " ", rest).strip(" -")
+
+
 def is_seed_packet(title: str) -> bool:
     """True if the title is a seed packet (not a nursery-grown tree).
 

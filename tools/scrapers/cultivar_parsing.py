@@ -1210,6 +1210,18 @@ def product_variety_slug(title: str) -> str | None:
     return c[2] if c else None
 
 
+def scion_variety_slug(title: str) -> str | None:
+    """The variety a scion wood / cuttings listing is wood of, as the same
+    slug its tree would have ("Scion Wood Apple - Gala" -> apple-gala), or
+    None when the title is not propagation material or names no variety
+    ("Fig Cuttings"). A scion watch is (slug, "scion"); see
+    stocklib.watch_types."""
+    from stocklib.classify import is_propagation_material, strip_propagation_words
+    if not is_propagation_material(title):
+        return None
+    return product_variety_slug(strip_propagation_words(title))
+
+
 def _display_variety(variety: str) -> str:
     """Capitalize all-lowercase words for display, so a lowercase nursery title
     ("Semi Dwarf Apple granny smith") can't put "granny smith" in page H1s and

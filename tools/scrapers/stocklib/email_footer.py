@@ -31,7 +31,8 @@ def footer_urls(email: str, token: str, site_url: str = DEFAULT_SITE_URL) -> tup
 
 def watch_urls(email: str, token: str, variety_slug: str = "",
                variety_title: str = "",
-               site_url: str = DEFAULT_SITE_URL) -> tuple[str, str, str]:
+               site_url: str = DEFAULT_SITE_URL,
+               watch_type: str = "tree") -> tuple[str, str, str]:
     """(stop_this_one, stop_everything, manage_all) for a variety-alert recipient.
 
     Almost everyone receiving a variety alert is watch-only (83 of 89 at the
@@ -48,7 +49,12 @@ def watch_urls(email: str, token: str, variety_slug: str = "",
     """
     q = urllib.parse.quote
     stop_all = f"{site_url}/stop-watching.html?email={q(email)}&token={token}"
+    # Every new link names its type, so stopping the tree alert cannot take a
+    # scion watch on the same variety with it. Links sent before 2026-10-26
+    # carry no type, and the server reads that as "both", which is what the
+    # person clicking one of those meant.
     stop_one = (f"{stop_all}&variety={q(variety_slug)}&title={q(variety_title)}"
+                f"&type={q(watch_type)}"
                 if variety_slug else "")
     manage = f"{site_url}/api/preferences?email={q(email)}&token={token}"
     return stop_one, stop_all, manage

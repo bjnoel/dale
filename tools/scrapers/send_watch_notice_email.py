@@ -47,6 +47,7 @@ from stocklib.mailer import (FROM_EMAIL, FROM_NAME, REPLY_TO_EMAIL,
                              get_resend_api_key)
 from stocklib.email_footer import watch_urls
 from stocklib.variety_index import DEFAULT_INDEX_PATH, get_variety_index
+from stocklib.watch_types import TREE, ensure_watch_type_schema, watch_label, watch_page_url
 
 SITE_URL = "https://treestock.com.au"
 
@@ -57,8 +58,8 @@ BOTH_TRIGGERS = ("One alert covers both: we email you when it comes back into "
                  "stock anywhere we track, and when it drops in price.")
 
 
-def load_watches(email: str, db_path: Path = None) -> list[tuple[str, str]]:
-    """[(slug, stored_title)] for `email`, oldest first.
+def load_watches(email: str, db_path: Path = None) -> list[tuple[str, str, str]]:
+    """[(slug, stored_title, watch_type)] for `email`, oldest first.
 
     Read here rather than passed on argv: the list is always current at send
     time, and a long watch list can outgrow an argv limit.
@@ -68,17 +69,18 @@ def load_watches(email: str, db_path: Path = None) -> list[tuple[str, str]]:
         return []
     try:
         con = sqlite3.connect(path)
+        ensure_watch_type_schema(con)
         rows = con.execute(
-            "SELECT variety_slug, variety_title FROM watches "
+            "SELECT variety_slug, variety_title, watch_type FROM watches "
             "WHERE email = ? ORDER BY added_at", (email.lower(),)
         ).fetchall()
         con.close()
     except sqlite3.Error:
         return []
-    return [(r[0], r[1]) for r in rows]
+    return [(r[0], r[1], r[2]) for r in rows]
 
 
-def build_html(email: str, token: str, watches: list[tuple[str, str]],
+def build_html(email: str, token: str, watches: list[tuple[str, str, str]],
                new_slug: str = "", index_path: Path = None) -> str:
     """The notice body.
 
@@ -89,22 +91,25 @@ def build_html(email: str, token: str, watches: list[tuple[str, str]],
     index = get_variety_index(index_path or DEFAULT_INDEX_PATH)
     _, stop_all, manage_url = watch_urls(email, token, site_url=SITE_URL)
 
-    def title_for(slug, stored):
-        return index.display_title(slug, stored)
+    def title_for(slug, stored, watch_type=TREE):
+        return watch_label(index.display_title(slug, stored), watch_type)
 
+    # The newest row for new_slug is the one just added (a person can hold a
+    # tree and a scion watch on the same variety).
     lead_title = ""
-    for slug, stored in watches:
+    for slug, stored, watch_type in reversed(watches):
         if slug == new_slug:
-            lead_title = title_for(slug, stored)
+            lead_title = title_for(slug, stored, watch_type)
             break
     if not lead_title and watches:
         lead_title = title_for(*watches[-1])
 
     rows = ""
-    for slug, stored in watches:
-        title = title_for(slug, stored)
-        stop_one, _, _ = watch_urls(email, token, slug, title, site_url=SITE_URL)
-        variety_url = f"{SITE_URL}/variety/{slug}.html"
+    for slug, stored, watch_type in watches:
+        title = title_for(slug, stored, watch_type)
+        stop_one, _, _ = watch_urls(email, token, slug, title, site_url=SITE_URL,
+                                    watch_type=watch_type)
+        variety_url = watch_page_url(SITE_URL, slug, watch_type)
         rows += f"""
       <tr>
         <td style="padding:8px 12px;border-bottom:1px solid #f3f4f6">
@@ -191,12 +196,13 @@ def send(email: str, token: str, new_slug: str = "", dry_run: bool = False,
 
     index = get_variety_index(index_path or DEFAULT_INDEX_PATH)
     lead = ""
-    for slug, stored in watches:
+    for slug, stored, watch_type in reversed(watches):
         if slug == new_slug:
-            lead = index.display_title(slug, stored)
+            lead = watch_label(index.display_title(slug, stored), watch_type)
             break
     if not lead:
-        lead = index.display_title(*watches[-1])
+        slug, stored, watch_type = watches[-1]
+        lead = watch_label(index.display_title(slug, stored), watch_type)
 
     subject = f"You're now watching {lead} -- treestock.com.au"
     body = build_html(email, token, watches, new_slug, index_path)

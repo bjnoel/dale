@@ -235,6 +235,16 @@ def in_scope(product: dict, nursery_key: str) -> bool:
 digest_product_filter = in_scope
 
 
+def is_scion_listing(product: dict, nursery_key: str = "") -> bool:
+    """Scion wood or cuttings: what /scion-wood.html lists and scion watches
+    see. The complement of in_scope's propagation exclusion. The nursery's
+    category is deliberately not consulted: Daleys files scion wood under
+    "Gardening Tools - Accessories", and the title is the evidence."""
+    from stocklib.classify import is_propagation_material, is_real_product
+    title = product.get("title", "")
+    return is_propagation_material(title) and is_real_product(title)
+
+
 @lru_cache(maxsize=1)
 def _non_fruit_landing_slugs() -> frozenset:
     """Slugs of every species on an enabled non-fruit landing, including

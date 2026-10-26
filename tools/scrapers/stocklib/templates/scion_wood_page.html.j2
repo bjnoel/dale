@@ -21,5 +21,74 @@
 </main>
 
 {{ footer|safe }}
+<script>
+// One alert form, moved under whichever sold-out row was clicked. A scion
+// watch is its own kind of watch on the variety (watch_type "scion"): it
+// fires on scion wood for that variety, never on the tree.
+(function () {
+  var current = null;
+  function close() { if (current) { current.remove(); current = null; } }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.sw-alert');
+    if (!btn) return;
+    var row = btn.closest('tr');
+    var already = current && current.previousElementSibling === row;
+    close();
+    if (already) return;
+    var tr = document.createElement('tr');
+    tr.className = 'sw-watch';
+    var td = document.createElement('td');
+    td.colSpan = 5;
+    var label = document.createElement('p');
+    label.className = 'text-sm text-gray-700 mb-2';
+    label.textContent = 'Email me when ' + btn.dataset.title + ' scion wood is in stock or drops in price.';
+    var form = document.createElement('form');
+    form.innerHTML = '<input type="email" required placeholder="your@email.com" aria-label="Email address">' +
+      '<input type="text" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
+      'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
+      '<button type="submit">Notify me</button>';
+    var msg = document.createElement('div');
+    msg.className = 'text-sm mt-2';
+    td.appendChild(label); td.appendChild(form); td.appendChild(msg);
+    tr.appendChild(td);
+    row.after(tr);
+    current = tr;
+    var inputs = form.querySelectorAll('input');
+    inputs[0].focus();
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      fetch('/api/watch-variety', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: inputs[0].value.trim(),
+          variety_slug: btn.dataset.slug,
+          species_slug: btn.dataset.species,
+          watch_type: 'scion',
+          website: inputs[1].value
+        })
+      })
+      .then(function (r) { return r.json().then(function (d) { return {ok: r.ok, d: d}; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d.error || 'failed');
+        form.style.display = 'none';
+        msg.className = 'text-sm mt-2 text-amber-700';
+        msg.textContent = res.d.message === 'Already watching'
+          ? 'You are already watching ' + btn.dataset.title + ' scion wood.'
+          : '✓ Alert set. We\'ll email you when ' + btn.dataset.title + ' scion wood is in stock or drops in price.';
+      })
+      .catch(function (err) {
+        msg.className = 'text-sm mt-2 text-red-600';
+        msg.textContent = (err && err.message && err.message !== 'failed') ? err.message : 'Something went wrong, please try again.';
+      });
+    });
+  });
+  // Alert emails link to #scion-<variety>: show which row they mean.
+  if (location.hash.indexOf('#scion-') === 0) {
+    var target = document.getElementById(location.hash.slice(1));
+    if (target) target.style.background = '#fef3c7';
+  }
+})();
+</script>
 </body>
 </html>
