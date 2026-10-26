@@ -16575,3 +16575,25 @@ in stock" -> 1,181, VIC 3,400 -> 2,050.
 page, as it was already off the homepage. **Open for Benedict:** 50 hedge Lilly Pilly
 cultivars and 7 ornamental Sambucus nigra now reach the homepage; both are the real
 species and fruit, so no special case was made.
+
+## DEC-361 (2026-10-26): /scion-wood.html; St Clements moved to Wix; Miracle Fruit exception
+
+**Scion wood (Benedict: "a separate scion wood section, all species on one page").**
+`classify.is_propagation_material` (scion, budwood, "N x Cutting", plural "cuttings"; NOT
+a bare singular "Cutting", which every live case shows is a potted plant, nor "Cutting
+Grown"/"Rooted Cutting") drops these from every tree surface via `in_scope` and the homepage,
+and `build_scion_wood_page.py` lists them grouped by species with anchors, sold-out rows kept.
+Species pages link to their section. Live: 36 listings at Daleys and Primal, 4 in stock.
+Also fixed: Primal's "(1 x Cutting)" figs were the cheapest rows on /species/fig.
+
+**St Clements Citrus** did not close: it moved from Shopify (stclementscitrus.com.au,
+emptied 2026-10-25) to Wix at www.stclementscitrus.com, 167 products, now including mango,
+avocado and stone fruit. wix_scraper keeps size options as variants and category names as
+tags. Delivery is now Perth metro only (flat $30). 47 of 167 titles are cultivar-only
+("Kensington Pride", "Bacon") and match no species; the fruit is only in the category tags.
+A category fallback in the matcher would fix that for every nursery and is left as a
+follow-up rather than done as a side effect.
+
+**Miracle Fruit:** Benedict chose the exception over the known cost in DEC-360.
+`FRUIT_FILTERS["daleys"]["include_titles"]` admits it by exact title; the Indoor Plants
+bucket (which also holds "Fig - Strangler") stays excluded.
