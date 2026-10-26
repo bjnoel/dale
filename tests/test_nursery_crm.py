@@ -194,10 +194,15 @@ class TestValidate(unittest.TestCase):
         2026-08-27.txt`. That file was never written, so the top item in his
         queue could not be actioned, and DAL-248 sat blocked behind it. The
         register called itself valid throughout.
+
+        The file name is NOT verbatim. The real one was later written to a
+        gitignored deliverables/ on Benedict's Mac, which made this test pass
+        on the server and fail there. A name nobody will ever write keeps the
+        test independent of whose checkout it runs in.
         """
         act = {"owner": "benedict", "since": "2026-08-27",
                "what": "Send the drafted reply "
-                       "(deliverables/daleys-reply-2026-08-27.txt, rewritten "
+                       "(deliverables/test-fixture-never-written.txt, rewritten "
                        "2026-08-27 after checking the live pages)."}
         problems = crm.validate(self.base(open_action=act))
         self.assertTrue(any("does not exist" in p for p in problems))
