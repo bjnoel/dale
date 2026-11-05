@@ -266,6 +266,10 @@ class TemplateRenders(unittest.TestCase):
             self.assertEqual(html.count("How treestock ranks nurseries"), 1)
             self.assertNotIn("—", html)
         self.assertNotIn("GoAffPro", html, "Daleys is not on Shopify")
+        # Daleys (offer=ask): the report names no terms and nobody's private
+        # deliberations; that conversation belongs in the email (2026-11-05).
+        self.assertNotIn("looking into", html)
+        self.assertNotIn("sign up", html)
 
     def test_tiny_share_is_not_zero_percent(self):
         # Daleys Oct 2026 read "3 clicks (0%)", as if nothing happened.

@@ -385,8 +385,6 @@ a{color:var(--accent)}
   <p>That part comes with a referral arrangement: GoAffPro on Shopify (free plan) with treestock as an affiliate at 5%, paid only on completed orders. You'll get the traffic numbers every month whether or not you sign up.</p>
 {% elif recipient.offer == "partner" %}
   <p>You're a referral partner, so ask and we'll send the full version.</p>
-{% else %}
-  <p>That part comes with a referral arrangement{% if contact %}, which {{ contact.split(' ')[0] }} is looking into{% endif %}. You'll get the traffic numbers every month whether or not you sign up.</p>
 {% endif %}
   <div class="guarantee">
     <span class="g">How treestock ranks nurseries</span>
