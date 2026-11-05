@@ -508,10 +508,14 @@ def main(argv=None):
     ap.add_argument("--offer", choices=OFFERS, default=None,
                     help="what the closing section asks for (default: partner if they "
                          "already pay us, goaffpro on Shopify, else ask)")
+    ap.add_argument("--traffic-only", action="store_true",
+                    help="traffic section in full, the dataset section as a short "
+                         "teaser (for nurseries with no referral arrangement yet)")
     args = ap.parse_args(argv)
 
     ctx = build(args.nursery, args.month, args.offer)
     ctx["contact"] = args.contact
+    ctx["traffic_only"] = args.traffic_only
     html = render_template("partner_report.html.j2", **ctx)
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)

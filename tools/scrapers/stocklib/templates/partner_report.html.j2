@@ -260,6 +260,7 @@ td.item{font-weight:500;color:var(--ink)}
 .offer ul{margin:0 0 20px;padding-left:20px}
 .offer li{margin-bottom:10px;color:var(--ink-2);max-width:64ch}
 .offer li strong{color:var(--ink);font-weight:600}
+.teaser p{color:var(--ink-2);max-width:64ch;margin:0 0 14px}
 .guarantee{
   border-top:1px solid var(--line);padding-top:18px;margin-top:4px;
   font-size:14px;color:var(--ink-2);
@@ -315,7 +316,7 @@ a{color:var(--accent)}
     <span class="issue">Nursery report · {{ month_label }}</span>
   </div>
   <h1>{{ name }}</h1>
-  <p class="dek">What treestock sent you in {{ month_name }}, and what our dataset says about the stock behind it.{% if contact %} Prepared for {{ contact }}.{% endif %} Built {{ generated }}.</p>
+  <p class="dek">What treestock sent you in {{ month_name }}{% if not traffic_only %}, and what our dataset says about the stock behind it{% endif %}.{% if contact %} Prepared for {{ contact }}.{% endif %} Built {{ generated }}.</p>
 </header>
 
 <section class="band">
@@ -373,6 +374,28 @@ a{color:var(--accent)}
   </div>
 </section>
 
+{% if traffic_only %}
+<section class="offer teaser">
+  <h2>Also in the full report</h2>
+  <p>We read your stock every day and match it against every click and every stock alert. The full monthly report also covers:</p>
+  <ul>
+    <li><strong>Sold out when they arrived.</strong> {{ cls.sold_out }} of your {{ cls.product }} product clicks in {{ month_name }} landed on a page that was sold out that day. The report lists which ones, and for how many days.</li>
+{% if restricted %}    <li><strong>Queensland-only lines.</strong> Who is clicking the lines you can only sell in Queensland, and from where.</li>
+{% endif %}    <li><strong>What people are waiting for.</strong> {{ n_watching_yours }} people have a stock alert set on at least one of {{ n_varieties_yours }} varieties you list. The report names the varieties where you're the only nursery with stock, and the ones nobody has.</li>
+  </ul>
+{% if recipient.offer == "goaffpro" %}
+  <p>That part comes with a referral arrangement: GoAffPro on Shopify (free plan) with treestock as an affiliate at 5%, paid only on completed orders. The traffic section above stays free either way.</p>
+{% elif recipient.offer == "partner" %}
+  <p>You're a referral partner, so ask and we'll send the full version.</p>
+{% else %}
+  <p>That part comes once we've agreed how referrals are recognised. The traffic section above stays free either way.</p>
+{% endif %}
+  <div class="guarantee">
+    <span class="g">The part that matters</span>
+    Search results and ordering on treestock never take commission into account. Results are ordered by search match, stock and price, and no nursery can pay to rank higher, to be listed or to stay listed. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
+  </div>
+</section>
+{% else %}
 <section class="band">
   <div class="bandhead">
     <span class="tier paid">{% if recipient.offer == "ask" %}From our data{% else %}Partnership{% endif %}</span>
@@ -485,6 +508,7 @@ a{color:var(--accent)}
     Search results and ordering on treestock never take commission into account. Results are ordered by search match, stock and price, and no nursery can pay to rank higher, to be listed or to stay listed. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
   </div>
 </section>
+{% endif %}
 
 </div>
 </body>

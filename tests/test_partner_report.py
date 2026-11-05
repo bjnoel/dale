@@ -174,14 +174,14 @@ class WatchGrowth(unittest.TestCase):
 
 
 class TemplateRenders(unittest.TestCase):
-    def _render(self, recipient, regions=None, nobody=None):
+    def _render(self, recipient, regions=None, nobody=None, traffic_only=False):
         row = {"title": "Fig & Olive <b>", "short_title": "Fig & Olive <b>", "url": "https://x",
                "price": 49.9, "clicks": 3, "now": False, "days_out": 30, "home": 1, "away": 2}
         w = {"title": "Blueberry - OB1", "waiting": 6, "mine_prices": [49.9], "mine_in_prices": [49.9],
              "mine_restricted": False, "other_names": ["Ladybird Nursery"]}
         return render(
             "partner_report.html.j2",
-            recipient=recipient,
+            recipient=recipient, traffic_only=traffic_only,
             name="Ross Creek Tropicals", contact="Tom", domain="rosscreektropicals.com.au",
             month_label="September 2026", month_name="September", generated="12 October 2026",
             this={"clicks": 460, "people": 321, "label": "September"},
@@ -249,6 +249,21 @@ class TemplateRenders(unittest.TestCase):
         self.assertIn("298 clicks (65%) came from WA</strong>, where you ship in windows", html)
         self.assertIn("never take commission into account", html)
         self.assertNotIn("—", html)
+
+    def test_traffic_only_teases_the_dataset(self):
+        # Ross Creek and Daleys have no referral arrangement yet (2026-11-05):
+        # traffic in full, the dataset as a teaser with no tables.
+        for key, platform in (("ross-creek", "shopify"), ("daleys", "feed")):
+            html = self._render(bpr.recipient(key, platform), traffic_only=True)
+            self.assertIn("Traffic we sent you", html)
+            self.assertIn("Also in the full report", html)
+            self.assertIn("41 of your 431 product clicks", html)
+            self.assertNotIn("What our dataset says", html)
+            self.assertNotIn("You're the only one with it in stock", html)
+            self.assertNotIn("what our dataset says about the stock", html)
+            self.assertEqual(html.count("The part that matters"), 1)
+            self.assertNotIn("—", html)
+        self.assertNotIn("GoAffPro", html, "Daleys is not on Shopify")
 
     def test_partner_is_not_asked_for_anything(self):
         html = self._render(bpr.recipient("primal-fruits", "ecwid"))
