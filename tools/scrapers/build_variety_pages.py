@@ -49,7 +49,7 @@ NURSERY_URLS = {
     "fruitopia": "https://fruitopia.com.au",
     "primal-fruits": "https://primalfruits.com.au",
     "guildford": "https://guildfordgardencentre.com.au",
-    "fruit-salad-trees": "https://www.fruitsaladtrees.com.au",
+    "fruit-salad-trees": "https://www.fruitsaladtrees.com",
     "diggers": "https://www.diggers.com.au",
     "all-season-plants-wa": "https://allseasonplantswa.com.au",
     "ausnurseries": "https://www.ausnurseries.com",
