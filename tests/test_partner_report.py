@@ -211,7 +211,9 @@ class TemplateRenders(unittest.TestCase):
         self.assertIn('<div class="v">321</div>', html)
         self.assertIn("460 clicks to rosscreektropicals.com.au", html)
         self.assertIn("+91%", html)
-        self.assertIn("should show close to 321.", html)
+        self.assertIn("It should show close to 321.", html)
+        self.assertIn("For Tom.", html)
+        self.assertNotIn("Prepared for", html)
         self.assertNotIn("close to the same 460", html)
         self.assertIn('content="noindex, nofollow"', html)
         self.assertNotIn("outbound-links", html,
@@ -247,7 +249,7 @@ class TemplateRenders(unittest.TestCase):
         self.assertIn("From our data", html)
         self.assertIn("In windows", html)
         self.assertIn("298 clicks (65%) came from WA</strong>, where you ship in windows", html)
-        self.assertIn("never take commission into account", html)
+        self.assertIn("don't rank any higher than the ones that don't", html)
         self.assertNotIn("—", html)
 
     def test_traffic_only_teases_the_dataset(self):
@@ -261,9 +263,18 @@ class TemplateRenders(unittest.TestCase):
             self.assertNotIn("What our dataset says", html)
             self.assertNotIn("You're the only one with it in stock", html)
             self.assertNotIn("what our dataset says about the stock", html)
-            self.assertEqual(html.count("The part that matters"), 1)
+            self.assertEqual(html.count("How treestock ranks nurseries"), 1)
             self.assertNotIn("—", html)
         self.assertNotIn("GoAffPro", html, "Daleys is not on Shopify")
+
+    def test_tiny_share_is_not_zero_percent(self):
+        # Daleys Oct 2026 read "3 clicks (0%)", as if nothing happened.
+        regions = {"rows": [{"state": "TAS", "clicks": 1, "ships": False, "seasonal": False}],
+                   "elsewhere": 0, "unshippable": 1, "seasonal": 0,
+                   "restricted_home": 0, "restricted_away": 0}
+        html = self._render(bpr.recipient("daleys", "feed"), regions)
+        self.assertIn("1 clicks (under 1%)", html)
+        self.assertNotIn(">0%<", html)
 
     def test_partner_is_not_asked_for_anything(self):
         html = self._render(bpr.recipient("primal-fruits", "ecwid"))

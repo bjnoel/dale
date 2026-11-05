@@ -307,7 +307,7 @@ a{color:var(--accent)}
 {% macro money(p) %}{% if p %}${{ "%.2f"|format(p) }}{% else %}POA{% endif %}{% endmacro %}
 {% macro nowpill(now) %}{% if now is none %}<span class="pill only">Delisted</span>{% elif now %}<span class="pill instock">In stock</span>{% else %}<span class="pill out">Sold out</span>{% endif %}{% endmacro %}
 {% macro unit(n, word) %}<span class="u"> {{ word }}{% if n != 1 %}s{% endif %}</span>{% endmacro %}
-{% macro pct(x) %}{{ "%.0f"|format(x * 100) }}%{% endmacro %}
+{% macro pct(x) %}{% if 0 < x < 0.005 %}under 1%{% else %}{{ "%.0f"|format(x * 100) }}%{% endif %}{% endmacro %}
 <div class="wrap">
 
 <header class="masthead">
@@ -316,20 +316,18 @@ a{color:var(--accent)}
     <span class="issue">Nursery report · {{ month_label }}</span>
   </div>
   <h1>{{ name }}</h1>
-  <p class="dek">What treestock sent you in {{ month_name }}{% if not traffic_only %}, and what our dataset says about the stock behind it{% endif %}.{% if contact %} Prepared for {{ contact }}.{% endif %} Built {{ generated }}.</p>
+  <p class="dek">What treestock sent you in {{ month_name }}{% if not traffic_only %}, and what our dataset says about the stock behind it{% endif %}.{% if contact %} For {{ contact }}.{% endif %} Built {{ generated }}.</p>
 </header>
 
 <section class="band">
   <div class="bandhead">
-    <span class="tier free">Free, always</span>
     <h2>Traffic we sent you</h2>
-    <span class="bandnote">yours, no strings</span>
   </div>
 
   <div class="stats">
     <div class="stat"><div class="k">People sent in {{ month_name }}</div><div class="v">{{ this.people }}</div><div class="sub">{{ this.clicks }} clicks to {{ domain }}</div></div>
-    <div class="stat"><div class="k">Month on month</div><div class="v up">{% if prev.people %}{{ "%+.0f"|format((this.people - prev.people) / prev.people * 100) }}%{% else %}new{% endif %}</div><div class="sub">{{ prev.people }} people in {{ prev.label }}</div></div>
-    <div class="stat"><div class="k">Share of all clicks out</div><div class="v">{{ "%.1f"|format(share * 100) }}%</div><div class="sub">{{ rank }}{{ {1:"st",2:"nd",3:"rd"}.get(rank, "th") }} of {{ n_nurseries }} nurseries</div></div>
+    <div class="stat"><div class="k">Month on month</div><div class="v{% if this.people > prev.people %} up{% endif %}">{% if prev.people %}{{ "%+.0f"|format((this.people - prev.people) / prev.people * 100) }}%{% else %}new{% endif %}</div><div class="sub">{{ prev.people }} people in {{ prev.label }}</div></div>
+    <div class="stat"><div class="k">Share of clicks treestock sends to nurseries</div><div class="v">{{ "%.1f"|format(share * 100) }}%</div><div class="sub">{{ rank }}{{ {1:"st",2:"nd",3:"rd"}.get(rank, "th") }} of {{ n_nurseries }} nurseries</div></div>
     <div class="stat"><div class="k">Tagged for you</div><div class="v">{{ pct(tagged_share) }}</div><div class="sub">carry utm_source=treestock</div></div>
   </div>
 
@@ -342,11 +340,11 @@ a{color:var(--accent)}
     </div>
   </div>
 
-  <div class="callout"><strong>You can check this yourself.</strong> Every link we send you carries <code>utm_source=treestock</code>, so filtering {{ recipient.check_in }} on it should show close to {{ this.people }}. That's people, not clicks. Some people click more than once (comparing two plants, or coming back to one), which is why the {{ this.clicks }} clicks run higher, and {{ recipient.counter }} counts each of those as one visit. The click counts further down are about which pages people looked at.</div>
+  <div class="callout">Every link we send you carries <code>utm_source=treestock</code>, so you can check this yourself by filtering {{ recipient.check_in }} on it. It should show close to {{ this.people }}. That number counts people, and some people click more than once (comparing two plants, or coming back to one), which is why the {{ this.clicks }} clicks run higher, and {{ recipient.counter }} counts each of those as one visit. The click counts further down are about which pages people looked at.</div>
 
   <div class="mod">
     <h3>Where the clicks came from</h3>
-    <p>By the visitor's state. {% if regions.unshippable %}<strong>{{ regions.unshippable }} clicks ({{ pct(regions.unshippable / this.clicks) }}) came from {{ regions.rows|rejectattr("ships")|map(attribute="state")|join(" and ") }}</strong>, where you don't ship, so they can't turn into orders today.{% endif %}{% if regions.seasonal %} <strong>{{ regions.seasonal }} clicks ({{ pct(regions.seasonal / this.clicks) }}) came from {{ regions.rows|selectattr("seasonal")|map(attribute="state")|join(" and ") }}</strong>, where you ship in windows, so most of them can only buy when one is open.{% endif %}</p>
+    <p>{% if regions.unshippable %}<strong>{{ regions.unshippable }} clicks ({{ pct(regions.unshippable / this.clicks) }}) came from {{ regions.rows|rejectattr("ships")|map(attribute="state")|join(" and ") }}</strong>, where you don't ship, so they can't turn into orders today.{% endif %}{% if regions.seasonal %} <strong>{{ regions.seasonal }} clicks ({{ pct(regions.seasonal / this.clicks) }}) came from {{ regions.rows|selectattr("seasonal")|map(attribute="state")|join(" and ") }}</strong>, where you ship in windows, so most of them can only buy when one is open.{% endif %}</p>
     <div class="tablewrap"><table>
       <thead><tr><th>State</th><th class="num">Clicks</th><th class="num">Share</th><th>You ship there</th></tr></thead>
       <tbody>
@@ -377,10 +375,10 @@ a{color:var(--accent)}
 {% if traffic_only %}
 <section class="offer teaser">
   <h2>Also in the full report</h2>
-  <p>We read your stock every day and match it against every click and every stock alert. The full monthly report also covers:</p>
+  <p>We check your stock daily, so we can tell whether each click landed on something in stock that day. The full monthly report also covers:</p>
   <ul>
     <li><strong>Sold out when they arrived.</strong> {{ cls.sold_out }} of your {{ cls.product }} product clicks in {{ month_name }} landed on a page that was sold out that day. The report lists which ones, and for how many days.</li>
-{% if restricted %}    <li><strong>Queensland-only lines.</strong> Who is clicking the lines you can only sell in Queensland, and from where.</li>
+{% if restricted %}    <li><strong>Queensland-only lines.</strong> {{ cls.restricted }} clicks went to lines you only sell in Queensland, and {{ regions.restricted_away }} of them came from other states. The report lists which lines.</li>
 {% endif %}    <li><strong>What people are waiting for.</strong> {{ n_watching_yours }} people have a stock alert set on at least one of {{ n_varieties_yours }} varieties you list. The report names the varieties where you're the only nursery with stock, and the ones nobody has.</li>
   </ul>
 {% if recipient.offer == "goaffpro" %}
@@ -388,11 +386,11 @@ a{color:var(--accent)}
 {% elif recipient.offer == "partner" %}
   <p>You're a referral partner, so ask and we'll send the full version.</p>
 {% else %}
-  <p>That part comes once we've agreed how referrals are recognised. The traffic section above stays free either way.</p>
+  <p>That part comes with a referral arrangement{% if contact %}, which {{ contact.split(' ')[0] }} is looking into{% endif %}. The traffic section above stays free either way.</p>
 {% endif %}
   <div class="guarantee">
-    <span class="g">The part that matters</span>
-    Search results and ordering on treestock never take commission into account. Results are ordered by search match, stock and price, and no nursery can pay to rank higher, to be listed or to stay listed. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
+    <span class="g">How treestock ranks nurseries</span>
+    Nurseries that pay us commission don't rank any higher than the ones that don't. Results are sorted by search match, stock and price, and there's no paid listing. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
   </div>
 </section>
 {% else %}
@@ -504,8 +502,8 @@ a{color:var(--accent)}
   </ul>
 {% endif %}
   <div class="guarantee">
-    <span class="g">The part that matters</span>
-    Search results and ordering on treestock never take commission into account. Results are ordered by search match, stock and price, and no nursery can pay to rank higher, to be listed or to stay listed. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
+    <span class="g">How treestock ranks nurseries</span>
+    Nurseries that pay us commission don't rank any higher than the ones that don't. Results are sorted by search match, stock and price, and there's no paid listing. Every nursery we earn from is named on <a href="https://treestock.com.au/affiliate-disclosure.html">our affiliate disclosure page</a>.
   </div>
 </section>
 {% endif %}
