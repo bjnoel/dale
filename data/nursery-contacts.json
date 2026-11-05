@@ -702,8 +702,17 @@
       "phone": "02 66 771 598",
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-11-05",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Your nursery is on treestock.com.au (touch 1 goodwill intro to info@forever-seeds.com): what treestock is, link to /nursery/forever-seeds.html, ~60 people a month for two months (59 in October), large black mulberry most clicked, then custard apple and Bowen mango. Offered corrections.",
+          "evidence": "BCC reached resend-inbound 2026-11-05 04:32 UTC but was rejected as unmatched (shop domain forever-seeds.myshopify.com, mail on forever-seeds.com); hand-logged from the journal line, matcher fixed the same day"
+        }
+      ],
       "open_action": null,
       "notes": "Phone is voicemail only. Rare tropicals (Rollinia, Canistel, Sudachi, Yuzu), some of the most unusual stock on the site."
     },

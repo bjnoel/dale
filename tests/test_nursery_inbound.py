@@ -34,6 +34,12 @@ REGISTER = {"nurseries": [
     {"key": "ross-creek", "name": "Ross Creek", "domain": "rosscreektropicals.com.au",
      "status": "contacted"},
     {"key": "nodomain", "name": "No Domain", "status": "not_contacted"},
+    {"key": "forever-seeds", "name": "Forever Seeds",
+     "domain": "forever-seeds.myshopify.com", "email": "info@forever-seeds.com",
+     "status": "not_contacted"},
+    {"key": "wild-garden-organics", "name": "Wild Garden Organics",
+     "domain": "wildgardenorganics.com.au",
+     "email": "info.wildgardenorganics@gmail.com", "status": "not_contacted"},
 ]}
 
 
@@ -148,6 +154,18 @@ class TestMatchNursery(unittest.TestCase):
         self.assertEqual(
             ni.match_nursery("no-reply@mail.daleysfruit.com.au", REGISTER),
             "daleys")
+
+    def test_registered_email_on_another_domain_matches(self):
+        # Forever Seeds' intro was rejected 2026-11-05: shop on myshopify,
+        # mail on forever-seeds.com.
+        self.assertEqual(ni.match_nursery("Info@Forever-Seeds.com", REGISTER),
+                         "forever-seeds")
+        self.assertEqual(ni.match_nursery("info.wildgardenorganics@gmail.com",
+                                          REGISTER), "wild-garden-organics")
+
+    def test_shared_mail_host_does_not_claim_other_senders(self):
+        self.assertIsNone(ni.match_nursery("someone.else@gmail.com", REGISTER))
+        self.assertIsNone(ni.match_nursery("sales@forever-seeds.com", REGISTER))
 
     def test_unrelated_domain_does_not_match(self):
         self.assertIsNone(ni.match_nursery("someone@gmail.com", REGISTER))

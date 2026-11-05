@@ -177,6 +177,15 @@ def match_nursery(address, register):
     domain = _domain_of(address)
     if not domain:
         return None
+    # The registered email address, exactly. A nursery's mail can live on a
+    # different domain from its shop: Forever Seeds is forever-seeds.com on a
+    # forever-seeds.myshopify.com store, so Benedict's 2026-11-05 intro was
+    # rejected as unmatched. Exact address only, never the email's domain:
+    # three nurseries use gmail or bigpond, which would claim every sender.
+    addr = address.strip().lower()
+    for n in (register or {}).get("nurseries", []):
+        if addr and (n.get("email") or "").strip().lower() == addr:
+            return n.get("key")
     known = _register_domains(register)
     if domain in known:
         return known[domain]
