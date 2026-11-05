@@ -211,7 +211,7 @@ class TemplateRenders(unittest.TestCase):
         self.assertIn('<div class="v">321</div>', html)
         self.assertIn("460 clicks to rosscreektropicals.com.au", html)
         self.assertIn("+91%", html)
-        self.assertIn("It should show close to 321.", html)
+        self.assertIn("It should show close to 321 visits.", html)
         self.assertIn("For Tom.", html)
         self.assertNotIn("Prepared for", html)
         self.assertNotIn("close to the same 460", html)

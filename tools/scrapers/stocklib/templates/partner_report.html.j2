@@ -340,7 +340,7 @@ a{color:var(--accent)}
     </div>
   </div>
 
-  <div class="callout">Every link we send you carries <code>utm_source=treestock</code>, so you can check this yourself by filtering {{ recipient.check_in }} on it. It should show close to {{ this.people }}. That number counts people, and some people click more than once (comparing two plants, or coming back to one), which is why the {{ this.clicks }} clicks run higher, and {{ recipient.counter }} counts each of those as one visit. The click counts further down are about which pages people looked at.</div>
+  <div class="callout">Every link we send you carries <code>utm_source=treestock</code>, so you can check this yourself by filtering {{ recipient.check_in }} on it. It should show close to {{ this.people }} visits. That's lower than the {{ this.clicks }} clicks, as some people clicked through more than once to compare plants or come back to one.</div>
 
   <div class="mod">
     <h3>Where the clicks came from</h3>
@@ -382,11 +382,11 @@ a{color:var(--accent)}
 {% endif %}    <li><strong>What people are waiting for.</strong> {{ n_watching_yours }} people have a stock alert set on at least one of {{ n_varieties_yours }} varieties you list. The report names the varieties where you're the only nursery with stock, and the ones nobody has.</li>
   </ul>
 {% if recipient.offer == "goaffpro" %}
-  <p>That part comes with a referral arrangement: GoAffPro on Shopify (free plan) with treestock as an affiliate at 5%, paid only on completed orders. The traffic section above stays free either way.</p>
+  <p>That part comes with a referral arrangement: GoAffPro on Shopify (free plan) with treestock as an affiliate at 5%, paid only on completed orders. You'll get the traffic numbers every month whether or not you sign up.</p>
 {% elif recipient.offer == "partner" %}
   <p>You're a referral partner, so ask and we'll send the full version.</p>
 {% else %}
-  <p>That part comes with a referral arrangement{% if contact %}, which {{ contact.split(' ')[0] }} is looking into{% endif %}. The traffic section above stays free either way.</p>
+  <p>That part comes with a referral arrangement{% if contact %}, which {{ contact.split(' ')[0] }} is looking into{% endif %}. You'll get the traffic numbers every month whether or not you sign up.</p>
 {% endif %}
   <div class="guarantee">
     <span class="g">How treestock ranks nurseries</span>
