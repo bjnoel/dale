@@ -856,8 +856,17 @@
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "not_contacted",
-      "touches": [],
+      "status": "contacted",
+      "touches": [
+        {
+          "date": "2026-11-05",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Your nursery is on treestock.com.au",
+          "evidence": "resend:d81a1f2b-6c30-4968-863c-3d6e01c3fdd3"
+        }
+      ],
       "open_action": null,
       "notes": ""
     },
