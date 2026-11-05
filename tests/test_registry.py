@@ -187,3 +187,18 @@ class NurseryLocationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HomepageTest(unittest.TestCase):
+    def test_every_nursery_has_an_https_homepage(self):
+        # A nursery without one renders "visit nursery" as an empty link, and a
+        # product with no URL on the variety pages falls back to "#".
+        missing = [n.key for n in registry.NURSERIES
+                   if not n.homepage.startswith("https://")]
+        self.assertEqual(missing, [])
+
+    def test_fruit_salad_trees_is_the_dot_com(self):
+        # The .com.au 301s to the .com; the variety-page copy carried the
+        # .com.au for eight months without anything failing.
+        self.assertEqual(registry.NURSERY_HOMEPAGES["fruit-salad-trees"],
+                         "https://www.fruitsaladtrees.com")

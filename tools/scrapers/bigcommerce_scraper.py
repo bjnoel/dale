@@ -40,6 +40,7 @@ from pathlib import Path
 
 from stocklib.jsonio import atomic_write_json
 from stocklib.model import validate_and_warn
+from stocklib.registry import NURSERY_HOMEPAGES
 from stocklib.retry import request_with_retry
 from stocklib.scrape_health import (ScrapeHealth, consecutive_failures,
                                     count_priced, last_success_day, should_probe)
@@ -47,7 +48,7 @@ from stocklib.scrape_health import (ScrapeHealth, consecutive_failures,
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent / "data")) / "nursery-stock"
 NURSERY_KEY = "heritage-fruit-trees"
 NURSERY_NAME = "Heritage Fruit Trees"
-BASE_URL = "https://www.heritagefruittrees.com.au"
+BASE_URL = NURSERY_HOMEPAGES["heritage-fruit-trees"]
 GRAPHQL_URL = BASE_URL + "/graphql"
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 

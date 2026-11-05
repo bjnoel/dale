@@ -42,21 +42,9 @@ from stocklib.tombstone import render_stub, render_tombstone, stub_head_extras
 from stocklib.variety_descriptions import has_description, render_blurb
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo, SITE_URL
 
-NURSERY_URLS = {
-    "daleys": "https://www.daleysfruit.com.au",
-    "ross-creek": "https://www.rosscreektropicals.com.au",
-    "ladybird": "https://ladybird.com.au",
-    "fruitopia": "https://fruitopia.com.au",
-    "primal-fruits": "https://primalfruits.com.au",
-    "guildford": "https://guildfordgardencentre.com.au",
-    "fruit-salad-trees": "https://www.fruitsaladtrees.com",
-    "diggers": "https://www.diggers.com.au",
-    "all-season-plants-wa": "https://allseasonplantswa.com.au",
-    "ausnurseries": "https://www.ausnurseries.com",
-    "fruit-tree-cottage": "https://www.fruittreecottage.com.au",
-}
 
 from stocklib.classify import NON_PLANT_KEYWORDS
+from stocklib.registry import NURSERY_HOMEPAGES
 from stocklib.fruit_filters import in_scope
 
 
@@ -177,7 +165,7 @@ def build_variety_page(slug: str, data: dict, valid_species_slugs: set[str],
     for p in in_stock + out_stock:
         local_lbl = delivery_label(p["nursery_key"])
         states = local_lbl if local_lbl else (", ".join(p["ships_states"]) if p["ships_states"] else "—")
-        nursery_url = NURSERY_URLS.get(p["nursery_key"], "#")
+        nursery_url = NURSERY_HOMEPAGES.get(p["nursery_key"], "#")
         restrict_div = (
             f'<div class="text-xs"><span class="text-xs text-red-600">{p["restrict"]}</span></div>'
             if p["restrict"] else ""

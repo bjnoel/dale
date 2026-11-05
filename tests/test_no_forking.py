@@ -39,6 +39,7 @@ GUARDS = [
     (re.compile(r"^def inject_footer\b"), "stocklib/email_footer.py"),
     (re.compile(r"^SHIPPING_MAP\s*[:=]"), "stocklib/registry.py"),
     (re.compile(r"^NURSERY_NAMES\s*[:=]"), "stocklib/registry.py"),
+    (re.compile(r"^NURSERY_HOMEPAGES\s*[:=]"), "stocklib/registry.py"),
     (re.compile(r"^EVIDENCE_GRADES\s*[:=]"), "stocklib/evidence.py"),
     (re.compile(r"^GRADE_BADGE\s*[:=]"), "stocklib/evidence.py"),
     (re.compile(r"^def nursery_coverage\b"), "stocklib/coverage.py"),
@@ -115,6 +116,7 @@ GUARDS = [
 BANNED_DEFS = [
     r"^def is_non_plant\b",           # use classify.is_real_product
     r"^def match_title_to_species\b", # use species_match.match_title
+    r"^NURSERY_URLS\s*[:=]",          # use registry.NURSERY_HOMEPAGES
 ]
 
 
@@ -166,6 +168,31 @@ class NoForkingTest(unittest.TestCase):
                 f"{pattern!r} is a retired fork name; import the stocklib "
                 f"replacement instead of redefining it (found in {definers}).",
             )
+
+    def test_nursery_homepages_typed_only_in_the_registry(self):
+        """A nursery homepage is spelled once, on its registry record. The
+        variety pages kept their own hand-typed map (2026-03-15) and it drifted
+        to fruitsaladtrees.com.au, ladybird.com.au (times out) and
+        fruitopia.com.au (no such domain) while the nursery pages had the right
+        ones. A NAME guard alone misses a copy under a new name, so this looks
+        for the URL strings themselves."""
+        import sys
+        sys.path.insert(0, str(SCRAPERS))
+        from stocklib.registry import NURSERY_HOMEPAGES
+        hosts = {re.sub(r"^https?://(www\.)?", "", u).rstrip("/")
+                 for u in NURSERY_HOMEPAGES.values()}
+        rx = re.compile(r'["\']https?://(?:www\.)?(' + "|".join(map(re.escape, hosts))
+                        + r')/?["\']')
+        copies = sorted(
+            f"{f.relative_to(SCRAPERS)}: {m.group(0)}"
+            for f in _scanned_files() if f.name != "registry.py"
+            for m in rx.finditer(f.read_text())
+        )
+        self.assertEqual(
+            copies, [],
+            "Nursery homepage typed outside stocklib/registry.py; use "
+            f"NURSERY_HOMEPAGES instead: {copies}",
+        )
 
     def test_comparison_engine_not_re_forked(self):
         """The stock-change engine (variant_key / compare_snapshots) lives only in

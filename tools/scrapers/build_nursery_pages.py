@@ -17,7 +17,7 @@ from shipping import (SHIPPING_MAP, NURSERY_NAMES, LOCAL_DELIVERY, delivery_labe
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, CONTENT_MAX_WIDTH
 
 from stocklib.fruit_filters import in_scope
-from stocklib.registry import NURSERIES as REGISTRY_NURSERIES
+from stocklib.registry import NURSERIES as REGISTRY_NURSERIES, NURSERY_HOMEPAGES
 from stocklib.snapshots import is_dormant_nursery
 from stocklib.species_match import load_species_lookup, match_species
 from stocklib.utm import outbound
@@ -25,12 +25,10 @@ from stocklib.utm import outbound
 # Per-nursery metadata: website URL, tags, description
 NURSERY_META = {
     "daleys": {
-        "url": "https://www.daleysfruit.com.au",
         "tags": ["tropical fruit", "subtropical fruit", "rare varieties"],
         "description": "Daleys Fruit Trees is one of Australia's largest online fruit tree nurseries, based in Kyogle NSW. They carry an enormous range including tropical, subtropical, and rare varieties, and ship to WA seasonally with special quarantine permits.",
     },
     "ross-creek": {
-        "url": "https://www.rosscreektropicals.com.au",
         "tags": ["tropical fruit", "exotic varieties", "QLD grown"],
         "description": "Ross Creek Tropicals specialises in tropical and subtropical fruit trees grown in Queensland's ideal climate. They carry rare and hard-to-find tropical varieties not commonly available elsewhere in Australia.",
         "seasonality": {
@@ -40,112 +38,90 @@ NURSERY_META = {
         },
     },
     "ladybird": {
-        "url": "https://www.ladybirdnursery.com.au",
         "tags": ["fruit trees", "edibles", "subtropical"],
         "description": "Ladybird Nursery is a Queensland-based nursery with a large range of edible plants and fruit trees. They carry both common and unusual varieties with a focus on plants suited to Queensland's subtropical climate.",
     },
     "fruitopia": {
-        "url": "https://www.fruitopianursery.com.au",
         "tags": ["tropical fruit", "subtropical fruit", "rare varieties"],
         "description": "Fruitopia Nursery is a specialist fruit tree nursery in Queensland carrying a wide range of tropical and subtropical fruit trees, with a particular focus on rare and exotic varieties.",
     },
     "primal-fruits": {
-        "url": "https://www.primalfruits.com.au",
         "tags": ["tropical fruit", "WA grown", "pickup available"],
         "description": "Primal Fruits Perth is a Western Australian nursery specialising in tropical and subtropical fruit trees suited to WA's climate. Local pickup available in Parkwood, Perth.",
     },
     "guildford": {
-        "url": "https://www.guildfordgardencentre.com.au",
         "tags": ["fruit trees", "ornamentals", "WA climate"],
         "description": "Guildford Garden Centre is a full-service garden centre in Guildford, WA carrying a good range of fruit trees alongside ornamentals and garden supplies. Great option for Perth gardeners wanting to browse in person.",
     },
     "fruit-salad-trees": {
-        "url": "https://www.fruitsaladtrees.com",
         "tags": ["multi-graft trees", "space-saving", "novelty"],
         "description": "Fruit Salad Trees specialises in unique multi-graft fruit trees — a single tree bearing multiple fruit varieties. Ideal for small gardens. Ships to WA on the first Tuesday of each month (quarantine permit required).",
     },
     "diggers": {
-        "url": "https://www.diggers.com.au",
         "tags": ["heirloom varieties", "heritage fruit", "seeds & plants"],
         "description": "The Diggers Club is Australia's largest heritage seed and plant company, based in Dromana VIC. They carry a curated selection of heirloom and heritage fruit trees alongside vegetables, herbs, and seeds. Nationwide shipping.",
     },
     "all-season-plants-wa": {
-        "url": "https://allseasonplantswa.com.au",
         "tags": ["tropical fruit", "WA grown", "rare varieties"],
         "description": "All Season Plants WA is a Perth-based nursery specialising in tropical and rare fruit trees suited to Western Australia's warm climate. Pickup available at their Perth location.",
     },
     "ausnurseries": {
-        "url": "https://www.ausnurseries.com",
         "tags": ["fruit trees", "edibles"],
         "description": "Aus Nurseries is an online nursery offering a variety of fruit trees and edible plants across Australia. They carry a range of common and less common fruit species, shipping to most Australian states excluding WA, NT, and TAS.",
     },
     "fruit-tree-cottage": {
-        "url": "https://www.fruittreecottage.com.au",
         "tags": ["tropical fruit", "subtropical fruit", "rare varieties"],
         "description": "Fruit Tree Cottage is a specialist fruit tree nursery on the Sunshine Coast, Queensland. They focus on tropical and subtropical varieties with an impressive range of lychee, fig, guava, persimmon, and other rare edibles. Does not ship to WA, NT, or TAS.",
     },
     "heritage-fruit-trees": {
-        "url": "https://www.heritagefruittrees.com.au",
         "tags": ["heritage varieties", "heirloom", "temperate fruit", "apples", "pears", "plums"],
         "description": "Heritage Fruit Trees is a Victorian specialist nursery carrying one of Australia's largest collections of heritage and heirloom temperate fruit trees. Based in Beaufort, VIC, they stock hundreds of apple, pear, plum, cherry, quince, and nut tree varieties including many rare cultivars unavailable elsewhere. Does not ship to WA, NT, or TAS.",
     },
     "perth-mobile-nursery": {
-        "url": "https://perthmobilenursery.com.au",
         "tags": ["WA grown", "tropical fruit", "mangoes", "figs", "rare varieties"],
         "description": "Perth Mobile Nursery is a premium WA-based nursery specialising in fruit trees suited to Perth's climate. They carry a range of tropical and subtropical varieties including rare mango cultivars, figs, pomegranates, and edibles grown locally in WA. Perth metro delivery available.",
     },
     "yalca-fruit-trees": {
-        "url": "https://yalcafruittrees.com.au",
         "tags": ["heritage varieties", "dwarf fruit trees", "apples", "pears", "stone fruit", "temperate"],
         "description": "Yalca Fruit Trees is a specialist heritage and dwarf fruit tree nursery based in Yalca, Victoria. They carry a broad range of apple, pear, plum, cherry, apricot, nectarine, peach, fig, quince, persimmon and berry varieties. Shipping season is late June to 15 September (dormant bare-root season). Does not ship to WA, NT, or TAS.",
     },
     "forever-seeds": {
-        "url": "https://forever-seeds.myshopify.com",
         "tags": ["rare tropicals", "exotic fruit trees", "NSW", "seedlings"],
         "description": "Forever Seeds is a NSW-based nursery specialising in rare and exotic tropical fruit trees. Their range includes unusual varieties such as Rollinia (Brazilian Custard Apple), Canistel (Yellow Sapote), Agarwood, Sudachi Lime, Yuzu, Longan, and other hard-to-find tropicals. Ships to NSW, VIC, QLD, SA and ACT. Does not ship to WA, NT, or TAS.",
     },
     "fruit-tree-lane": {
-        "url": "https://fruittreelane.com.au",
         "tags": ["finger limes", "figs", "olives", "blueberries", "subtropical", "QLD"],
         "description": "Fruit Tree Lane is a Queensland-based nursery specialising in fruit trees, finger limes, figs, olives, blueberries, and subtropical varieties. Based in Helidon, QLD, they carry a wide range of edible trees suited to subtropical and warm temperate climates. Does not ship to WA, NT, or TAS.",
     },
     "plantnet": {
-        "url": "https://plantnet.com.au",
         "tags": ["dwarf fruit trees", "SA grown", "pears", "peaches", "citrus"],
         "description": "PlantNet is a South Australian nursery specialising in dwarf and compact fruit tree varieties. They carry a good range of pears, peaches, nectarines, plums, and citrus in pot-friendly sizes. WA orders are fulfilled via their Olea Nurseries partner based in Manjimup WA (not direct interstate shipping), so WA buyers receive locally grown stock with no interstate quarantine issues.",
     },
     "garden-world": {
-        "url": "https://gardenworld.au",
         "tags": ["fruit trees", "citrus", "stone fruit", "VIC", "garden centre"],
         "description": "Garden World is a large garden centre in Braeside, Melbourne carrying a broad range of fruit trees: citrus, stone fruit, bare-root deciduous, dwarf and grafted varieties, plus figs, olives, berries, and avocados. Delivery is Melbourne metro only (their own vans) with in-store pickup available. Does not ship to WA, NT, or TAS.",
     },
     "diacos": {
-        "url": "https://diacos.com.au",
         "tags": ["fruit trees", "edibles", "VIC", "garden centre"],
         "description": "Diaco's Garden Nursery is a Melbourne garden centre group (Heatherton and other Victorian stores) carrying fruit trees and edibles alongside a large general garden range. Delivery is Melbourne metro with in-store pickup available. Does not ship to WA, NT, or TAS.",
     },
     "rayners": {
-        "url": "https://www.raynersorchard.com.au",
         "tags": ["multi-graft trees", "stone fruit", "finger limes", "VIC"],
         "description": "Rayners Orchard is a Yarra Valley orchard and nursery with a deep range of dwarf and multi-graft stone fruit, pears, citrus, dozens of finger lime cultivars, and feijoas. Famous for their orchard tours. Delivers within Victoria only (interstate for bulk 50+ orders).",
     },
     "wild-garden-organics": {
-        "url": "https://wildgardenorganics.com.au",
         "tags": ["rare tropicals", "grafted trees", "QLD"],
         "description": "Wild Garden Organics is a Queensland nursery specialising in rare grafted tropical fruit trees. Free shipping on orders over $170 to QLD, NSW, VIC, SA and ACT. Does not ship to WA, NT, or TAS via standard checkout (biosecurity).",
     },
     "st-clements-citrus": {
-        "url": "https://www.stclementscitrus.com",
         "tags": ["rare citrus", "yuzu", "WA grown"],
         "description": "St Clements Citrus is a citrus specialist in High Wycombe, Perth WA, growing yuzu, Buddha's hand, blood lime, citron and other hard-to-find citrus, plus mango, avocado, stone fruit and fig trees. Delivers to Perth, Rockingham, Midland, Yanchep and Kalamunda for a flat $30.",
     },
     "the-heritage-nursery": {
-        "url": "https://heritagenursery.com.au",
         "tags": ["fruit trees", "garden centre", "ACT"],
         "description": "The Heritage Nursery is a Canberra garden centre in Yarralumla carrying fruit trees alongside a general garden range. Local delivery covers the ACT and Queanbeyan, plus click-and-collect. No interstate shipping. Not to be confused with Heritage Fruit Trees in Victoria.",
     },
     "all-rare-herbs": {
-        "url": "https://allrareherbs.com.au",
         "tags": ["rare fruit", "miracle fruit", "vanilla", "coffee", "mail order"],
         "description": "All Rare Herbs is an online-only mail-order nursery best known for herbs, with a genuinely rare fruiting range: miracle fruit, acerola cherry, vanilla, coffee, cocoa, goji, midyim and other collector plants. We track their fruiting plants and trees only. No plants to WA, NT, or TAS.",
     },
@@ -296,7 +272,7 @@ def build_nursery_page(nursery_key: str, data: dict, species_lookup: dict,
     # Registry first: the snapshot only carries a location for the three
     # scraper dialects that happen to write one. See nursery_location().
     location = nursery_location(nursery_key, data.get("location") or "Australia")
-    url = meta.get("url", "")
+    url = NURSERY_HOMEPAGES.get(nursery_key, "")
     tags = meta.get("tags", [])
     description = meta.get("description", "")
     seasonality_banner = render_seasonality_banner(meta.get("seasonality"))

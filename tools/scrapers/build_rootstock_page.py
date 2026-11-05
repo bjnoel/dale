@@ -33,6 +33,7 @@ from stocklib.templates import render as render_template
 from treestock_layout import render_head, render_header, render_breadcrumb, render_footer, render_treesmith_promo
 
 from stocklib.citations import inline_cite
+from stocklib.registry import NURSERY_HOMEPAGES
 from stocklib.taxonomy import enabled_species
 
 import rootstock_guides as rg
@@ -51,7 +52,7 @@ CITE_FLEMINGS = ("Fleming's Nurseries", "https://www.flemings.com.au/where-to-bu
 CITE_DPIRD = ("Quarantine WA", "https://www.dpird.wa.gov.au/businesses/biosecurity/importing-and-exporting-quarantine-wa/importing-plants-and-plant-products/")
 CITE_ICA62 = ("WA ICA-62", "https://www.interstatequarantine.org.au/wp-content/uploads/2017/09/WA-ICA-62.pdf")
 CITE_INTERSTATE = ("Interstate Quarantine", "https://interstatequarantine.org.au/producers/moving-plant-goods/")
-CITE_YALCA = ("Yalca Fruit Trees", "https://www.yalcafruittrees.com.au/")
+CITE_YALCA = ("Yalca Fruit Trees", NURSERY_HOMEPAGES["yalca-fruit-trees"] + "/")
 
 # Page-level references (per-species sources sit collapsed under each section above).
 REFERENCES = [

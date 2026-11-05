@@ -42,6 +42,11 @@ class Nursery:
     # filtering; this only stops a report telling a nursery it ships there
     # any day of the year.
     seasonal_states: tuple[str, ...] = ()
+    # The nursery's own homepage, for "visit nursery" links and as the
+    # fallback when a product has no URL. Lives here, never in a builder's own
+    # dict: build_variety_pages kept a hand-typed copy from 2026-03-15 that
+    # drifted to three wrong domains (two of them dead) before it was removed.
+    homepage: str = ""
 
 
 # Verified via nursery websites March 2026. Quarantine states (WA, TAS, NT)
@@ -51,44 +56,53 @@ NURSERIES: list[Nursery] = [
             ("NSW", "VIC", "QLD", "SA", "WA", "ACT"),
             location="Kyogle, NSW",
             note="WA: seasonal window + extra fee",
-            seasonal_states=("WA",)),
+            seasonal_states=("WA",),
+            homepage="https://www.daleysfruit.com.au"),
     Nursery("ross-creek", "Ross Creek Tropicals",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Gympie, QLD",
             note="Verified 2026-06-15: ships QLD/NSW/VIC/SA/ACT (homepage banner). "
-                 "No WA/NT/TAS ($10 refund fee on those)."),
+                 "No WA/NT/TAS ($10 refund fee on those).",
+            homepage="https://www.rosscreektropicals.com.au"),
     Nursery("ladybird", "Ladybird Nursery",
             ("NSW", "VIC", "QLD", "ACT"),
             location="Kallangur, QLD",
-            note="Confirmed 2026-03-16: QLD/NSW/VIC/ACT only (not WA/NT/TAS)"),
+            note="Confirmed 2026-03-16: QLD/NSW/VIC/ACT only (not WA/NT/TAS)",
+            homepage="https://ladybirdnursery.com.au"),
     Nursery("fruitopia", "Fruitopia",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Brisbane/Gold Coast, QLD",
             note="QLD-based. Verified 2026-06-15 (per-product policy): ships "
-                 "QLD/NSW/ACT/VIC/SA, not WA/TAS/NT."),
+                 "QLD/NSW/ACT/VIC/SA, not WA/TAS/NT.",
+            homepage="https://fruitopianursery.com.au"),
     Nursery("primal-fruits", "Primal Fruits Perth",
             ("WA",),
             local_delivery={"area": "Perth metro", "state": "WA"},
             location="Parkwood, WA",
-            note="WA-based, local only"),
+            note="WA-based, local only",
+            homepage="https://primalfruits.com.au"),
     Nursery("guildford", "Guildford Garden Centre",
             ("WA",),
             local_delivery={"area": "Perth metro", "state": "WA"},
             location="Guildford, WA",
-            note="WA-based, Perth metro"),
+            note="WA-based, Perth metro",
+            homepage="https://guildfordgardencentre.com.au"),
     Nursery("fruit-salad-trees", "Fruit Salad Trees",
             ("NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT"),
             location="Emmaville, NSW",
-            note="WA+TAS: 1st Tue/month"),
+            note="WA+TAS: 1st Tue/month",
+            homepage="https://www.fruitsaladtrees.com"),
     Nursery("diggers", "The Diggers Club",
             ("NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"),
             location="Dromana, VIC",
-            note="Ships nationwide"),
+            note="Ships nationwide",
+            homepage="https://www.diggers.com.au"),
     Nursery("all-season-plants-wa", "All Season Plants WA",
             ("WA",),
             local_delivery={"area": "Perth (pickup)", "state": "WA"},
             location="Perth, WA",
-            note="WA-based, pickup only (Perth)"),
+            note="WA-based, pickup only (Perth)",
+            homepage="https://allseasonplantswa.com.au"),
     Nursery("ausnurseries", "Aus Nurseries",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Australia",
@@ -101,11 +115,13 @@ NURSERIES: list[Nursery] = [
                 'says it will reopen on 20 October 2026. The stock below is the last '
                 'we recorded before they closed and is kept for reference, not as '
                 'current availability.'
-            )),
+            ),
+            homepage="https://www.ausnurseries.com"),
     Nursery("fruit-tree-cottage", "Fruit Tree Cottage",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Forest Glen, QLD",
-            note="Does not ship to WA, NT, or TAS"),
+            note="Does not ship to WA, NT, or TAS",
+            homepage="https://www.fruittreecottage.com.au"),
     Nursery("heritage-fruit-trees", "Heritage Fruit Trees",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Beaufort, VIC",
@@ -120,62 +136,74 @@ NURSERIES: list[Nursery] = [
                 'running an on-farm clearance at Beaufort, VIC from Saturday 29 '
                 'August 2026. We expect their catalogue back for the 2027 bare-root '
                 'season.'
-            )),
+            ),
+            homepage="https://www.heritagefruittrees.com.au"),
     Nursery("perth-mobile-nursery", "Perth Mobile Nursery",
             ("WA",),
             local_delivery={"area": "Perth metro", "state": "WA"},
             location="Perth, WA",
-            note="WA-based, Perth metro delivery only"),
+            note="WA-based, Perth metro delivery only",
+            homepage="https://www.perthmobilenursery.com.au"),
     Nursery("yalca-fruit-trees", "Yalca Fruit Trees",
             ("NSW", "VIC", "QLD", "ACT"),
             location="Yalca, VIC",
             note="Does not ship to WA, SA, NT, or TAS (SA excluded per policy, "
-                 "verified 2026-06-15). Seasonal: late June to Sep 15 only."),
+                 "verified 2026-06-15). Seasonal: late June to Sep 15 only.",
+            homepage="https://www.yalcafruittrees.com.au"),
     Nursery("forever-seeds", "Forever Seeds",
             ("NSW", "VIC", "QLD", "SA", "NT", "ACT"),
             location="NSW",
             note="NSW-based. Plants/bulbs not sent to WA or TAS (seeds ship "
-                 "anywhere). NT served. Verified 2026-06-15."),
+                 "anywhere). NT served. Verified 2026-06-15.",
+            homepage="https://forever-seeds.myshopify.com"),
     Nursery("garden-express", "Garden Express",
             ("NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"),
             location="VIC",
-            note="Ships nationwide; quarantine surcharge for WA/NT/TAS."),
+            note="Ships nationwide; quarantine surcharge for WA/NT/TAS.",
+            homepage="https://gardenexpress.com.au"),
     Nursery("plantnet", "PlantNet",
             ("NSW", "VIC", "QLD", "ACT"),
             location="Balhannah, SA",
             note="Online shop does not ship to NT/TAS/SA/WA (state plant quarantine, "
-                 "verified 2026-06-15). TAS/WA buyers directed to retail stockists."),
+                 "verified 2026-06-15). TAS/WA buyers directed to retail stockists.",
+            homepage="https://plantnet.com.au"),
     Nursery("fruit-tree-lane", "Fruit Tree Lane",
             ("NSW", "VIC", "QLD", "SA", "ACT"),
             location="Helidon, QLD",
-            note="QLD-based (Helidon). Does not ship to WA, NT, or TAS (quarantine)."),
+            note="QLD-based (Helidon). Does not ship to WA, NT, or TAS (quarantine).",
+            homepage="https://fruittreelane.com.au"),
     Nursery("engalls", "Engall's Nursery",
             ("NSW", "VIC", "QLD", "ACT"),
             location="Dural, NSW",
             note="NSW-based (Dural). Does not ship to WA, NT, TAS. SA paused "
                  "(Red Imported Fire Ants emergency order, verified 2026-06-15; "
-                 "bulk-only via SA stockist)."),
+                 "bulk-only via SA stockist).",
+            homepage="https://www.engalls.com.au"),
     Nursery("rayners", "Rayners Orchard",
             ("VIC",),
             local_delivery={"area": "Victoria", "state": "VIC"},
             location="Yarra Valley, VIC",
-            note="VIC-based (Yarra Valley). Delivers within Victoria only; interstate only for bulk orders (50+)."),
+            note="VIC-based (Yarra Valley). Delivers within Victoria only; interstate only for bulk orders (50+).",
+            homepage="https://www.raynersorchard.com.au"),
     Nursery("garden-world", "Garden World",
             ("VIC",),
             local_delivery={"area": "Melbourne metro", "state": "VIC"},
             location="Braeside, VIC",
-            note="VIC-based (Braeside). Melbourne metro delivery (in-house vans) + in-store pickup; no interstate (no WA/NT/TAS)."),
+            note="VIC-based (Braeside). Melbourne metro delivery (in-house vans) + in-store pickup; no interstate (no WA/NT/TAS).",
+            homepage="https://gardenworld.au"),
     Nursery("diacos", "Diaco's Garden Nursery",
             ("VIC",),
             local_delivery={"area": "Melbourne metro", "state": "VIC"},
             location="Heatherton, VIC",
-            note="VIC-based (Heatherton + other Melbourne stores). Melbourne metro delivery + in-store pickup; no interstate (no WA/NT/TAS)."),
+            note="VIC-based (Heatherton + other Melbourne stores). Melbourne metro delivery + in-store pickup; no interstate (no WA/NT/TAS).",
+            homepage="https://diacos.com.au"),
     Nursery("wild-garden-organics", "Wild Garden Organics",
             ("QLD", "NSW", "VIC", "SA", "ACT"),
             location="QLD",
             note="QLD-based (Ecwid). Rare grafted tropicals. No WA/NT/TAS via "
                  "standard checkout (biosecurity; ships there on request for "
-                 "~$300+). Free shipping over $170. Verified 2026-06-20."),
+                 "~$300+). Free shipping over $170. Verified 2026-06-20.",
+            homepage="https://wildgardenorganics.com.au"),
     Nursery("st-clements-citrus", "St Clements Citrus",
             ("WA",),
             local_delivery={"area": "Perth metro", "state": "WA"},
@@ -183,14 +211,16 @@ NURSERIES: list[Nursery] = [
             note="High Wycombe, Perth WA (Wix since 2026-10-25, www.stclementscitrus.com). "
                  "Citrus specialist (yuzu, Buddha's hand, blood lime, citron), now also "
                  "mango, avocado, stone fruit and figs. Delivers to Perth, Rockingham, "
-                 "Midland, Yanchep and Kalamunda only, flat $30. Verified 2026-10-26."),
+                 "Midland, Yanchep and Kalamunda only, flat $30. Verified 2026-10-26.",
+            homepage="https://www.stclementscitrus.com"),
     Nursery("the-heritage-nursery", "The Heritage Nursery",
             ("ACT",),
             local_delivery={"area": "ACT + Queanbeyan", "state": "ACT"},
             location="Yarralumla, ACT",
             note="Canberra garden centre (Shopify). Local delivery (ACT + "
                  "Queanbeyan, from $90) + click-and-collect only; no interstate "
-                 "post. Distinct from Heritage Fruit Trees (VIC). Verified 2026-06-20."),
+                 "post. Distinct from Heritage Fruit Trees (VIC). Verified 2026-06-20.",
+            homepage="https://heritagenursery.com.au"),
     # REMOVED 2026-08-27 at the nursery's request, DO NOT RE-ADD.
     # Heaven On Earth Fruit Trees replied to our touch-1 email the same day
     # demanding removal and threatening to report us to Consumer Affairs. We
@@ -209,7 +239,8 @@ NURSERIES: list[Nursery] = [
                  "plants to WA/TAS/NT (site only lists WA/TAS; NT confirmed "
                  "excluded by the nursery directly, Benedict 2026-07-23). A few "
                  "products are stricter (some also exclude SA, two are "
-                 "QLD-only), per-product rules not modelled at nursery level."),
+                 "QLD-only), per-product rules not modelled at nursery level.",
+            homepage="https://allrareherbs.com.au"),
     Nursery("perrys", "Perry's Fruit & Nut Nursery",
             ("SA",),
             local_delivery={"area": "Adelaide (pickup)", "state": "SA"},
@@ -223,7 +254,8 @@ NURSERIES: list[Nursery] = [
                  "fruit trees. Reads as an in-store nursery with an online "
                  "catalogue. Erring SA-only never tells an eastern-states buyer "
                  "something is purchasable when it is not; widen it only once "
-                 "Benedict has asked them."),
+                 "Benedict has asked them.",
+            homepage="https://perrysfruitnursery.com.au"),
 ]
 
 _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}
@@ -232,6 +264,7 @@ _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}
 SHIPPING_MAP: dict[str, list[str]] = {n.key: list(n.ships_to) for n in NURSERIES}
 NURSERY_NAMES: dict[str, str] = {n.key: n.name for n in NURSERIES}
 LOCAL_DELIVERY: dict[str, dict] = {n.key: n.local_delivery for n in NURSERIES if n.local_delivery}
+NURSERY_HOMEPAGES: dict[str, str] = {n.key: n.homepage for n in NURSERIES if n.homepage}
 SEASONAL_STATES: dict[str, list[str]] = {n.key: list(n.seasonal_states) for n in NURSERIES
                                          if n.seasonal_states}
 

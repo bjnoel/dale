@@ -27,10 +27,11 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 from stocklib.model import validate_and_warn
+from stocklib.registry import NURSERY_HOMEPAGES
 from stocklib.scrape_health import count_priced, ScrapeHealth
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock" / "daleys"
-BASE_URL = "https://www.daleysfruit.com.au"
+BASE_URL = NURSERY_HOMEPAGES["daleys"]
 USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 REQUEST_DELAY = 2  # seconds between page fetches
 
