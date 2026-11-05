@@ -208,5 +208,65 @@ class ScrapeOrchestrationTest(unittest.TestCase):
         self.assertEqual(es.scrape_ecwid("primal-fruits", self.CONFIG), [])
 
 
+def _optioned(base, options, choices, sold_out=False):
+    """A catalog product shaped like Wild Garden's live API response
+    (2026-11-05): option groups in `options`, per-choice price modifiers only as
+    formatted strings under pricesOverrides."""
+    return {
+        "name": "Lychee (Organic) Size Options Available",
+        "urls": {"directPageUrl": "/products/lychee"},
+        "flags": {"isAllVariationsSoldOut": sold_out},
+        "options": options,
+        "defaultOptionsOverrides": {
+            "pricesOverrides": {
+                "basePrice": base,
+                "optionsChoicesWithModifiersAndTaxes": choices,
+            },
+            "variationOverrides": {"sku": ""},
+        },
+    }
+
+
+def _group(option_id, *modifiers):
+    return {"optionId": option_id, "choices": [
+        {"type": "SELECT", "choiceId": f"c{i}", "choiceName": f"c{i}",
+         "modifierFormatted": m} for i, m in enumerate(modifiers)]}
+
+
+class OptionPriceRangeTest(unittest.TestCase):
+    """Wild Garden's lychee is $29.99 at 40-60cm and +AU$11.99 at 60-80cm
+    (Benedict, 2026-11-05). We stored 29.99..29.99 because only basePrice was
+    read, so the bigger size never showed and could never alert."""
+
+    def test_required_size_option_widens_the_range(self):
+        raw = _optioned(29.99, [{"optionId": "Size", "type": "DROPDOWN", "required": True}],
+                        [_group("Size", "", "+AU$11.99")])
+        p = es.extract_product(raw, "wildgardenorganics.com.au")
+        self.assertEqual((p["price"], p["min_price"], p["max_price"]), (29.99, 29.99, 41.98))
+
+    def test_negative_modifier_does_not_move_the_alerted_price(self):
+        # Pomegranate: grafted at base $44.99, seedling option at -AU$10.00.
+        # min_price is what stocklib.changes compares for flat products, so
+        # dropping it to 34.99 would send subscribers a false "price drop" the
+        # day this shipped. It stays at the storefront headline price.
+        raw = _optioned(44.99, [{"optionId": "Opt", "type": "RADIO", "required": True}],
+                        [_group("Opt", "-AU$10.00")])
+        p = es.extract_product(raw, "wildgardenorganics.com.au")
+        self.assertEqual((p["price"], p["min_price"], p["max_price"]), (44.99, 44.99, 44.99))
+
+    def test_optional_add_ons_do_not_count(self):
+        # Primal's heatpad "Upgrades" are optional checkboxes, not sizes.
+        raw = _optioned(30.0, [{"optionId": "Upgrades", "type": "CHECKBOX", "required": False}],
+                        [_group("Upgrades", "+AU$30.00", "+AU$35.00")])
+        p = es.extract_product(raw, "primalfruits.com.au")
+        self.assertEqual((p["min_price"], p["max_price"]), (30.0, 30.0))
+
+    def test_unparseable_modifier_is_ignored_not_fatal(self):
+        raw = _optioned(19.99, [{"optionId": "Size", "type": "DROPDOWN", "required": True}],
+                        [_group("Size", "", "+\u202aAU$16.00\u202c", "call us")])
+        p = es.extract_product(raw, "wildgardenorganics.com.au")
+        self.assertEqual((p["min_price"], p["max_price"]), (19.99, 35.99))
+
+
 if __name__ == "__main__":
     unittest.main()

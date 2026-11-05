@@ -172,6 +172,46 @@ def parse_catalog_page(data):
     return (root.get("products") or [], root.get("totalProductsCount") or 0)
 
 
+_MODIFIER_RX = re.compile(r"([+-])\s*[A-Z]*\$\s*([0-9][0-9,]*(?:\.[0-9]+)?)")
+
+
+def _parse_modifier(text):
+    """'+AU$11.99' -> 11.99, '-AU$10.00' -> -10.0, '' -> 0.0, junk -> None.
+
+    The catalog API only gives option modifiers as formatted strings, sometimes
+    wrapped in Unicode bidi marks (U+202A/U+202C)."""
+    text = (text or "").replace("\u202a", "").replace("\u202c", "").strip()
+    if not text:
+        return 0.0
+    m = _MODIFIER_RX.search(text)
+    if not m:
+        return None
+    value = float(m.group(2).replace(",", ""))
+    return -value if m.group(1) == "-" else value
+
+
+def _max_option_markup(raw, prices):
+    """Largest total markup over basePrice across REQUIRED choice options.
+
+    Wild Garden sells sizes as a required dropdown (lychee 40-60cm at base,
+    60-80cm +AU$11.99); before this the bigger size never appeared. Optional
+    groups (Primal's heatpad "Upgrades" checkboxes) are add-ons, not sizes.
+    Only upward markups count: min_price stays at basePrice because it is the
+    field stocklib.changes compares for flat products, and moving it would read
+    as a price change on the day this shipped."""
+    required = {o.get("optionId") for o in (raw.get("options") or [])
+                if o.get("required") and o.get("type") in ("DROPDOWN", "RADIO", "SIZE")}
+    total = 0.0
+    for group in prices.get("optionsChoicesWithModifiersAndTaxes") or []:
+        if group.get("optionId") not in required:
+            continue
+        mods = [_parse_modifier(c.get("modifierFormatted")) for c in group.get("choices") or []]
+        mods = [m for m in mods if m is not None]
+        if mods:
+            total += max(0.0, max(mods))
+    return total
+
+
 def extract_product(raw, domain):
     """Map one Ecwid catalog product object to the flat snapshot product shape."""
     name = (raw.get("name") or "").strip()
@@ -201,6 +241,7 @@ def extract_product(raw, domain):
         sold_out = True
     available = not bool(sold_out)
     price = _as_float(prices.get("basePrice"))
+    max_price = round(price + _max_option_markup(raw, prices), 2) if price is not None else None
 
     # Emit BOTH dialects' availability/price fields. Ecwid is the "flat" dialect
     # (top-level available/price, no variants), but most builders read the
@@ -215,7 +256,7 @@ def extract_product(raw, domain):
         "description": _strip_html(raw.get("description") or ""),
         "price": price,
         "min_price": price,
-        "max_price": price,
+        "max_price": max_price,
         "currency": "AUD",
         "available": available,
         "any_available": available,
