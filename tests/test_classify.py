@@ -37,6 +37,19 @@ class FalsePositivesRemovedTest(unittest.TestCase):
             "Dwarfing Tool for Cincturing or Girdling Fruit Trees"))
         self.assertFalse(is_real_product("Garden Tools Set"))
 
+    def test_perth_mobile_non_trees_dropped_lookalikes_kept(self):
+        # Benedict found the trap and the planting service on Perth Mobile's
+        # page 2026-11-05. The plants with "trap" or "service" in their
+        # names must survive.
+        for t in ("Go Natural Citrus Gall Wasp And Medfly Insect Trap",
+                  "Fruit Tree Planting Service", "Wild May Fruit Fly Trap",
+                  "Frost Cloth for Fruit Trees", "Garden Pots for Fruit Trees",
+                  "Coir Peat 5kg Brick", "Fruit Picker Basket with Stainless Steel Stick"):
+            self.assertFalse(is_real_product(t), t)
+        for t in ("Venus Fly Trap (Dionaea muscipula) 70mm Pot",
+                  "Saskatoon Berry, Service Berry"):
+            self.assertTrue(is_real_product(t), t)
+
     def test_sapote_is_a_real_product(self):  # 'pot' used to hit 'sapote'
         self.assertTrue(is_real_product("Black Sapote 'Maher' (Dwarf)"))
         self.assertTrue(is_real_product("White Sapote Suebelle"))

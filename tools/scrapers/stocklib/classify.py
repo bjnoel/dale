@@ -91,6 +91,13 @@ TRUE_JUNK = frozenset({
     # keeps them off the site; the junk gate was taking the credit for a
     # decision it was getting right by accident.
     "tree tube", "weed killer", "white oil", "workshop",
+    # Found on Perth Mobile's page 2026-11-05 (Benedict, before sending VJ the
+    # link): an insect trap and a planting service listed as stock. Phrases,
+    # not words: bare "trap" would drop Ladybird's Venus Fly Trap plants and
+    # bare "service" Primal Fruits' Service Berry. 11 matches across 20,310
+    # held titles, all junk (Daleys and Perth Mobile).
+    "banana fruit cover", "coco peat", "coir", "frost cloth", "fruit fly trap",
+    "fruit picker", "garden pot", "insect trap", "planting service",
     "worm castings", "yates",
 })
 
