@@ -916,12 +916,20 @@
           "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Sent 2026-07-27 11:17"
         },
         {
+          "date": "2026-11-05",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Your nursery is on treestock.com.au (written as a first introduction, forgetting the July thread)",
+          "evidence": "resend:d81a1f2b-6c30-4968-863c-3d6e01c3fdd3"
+        },
+        {
           "date": "2026-11-12",
           "direction": "in",
           "channel": "email",
           "by": "nursery",
           "summary": "Lauretta (from info@) thanked Ben for reaching out and sending people their way, asked how treestock decides what qualifies as 'hard to find'",
-          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Benedict's recent email that prompted it treated them as a new contact; not yet logged (date unknown)"
+          "evidence": "Benedict pasted the reply into a Dale session 2026-11-12. Reply to the 2026-11-05 intro"
         }
       ],
       "open_action": {
