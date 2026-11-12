@@ -58,7 +58,10 @@ class TestRegisterData(unittest.TestCase):
     def test_no_nursery_claims_a_reply_without_an_outbound_touch_first(self):
         for n in self.reg["nurseries"]:
             touches = n.get("touches", [])
-            if touches:
+            # A nursery that approached US first is a real inbound opener, not a
+            # missing outbound log (All Rare Herbs, contact form 2026-07-20). It
+            # has to say so explicitly, so a forgotten send still fails here.
+            if touches and not touches[0].get("unsolicited"):
                 self.assertEqual("out", touches[0]["direction"],
                                  f"{n['key']} history starts with an inbound reply")
 

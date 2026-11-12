@@ -851,40 +851,85 @@
       "key": "all-rare-herbs",
       "name": "All Rare Herbs",
       "domain": "allrareherbs.com.au",
-      "contact_name": "Lauretta",
-      "email": "info@allrareherbs.com.au",
+      "contact_name": "Lauretta Archer",
+      "email": "lauretta@allrareherbs.com.au",
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
       "status": "warm",
       "touches": [
         {
+          "date": "2026-07-20",
+          "direction": "in",
+          "channel": "contact_form",
+          "by": "nursery",
+          "unsolicited": true,
+          "summary": "Lauretta found treestock, noticed All Rare Herbs wasn't listed (close to 100 rare fruit trees as tube stock), asked how it works and whether we'd talk",
+          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Came via the bjnoel.com contact form (subject 'Contact: Lauretta Archer via bjnoel.com')"
+        },
+        {
+          "date": "2026-07-21",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Asked whether they ship to NT, confirmed they're on WooCommerce, said listing needs a daily scan built, offered a phone call",
+          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Date approximate (between 07-20 and 07-23)"
+        },
+        {
+          "date": "2026-07-22",
+          "direction": "in",
+          "channel": "email",
+          "by": "nursery",
+          "summary": "No plants to NT, WA or TAS (exploring expansion). Confirmed WordPress/WooCommerce. Copied in Edward Archer, General Manager, for the technical side",
+          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Date approximate (before commit 6aeea0d on 07-23)"
+        },
+        {
+          "date": "2026-07-23",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Told Edward and Lauretta they're listed, with the nursery page link; said we'd look at categories beyond fruit trees soon",
+          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Sent 2026-07-23 14:58"
+        },
+        {
           "date": "2026-07-23",
           "direction": "in",
           "channel": "email",
           "by": "nursery",
-          "summary": "Confirmed they do not ship plants to NT (DEC-231 correction)",
-          "evidence": "commit 6aeea0d; backfilled 2026-11-12, register entry was never updated at the time"
+          "summary": "Edward: 'Exciting, keep in touch and let us know if you have any questions around our supply'",
+          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Date approximate"
         },
         {
-          "date": "2026-07-27",
+          "date": "2026-07-24",
           "direction": "in",
           "channel": "email",
           "by": "nursery",
-          "summary": "Asked to be listed as 'Australia' rather than Mapleton QLD (new owners, online only). Honoured (DEC-233)",
-          "evidence": "decisions/decision-log.md DEC-233; backfilled 2026-11-12"
+          "summary": "Lauretta asked for the page to show 'Australia' not Mapleton (new owners, online only)",
+          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12; DEC-233"
+        },
+        {
+          "date": "2026-07-27",
+          "direction": "out",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Confirmed the listing now shows 'Australia'",
+          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Sent 2026-07-27 11:17"
         },
         {
           "date": "2026-11-12",
           "direction": "in",
           "channel": "email",
           "by": "nursery",
-          "summary": "Lauretta replied to Benedict's outreach: thanks for sending people their way, asked how treestock decides which plants qualify for the 'hard to find' filter",
-          "evidence": "Benedict pasted the reply into a Dale session 2026-11-12. Benedict's outbound email that prompted it is not in the register (date unknown, no BCC record found in the journal)"
+          "summary": "Lauretta (from info@) thanked Ben for reaching out and sending people their way, asked how treestock decides what qualifies as 'hard to find'",
+          "evidence": "Benedict pasted the thread into a Dale session 2026-11-12. Benedict's recent email that prompted it treated them as a new contact; not yet logged (date unknown)"
         }
       ],
-      "open_action": "Reply to Lauretta explaining the hard-to-find score (draft prepared 2026-11-12)",
-      "notes": "Onboarded 2026-07-23 (DEC-231), fruiting branch only. Online-only mail order, no published location at their request (DEC-233). As of 2026-11-12, 5 of their fruiting species carry the hard-to-find badge: bael, lemon aspen, pitomba, riberry, American pawpaw."
+      "open_action": {
+        "owner": "benedict",
+        "what": "Send the apology + hard-to-find answer + October report to Lauretta and Edward (drafted 2026-11-12 in session)",
+        "since": "2026-11-12"
+      },
+      "notes": "Onboarded 2026-07-23 (DEC-231) after THEY approached us via the bjnoel.com contact form, fruiting branch only. Contacts: Lauretta Archer (lauretta@), Edward Archer, General Manager (edward@allrareherbs.com.au), shop inbox info@. New owners, moved from Mapleton QLD, online only, no published location at their request (DEC-233). Ship to QLD/NSW/VIC/SA/ACT, not WA/TAS/NT. Benedict told them 2026-07-23 we'd look at categories beyond fruit trees (they sell herbs too). Oct 2026 report: https://treestock.com.au/reports/all-rare-herbs-2026-10-661f6a8e41.html (traffic-only, offer ask): 49 people / 52 clicks (Sept 20), 0 of 47 product clicks hit sold-out lines. As of 2026-11-12, 5 of their species carry the hard-to-find badge: bael, lemon aspen, pitomba, riberry, American pawpaw."
     },
     {
       "key": "perrys",

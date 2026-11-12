@@ -174,7 +174,8 @@ class WatchGrowth(unittest.TestCase):
 
 
 class TemplateRenders(unittest.TestCase):
-    def _render(self, recipient, regions=None, nobody=None, traffic_only=False):
+    def _render(self, recipient, regions=None, nobody=None, traffic_only=False,
+                n_watching_yours=93, n_varieties_yours=74):
         row = {"title": "Fig & Olive <b>", "short_title": "Fig & Olive <b>", "url": "https://x",
                "price": 49.9, "clicks": 3, "now": False, "days_out": 30, "home": 1, "away": 2}
         w = {"title": "Blueberry - OB1", "waiting": 6, "mine_prices": [49.9], "mine_in_prices": [49.9],
@@ -196,7 +197,7 @@ class TemplateRenders(unittest.TestCase):
             cls={"product": 431, "sold_out": 41, "restricted": 3},
             lost_products=1, baseline=0.65, n_days=30,
             top_clicked=[row], lost=[row], restricted=[row],
-            n_watchers=208, n_watching_yours=93, n_varieties_yours=74,
+            n_watchers=208, n_watching_yours=n_watching_yours, n_varieties_yours=n_varieties_yours,
             top_watched={"title": "Blueberry - OB1", "n": 6, "yours": True},
             only_you=[w], nobody=nobody or [w], n_state_known=13, n_dropped=1,
             growth={"rows": [{"label": "August", "n": 45}, {"label": "September", "n": 98}],
@@ -270,6 +271,17 @@ class TemplateRenders(unittest.TestCase):
         # deliberations; that conversation belongs in the email (2026-11-05).
         self.assertNotIn("looking into", html)
         self.assertNotIn("sign up", html)
+
+    def test_teaser_drops_watch_line_when_nothing_matches(self):
+        # All Rare Herbs (2026-11-12) lists by species ("Cacao Plant"), so no
+        # line maps to a watched variety and the teaser read "0 people ... 0
+        # varieties". True, but it reads as nobody caring; leave it out.
+        html = self._render(bpr.recipient("all-rare-herbs", "woocommerce"), traffic_only=True,
+                            n_watching_yours=0, n_varieties_yours=0)
+        self.assertIn("Also in the full report", html)
+        self.assertNotIn("What people are waiting for", html)
+        html = self._render(bpr.recipient("ross-creek", "shopify"), traffic_only=True)
+        self.assertIn("What people are waiting for", html)
 
     def test_tiny_share_is_not_zero_percent(self):
         # Daleys Oct 2026 read "3 clicks (0%)", as if nothing happened.
