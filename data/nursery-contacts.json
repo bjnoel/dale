@@ -851,24 +851,40 @@
       "key": "all-rare-herbs",
       "name": "All Rare Herbs",
       "domain": "allrareherbs.com.au",
-      "contact_name": null,
+      "contact_name": "Lauretta",
       "email": "info@allrareherbs.com.au",
       "phone": null,
       "contact_form": null,
       "preferred_channel": "email",
-      "status": "contacted",
+      "status": "warm",
       "touches": [
         {
-          "date": "2026-11-05",
-          "direction": "out",
+          "date": "2026-07-23",
+          "direction": "in",
           "channel": "email",
-          "by": "benedict",
-          "summary": "Your nursery is on treestock.com.au",
-          "evidence": "resend:d81a1f2b-6c30-4968-863c-3d6e01c3fdd3"
+          "by": "nursery",
+          "summary": "Confirmed they do not ship plants to NT (DEC-231 correction)",
+          "evidence": "commit 6aeea0d; backfilled 2026-11-12, register entry was never updated at the time"
+        },
+        {
+          "date": "2026-07-27",
+          "direction": "in",
+          "channel": "email",
+          "by": "nursery",
+          "summary": "Asked to be listed as 'Australia' rather than Mapleton QLD (new owners, online only). Honoured (DEC-233)",
+          "evidence": "decisions/decision-log.md DEC-233; backfilled 2026-11-12"
+        },
+        {
+          "date": "2026-11-12",
+          "direction": "in",
+          "channel": "email",
+          "by": "nursery",
+          "summary": "Lauretta replied to Benedict's outreach: thanks for sending people their way, asked how treestock decides which plants qualify for the 'hard to find' filter",
+          "evidence": "Benedict pasted the reply into a Dale session 2026-11-12. Benedict's outbound email that prompted it is not in the register (date unknown, no BCC record found in the journal)"
         }
       ],
-      "open_action": null,
-      "notes": ""
+      "open_action": "Reply to Lauretta explaining the hard-to-find score (draft prepared 2026-11-12)",
+      "notes": "Onboarded 2026-07-23 (DEC-231), fruiting branch only. Online-only mail order, no published location at their request (DEC-233). As of 2026-11-12, 5 of their fruiting species carry the hard-to-find badge: bael, lemon aspen, pitomba, riberry, American pawpaw."
     },
     {
       "key": "perrys",
