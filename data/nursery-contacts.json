@@ -1003,6 +1003,34 @@
       ],
       "open_action": null,
       "notes": "NATIVES PROSPECT, not a monitored nursery: treestock does not scrape this store. Added 2026-10-22 from docs/native-retailers-2026-10.md (natives research), when Benedict emailed asking whether they do affiliate referrals (treestock growing, moving into natives, would fund it via referral commission; ranking never affected, disclosed). Natives as a category is formally cancelled (DAL-203/DEC-227); this outreach is Benedict reopening the question. No affiliate program found on their site 2026-10-22. Glenmaggie/Heyfield, Gippsland VIC, propagating since 1985. ~986 native tubestock products. Ships SA/QLD/NSW/VIC; WA/TAS/NT by arrangement. WooCommerce. Alt address collectorsonline@wildtechnursery.com.au."
+    },
+    {
+      "key": "kalamunda-plants",
+      "name": "Kalamunda Plants",
+      "domain": "kalamundaplants.com.au",
+      "prospect": true,
+      "contact_name": "Andrew",
+      "email": null,
+      "phone": null,
+      "contact_form": null,
+      "preferred_channel": null,
+      "status": "courtesy",
+      "touches": [
+        {
+          "date": "2026-11-12",
+          "direction": "out",
+          "channel": "unspecified",
+          "by": "benedict",
+          "summary": "Benedict asked Andrew whether Kalamunda Plants could be listed on treestock. Andrew DECLINED: he already has trouble keeping up with orders and does not want more. Benedict to follow up with an offer of a free Treesmith Pro + Cloud Backup.",
+          "evidence": "Benedict told Dale in session 2026-11-12 (exact contact date and channel not stated)"
+        }
+      ],
+      "open_action": {
+        "owner": "benedict",
+        "since": "2026-11-12",
+        "what": "Send Andrew the short Treesmith Pro + Cloud Backup offer drafted in session 2026-11-12, or drop it."
+      },
+      "notes": "DECLINED LISTING 2026-11-12. Do NOT scrape kalamundaplants.com.au or add them to the stocklib registry. Not an angry opt-out (contrast Heaven On Earth, DEC-319): he is too busy to cope with more orders, so it is a capacity no, not hostility. Only Andrew's explicit say-so reverses it. Domain kalamundaplants.com.au resolves with Microsoft 365 MX (checked 2026-11-12), but no address on file. Kalamunda, Perth Hills WA, so Benedict can visit in person."
     }
   ]
 }

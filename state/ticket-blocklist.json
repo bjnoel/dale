@@ -63,6 +63,15 @@
       ],
       "reason": "Heaven On Earth Fruit Trees demanded removal from treestock on 2026-08-27, replying to our touch-1 email with a threat to report us to Consumer Affairs. Honoured immediately and unconditionally, the same way Beewise was (DEC-198): removed from stocklib/registry.py, wix_scraper.py and build_nursery_pages.py, their nursery page tombstoned, their snapshot history archived off the build path, and their contact record deleted. Do NOT propose re-adding them, re-scraping heavenonearthfruittrees.com.au, or any outreach to them. Do not 'fix' the empty wix_scraper NURSERIES dict; it is deliberate. Only their explicit written permission reverses this, and that is Benedict's call, not Dale's.",
       "added": "2026-08-27"
+    },
+    {
+      "patterns": [
+        "kalamunda plants",
+        "kalamundaplants",
+        "kalamunda-plants"
+      ],
+      "reason": "Andrew at Kalamunda Plants declined to be listed on treestock (2026-11-12): he already can't keep up with orders. Do not propose scraping, listing, or outreach to them. Benedict owns the relationship. Only Andrew's explicit permission reverses this.",
+      "added": "2026-11-12"
     }
   ]
 }
