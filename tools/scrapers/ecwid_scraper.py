@@ -45,6 +45,7 @@ from stocklib.jsonio import atomic_write_json
 from stocklib.model import validate_and_warn
 from stocklib.panel import run_panel
 from stocklib.scrape_health import count_priced
+from stocklib.utm import AFFILIATES, link_redirects_path
 
 NURSERIES = {
     "primal-fruits": {
@@ -401,10 +402,66 @@ def main():
     run_panel(targets, "ecwid", _scrape_one)
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, *args, **kwargs):
+        return None
+
+
+def refresh_link_redirects(nursery_key, config, products, *, _opener=None,
+                           _sleep=time.sleep, max_new=500):
+    """Record where each product URL redirects, for affiliate nurseries only.
+
+    Primal's store 301s the API's /products/Name-p123 URL to /products/name and
+    the 301 drops the query string, so ?ref=treestock never reached GoAffPro on
+    any product link (2026-11-14). stocklib.utm.affiliate() swaps in the target
+    recorded here. Only URLs not already in the file are fetched, so after the
+    first run this is a handful of HEADs a day (new listings only). A failed
+    lookup is simply skipped and retried tomorrow; the link stays as it was.
+    """
+    if config["domain"] not in AFFILIATES:
+        return {}
+    path = link_redirects_path(nursery_key)
+    try:
+        known = json.loads(path.read_text())
+    except (OSError, ValueError):
+        known = {}
+    opener = _opener or urllib.request.build_opener(_NoRedirect)
+    todo = [p["url"] for p in products if p.get("url") and p["url"] not in known]
+    resolved = 0
+    for url in todo[:max_new]:
+        req = urllib.request.Request(url, method="HEAD",
+                                     headers={"User-Agent": USER_AGENT})
+        try:
+            with opener.open(req, timeout=15) as resp:
+                status, location = resp.status, None
+        except urllib.error.HTTPError as e:
+            status, location = e.code, e.headers.get("Location")
+        except Exception as e:  # network blip: try again tomorrow
+            print(f"  redirect lookup failed for {url}: {e}")
+            continue
+        if status in (301, 302, 307, 308) and location:
+            if location.startswith("/"):
+                location = f"https://{config['domain']}{location}"
+            known[url] = location.split("?", 1)[0]
+            resolved += 1
+        elif status == 200:
+            known[url] = url
+            resolved += 1
+        _sleep(0.3)
+    if resolved:
+        atomic_write_json(path, known)
+    print(f"  link redirects: {resolved} new, {len(known)} known")
+    return known
+
+
 def _scrape_one(key, config, health):
     products = scrape_ecwid(key, config, health)
     if products:
         save_snapshot(key, products, config)
+        try:
+            refresh_link_redirects(key, config, products)
+        except Exception as e:  # never fail the scrape over link bookkeeping
+            print(f"  link redirect refresh failed: {e}")
     return {"products": len(products),
             "in_stock": sum(1 for p in products if p["available"]),
             "priced": count_priced(products)}

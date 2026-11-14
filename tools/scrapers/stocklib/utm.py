@@ -18,8 +18,12 @@ product/store links only.
 Affiliate refs are separate from UTM and are the only thing here that earns
 money: see AFFILIATES below.
 """
+import json
+import os
 import re
 from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
 from urllib.parse import quote
 
 
@@ -62,6 +66,48 @@ AFFILIATES: dict[str, Affiliate] = {
 # Derived, so it cannot drift from AFFILIATES.
 AFFILIATE_REFS = {domain: a.ref for domain, a in AFFILIATES.items()}
 
+# Where the scraper records each affiliate product URL's redirect target.
+#
+# Why this exists (2026-11-14): Primal's Ecwid store moved product pages from
+# /products/AXP-Jaboticaba-p805729003 to /products/axp-jaboticaba, and the 301
+# between them DROPS THE QUERY STRING. The storefront API still hands us the old
+# ID-form URL, so every product link we emitted lost ?ref=treestock one hop
+# before GoAffPro could see it; only the homepage/store links tracked. The
+# snapshot keeps the old URL because Ecwid products are keyed by URL downstream
+# (changing it would make every product look new); the swap happens here, at
+# the one place a link is turned into a paid link.
+LINK_REDIRECTS_FILENAME = "link-redirects.json"
+
+
+def _data_dirs() -> list[Path]:
+    # run-all-scrapers.sh exports DALE_DATA_DIR, but the digest senders run from
+    # their own crons, and the deployed copy (/opt/dale/scrapers) is not inside
+    # the repo layout, so fall back to both known locations.
+    env = os.environ.get("DALE_DATA_DIR")
+    if env:
+        return [Path(env)]
+    return [Path(__file__).resolve().parents[3] / "data", Path("/opt/dale/data")]
+
+
+def link_redirects_path(nursery_key: str) -> Path:
+    return _data_dirs()[0] / "nursery-stock" / nursery_key / LINK_REDIRECTS_FILENAME
+
+
+@lru_cache(maxsize=1)
+def _link_redirects() -> dict[str, str]:
+    """Old product URL -> current URL, for affiliate nurseries only. Missing
+    or unreadable file means no swap, which is exactly the pre-fix behaviour."""
+    merged: dict[str, str] = {}
+    for a in AFFILIATES.values():
+        for d in _data_dirs():
+            path = d / "nursery-stock" / a.nursery_key / LINK_REDIRECTS_FILENAME
+            try:
+                merged.update(json.loads(path.read_text()))
+                break
+            except (OSError, ValueError):
+                continue
+    return merged
+
 
 def affiliate(url: str) -> str:
     """Return `url` with the nursery's affiliate ref appended, if we have one.
@@ -78,6 +124,10 @@ def affiliate(url: str) -> str:
     for domain, ref in AFFILIATE_REFS.items():
         if domain not in url:
             continue
+        base, q, rest = url.partition("?")
+        target = _link_redirects().get(base)
+        if target:
+            url = target + q + rest
         if f"?ref={ref}" in url or f"&ref={ref}" in url:
             return url
         sep = "&" if "?" in url else "?"
