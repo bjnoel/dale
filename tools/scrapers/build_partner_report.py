@@ -54,7 +54,7 @@ from build_variety_pages import slug_for_title  # noqa: E402
 from stocklib.registry import NURSERY_NAMES, SEASONAL_STATES, SHIPPING_MAP  # noqa: E402
 from stocklib.snapshots import iter_nursery_snapshots  # noqa: E402
 from stocklib.templates import render as render_template  # noqa: E402
-from stocklib.utm import AFFILIATES, link_redirects_path  # noqa: E402
+from stocklib.utm import AFFILIATES, LINK_REDIRECTS_FILENAME  # noqa: E402
 
 DATA_DIR = Path("/opt/dale/data/nursery-stock")
 WATCH_DB = Path("/opt/dale/data/variety_watches.db")
@@ -367,7 +367,9 @@ def build(key: str, month: str, offer: str | None = None) -> dict:
             nursery_domains[domain_of(s["products"][0]["url"])] = k
 
     try:
-        redirects = json.loads(link_redirects_path(key).read_text())
+        # DATA_DIR, not utm.link_redirects_path(): from /opt/dale/scrapers that
+        # resolves to /opt/data and silently finds nothing (2026-11-19).
+        redirects = json.loads((DATA_DIR / key / LINK_REDIRECTS_FILENAME).read_text())
     except (OSError, ValueError):
         redirects = {}
     platform = mine_snap.get("source", "")
