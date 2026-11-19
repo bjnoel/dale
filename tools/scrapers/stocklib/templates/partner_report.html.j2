@@ -328,7 +328,12 @@ a{color:var(--accent)}
     <div class="stat"><div class="k">People sent in {{ month_name }}</div><div class="v">{{ this.people }}</div><div class="sub">{{ this.clicks }} clicks to {{ domain }}</div></div>
     <div class="stat"><div class="k">Month on month</div><div class="v{% if this.people > prev.people %} up{% endif %}">{% if prev.people %}{{ "%+.0f"|format((this.people - prev.people) / prev.people * 100) }}%{% else %}new{% endif %}</div><div class="sub">{{ prev.people }} people in {{ prev.label }}</div></div>
     <div class="stat"><div class="k">Share of clicks treestock sends to nurseries</div><div class="v">{{ "%.1f"|format(share * 100) }}%</div><div class="sub">{{ rank }}{{ {1:"st",2:"nd",3:"rd"}.get(rank, "th") }} of {{ n_nurseries }} nurseries</div></div>
+{% set tag_lost = arrived_share is defined and arrived_share < 0.95 %}
+{% if tag_lost %}
+    <div class="stat"><div class="k">Arrived tagged</div><div class="v">{{ pct(arrived_share) }}</div><div class="sub">still carried utm_source=treestock</div></div>
+{% else %}
     <div class="stat"><div class="k">Tagged for you</div><div class="v">{{ pct(tagged_share) }}</div><div class="sub">carry utm_source=treestock</div></div>
+{% endif %}
   </div>
 
   <div class="chart">
@@ -340,7 +345,11 @@ a{color:var(--accent)}
     </div>
   </div>
 
+{% if tag_lost %}
+  <div class="callout">Every link we send you carries <code>utm_source=treestock</code>, but in {{ month_name }} only {{ pct(arrived_share) }} of clicks still had it when they reached you. Your store redirects older product addresses (the ones ending in a product number) to their new address, and that redirect drops the tag. Those visits still show in {{ recipient.check_in }}, as referrals from treestock.com.au rather than under the tag, so counting both should come to close to {{ this.people }} visits. That's lower than the {{ this.clicks }} clicks, as some people clicked through more than once to compare plants or come back to one.{% if links_fixed %} We've since changed our links to point at the new addresses, so they now arrive tagged.{% endif %}</div>
+{% else %}
   <div class="callout">Every link we send you carries <code>utm_source=treestock</code>, so you can check this yourself by filtering {{ recipient.check_in }} on it. It should show close to {{ this.people }} visits. That's lower than the {{ this.clicks }} clicks, as some people clicked through more than once to compare plants or come back to one.</div>
+{% endif %}
 
   <div class="mod">
     <h3>Where the clicks came from</h3>

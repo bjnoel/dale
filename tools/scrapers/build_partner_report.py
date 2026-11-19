@@ -54,7 +54,7 @@ from build_variety_pages import slug_for_title  # noqa: E402
 from stocklib.registry import NURSERY_NAMES, SEASONAL_STATES, SHIPPING_MAP  # noqa: E402
 from stocklib.snapshots import iter_nursery_snapshots  # noqa: E402
 from stocklib.templates import render as render_template  # noqa: E402
-from stocklib.utm import AFFILIATES  # noqa: E402
+from stocklib.utm import AFFILIATES, link_redirects_path  # noqa: E402
 
 DATA_DIR = Path("/opt/dale/data/nursery-stock")
 WATCH_DB = Path("/opt/dale/data/variety_watches.db")
@@ -271,6 +271,26 @@ def watch_growth(added_ats: list[str], month: str, n: int = 4,
 # I/O
 # ---------------------------------------------------------------------------
 
+# Ecwid's legacy product URL, /products/Name-p123. The store 301s it to
+# /products/name and the 301 drops the query string, utm_source included
+# (found 2026-11-14 for Primal; fixed by ecwid_scraper.refresh_link_redirects).
+ECWID_LEGACY_PRODUCT_RE = re.compile(r"/products/[^/?#]*-p\d+/?$")
+
+
+def tag_survives(url: str, redirects: dict, platform: str) -> bool:
+    """Did utm_source on this clicked link reach the nursery's analytics?
+    False when the link 301s to a form that strips the query. The redirect map
+    only knows products listed today, so a delisted Ecwid product is caught by
+    its URL shape. The treestock referrer still arrives either way (browsers
+    keep Referer across a redirect), so an untagged click is not invisible."""
+    if "utm_source=treestock" not in url:
+        return False
+    base = url.partition("?")[0]
+    if base in redirects:
+        return False
+    return not (platform == "ecwid" and ECWID_LEGACY_PRODUCT_RE.search(urlparse(base).path))
+
+
 def month_bounds(month: str) -> tuple[date, date]:
     y, m = map(int, month.split("-"))
     return date(y, m, 1), date(y, m, calendar.monthrange(y, m)[1])
@@ -346,6 +366,12 @@ def build(key: str, month: str, offer: str | None = None) -> dict:
         if s.get("products"):
             nursery_domains[domain_of(s["products"][0]["url"])] = k
 
+    try:
+        redirects = json.loads(link_redirects_path(key).read_text())
+    except (OSError, ValueError):
+        redirects = {}
+    platform = mine_snap.get("source", "")
+
     # 1. Monthly clicks, and this month's rank among nurseries.
     monthly = []
     for m in prev_months(month, 4):
@@ -354,8 +380,10 @@ def build(key: str, month: str, offer: str | None = None) -> dict:
         mine = sum(n for u, n in by_url.items() if domain_of(u) == domain)
         tagged = sum(n for u, n in by_url.items()
                      if domain_of(u) == domain and "utm_source=treestock" in u)
+        arrived = sum(n for u, n in by_url.items()
+                      if domain_of(u) == domain and tag_survives(u, redirects, platform))
         monthly.append({"month": m, "label": a.strftime("%B"), "clicks": mine,
-                        "tagged": tagged,
+                        "tagged": tagged, "arrived_tagged": arrived,
                         "people": outbound_people(get, f"{a},{b}", domain)})
         if m == month:
             per_nursery = collections.Counter()
@@ -478,6 +506,8 @@ def build(key: str, month: str, offer: str | None = None) -> dict:
         "rank": rank, "n_nurseries": n_nurseries,
         "share": this["clicks"] / total_nursery if total_nursery else 0,
         "tagged_share": this["tagged"] / this["clicks"] if this["clicks"] else 0,
+        "arrived_share": this["arrived_tagged"] / this["clicks"] if this["clicks"] else 0,
+        "links_fixed": bool(redirects),
         "cls": {k: v for k, v in cls.items() if not isinstance(v, collections.Counter)},
         "lost_products": len(lost), "baseline": baseline,
         "top_clicked": top_clicked, "lost": lost, "restricted": restricted,
@@ -521,7 +551,7 @@ def main(argv=None):
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html)
     summary = {k: ctx[k] for k in ("recipient", "this", "prev", "rank", "n_nurseries", "share",
-                                   "tagged_share", "cls", "lost_products", "baseline",
+                                   "tagged_share", "arrived_share", "cls", "lost_products", "baseline",
                                    "n_watchers", "n_state_known", "n_dropped",
                                    "n_watching_yours", "n_varieties_yours", "top_watched",
                                    "listed", "sold_out_now")}

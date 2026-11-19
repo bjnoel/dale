@@ -175,7 +175,7 @@ class WatchGrowth(unittest.TestCase):
 
 class TemplateRenders(unittest.TestCase):
     def _render(self, recipient, regions=None, nobody=None, traffic_only=False,
-                n_watching_yours=93, n_varieties_yours=74):
+                n_watching_yours=93, n_varieties_yours=74, **extra):
         row = {"title": "Fig & Olive <b>", "short_title": "Fig & Olive <b>", "url": "https://x",
                "price": 49.9, "clicks": 3, "now": False, "days_out": 30, "home": 1, "away": 2}
         w = {"title": "Blueberry - OB1", "waiting": 6, "mine_prices": [49.9], "mine_in_prices": [49.9],
@@ -201,7 +201,8 @@ class TemplateRenders(unittest.TestCase):
             top_watched={"title": "Blueberry - OB1", "n": 6, "yours": True},
             only_you=[w], nobody=nobody or [w], n_state_known=13, n_dropped=1,
             growth={"rows": [{"label": "August", "n": 45}, {"label": "September", "n": 98}],
-                    "max": 98, "after": {"label": "October", "n": 47, "days": 15}})
+                    "max": 98, "after": {"label": "October", "n": 47, "days": 15}},
+            **extra)
 
     def test_renders_and_escapes(self):
         html = self._render(bpr.recipient("ross-creek", "shopify"))
@@ -329,6 +330,54 @@ class StripRestriction(unittest.TestCase):
         self.assertEqual(bpr.strip_restriction("Mandarin - Emperor: QLD ONLY"), "Mandarin - Emperor")
         self.assertEqual(bpr.strip_restriction("Dwarf Mandarin - Fremont QLD ONLY"), "Dwarf Mandarin - Fremont")
         self.assertEqual(bpr.strip_restriction("Lime - Tahitian (Queensland only) 2L"), "Lime - Tahitian 2L")
+
+
+
+class TagSurvivalTest(unittest.TestCase):
+    """Primal's Ecwid store 301s /products/Name-p123 to /products/name and the
+    301 drops the query, utm_source included. The October 2026 report first
+    rendered '100% tagged, filter on utm_source, expect ~203 visits' when about
+    one click in nine still carried the tag (found 2026-11-19)."""
+
+    OLD = "https://primalfruits.com.au/products/Little-Ollie-Olive-Tree-p877137194"
+    NEW = "https://primalfruits.com.au/products/little-ollie-olive-tree"
+    UTM = "?utm_source=treestock&utm_medium=referral"
+
+    def test_redirected_product_link_loses_tag(self):
+        self.assertFalse(bpr.tag_survives(self.OLD + self.UTM, {self.OLD: self.NEW}, "ecwid"))
+
+    def test_delisted_ecwid_product_caught_by_shape(self):
+        # Not in today's redirect map, but the same URL shape 301s the same way.
+        self.assertFalse(bpr.tag_survives(
+            "https://primalfruits.com.au/products/KP-Mango-seedling-p123" + self.UTM, {}, "ecwid"))
+
+    def test_current_link_and_homepage_keep_tag(self):
+        self.assertTrue(bpr.tag_survives(self.NEW + self.UTM, {self.OLD: self.NEW}, "ecwid"))
+        self.assertTrue(bpr.tag_survives("https://primalfruits.com.au/" + self.UTM, {}, "ecwid"))
+
+    def test_shape_rule_is_ecwid_only(self):
+        self.assertTrue(bpr.tag_survives(
+            "https://rosscreektropicals.com.au/products/thing-p12" + self.UTM, {}, "shopify"))
+
+    def test_untagged_link_never_survives(self):
+        self.assertFalse(bpr.tag_survives(self.NEW, {}, "ecwid"))
+
+    def test_report_says_tag_was_dropped(self):
+        t = TemplateRenders()
+        html = t._render(bpr.recipient("primal-fruits", "ecwid"), arrived_share=0.11,
+                         links_fixed=True)
+        self.assertIn("only 11% of clicks still had it", html)
+        self.assertIn("as referrals from treestock.com.au", html)
+        self.assertIn("so they now arrive tagged", html)
+        self.assertIn("Arrived tagged", html)
+        self.assertNotIn("It should show close to", html)
+        self.assertNotIn("—", html)
+
+    def test_report_unchanged_when_tag_arrives(self):
+        html = TemplateRenders()._render(bpr.recipient("ross-creek", "shopify"),
+                                                 arrived_share=1.0, links_fixed=False)
+        self.assertIn("It should show close to 321 visits.", html)
+        self.assertNotIn("Arrived tagged", html)
 
 
 if __name__ == "__main__":
