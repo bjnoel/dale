@@ -50,7 +50,7 @@ NURSERY_KEY = "heritage-fruit-trees"
 NURSERY_NAME = "Heritage Fruit Trees"
 BASE_URL = NURSERY_HOMEPAGES["heritage-fruit-trees"]
 GRAPHQL_URL = BASE_URL + "/graphql"
-USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
+from stocklib.retry import USER_AGENT  # noqa: E402  (shared; allow-listed by nurseries)
 
 # Product discovery is driven by the store's products sitemap (the complete
 # catalogue), NOT by walking a few top-level category listings. The old approach

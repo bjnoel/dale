@@ -51,6 +51,7 @@ GUARDS = [
     (re.compile(r"^def gsc_credentials\b"), "stocklib/gsc_auth.py"),
     (re.compile(r"^def auth_headers\b"), "stocklib/gsc_auth.py"),
     (re.compile(r"^RETRYABLE_HTTP\s*[:=]"), "stocklib/retry.py"),
+    (re.compile(r"^USER_AGENT\s*[:=]"), "stocklib/retry.py"),
     (re.compile(r"^def request_with_retry\b"), "stocklib/retry.py"),
     # The per-nursery loop. Five scrapers each had their own copy, and all five
     # re-raised, so one crash cost every nursery after it (2026-09-27 to 09-29).

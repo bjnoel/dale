@@ -92,7 +92,7 @@ explained by the include-filter, check it against `NON_PLANT_KEYWORDS` and
 
 - **Run audits from the server, not locally.** These stores 403 a local/residential
   IP. SSH in: `ssh dale-server`. Use the scraper's real User-Agent:
-  `WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)`.
+  `TreestockBot/1.0 (+https://treestock.com.au; stock-monitoring)`.
 - **Server data path:** `/opt/dale/data/nursery-stock/<key>/` (`latest.json`,
   dated `YYYY-MM-DD.json`, `availability.json`). `DALE_DATA_DIR=/opt/dale/data`.
 - **Repo on server:** `/opt/dale/repo` (git). Deployed scrapers run from
@@ -123,7 +123,7 @@ block). Template:
 ```python
 # ssh dale-server, then: python3 << 'EOF'
 import urllib.request, json, time
-UA="WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
+UA="TreestockBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 def pull(domain):
     out=[]; page=1
     while True:

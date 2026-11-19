@@ -52,7 +52,7 @@ from stocklib.species_match import load_species_lookup, match_title
 from stocklib.taxonomy import enabled_species
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
-USER_AGENT = "treestock.com.au feed reader (+https://treestock.com.au; ben@treestock.com.au)"
+FEED_USER_AGENT = "treestock.com.au feed reader (+https://treestock.com.au; ben@treestock.com.au)"
 
 # Availability vocabulary. The feed used to mix schema.org CamelCase with
 # Meta/Google Shopping lowercase: 2,900 rows said "out of stock" and exactly
@@ -113,7 +113,7 @@ FEEDS = {
 
 def fetch_feed(url: str, health: ScrapeHealth) -> str | None:
     """Fetch the feed and return its decoded text."""
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    req = urllib.request.Request(url, headers={"User-Agent": FEED_USER_AGENT})
     raw = request_with_retry(req, timeout=120, health=health)
     if raw is None:
         return None

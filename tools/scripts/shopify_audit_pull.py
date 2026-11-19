@@ -4,7 +4,7 @@ the raw products to /tmp so the audit analysis can run offline (no re-fetching).
 Run on the server (stores 403 residential IPs). DEC-207 follow-up audit."""
 import urllib.request, json, time, sys
 
-UA = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
+UA = "TreestockBot/1.0 (+https://treestock.com.au; stock-monitoring)"
 STORES = {
     "garden-world": "gardenworld.au",
     "diggers": "www.diggers.com.au",

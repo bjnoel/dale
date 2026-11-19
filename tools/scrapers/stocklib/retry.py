@@ -16,6 +16,11 @@ import time
 import urllib.error
 import urllib.request
 
+# What every nursery scraper sends. Nurseries allow-list this string in their
+# bot protection (All Rare Herbs asked for it, 2026-11-19), so it is defined
+# once here and imported; was "WalkthroughBot/1.0" until 2026-11-19.
+USER_AGENT = "TreestockBot/1.0 (+https://treestock.com.au; stock-monitoring)"
+
 # 509 (Bandwidth Limit Exceeded) is not in any RFC; it is what Apache/LiteSpeed
 # and cPanel emit when a shared-hosting account hits its bandwidth or
 # concurrent-connection cap. Added 2026-08-27 after Engall's returned it once

@@ -74,7 +74,7 @@ NURSERIES = {
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"
-USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
+from stocklib.retry import USER_AGENT  # noqa: E402  (shared; allow-listed by nurseries)
 REQUEST_DELAY = 1.5   # seconds between collection pages -- be polite
 PAGE_LIMIT = 40       # safety net; 40 pages of any page size is far past any nursery
 

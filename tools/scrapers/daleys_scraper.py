@@ -32,7 +32,7 @@ from stocklib.scrape_health import count_priced, ScrapeHealth
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock" / "daleys"
 BASE_URL = NURSERY_HOMEPAGES["daleys"]
-USER_AGENT = "WalkthroughBot/1.0 (+https://treestock.com.au; stock-monitoring)"
+from stocklib.retry import USER_AGENT  # noqa: E402  (shared; allow-listed by nurseries)
 REQUEST_DELAY = 2  # seconds between page fetches
 
 
