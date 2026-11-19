@@ -367,8 +367,11 @@ class TagSurvivalTest(unittest.TestCase):
         html = t._render(bpr.recipient("primal-fruits", "ecwid"), arrived_share=0.11,
                          links_fixed=True)
         self.assertIn("only 11% of clicks still had it", html)
-        self.assertIn("as referrals from treestock.com.au", html)
-        self.assertIn("so they now arrive tagged", html)
+        self.assertIn("as referrals from treestock.com.au, and if you look at those instead", html)
+        self.assertIn("and they now keep the tag.", html)
+        # A tagged visit carries the referrer too, so "counting both" double-counted.
+        self.assertNotIn("counting both", html)
+        self.assertNotIn(", so they now", html)
         self.assertIn("Arrived tagged", html)
         self.assertNotIn("It should show close to", html)
         self.assertNotIn("—", html)
