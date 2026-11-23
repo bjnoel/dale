@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated": "2026-11-05",
+  "updated": "2026-11-23",
   "note": "Nursery relationship register (DAL-80). One record per monitored nursery, plus prospects (`prospect: true`): nurseries we have written to but do not scrape, kept here so BCC'd mail and replies log against them. Source of truth for who we can contact, what we have said to them, and what is outstanding. Referral click counts are NOT stored here: nursery_crm.py pulls them live from Plausible so they cannot go stale. Contact details were researched in March 2026 and were only recorded in a Linear comment until now, which is why they were unusable. Touches are recorded only where there is evidence; 'evidence' names where that evidence lives. Absence of a touch means we have no record of one, not proof none happened. Heaven On Earth Fruit Trees was removed 2026-08-27 at their own request (they replied to touch 1 demanding removal); their record including contact details was deleted rather than kept, and re-adding them is blocked in state/ticket-blocklist.json.",
   "statuses": {
     "not_contacted": "No recorded outreach.",
@@ -1105,19 +1105,28 @@
       "key": "growthyme",
       "name": "Grow Thyme Nursery",
       "domain": "growthymenursery.com.au",
-      "contact_name": null,
-      "email": null,
+      "contact_name": "Cristen Reed",
+      "email": "cpicxie@gmail.com",
       "phone": "0428 826 980",
       "contact_form": "https://growthymenursery.com.au/pages/contact",
-      "preferred_channel": "contact_form",
-      "status": "not_contacted",
-      "touches": [],
+      "preferred_channel": "email",
+      "status": "warm",
+      "touches": [
+        {
+          "date": "2026-11-12",
+          "direction": "in",
+          "channel": "email",
+          "by": "benedict",
+          "summary": "Cristen Reed emailed ben@treestock.com.au, subject 'How to Register My Nursery Grow Thyme Nursery': asked to be added to treestock and how to join. Inbound request, so it is the consent record for listing them.",
+          "evidence": "Email pasted by Benedict 2026-11-23"
+        }
+      ],
       "open_action": {
         "owner": "benedict",
         "what": "Reply to their listing request (Dale's draft, 2026-11-23): confirm they are listed, ask for a link back to treestock and optionally a GoAffPro referral code. Listing is unconditional either way. Then log the inbound request and the reply as touches.",
         "since": "2026-11-23"
       },
-      "notes": "Added 2026-11-23 because THEY ASKED to be listed (inbound, reported by Benedict 2026-11-23; channel and contact person not yet recorded, so no touch is logged until he confirms them). Shopify, ~134 products, 57 in fruit/bush-tucker scope, 27 in stock on 2026-11-23. Ships QLD/NSW/VIC/SA/ACT, not WA/NT/TAS (shipping policy). Location not published; QLD inferred. Phone and contact form are from their own site. Started as a backyard hobby (About page). Shopify, so the GoAffPro offer applies. Consent to list is their own request."
+      "notes": "Added 2026-11-23 because THEY ASKED to be listed: Cristen Reed emailed on 2026-11-12 asking how to join. Our reply went 11 days later, so it opens with an apology for the delay. Shopify, ~134 products, 57 in fruit/bush-tucker scope, 27 in stock on 2026-11-23. Ships QLD/NSW/VIC/SA/ACT, not WA/NT/TAS (shipping policy). Location not published; QLD inferred. Phone and contact form are from their own site. Started as a backyard hobby (About page). Shopify, so the GoAffPro offer applies. Consent to list is their own request."
     }
   ]
 }
