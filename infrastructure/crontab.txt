@@ -77,3 +77,6 @@
 # slack and one missed run loses days permanently (DEC-332). Re-running is a no-op.
 50 22 * * * /usr/bin/python3 /opt/dale/repo/tools/autonomous/appstore_downloads.py >> /opt/dale/autonomous/logs/appstore_downloads.log 2>&1
 30 21 * * 0 /usr/bin/python3 /opt/dale/autonomous/image_advisories.py >> /opt/dale/autonomous/logs/image_advisories.log 2>&1
+
+# Monthly partner reports: Mon 22:00 UTC = Tue 06:00 Perth; script only acts on the first Tuesday
+0 22 * * 1 /usr/bin/python3 /opt/dale/autonomous/monthly_partner_reports.py >> /opt/dale/autonomous/logs/partner_reports.log 2>&1
