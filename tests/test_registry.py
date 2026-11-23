@@ -55,6 +55,7 @@ EXPECTED_SHIPPING = {
     # changed nothing, and make any later edit to an existing nursery's states
     # a deliberate two-file change rather than a one-line slip.
     "perrys": ["SA"],
+    "growthyme": ["QLD", "NSW", "VIC", "SA", "ACT"],
 }
 
 EXPECTED_NAMES = {
@@ -85,6 +86,7 @@ EXPECTED_NAMES = {
     "the-heritage-nursery": "The Heritage Nursery",
     "all-rare-herbs": "All Rare Herbs",
     "perrys": "Perry's Fruit & Nut Nursery",
+    "growthyme": "Grow Thyme Nursery",
 }
 
 EXPECTED_LOCAL = {

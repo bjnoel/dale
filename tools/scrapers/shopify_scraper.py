@@ -183,6 +183,26 @@ NURSERIES = {
         "location": "Yarralumla, ACT",
         "product_types": ["FRUIT TREES", "CITRUS", "BERRIES", "NUTS"],
     },
+    "growthyme": {
+        # Small QLD online nursery (~134 products), added 2026-11-23 at the
+        # nursery's own request. Fruit sits cleanly in four product_types; the
+        # rest of the store is ornamentals, herbs, gingers, tubers and seeds.
+        # Rescued by handle: six bush-tucker/fruit lines filed with an EMPTY
+        # product_type (passionfruit, Davidson plum, both midyims, Atherton
+        # raspberry, ruby saltbush) and the plum pine under "native plants".
+        # Deliberately NOT rescued: Native Tamarind (Diploglottis), which would
+        # match our "tamarind" species (Tamarindus) by name, and the hedging
+        # lilly pilly "Up and Away".
+        "name": "Grow Thyme Nursery",
+        "domain": "growthymenursery.com.au",
+        "location": "QLD",
+        "product_types": ["Fruit Trees", "Fruit Plants", "Nut Trees", "Strawberries"],
+        "fruit_handles": [
+            "passionfruit-purple-panama", "davidson-plum", "midyim-berry",
+            "midyim-berry-pink-blush", "atherton-raspberry", "ruby-saltbush",
+            "plum-pine-podocarpus-elatus",
+        ],
+    },
 }
 
 DATA_DIR = Path(os.environ.get("DALE_DATA_DIR", Path(__file__).parent.parent.parent / "data")) / "nursery-stock"

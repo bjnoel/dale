@@ -256,6 +256,17 @@ NURSERIES: list[Nursery] = [
                  "something is purchasable when it is not; widen it only once "
                  "Benedict has asked them.",
             homepage="https://perrysfruitnursery.com.au"),
+    Nursery("growthyme", "Grow Thyme Nursery",
+            ("QLD", "NSW", "VIC", "SA", "ACT"),
+            location="QLD",
+            note="Added 2026-11-23 at the nursery's own request (Shopify). "
+                 "Shipping policy: 'We currently ship to QLD, NSW, VIC and SA. "
+                 "Due to quarantine restrictions we don't send to WA, NT or "
+                 "TAS'; the site banner adds ACT. Location not published; QLD "
+                 "inferred from a 'Qld Only' line and a Brisbane tag. Some "
+                 "lines are QLD-only, per-product rules not modelled. Verified "
+                 "2026-11-23.",
+            homepage="https://growthymenursery.com.au"),
 ]
 
 _BY_KEY: dict[str, Nursery] = {n.key: n for n in NURSERIES}
